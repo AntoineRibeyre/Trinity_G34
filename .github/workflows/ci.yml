@@ -3,7 +3,7 @@
 
 on:
   push:
-    branches: [ "main", "feat/team/frontend"]
+    branches: [ "main", "bigMerge"]
   pull_request:
     branches: [ "main"]
 
