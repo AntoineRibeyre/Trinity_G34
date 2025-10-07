@@ -17,8 +17,10 @@
     "module": "es2022",
     "lib": [
       "esnext",
-      "esnext.asynciterable"
+      "esnext.asynciterable",
+      "dom"
     ],
+    "types": ["jsdom"],
     "allowSyntheticDefaultImports": true
   },
   "angularCompilerOptions": {
