@@ -10,3 +10,4 @@
 # Django PowerTools cache (generated)
 **/djangoPowerTools/
 **/.vscode/
+.env
