@@ -11,3 +11,5 @@
 **/djangoPowerTools/
 **/.vscode/
 .env
+**/.DS_Store/
+
