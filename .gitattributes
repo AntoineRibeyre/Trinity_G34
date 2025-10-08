@@ -1,0 +1,51 @@
+# Configuration globale pour éviter les problèmes de fins de ligne
+# À placer à la racine du projet Trinity_G34/
+
+# Par défaut : normaliser tous les fichiers texte
+* text=auto
+
+# Fichiers shell : TOUJOURS en LF (Linux), même sur Windows
+*.sh text eol=lf
+
+# Fichiers Python : LF
+*.py text eol=lf
+
+# Fichiers de configuration : LF
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+*.config text eol=lf
+.editorconfig text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Fichiers TypeScript/JavaScript : LF
+*.ts text eol=lf
+*.js text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+
+# Fichiers Markdown : LF
+*.md text eol=lf
+
+# Fichiers binaires : ne pas toucher
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Package lock files : LF
+package-lock.json text eol=lf
+requirements.txt text eol=lf
