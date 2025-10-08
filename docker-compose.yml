@@ -40,7 +40,7 @@ services:
       - /app/node_modules
       - /app/.angular
     ports:
-      - "4200:80"
+      - "4200:4200"
     environment:
       NG_CACHE: /tmp/.angular/cache
     depends_on:
