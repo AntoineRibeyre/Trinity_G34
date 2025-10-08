@@ -1,14 +1,18 @@
 # ==========================================
 # Stage 1: Build Angular + Compodoc
 # ==========================================
-FROM node:22-alpine AS builder
+FROM node:22-alpine
+
+# Installer bash
+RUN apk add --no-cache bash
 
 # Installer Angular CLI version 20.3 et Compodoc
 RUN npm install -g @angular/cli@20.3 @compodoc/compodoc
 
-# Désactiver l'analytics globalement
-RUN ng analytics off --global
+# Désactiver analytics globalement
+RUN ng analytics off --global || true
 
+# Définir le répertoire de travail
 WORKDIR /app
 
 # Copier package.json et package-lock.json
@@ -20,8 +24,9 @@ RUN npm install
 # Copier le code source
 COPY . .
 
-# Désactiver l'analytics pour ce projet aussi
-RUN ng analytics off || true
+# Installer Apollo Client et types Node
+RUN npm install @apollo/client graphql
+RUN npm install @types/node
 
 # Build de production Angular
 RUN ng build --configuration production
