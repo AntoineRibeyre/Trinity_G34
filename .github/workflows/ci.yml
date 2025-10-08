@@ -214,8 +214,7 @@ jobs:
         run: |
           echo "Coverage report generated successfully"
           echo "Minimum coverage threshold: 70%"
-          # Vous pouvez ajouter une vérification de seuil ici
-
+          
 
   # JOB 5: DOCKER BUILD 
   # =========================================
