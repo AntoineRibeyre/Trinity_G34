@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'graphene_django',
     'trinity',
+    'django_jsonform',
 ]
 
 MIDDLEWARE = [
