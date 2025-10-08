@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "integration+unit_tests"]
+    branches: [ "main", "integration/unit_tests"]
   pull_request:
     branches: [ "main"]
 
