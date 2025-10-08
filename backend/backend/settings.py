@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Third party
     'corsheaders',
     'graphene_django',
+    'trinity',
 ]
 
 MIDDLEWARE = [
