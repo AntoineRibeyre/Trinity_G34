@@ -18,13 +18,13 @@ COPY package*.json ./
 RUN npm install
 
 # Installer Apollo Client manuellement (pas avec ng add)
-RUN npm install @apollo/client graphql
-
-RUN npm install @types/node
-
-RUN npm install @ngx-translate/core
-
-RUN npm install @ngx-translate/http-loader
+#RUN npm install @apollo/client graphql
+#
+#RUN npm install @types/node
+#
+#RUN npm install @ngx-translate/core
+#
+#RUN npm install @ngx-translate/http-loader
 
 # Copier le code source
 COPY . .
