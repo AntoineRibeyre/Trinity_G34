@@ -1,5 +1,4 @@
 from django.db import models
-from __future__ import annotations
 
 # Create your models here.
 
@@ -17,10 +16,11 @@ class User(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     mail = models.EmailField(max_length=100)
-    telephone = models.IntegerField()
+    telephone = models.CharField(max_length=100)
     mot_de_passe = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
-    team = models.ForeignKey(Team, null=True, related_name="membres")
+    team = models.ForeignKey(Team, null=True, related_name="membres",
+                             on_delete=models.SET_NULL, blank=True)
 
     """This class defines a datastructure of an  employee"""
 

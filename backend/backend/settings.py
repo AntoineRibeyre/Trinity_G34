@@ -37,11 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Third party
     'corsheaders',
     'graphene_django',
     'trinity',
-    'django_jsonform',
 ]
 
 MIDDLEWARE = [
