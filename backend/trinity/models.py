@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
@@ -11,16 +11,14 @@ class Team(models.Model):
     """This class defines the data structure of a team"""
 
 
-class User(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
-    mail = models.EmailField(max_length=100)
-    telephone = models.CharField(max_length=100)
-    mot_de_passe = models.CharField(max_length=100)
-    role = models.CharField(max_length=100)
-    team = models.ForeignKey(Team, null=True, related_name="membres",
-                             on_delete=models.SET_NULL, blank=True)
+class User(AbstractUser):
+    # Django gère déjà username, password, email, etc.
+    telephone = models.CharField(max_length=100, blank=True, null=True)
+    role = models.CharField(max_length=100, blank=True, null=True)
+    team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="membres")
+
+    def __str__(self):
+        return self.username
 
     """This class defines a datastructure of an  employee"""
 
