@@ -11,7 +11,7 @@ import {Home} from './features/home/home';
 
 export const routes: Routes = [
 
-  { path: 'home', component: Home}, //Accueil
+  { path: '', component: Home}, //Accueil
   { path: 'login', component: Login },//login
   { path: 'register', component: Register },//register
   { path: 'dashboard', component: Dashboard },//dashboard
