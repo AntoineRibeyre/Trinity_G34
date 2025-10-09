@@ -22,6 +22,10 @@ RUN npm install @apollo/client graphql
 
 RUN npm install @types/node
 
+RUN npm install @ngx-translate/core
+
+RUN npm install @ngx-translate/http-loader
+
 # Copier le code source
 COPY . .
 
