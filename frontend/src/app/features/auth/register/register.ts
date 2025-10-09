@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslateModule} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
-  imports: [],
+  imports: [
+    FormsModule, TranslateModule
+  ],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
