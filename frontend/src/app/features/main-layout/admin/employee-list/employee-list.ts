@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from '../../../../services/user.service';
@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
-import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
 import {BasicTextField} from '../../../../shared/components/basic-text-field/basic-text-field';
 import {TranslatePipe} from '@ngx-translate/core';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
@@ -15,6 +14,8 @@ import {ExcelExportService} from '../../../../services/excel-export.service';
 import { Team } from '../../../../models/team.model';
 import { TeamService } from '../../../../services/team.service';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
+import {AddEmployee} from '../../../../shared/components/add-employee/add-employee';
+import { SnackBarService } from '../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -23,7 +24,7 @@ import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer'
   styleUrl: './employee-list.css'
 })
 export class EmployeeList implements OnDestroy, OnInit {
-  @Output() search = new EventEmitter<string>();
+  @Output() changeSearch = new EventEmitter<string>();
   @Output() openOptions = new EventEmitter<void>();
 
   public allUsers: User[] = [];
@@ -43,15 +44,9 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   private teamSub?: Subscription;
 
-  dropdownOptions: DropdownOption[] = [
-    { label: 'Ryan Wittert', value: 1 },
-    { label: 'Antoine Ribeyre ', value: 2 },
-    { label: 'Joan Guillard', value: 3 },
-    {label: 'Houssem Jeguirim', value: 4}
-  ];
-
   private q$ = new Subject<string>();
   private sub: Subscription;
+  private snackBarService = inject(SnackBarService);
 
   constructor(
     private userService: UserService,
@@ -64,7 +59,7 @@ export class EmployeeList implements OnDestroy, OnInit {
       distinctUntilChanged()
     ).subscribe(q => {
       this.filterUsers(q);
-      this.search.emit(q);
+      this.changeSearch.emit(q);
     });
     this.loadUsers();
   }
@@ -114,7 +109,7 @@ export class EmployeeList implements OnDestroy, OnInit {
     this.query = '';
     this.filteredUsers = this.allUsers;
     this.q$.next('');
-    this.search.emit('');
+    this.changeSearch.emit('');
   }
 
   openFilters() {
@@ -128,17 +123,11 @@ export class EmployeeList implements OnDestroy, OnInit {
   displayEmployeeData(employeeId: string, editable: boolean): void {
     this.selectedEmployee = this.filteredUsers.find(emp => emp.id === employeeId);
     const manager = this.selectedEmployee?.team?.members?.find(emp => emp.role.toLowerCase() == "manager") || '';
-    console.log("selected employee: " + this.selectedEmployee?.lastName)
-    console.log("manager: " + manager)
-    console.log("team members: " + this.selectedEmployee?.team?.members?.length)
     if (manager) {
       this.managerName = manager.firstName + ' ' + manager.lastName;
     }
-    console.log("manager name: " + this.managerName)
     this.editableDrawer = editable;
     this.isDrawerOpen = true;
-    console.log("tessssssssst")
-    console.log(this.selectedEmployee)
   }
 
   closeDrawer(): void {
@@ -172,12 +161,17 @@ export class EmployeeList implements OnDestroy, OnInit {
         message: "Êtes-vous sûr de vouloir supprimer cet employé ? Cette action est irréversible.",
         cancel: "Annuler",
         confirm: "Supprimer",
-        dropdownOptions: this.dropdownOptions,
         onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
-          this.userService.deleteUser(id)
-          this.loadUsers();
-          window.location.reload();
-          dialogRef.close();
+          this.userService.deleteUser(id).then(() => {
+            this.snackBarService.showSuccess('Employé supprimé avec succès');
+            this.loadUsers();
+            window.location.reload();
+            dialogRef.close();
+          }).catch((err) => {
+            console.error('Erreur lors de la suppression:', err);
+            this.snackBarService.showError('Erreur lors de la suppression de l\'employé');
+            dialogRef.close();
+          });
         },
         onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
           dialogRef.close();
@@ -187,23 +181,32 @@ export class EmployeeList implements OnDestroy, OnInit {
     })
   }
 
+  add(): void {
+    this.dialog.open(AddEmployee)
+  }
+
   export(): void {
-    const columns = [
-      { header: 'Nom', key: 'lastName', width: 20 },
-      { header: 'Prénom', key: 'firstName', width: 20 },
-      { header: 'Email', key: 'email', width: 30 },
-      { header: 'Téléphone', key: 'telephone', width: 15 },
-      { header: 'Équipe', key: 'team', width: 20 },
-      { header: 'Poste', key: 'role', width: 25 },
-    ];
+    try {
+      const columns = [
+        { header: 'Nom', key: 'lastName', width: 20 },
+        { header: 'Prénom', key: 'firstName', width: 20 },
+        { header: 'Email', key: 'email', width: 30 },
+        { header: 'Téléphone', key: 'telephone', width: 15 },
+        { header: 'Équipe', key: 'team', width: 20 },
+        { header: 'Poste', key: 'role', width: 25 },
+      ];
 
-    this.exportService.exportWithCustomColumns(
-      this.allUsers,
-      columns,
-      'employes-details',
-      'Liste détaillée'
-    );
-
+      this.exportService.exportWithCustomColumns(
+        this.allUsers,
+        columns,
+        'employes-details',
+        'Liste détaillée'
+      );
+      this.snackBarService.showSuccess('Export Excel généré avec succès');
+    } catch (error) {
+      console.error('Erreur lors de l\'export:', error);
+      this.snackBarService.showError('Erreur lors de l\'export Excel');
+    }
   }
 
   closeTeamDrawer(): void {

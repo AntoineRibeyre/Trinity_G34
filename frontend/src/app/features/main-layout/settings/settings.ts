@@ -115,7 +115,6 @@ export class Settings implements OnInit, OnDestroy {
     this.availableLanguages = this.languageService.getAvailableLanguages();
 
     this.currentLanguage = this.languageService.getCurrentLanguage();
-    console.log(this.currentLanguage);
 
     this.languageSubscription = this.languageService.currentLanguage$.subscribe(
       (lang) => (this.currentLanguage = lang)
@@ -180,18 +179,10 @@ export class Settings implements OnInit, OnDestroy {
   /* -------------------- OPEN PASSWORD MODAL -------------------- */
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
-      width: '470px',
       data: {
         title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
         confirm: this.translateService.instant('BASE.EDIT'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-
-        // Nouvelle validation + champs masqués + requirements
-        validatePassword: (pwd: string): ValidationErrors | null =>
-          passwordStrengthValidator({ value: pwd } as AbstractControl),
-
-        requirements: this.passwordRequirements,
-
         onConfirm: async (dialogRef: any, newPassword: string) => {
           try {
             await this.userService.updateUser({ password: newPassword });

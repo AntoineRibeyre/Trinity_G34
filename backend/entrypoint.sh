@@ -8,7 +8,15 @@ echo "DB ready!"
 
 # Redirect all stdout/stderr to a persistent log file while keeping console output
 # This requires /var/log/trinity to exist (created in Dockerfile) and be mounted from the host
-exec > >(tee -a /var/log/trinity/backend.log) 2>&1
+# Create a timestamped log file and update a stable symlink to the latest log
+STAMP=$(date +'%d-%m-%Y-%H-%M')
+LOG_FILE="/var/log/trinity/backend_${STAMP}.log"
+mkdir -p /var/log/trinity
+# Ensure the file exists and create/update a symlink backend.log -> backend_<timestamp>.log
+touch "$LOG_FILE"
+ln -sf "$LOG_FILE" /var/log/trinity/backend.log
+# Redirect stdout/stderr to the timestamped log (and keep console output via tee)
+exec > >(tee -a "$LOG_FILE") 2>&1
 
 # Créer un fichier de migration
 python manage.py makemigrations

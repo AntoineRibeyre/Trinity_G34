@@ -7,4 +7,4 @@ RUN npm install --save-dev body-parser  # ← Ajoutez cette ligne
 COPY . .
 RUN mkdir -p /var/log/trinity
 EXPOSE 4200
-CMD ["sh", "-c", "ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.js 2>&1 | tee -a /var/log/trinity/frontend.log"]
+CMD ["sh", "-c", "STAMP=$(date +'%d-%m-%Y-%H-%M'); LOG_FILE=/var/log/trinity/frontend_${STAMP}.log; touch \"$LOG_FILE\"; ln -sf \"$LOG_FILE\" /var/log/trinity/frontend.log; ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.js 2>&1 | tee -a \"$LOG_FILE\""]

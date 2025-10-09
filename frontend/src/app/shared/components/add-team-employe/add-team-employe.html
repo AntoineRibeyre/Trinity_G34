@@ -14,7 +14,7 @@
       placeholder="Rechercher"
       width="100%"
       [rows]="1"
-      (onTextChange)="onSearchChange($event)"
+      (textChange)="onSearchChange($event)"
       [showClearButton]="true">
     </app-basic-text-field>
   </div>
@@ -46,14 +46,16 @@
     <app-basic-text-button
       [text]="data.cancel"
       color="#999999"
-      (onClick)="data.onCancel(dialog)">
+      (click)="data.onCancel(dialog)"
+      (keydown.enter)="data.onCancel(dialog)">
     </app-basic-text-button>
 
     <app-basic-text-button
       [text]="data.confirm"
       color="#336CAA"
       [disabled]="!isSelected"
-      (onClick)="data.onConfirm(dialog, selectedEmployeeIds)">
+      (click)="data.onConfirm(dialog, selectedEmployeeIds)"
+      (keydown.enter)="data.onConfirm(dialog, selectedEmployeeIds)">
     </app-basic-text-button>
   </div>
 

@@ -18,12 +18,12 @@ export class BasicDropdown {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Sélectionnez une option';
   @Input() selectedValue?: number; // ou number | null
-  @Output() onSelectionChange = new EventEmitter<number>();
+  @Output() selectionChange = new EventEmitter<number>();
 
   handleChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const value = Number(selectElement.value);
     this.selectedValue = value;
-    this.onSelectionChange.emit(value);
+    this.selectionChange.emit(value);
   }
 }

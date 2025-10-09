@@ -251,33 +251,33 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-backend
     if: always()
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+    
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
+        
       - name: Download coverage XML
         uses: actions/download-artifact@v4
         with:
           name: coverage-xml
           path: ./coverage
-        continue-on-error: False
-
+        continue-on-error: false
+        
       - name: Download coverage HTML
         uses: actions/download-artifact@v4
         with:
           name: coverage-html
           path: ./coverage-html
-        continue-on-error: False
-
+        continue-on-error: false
+        
       - name: Install coverage tool
         run: pip install coverage
-
+        
       - name: Display detailed coverage report
         run: |
           echo "📊 ===== DETAILED COVERAGE REPORT ====="
@@ -294,7 +294,7 @@ jobs:
             echo "⚠️  No coverage.xml found"
           fi
         continue-on-error: true
-
+        
       - name: Coverage Summary Comment (PR only)
         if: github.event_name == 'pull_request'
         uses: py-cov-action/python-coverage-comment-action@v3
@@ -302,11 +302,21 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           COVERAGE_PATH: ./coverage/coverage.xml
         continue-on-error: true
-
+        
       - name: Check coverage threshold
-        run: |
-          echo "📈 Coverage report generated successfully"
-          echo "🎯 Minimum coverage threshold: 70%"
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage/**/coverage.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '60 80'
+
+
 
   # JOB 6: ALL CHECKS PASSED
   # =========================================

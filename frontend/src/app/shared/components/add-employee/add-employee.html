@@ -1,0 +1,120 @@
+<div class="add-team-dialog">
+
+  <div class="title">
+    {{ 'ADMIN.ALL.ADD_EMPLOYEE' | translate }}
+  </div>
+
+  <form [formGroup]="employeeForm" (ngSubmit)="onAddEmployee()" class="register-form">
+    <div>
+      <label class="form-label" for="firstName">{{'REGISTER.FIRST_NAME' | translate}}</label>
+      <input
+        type="text"
+        id="firstName"
+        formControlName="firstName"
+        class="form-input"
+        placeholder="First Name"
+        required>
+    </div>
+
+    <div>
+      <label class="form-label" for="lastName">{{'REGISTER.LAST_NAME' | translate}}</label>
+      <input
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        class="form-input"
+        placeholder="Name"
+        required>
+    </div>
+
+    <div>
+      <label class="form-label" for="email">{{ 'REGISTER.EMAIL' | translate}}</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        class="form-input"
+        placeholder="votre@email.com"
+        required>
+    </div>
+
+    <div>
+      <label class="form-label" for="telephone">{{'REGISTER.PHONE_NUMBER' | translate}}</label>
+      <input
+        type="tel"
+        id="telephone"
+        formControlName="telephone"
+        class="form-input"
+        placeholder="0000000000"
+        required>
+    </div>
+
+    <div class="password-container">
+      <label class="form-label" for="password">{{'REGISTER.PASSWORD' | translate}}</label>
+      <div class="password-input-wrapper">
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-input"
+          placeholder="Password"
+        (focus)="displayPasswordRules = true"
+        (blur)="displayPasswordRules = false"
+          required>
+
+        <!-- Popover des pré-requis -->
+        <div class="password-requirements" *ngIf="displayPasswordRules">
+          <div class="requirements-title">{{ 'REGISTER.PWD_REQUIREMENT' | translate}} :</div>
+          <div class="requirements-list">
+            <div
+              *ngFor="let req of employeePasswordRules"
+              class="requirement-item"
+              [ngClass]="{ 'met': checkPasswordRequirement(req.key), 'not-met': !checkPasswordRequirement(req.key) }">
+          <span class="requirement-icon">
+            {{ checkPasswordRequirement(req.key) ? '✓' : '✗' }}
+          </span>
+              <span class="requirement-text">{{ req.label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="form-label" for="confirmPassword">{{'REGISTER.CONFIRM_PWD' | translate}}</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        class="form-input"
+        [ngClass]="{ 'input-error': hasPasswordMismatch }"
+        placeholder="Confirm Password"
+        required>
+      <p *ngIf="hasPasswordMismatch" class="error-text">
+        Les mots de passe ne correspondent pas
+      </p>
+    </div>
+
+    <div class="buttons">
+      <app-basic-text-button
+        text="Cancel"
+        color="#999999"
+        width="12vw"
+        (click)="dialog.close()"
+        (keydown.enter)="dialog.close()">
+      </app-basic-text-button>
+
+      <app-basic-text-button
+        text="Confirmer"
+        color="#336CAA"
+        width="12vw"
+        [disabled]= "!this.employeeForm.valid"
+        (click)="onAddEmployee()"
+        (keydown.enter)="onAddEmployee()">
+      </app-basic-text-button>
+    </div>
+
+    <p *ngIf="submitErrorMessage" class="error">{{ submitErrorMessage }}</p>
+
+  </form>
+</div>

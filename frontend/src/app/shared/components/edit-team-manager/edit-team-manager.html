@@ -10,21 +10,23 @@
 
   <app-basic-dropdown
     [options]="managersList"
-    (onSelectionChange)="onChangeManager($event)">
+    (selectionChange)="onChangeManager($event)">
   </app-basic-dropdown>
 
   <div class="buttons">
     <app-basic-text-button
       text="{{ data.cancel }}"
       color="#999999"
-      (onClick)="data.onCancel(dialog)">
+      (click)="data.onCancel(dialog)"
+      (keydown.enter)="data.onCancel(dialog)">
     </app-basic-text-button>
 
     <app-basic-text-button
       text="{{ data.confirm }}"
       color="#336CAA"
       [disabled]="isManager"
-      (onClick)="data.onConfirm(dialog, managerSelected)">
+      (click)="data.onConfirm(dialog, managerSelected)"
+      (keydown.enter)="onConfirm(dialog, managerSelected)">
     </app-basic-text-button>
   </div>
 

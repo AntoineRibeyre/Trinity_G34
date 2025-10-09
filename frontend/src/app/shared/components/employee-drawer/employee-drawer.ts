@@ -1,5 +1,5 @@
 import { Scheduler } from '../../../features/main-layout/scheduler/scheduler';
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges, inject} from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
@@ -11,6 +11,7 @@ import {ExcelExportService} from '../../../services/excel-export.service';
 import {User} from '../../../models/user.model';
 import {firstValueFrom} from 'rxjs';
 import {BasicTextField} from '../basic-text-field/basic-text-field';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 
 @Component({
@@ -44,8 +45,8 @@ export class EmployeeDrawer implements OnChanges {
   @Input() isEditable: boolean = false;
   @Input() manager: string = '';
 
-  @Output() onClose = new EventEmitter<void>();
-  @Output() onSave = new EventEmitter<any>();
+  @Output() closeDrawer = new EventEmitter<void>();
+  @Output() save = new EventEmitter<any>();
   @Output() Error = new EventEmitter<string>();
 
 
@@ -53,6 +54,8 @@ export class EmployeeDrawer implements OnChanges {
   private userId: number | undefined;
   saving: boolean = false;
   effectiveHours: string = '0h 0m';  // Changé de private à public
+
+  private snackBarService = inject(SnackBarService);
 
   constructor(
     private pointService: PointService,
@@ -112,7 +115,7 @@ export class EmployeeDrawer implements OnChanges {
   }
 
   close(): void {
-    this.onClose.emit();
+    this.closeDrawer.emit();
   }
 
   async export(): Promise<void> {
@@ -185,9 +188,11 @@ export class EmployeeDrawer implements OnChanges {
         fileName,
         'Export Employé'
       );
+      this.snackBarService.showSuccess('Export Excel généré avec succès');
 
     } catch (error) {
       console.error('❌ Erreur lors de l\'export:', error);
+      this.snackBarService.showError('Erreur lors de l\'export Excel');
     }
   }
 
@@ -200,19 +205,25 @@ export class EmployeeDrawer implements OnChanges {
       const updated = await this.userService.updateUser(this.employee, this.employee.id);
 
       // Emit updated user (fall back to local employee if backend returns null)
-      this.onSave.emit(updated ?? this.employee);
+      this.save.emit(updated ?? this.employee);
       if (updated) this.employee = updated;
+      this.snackBarService.showSuccess('Modifications sauvegardées avec succès');
       this.close();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Erreur lors de la sauvegarde de l\'utilisateur :', err);
       // Friendly message for common backend unique constraint on email
-      // try {
-      //   const message = err && (err.message || (err.graphQLErrors && err.graphQLErrors[0] && err.graphQLErrors[0].message));
-      //   if (message && String(message).includes('duplicate key value')) {
-      //     alert('Erreur : cet email est déjà utilisé par un autre utilisateur.');
-      //   } else {
-      //     alert('Erreur lors de la sauvegarde de l\'utilisateur. Voir la console pour plus de détails.');
-      //   }
+      let errorMessage = 'Erreur lors de la sauvegarde de l\'utilisateur';
+      try {
+        const message = err && (err.message || (err.graphQLErrors && err.graphQLErrors[0] && err.graphQLErrors[0].message));
+        if (message && String(message).includes('duplicate key value')) {
+          errorMessage = 'Cet email est déjà utilisé par un autre utilisateur';
+        }
+      } catch (e) {
+        // Ignore parsing errors
+      }
+      this.snackBarService.showError(errorMessage);
+    } finally {
+      this.saving = false;
     }
   }
 

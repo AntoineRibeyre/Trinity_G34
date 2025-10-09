@@ -50,7 +50,8 @@
     "EMAIL": "Email",
     "LOGIN": "Se connecter",
     "REGISTER": "S'inscrire",
-    "FORGOTTEN_PASSWORD": "Mot de passe oublié"
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié",
+    "SUCCESS": "Connexion réussi"
   },
   "ERRORS": {
     "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
@@ -165,6 +166,7 @@
       "FINANCE": "Finance",
       "DESIGN": "Design",
       "SEARCH-INPUT": "Rechercher un employé...",
+      "ADD_EMPLOYEE": "Ajouter un employé",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personnel",
         "BIRTH-DATE": "Date de naissance:",

@@ -8,7 +8,7 @@
           [(ngModel)]="team!.name"
           width = "100%"
           [rows]="1"
-          (onTextChange)="onChangeName($event)">
+          (textChange)="onChangeName($event)">
         </app-basic-text-field>
       }
       <div class="header-actions">
@@ -38,7 +38,7 @@
               width = "100%"
               [maxLength]="500"
               [rows]="4"
-              (onTextChange)="onChangeDescription($event)">
+              (textChange)="onChangeDescription($event)">
             </app-basic-text-field>
           }
         </div>
@@ -116,13 +116,15 @@
             width="20vw"
             text="Annuler"
             color="#999999"
-            (onClick)="cancelEdit()">
+            (click)="cancelEdit()"
+            (keydown.enter)="cancelEdit()">
           </app-basic-text-button>
           <app-basic-text-button
             width="20vw"
             text="Sauvegarder"
             color="#336CAA"
-            (onClick)="saveChanges()">
+            (click)="saveChanges()"
+            (keydown.enter)="saveChanges()">
           </app-basic-text-button>
         </div>
       }

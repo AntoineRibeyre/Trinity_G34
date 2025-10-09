@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges, inject} from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { UserService } from '../../../services/user.service';
 import { AddTeamEmploye } from '../add-team-employe/add-team-employe';
 import { DropdownOption } from '../basic-dropdown/basic-dropdown';
 import {EditTeamManager} from '../edit-team-manager/edit-team-manager';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-team-drawer',
@@ -43,10 +44,12 @@ export class TeamDrawer implements OnChanges {
   @Input() isOpen: boolean = false;
   @Input() team: Team | undefined = undefined;
 
-  @Output() onClose = new EventEmitter<void>();
-  @Output() onMemberClick = new EventEmitter<number>();
-  @Output() onTeamDeleted = new EventEmitter<number>();
-  @Output() onTeamUpdated = new EventEmitter<Team>();
+  @Output() closeDrawer = new EventEmitter<void>();
+  @Output() memberClick = new EventEmitter<number>();
+  @Output() teamDeleted = new EventEmitter<number>();
+  @Output() teamUpdated = new EventEmitter<Team>();
+
+  private snackBarService = inject(SnackBarService);
 
   constructor(
     private teamService: TeamService,
@@ -137,7 +140,7 @@ export class TeamDrawer implements OnChanges {
 
   close(): void {
     this.isEditable = false;
-    this.onClose.emit();
+    this.closeDrawer.emit();
   }
 
   toggleEdit(): void {
@@ -193,6 +196,7 @@ export class TeamDrawer implements OnChanges {
     this.teamService.updateTeam( updatedData).subscribe({
       next: (response) => {
         console.log('Équipe mise à jour:', response.message);
+        this.snackBarService.showSuccess('Équipe mise à jour avec succès');
 
         // Mettre à jour les valeurs
         if (this.editableTeam) {
@@ -202,7 +206,7 @@ export class TeamDrawer implements OnChanges {
       },
       error: (err) => {
         console.error('Erreur lors de la mise à jour:', err);
-        alert('Erreur lors de la sauvegarde des modifications');
+        this.snackBarService.showError('Erreur lors de la sauvegarde des modifications');
       }
     });
     window.location.reload();
@@ -225,13 +229,14 @@ export class TeamDrawer implements OnChanges {
           this.teamService.deleteTeam(Number(this.editableTeam.id)).subscribe({
             next: (response) => {
               console.log('✅ Équipe supprimée avec succès', response);
-              this.onTeamDeleted.emit(Number(this.editableTeam!.id));
+              this.snackBarService.showSuccess('Équipe supprimée avec succès');
+              this.teamDeleted.emit(Number(this.editableTeam!.id));
               window.location.reload();
               this.close();
             },
             error: (err) => {
               console.error('Erreur lors de la suppression:', err);
-              alert('Erreur lors de la suppression de l\'équipe');
+              this.snackBarService.showError('Erreur lors de la suppression de l\'équipe');
             }
           });
           window.location.reload();
@@ -278,6 +283,7 @@ export class TeamDrawer implements OnChanges {
           this.teamService.removeMembers(Number(this.team?.id), selectedEmployeeIds)
             .subscribe({
               next: (res) => {
+                this.snackBarService.showSuccess('Membres retirés de l\'équipe avec succès');
                 window.location.reload();
                 console.log("Mutation success:", res);
                 // Optionnel : rafraîchir la liste des équipes ici si besoin
@@ -286,7 +292,7 @@ export class TeamDrawer implements OnChanges {
               },
               error: (err) => {
                 console.error("Mutation error:", err);
-                // Optionnel : afficher un message d'erreur à l'utilisateur
+                this.snackBarService.showError('Erreur lors de la suppression des membres');
               }
             });
         },
@@ -301,7 +307,7 @@ export class TeamDrawer implements OnChanges {
 
   openMemberDetails(memberId: String, event: Event): void {
     event.stopPropagation();
-    this.onMemberClick.emit(Number(memberId));
+    this.memberClick.emit(Number(memberId));
   }
 
   async openManagerDialog(): Promise<void> {
@@ -322,12 +328,13 @@ export class TeamDrawer implements OnChanges {
             this.teamService.changeTeamManager(Number(this.team?.id), Number(newManager.id)).subscribe({
               next: (response: any) => {
                 console.log('✅ Manager changé avec succès', response);
+                this.snackBarService.showSuccess('Manager de l\'équipe modifié avec succès');
                 window.location.reload();
                 this.updateTeamManager();
               },
               error: (err: any) => {
                 console.error('Erreur lors du changement de manager:', err);
-                alert('Erreur lors du changement de manager de l\'équipe');
+                this.snackBarService.showError('Erreur lors du changement de manager de l\'équipe');
               }
             });
           }

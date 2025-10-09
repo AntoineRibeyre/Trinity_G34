@@ -350,7 +350,7 @@ def test_admin_complete_scenario(snapshot, client, database_for_test):
     assert update_result['data']['updateEvent']['success'] is True
     assert "MODIFIÉE" in update_result['data']['updateEvent']['event']['subject']
     assert len(update_result['data']['updateEvent']['event']['attendees']) == 4
-    print(f"✓ Event mis à jour")
+    print("✓ Event mis à jour")
     print(f"  - Nouveau sujet: {update_result['data']['updateEvent']['event']['subject']}")
     print(f"  - Nombre de participants: {len(update_result['data']['updateEvent']['event']['attendees'])}")
     
@@ -406,7 +406,7 @@ def test_admin_complete_scenario(snapshot, client, database_for_test):
     assert team_alpha is not None, "Team Alpha not found in admin view"
     
     team_members_count = len(team_alpha['members'])
-    print(f"✓ Vue admin finale:")
+    print("✓ Vue admin finale:")
     print(f"  - Équipes visibles: {len(teams)}")
     print(f"  - Membres Team Alpha: {team_members_count}")
     
@@ -431,26 +431,26 @@ def test_admin_complete_scenario(snapshot, client, database_for_test):
     print(f"✓ {Team.objects.count()} Team(s)")
     
     assert Event.objects.count() == 2
-    print(f"✓ 2 Events créés")
+    print("✓ 2 Events créés")
     
     # Verify Team 1 has the new member
     team_refreshed = Team.objects.get(id=team_id)
     assert team_refreshed.members.filter(id=employee3.id).exists()
-    print(f"✓ Emma ajoutée à Team Alpha")
+    print("✓ Emma ajoutée à Team Alpha")
     
     # Verify first event has 4 attendees
     event_refreshed = Event.objects.get(id=event_id)
     assert event_refreshed.attendees.count() == 4
-    print(f"✓ Premier event a 4 participants")
+    print("✓ Premier event a 4 participants")
     
     print("\n" + "="*70)
     print("✅ TOUS LES TESTS SONT PASSÉS AVEC SUCCÈS!")
     print("="*70)
-    print(f"📊 Résumé:")
+    print("📊 Résumé:")
     print(f"   - Admin utilisé: {admin.first_name} {admin.last_name} (ID: {admin_id})")
     print(f"   - Manager: {manager.first_name} {manager.last_name} (ID: {manager_id})")
     print(f"   - Team: {team.name} (ID: {team_id})")
     print(f"   - Membres finaux: {team_refreshed.members.count()}")
-    print(f"   - Events créés: 2")
+    print("   - Events créés: 2")
     print(f"   - Total utilisateurs: {User.objects.count()}")
     print("="*70)

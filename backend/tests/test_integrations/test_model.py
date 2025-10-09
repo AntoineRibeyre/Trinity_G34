@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from datetime import datetime, timedelta
 from trinity.models import Team, User, Calendar, Event

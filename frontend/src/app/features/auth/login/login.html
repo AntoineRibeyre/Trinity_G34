@@ -27,10 +27,6 @@
         required>
     </div>
 
-  <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-    {{ errorMessage }}
-  </div>
-
     <!-- Boutons -->
     <button type="submit" class="btn-login">{{'LOGIN.LOGIN' |translate }}</button>
     <button type="button" class="signup-link" (click)="router.navigate(['/register'])">{{'LOGIN.REGISTER' | translate}}</button>
