@@ -27,7 +27,8 @@ COPY . .
 # Installer Apollo Client et types Node
 RUN npm install @apollo/client graphql
 RUN npm install @types/node
-RUN npm install -g @ngx-translate/core @ngx-translate/http-loader
+RUN npm install -g @ngx-translate/core
+RUN npm install -g @ngx-translate/http-loader
 
 # Exposer le port pour ng serve
 EXPOSE 4200
