@@ -1,7 +1,7 @@
 from django.contrib import admin
-from trinity.models import User, Team
-
+from django.apps import apps
 
 # Register your models here.
-admin.site.register(User)
-admin.site.register(Team)
+app = apps.get_app_config('trinity')
+for model in app.get_models():
+    admin.site.register(model)

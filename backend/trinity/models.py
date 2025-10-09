@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Team(models.Model):
-    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
 
@@ -24,12 +23,11 @@ class User(AbstractUser):
 
 
 class Calendrier(models.Model):
-    id = models.IntegerField(primary_key=True)
     date = models.DateField()
     heure_debut = models.TimeField()
     heure_fin = models.TimeField()
     type_journee = models.TextField(max_length=100)
-    employee = models.ForeignKey(User, on_delete=models.CASCADE)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="calendrier")
 
     """This class defines the data structure of a calendar"""
 
