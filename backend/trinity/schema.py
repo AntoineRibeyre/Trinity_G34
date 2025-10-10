@@ -1,4 +1,5 @@
 import graphene
+import graphql_jwt
 from graphene_django.types import DjangoObjectType
 from .models import User, Team, Calendrier
 
@@ -6,6 +7,7 @@ from .models import User, Team, Calendrier
 class UserType(DjangoObjectType):
     class Meta:
         model = User
+        exclude= ("password",)
 
 
 class TeamType(DjangoObjectType):
@@ -40,10 +42,11 @@ class CreateUser(graphene.Mutation):
         email = graphene.String(required=True)
         telephone = graphene.String(required=True)
         team_id = graphene.ID(required=False)
+        password = graphene.String(required=True)
 
     user = graphene.Field(UserType)
 
-    def mutate(self, info, username, last_name, email, telephone, team_id=None):
+    def mutate(self, info, username, last_name, email, telephone,password, team_id=None):
         # Si l'utilisateur appartient à une équipe
         team = None
         if team_id:
@@ -53,16 +56,25 @@ class CreateUser(graphene.Mutation):
                 raise Exception("Équipe introuvable.")
 
         # Création de l'utilisateur
-        user = User.objects.create(
+        user = User.objects.create_user(
             username=username,
             last_name=last_name,
             email=email,
             telephone=telephone,
-            team=team
+            team=team,
+            password=password
                     )
 
         return CreateUser(user=user)
 
 
 class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
+    verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
+    refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
+
+
     create_user = CreateUser.Field()
+
+# Schema final
+schema = graphene.Schema(query=Query, mutation=Mutation)
