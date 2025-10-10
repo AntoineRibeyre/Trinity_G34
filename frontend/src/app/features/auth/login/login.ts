@@ -1,23 +1,34 @@
 import { Component } from '@angular/core';
-import {TranslateModule, TranslatePipe} from '@ngx-translate/core';
-import {Router} from '@angular/router';
-import {ReactiveFormsModule} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [TranslateModule, TranslatePipe, ReactiveFormsModule],
-  templateUrl: './login.html',
-  styleUrl: './login.css'
+  standalone: true, // obligatoire pour standalone
+  imports: [CommonModule, FormsModule],
+  templateUrl:'./login.html',
+  styleUrls: ['./login.css']
 })
 export class Login {
+  email = '';
+  password = '';
+  error = '';
 
-  isAuthenticated = true;
+  // isAuthenticated = true;
 
-  constructor(private router: Router) {
-  }
+
+  constructor(private auth: AuthService, public router: Router) {}
 
   navigateToRegister(): void {
-     this.router.navigate(['/register']);
+    this.router.navigate(['/register']);
   }
 
+  onLogin() {
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: () => this.error = 'Email ou mot de passe incorrect'
+    });
+  }
 }
