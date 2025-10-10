@@ -2,6 +2,33 @@
   "login": {
     "connexion": "Connexion",
     "mdp": "Password",
+    "seconnecter": "Login",
+    "sinscrire": "Register",
+    "motdepasseoublié": "Forgotten password"
+  },
+
+  "register": {
+
+  },
+
+  "home": {
+
+  },
+
+  "app": {
+
+  },
+
+  "dashboard": {
+
+  },
+
+  "settings": {
+
+  },
+
+  "team": {
 
   }
+
 }
