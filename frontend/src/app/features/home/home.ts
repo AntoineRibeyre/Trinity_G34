@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-home',
   imports: [
-    NgIf, TranslateModule
+    TranslateModule
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'
