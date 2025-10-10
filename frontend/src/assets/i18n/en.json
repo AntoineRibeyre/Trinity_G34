@@ -2,6 +2,51 @@
   "login": {
     "connexion": "Connexion",
     "mdp": "Password",
+    "email": "Email",
+    "seconnecter": "Login",
+    "sinscrire": "Register",
+    "motdepasseoublié": "Forgotten password"
+  },
+
+  "register": {
+    "inscription": "Register",
+    "nom": "First Name",
+    "prénom": "Name",
+    "email": "Email",
+    "numérodecarte": "Card Number",
+    "mdp": "Password",
+    "motdepasseoublié": "Forgotten password",
+    "sinscrire": "Register"
+  },
+
+  "home": {
+    "sinscrire": "Register",
+    "seconnecter": "Login",
+    "fonctionalitésprincipales": "Key Features",
+    "pointagesimplifié": "Simplified clock in",
+    "enregistrezvosheuresdarrivéeetdedépartenunclic": "Record your arrival and departure times with one click",
+    "gestiondéquipes": "Team management",
+    "organisezvoscollaborateursetsuivezleuractivité": "Organize your employees and monitor their activity",
+    "rapportKPI": "KPI report",
+    "analysezlesindicateursdeperformancesdevotreentreprise": "Analyze your company's performance indicators",
+    "tableaudebord": "Dashboard",
+    "visualisezvosheuresdetravailetvosstatistiques": "View your working hours and statistics"
+  },
+
+  "app": {
+
+  },
+
+  "dashboard": {
+
+  },
+
+  "settings": {
+
+  },
+
+  "team": {
 
   }
+
 }
