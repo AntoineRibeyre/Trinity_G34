@@ -1,23 +1,54 @@
-<div class="nav-bar">
+<nav class="nav-bar" role="navigation" aria-label="Navigation principale">
 
-<!--  Logo-->
-  <div>
+  <!-- Section supérieure -->
+  <div class="top-element">
+    @for (item of topItems; track item.label) {
+      @if (item.icon) {
+        <button
+          class="icon-button"
+          [class.active]="isActive(item.route)"
+          (click)="handleItemClick(item)"
+          [attr.aria-label]="item.label"
+          [title]="item.label"
+          type="button">
+          <img
+            [ngSrc]="item.icon"
+            [alt]="item.label"
+            width="50"
+            height="50"
+            priority>
+        </button>
+      } @else {
+        <!-- Espace pour le logo -->
+        <div class="icon-button logo-placeholder" [attr.aria-label]="item.label">
+          <!-- Ajoute ton logo ici -->
+        </div>
+      }
 
+      <!-- Ligne de séparation après le calendrier -->
+      @if (item.label === 'Calendrier') {
+        <div class="separation-line" role="separator"></div>
+      }
+    }
   </div>
 
-<!--  Home-->
-  <div class="icon-button">
-    <img ngSrc="assets/icons/nav-home.svg" alt="Home" class="icons" sizes="50" fill>
+  <!-- Section inférieure -->
+  <div class="bottom-element">
+    @for (item of bottomItems; track item.label) {
+      <button
+        class="icon-button"
+        [class.active]="isActive(item.route)"
+        (click)="handleItemClick(item)"
+        [attr.aria-label]="item.label"
+        [title]="item.label"
+        type="button">
+        <img
+          [ngSrc]="item.icon"
+          [alt]="item.label"
+          width="50"
+          height="50">
+      </button>
+    }
   </div>
 
-  <!--  Calendrier-->
-  <div class="icon-button">
-    <img ngSrc="assets/icons/nav-calendar.svg" alt="Calendrier" class="icons" sizes="50" fill>
-  </div>
-
-  <!--  Team-->
-  <div class="icon-button">
-    <img ngSrc="assets/icons/nav-team.svg" alt="Teams" class="icons" sizes="50" fill>
-  </div>
-
-</div>
+</nav>
