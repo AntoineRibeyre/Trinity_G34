@@ -38,6 +38,7 @@ class Query(graphene.ObjectType):
 class CreateUser(graphene.Mutation):
     class Arguments:
         username = graphene.String(required=True)
+        first_name = graphene.String(required=True)
         last_name = graphene.String(required=True)
         email = graphene.String(required=True)
         telephone = graphene.String(required=True)
@@ -46,7 +47,7 @@ class CreateUser(graphene.Mutation):
 
     user = graphene.Field(UserType)
 
-    def mutate(self, info, username, last_name, email, telephone,password, team_id=None):
+    def mutate(self, info, username, first_name, last_name, email, telephone,password, team_id=None):
         # Si l'utilisateur appartient à une équipe
         team = None
         if team_id:
@@ -58,6 +59,7 @@ class CreateUser(graphene.Mutation):
         # Création de l'utilisateur
         user = User.objects.create_user(
             username=username,
+            first_name=first_name,
             last_name=last_name,
             email=email,
             telephone=telephone,

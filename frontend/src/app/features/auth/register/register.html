@@ -1,4 +1,4 @@
-<div class="">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
   <h1 class="">Inscription</h1>
   <div class="" >
     <label for="first name">First Name</label> <!-- Nom-->
@@ -13,6 +13,11 @@
   <div class="" > <!-- Email-->
     <label for="email">Email</label>
     <input type="email" id="email" class="" placeholder="votre@email.com" required>
+  </div>
+
+  <div class="" > <!-- Email-->
+    <label for="telephone">Téléphone</label>
+    <input type="telephone" id="telephone" class="" placeholder="0000000000" required>
   </div>
 
 <!--  <div class="" > &lt;!&ndash; Numéro de carte&ndash;&gt;-->
@@ -33,4 +38,6 @@
 
   <button class="btn btn-secondary">S'inscrire</button>
 
-</div>
+<p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+</form>
