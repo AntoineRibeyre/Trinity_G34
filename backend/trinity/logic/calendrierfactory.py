@@ -1,0 +1,44 @@
+from ..models import Calendrier, User
+import datetime
+
+
+class CalendrierFactory:
+
+    @classmethod
+    def create_calendrier(cls, user_id: int) -> Calendrier:
+        try:
+            user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            raise Exception("User introuvable !")
+        return Calendrier.objects.create(
+            debut=datetime.datetime.now(datetime.timezone.utc),
+            fin=None,
+            type_journee=None,
+            employee=user,
+            journee_finie=False,
+            duree=None)
+
+    @classmethod
+    def close_calendrier(cls, user_id: int) -> Calendrier:
+        try:
+            user = User.objects.get(pk=user_id)
+            calendrier = Calendrier.objects.filter(employee=user).last()
+        except (User.DoesNotExist, Calendrier.DoesNotExist) as e:
+            raise Exception(str(e))
+        cloture = datetime.datetime.now(datetime.timezone.utc)
+        duree = cloture - calendrier.debut
+        if calendrier.journee_finie is True:
+            raise Exception("Journée finie")
+        calendrier.journee_finie = True
+        calendrier.fin = cloture
+        calendrier.duree = duree
+        calendrier.save_base()
+        return calendrier
+
+    @classmethod
+    def enregistrer_arriver(cls, user_id: int) -> datetime.datetime:
+        return CalendrierFactory.create_calendrier(user_id).debut
+
+    @classmethod
+    def enregister_sortie(cls, user_id: int) -> datetime.datetime:
+        return CalendrierFactory.close_calendrier(user_id).fin
