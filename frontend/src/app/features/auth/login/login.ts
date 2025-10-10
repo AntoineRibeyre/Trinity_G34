@@ -13,11 +13,11 @@ export class Login {
 
   isAuthenticated = true;
 
-  constructor(private router: Router) {}
-
-  navigateToDashboard(): void {
-
-    if (this.isAuthenticated) {}
-    this.router.navigate (['/dashboard']);
+  constructor(private router: Router) {
   }
+
+  navigateToRegister(): void {
+     this.router.navigate(['/register']);
+  }
+
 }
