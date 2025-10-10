@@ -19,10 +19,7 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
@@ -88,5 +85,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "12c9a131-003a-4f33-b25e-625b04580de3"
   }
 }

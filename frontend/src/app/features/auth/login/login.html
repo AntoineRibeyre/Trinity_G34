@@ -1,20 +1,49 @@
 <div class="login-container">
-  <h1 class="login-title">{{"login.connexion" |translate}}</h1>
+  <div class="login-form">
+    <h1 class="login-title">Bienvenu sur [insérer_nom]</h1>
 
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" id="email" class="form-control" placeholder="votre@email.com">
+    <form class="form-group">
+      <div>
+        <label class="form-label" for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-input"
+          formControlName="email"
+          placeholder=""
+        />
+      </div>
+
+      <div>
+        <label class="form-label" for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          class="form-input"
+          formControlName="password"
+          placeholder=""
+        />
+      </div>
+
+      <div class="forgot-password">
+        <a href="#">Mot de passe oublié ?</a>
+      </div>
+
+      <button type="submit" class="btn-login">Se connecter</button>
+    </form>
+
+    <button type="button" class="signup-link" (click)="navigateToRegister()">
+      Pas encore inscrit ? <strong>Cliquez ici</strong>
+    </button>
   </div>
 
-  <div class="form-group">
-    <label for="password">Mot de passe</label>
-    <input type="password" id="password" class="form-control" placeholder="••••••••">
-  </div>
-
-  <button class="btn btn-primary">Se connecter</button>
-  <button class="btn btn-secondary">S'inscrire</button>
-
-  <div class="forgot-password">
-    <a href="#">Mot de passe oublié ?</a>
+  <div class="login-right">
+    <div class="logo-container">
+      <img
+        src="assets/images/logo-large.svg"
+        alt="Logo"
+        class="logo-large"
+      />
+    </div>
   </div>
 </div>

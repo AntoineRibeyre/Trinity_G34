@@ -1,36 +1,75 @@
-<div class="">
-  <h1 class="">Inscription</h1>
-  <div class="" >
-    <label for="first name">First Name</label> <!-- Nom-->
-    <input type="text" id="first name" class="" placeholder="First Name" required>
+<div class="register-container">
+  <div class="register-form">
+    <h1 class="register-title">Inscription</h1>
+
+    <form class="form-group">
+      <div>
+        <label class="form-label" for="firstName">Prénom</label>
+        <input
+          type="text"
+          id="firstName"
+          class="form-input"
+          placeholder="Prénom"
+          formControlName="firstName"
+          required>
+      </div>
+
+      <div>
+        <label class="form-label" for="name">Nom</label>
+        <input
+          type="text"
+          id="name"
+          class="form-input"
+          placeholder="Nom"
+          formControlName="name"
+          required>
+      </div>
+
+      <div>
+        <label class="form-label" for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-input"
+          placeholder="votre@email.com"
+          formControlName="email"
+          required>
+      </div>
+
+<!--      <div>-->
+<!--        <label class="form-label" for="carte">Numéro de carte</label>-->
+<!--        <input-->
+<!--          type="text"-->
+<!--          id="carte"-->
+<!--          class="form-input"-->
+<!--          placeholder="Ex: 12345"-->
+<!--          formControlName="carte"-->
+<!--          pattern="[A-Za-z0-9-]+"-->
+<!--          required>-->
+<!--      </div>-->
+
+      <div>
+        <label class="form-label" for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          class="form-input"
+          placeholder="Mot de passe"
+          formControlName="password"
+          required>
+      </div>
+
+      <button type="submit" class="signup-link">S'inscrire</button>
+    </form>
   </div>
 
-  <div class="" > <!-- Prenom-->
-    <label for="name">Name</label>
-    <input type="text" id="name" class="" placeholder="Name" required>
+  <div class="login-right">
+    <div class="logo-container">
+      <img
+        src="assets/images/logo-large.svg"
+        alt="Logo"
+        class="logo-large"
+      />
+    </div>
   </div>
-
-  <div class="" > <!-- Email-->
-    <label for="email">Email</label>
-    <input type="email" id="email" class="" placeholder="votre@email.com" required>
-  </div>
-
-<!--  <div class="" > &lt;!&ndash; Numéro de carte&ndash;&gt;-->
-<!--    <label for="carte">Carte</label>-->
-<!--    <input type="text"-->
-<!--           id="carte"-->
-<!--           class="form-control"-->
-<!--           placeholder="Ex: 12345"-->
-<!--           formControlName="carte"-->
-<!--           pattern="[A-Za-z0-9-]+"-->
-<!--           required>-->
-<!--  </div>-->
-
-  <div class="" > <!-- Mdp-->
-    <label for="password">Password</label>
-    <input type="password" id="password" class="" placeholder="Password" required>
-  </div>
-
-  <button class="btn btn-secondary">S'inscrire</button>
-
 </div>
