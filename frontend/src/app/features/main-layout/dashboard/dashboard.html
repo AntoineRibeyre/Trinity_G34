@@ -1,18 +1,60 @@
-<!-- Plus besoin d'inclure app-sidebar ici ! -->
-<div class="dashboard-container">
-  <div class="content-header">
-    <h2>Tableau de bord</h2>
-    <p class="date"></p>
+<div class="general-space">
+
+  <div class="left-column">
+
+    <div class="cards profil">
+
+    </div>
+
+    <div class="cards date">
+      <div class="days">
+        {{day}}
+      </div>
+      <div class="week">
+        <div>
+          {{dayOfWeek}}
+        </div>
+        <div>
+          {{month}}
+        </div>
+      </div>
+      <div class="times">
+        <div>
+          {{hour}}:
+        </div>
+        <div>
+          {{minute}}{{second}}
+        </div>
+      </div>
+    </div>
+
+    <div class="cards manager">
+      <div class="manager-title">
+        Suivi des heures travaillées
+      </div>
+
+      <div class="time">
+        Time
+      </div>
+
+      <div class="point-buttons">
+        <div class="pointer">
+          Start
+        </div>
+        <div class="pointer">
+          End
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="welcome-section">
-    <h1>Bienvenue, ! 👋</h1>
-    <p>Voici un aperçu de votre activité</p>
+  <div class="cards right-column">
+
   </div>
 
-  <div class="stats-grid">
-    <!-- Ton contenu stats ici -->
+  <div class="cards right-column">
+
   </div>
 
-  <!-- Reste du contenu -->
 </div>

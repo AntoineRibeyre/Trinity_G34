@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Infer:wght@300;400;500;700&display=swap');
+
+.general-space {
+  width: calc(100% - 50px);;
+  height: calc(100vh - 50px); /* Soustraire 2x le padding */
+  padding: 25px;
+
+  background-color: #F7F8FA;
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.left-column {
+  width: 40%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 25px;
+}
+
+.right-column {
+  width: 30%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards {
+  background: #FFFFFF;
+  border-radius: 40px;
+
+  box-shadow: 1px 0 30px rgba(0, 0, 0, 0.15);
+  padding: 5px;
+}
+
+.profil {
+  width: 100%;
+  height: 35%;
+}
+
+.date {
+  width: 100%;
+  height: 25%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .days {
+
+  }
+  .week {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
+.manager {
+  width: 100%;
+  height: 40%;
+
+  background: #F7F8FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+
+  .manager-title{
+    width: 100%;
+    height: 20%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .time {
+    width: 100%;
+    height: 40%;
+    background: #FFFFFF;
+    border-radius: 40px;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .point-buttons {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: row;
+
+    gap: 10px;
+
+    .pointer {
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+
+      border-radius: 40px;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.15);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
