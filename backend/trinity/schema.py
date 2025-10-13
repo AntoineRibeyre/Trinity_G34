@@ -1,29 +1,32 @@
 import graphene
 import graphql_jwt
 from graphene_django.types import DjangoObjectType
-from .models import User, Team, Calendrier
+
+from .models import User, Team, Calendar
 from .logic.userfactory import UserFactory
 from .logic.teamfactory import TeamFactory
-from .logic.calendrierfactory import CalendrierFactory, CalendrierQueryOutput
+from .logic.calendarfactory import CalendarFactory
 
 
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        exclude= ("password",)
+        exclude = ('password',)
 
 
 class TeamType(DjangoObjectType):
     class Meta:
         model = Team
+        fields = '__all__'
 
 
-class CalendrierType(DjangoObjectType):
+class CalendarType(DjangoObjectType):
     class Meta:
-        model = Calendrier
+        model = Calendar
+        fields = '__all__'
 
 
-class PointageResponseType(graphene.ObjectType):
+class RegisterResponseType(graphene.ObjectType):
     datetime_field = graphene.JSONString()
     duration_field = graphene.JSONString()
 
@@ -31,9 +34,15 @@ class PointageResponseType(graphene.ObjectType):
 class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     all_teams = graphene.List(TeamType)
-    all_Calendriers = graphene.List(CalendrierType)
-    pointage_arrivee = graphene.List(PointageResponseType, user_id=graphene.Int(required=True))
-    pointage_fin = graphene.List(PointageResponseType, user_id=graphene.Int(required=True))
+    all_calendars = graphene.List(CalendarType)
+    register_arrival = graphene.List(RegisterResponseType,
+                                     user_id=graphene.Int(required=True))
+    register_end = graphene.List(RegisterResponseType,
+                                 user_id=graphene.Int(required=True))
+    pending_day = graphene.Field(
+        CalendarType,
+        user_id=graphene.Int(required=True)
+    )
 
     def resolve_all_users(self, info, *kwargs):
         return User.objects.all()
@@ -42,21 +51,30 @@ class Query(graphene.ObjectType):
         return Team.objects.all()
 
     def resolve_all_Calendriers(self, info, *kwargs):
-        return Calendrier.objects.all()
+        return Calendar.objects.all()
 
-    def resolve_pointage_arrivee(self, info, user_id):
-        result = CalendrierFactory.enregistrer_arriver(user_id)
-        return [PointageResponseType(
+    def resolve_register_arrival(self, info, user_id):
+        result = CalendarFactory.create_calendar(user_id)
+        return [RegisterResponseType(
             datetime_field=result.date_time_data,
             duration_field=None
 
          )]
 
-    def resolve_pointage_fin(self, info, user_id):
-        result = CalendrierFactory.enregister_sortie(user_id)
-        return [PointageResponseType(
+    def resolve_register_end(self, info, user_id):
+        result = CalendarFactory.register_out(user_id)
+        return [RegisterResponseType(
             datetime_field=result.date_time_data,
             duration_field=result.duree_data)]
+
+    def resolve_pending_day(self, info, user_id):
+        try:
+            return Calendar.objects.get(
+                employee_id=user_id,
+                journee_finie=False
+            )
+        except Calendar.DoesNotExist:
+            return None
 
 
 class CreateUser(graphene.Mutation):

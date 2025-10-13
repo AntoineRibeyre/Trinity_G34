@@ -1,0 +1,19 @@
+{
+  "data": {
+    "registerArrival": null
+  },
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 7,
+          "line": 3
+        }
+      ],
+      "message": "Employee not found!",
+      "path": [
+        "registerArrival"
+      ]
+    }
+  ]
+}

@@ -6,11 +6,24 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 
+import {jwtDecode} from 'jwt-decode';
+import {BehaviorSubject, Observable} from 'rxjs';
+
+interface JWTPayload {
+  username: string;
+  email: string;
+  user_id: number;
+  exp: number;
+  origIat: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private currentUserSubject: BehaviorSubject<JWTPayload | null>;
+  public currentUser$: Observable<JWTPayload | null>;
 
   private LOGIN_MUTATION = gql`
     mutation tokenAuth($email: String!, $password: String!) {
@@ -21,7 +34,13 @@ export class AuthService {
     }
   `;
 
-  constructor(private apollo: Apollo, private router: Router) {}
+  constructor(private apollo: Apollo, private router: Router) {
+    const token = this.getToken();
+    const user = token ? this.decodeToken(token) : null;
+
+    this.currentUserSubject = new BehaviorSubject<JWTPayload | null>(user);
+    this.currentUser$ = this.currentUserSubject.asObservable();
+}
 
   login(email: string, password: string) {
     return this.apollo.mutate({
@@ -68,5 +87,28 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('authToken');
+  }
+
+  private decodeToken(token: string): JWTPayload {
+    return jwtDecode<JWTPayload>(token);
+  }
+
+  getUserId(): number | null {
+    const user = this.currentUserSubject.value;
+    return user ? user.user_id : null;
+  }
+
+  getCurrentUser(): JWTPayload | null {
+    return this.currentUserSubject.value;
+  }
+
+  getUserEmail(): string | null {
+    const user = this.currentUserSubject.value;
+    return user ? user.email : null;
+  }
+
+  getUsername(): string | null {
+    const user = this.currentUserSubject.value;
+    return user ? user.username : null;
   }
 }
