@@ -226,11 +226,11 @@ jobs:
           POSTGRES_USER=postgres
           POSTGRES_PASSWORD=test_password
           POSTGRES_DB=mydatabase
-          DJANGO_DB_NAME=mydatabase
-          DJANGO_DB_USER=postgres
-          DJANGO_DB_PASSWORD=test_password
-          DJANGO_DB_HOST=db
-          DJANGO_DB_PORT=5432
+#          DJANGO_DB_NAME=mydatabase
+#          DJANGO_DB_USER=postgres
+#          DJANGO_DB_PASSWORD=test_password
+#          DJANGO_DB_HOST=db
+#          DJANGO_DB_PORT=5432
           SECRET_KEY=ci-test-secret-key-not-for-production
           DEBUG=True
           DJANGO_SETTINGS_MODULE=backend.settings
