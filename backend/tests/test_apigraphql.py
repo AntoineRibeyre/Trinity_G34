@@ -1,10 +1,20 @@
 import pytest
-from  graphene.test import Client
-from ..trinity.logic.calendrierfactory import CalendrierQueryOutput
+from graphene.test import Client
 import trinity.schema as my_schema
 
-def test_pointage():
-    client = Client(my_schema)
-    exec = client.execute('''{ pointageArrivee }''')
+@pytest.mark.snapshot
+def test_pointage_arrivee(snapshot):
+    client = Client(my_schema.schema)
+    query = """
+    query {
+      pointageArrivee(userId: 1) {
+        datetimeField
+        durationField
+      }
+    }
+    """
 
+    executed = client.execute(query)
 
+    # On compare le résultat au snapshot enregistré
+    snapshot.assert_match(executed)

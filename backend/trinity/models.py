@@ -23,14 +23,14 @@ class User(AbstractUser):
     """This class defines a datastructure of an  employee"""
 
 
-class Calendrier(models.Model):
-    debut = models.DateTimeField(null=False)
-    fin = models.DateTimeField(null=True)
-    type_journee = models.TextField(max_length=100, null=True)
+class Calendar(models.Model):
+    begin = models.DateTimeField(null=False)
+    end = models.DateTimeField(null=True)
+    day_type = models.TextField(max_length=100, null=True)
     employee = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="calendrier", null=False)
-    journee_finie = models.BooleanField(null=False)
-    duree = models.DurationField(null=True)
+        User, on_delete=models.CASCADE, related_name="Calendar", null=False)
+    day_over = models.BooleanField(null=False)
+    duration = models.DurationField(null=True)
 
     def save(self, **kwargs):
         return super().save(**kwargs)
