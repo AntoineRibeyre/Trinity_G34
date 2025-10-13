@@ -5,7 +5,7 @@ from .models import User, Team, Calendrier
 from .logic.userfactory import UserFactory
 from .logic.teamfactory import TeamFactory
 from .logic.calendrierfactory import CalendrierFactory, CalendrierQueryOutput
-
+from .mutations.mutation_login import LoginMutation, LogoutMutation
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -92,14 +92,15 @@ class CreateTeam(graphene.Mutation):
 
 
 class Mutation(graphene.ObjectType):
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
-    verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
-    refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
+    # token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
+    # verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
+    # refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
 
 
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
 
-
+    login = LoginMutation.Field()
+    logout = LogoutMutation.Field()
 # Schema final
 schema = graphene.Schema(query=Query, mutation=Mutation)

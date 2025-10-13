@@ -19,12 +19,15 @@ from graphene_django.views import GraphQLView
 from django.urls import path, include
 from . import schema
 from django.conf import settings
+from trinity.views.login import LoginGraphQLView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('trinity', include('trinity.urls', namespace='trinity')),
-    path('graphql/', GraphQLView.as_view(graphiql=True)),
-    # path('graphql/', GraphQLView.as_view(schema=schema, graphiql=settings.DEBUG)),  # GraphiQL actif uniquement si DEBUG=True
+    # endpoint GraphQL normal (avec CSRF)
+    path("graphql/", GraphQLView.as_view(graphiql=True)),
+
+    # endpoint GraphQL pour login (CSRF désactivé)
+    path("graphql-login/", LoginGraphQLView.as_view(graphiql=True)),
 
 ]
