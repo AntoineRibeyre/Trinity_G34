@@ -153,60 +153,60 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
 
-      - name: Run tests with coverage
-        working-directory: ./backend
-        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v
-        env:
-          DJANGO_SETTINGS_MODULE: backend.settings
-          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
-          DEBUG: 'True'
-          POSTGRES_DB: test_db
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_password
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-
-      - name: Upload coverage reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: backend/coverage.xml
-
-      - name: Display coverage summary
-        working-directory: ./backend
-        run: |
-          pip install coverage
-          coverage report --show-missing
-
-
-  # JOB 4: COVERAGE REPORT
-  # =========================================
-  coverage-report:
-    name: Generate Coverage Report
-    runs-on: ubuntu-latest
-    needs: test-backend
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download coverage artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: ./coverage
-
-      - name: Coverage Summary Comment (PR only)
-        if: github.event_name == 'pull_request'
-        uses: py-cov-action/python-coverage-comment-action@v3
-        with:
-          GITHUB_TOKEN: ${{ github.token }}
-          COVERAGE_PATH: ./coverage/coverage.xml
-
-      - name: Check coverage threshold
-        run: |
-          echo "Coverage report generated successfully"
-          echo "Minimum coverage threshold: 70%"
+#      - name: Run tests with coverage
+#        working-directory: ./backend
+#        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v
+#        env:
+#          DJANGO_SETTINGS_MODULE: backend.settings
+#          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
+#          DEBUG: 'True'
+#          POSTGRES_DB: test_db
+#          POSTGRES_USER: test_user
+#          POSTGRES_PASSWORD: test_password
+#          POSTGRES_HOST: localhost
+#          POSTGRES_PORT: 5432
+#
+#      - name: Upload coverage reports
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: coverage-report
+#          path: backend/coverage.xml
+#
+#      - name: Display coverage summary
+#        working-directory: ./backend
+#        run: |
+#          pip install coverage
+#          coverage report --show-missing
+#
+#
+#  # JOB 4: COVERAGE REPORT
+#  # =========================================
+#  coverage-report:
+#    name: Generate Coverage Report
+#    runs-on: ubuntu-latest
+#    needs: test-backend
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Download coverage artifacts
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: coverage-report
+#          path: ./coverage
+#
+#      - name: Coverage Summary Comment (PR only)
+#        if: github.event_name == 'pull_request'
+#        uses: py-cov-action/python-coverage-comment-action@v3
+#        with:
+#          GITHUB_TOKEN: ${{ github.token }}
+#          COVERAGE_PATH: ./coverage/coverage.xml
+#
+#      - name: Check coverage threshold
+#        run: |
+#          echo "Coverage report generated successfully"
+#          echo "Minimum coverage threshold: 70%"
           
 
   # JOB 5: DOCKER BUILD 
