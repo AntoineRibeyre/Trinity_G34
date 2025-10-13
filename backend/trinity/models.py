@@ -4,8 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=False)
+    description = models.CharField(max_length=100, null=True)
 
     """This class defines the data structure of a team"""
 
@@ -16,7 +16,8 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     telephone = models.CharField(max_length=100, blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
-    team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL, related_name="membres")
+    team = models.ForeignKey(Team, null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name="membres")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['']
@@ -27,13 +28,15 @@ class User(AbstractUser):
 
 
 class Calendrier(models.Model):
-    date = models.DateField()
-    heure_debut = models.TimeField()
-    heure_fin = models.TimeField()
-    type_journee = models.TextField(max_length=100)
-    employee = models.ForeignKey(User, on_delete=models.CASCADE, related_name="calendrier")
+    debut = models.DateTimeField(null=False)
+    fin = models.DateTimeField(null=True)
+    type_journee = models.TextField(max_length=100, null=True)
+    employee = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="calendrier", null=False)
+    journee_finie = models.BooleanField(null=False)
+    duree = models.DurationField(null=True)
+
+    def save(self, **kwargs):
+        return super().save(**kwargs)
 
     """This class defines the data structure of a calendar"""
-
-
-

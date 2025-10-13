@@ -7,23 +7,31 @@
     </div>
 
     <div class="cards date">
-      <div class="days">
-        {{day}}
-      </div>
-      <div class="week">
-        <div>
-          {{dayOfWeek}}
+      <div class="date-element">
+        <div class="days">
+          {{day}}
         </div>
-        <div>
-          {{month}}
+        <div class="week">
+          <div>
+            {{dayOfWeek}}
+          </div>
+          <div>
+            {{month}}
+          </div>
         </div>
       </div>
-      <div class="times">
+
+      <div class="time">
         <div>
           {{hour}}:
         </div>
-        <div>
-          {{minute}}{{second}}
+        <div class="min">
+          <div>
+            {{minute}}
+          </div>
+          <div class="sec">
+            {{second}}
+          </div>
         </div>
       </div>
     </div>

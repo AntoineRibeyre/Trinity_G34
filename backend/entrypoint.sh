@@ -10,4 +10,5 @@ echo "DB ready!"
 python manage.py migrate
 
 # Lancer le serveur Django
+
 python manage.py runserver 0.0.0.0:8000
