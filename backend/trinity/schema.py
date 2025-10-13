@@ -44,10 +44,11 @@ class CreateUser(graphene.Mutation):
         telephone = graphene.String(required=True)
         team_id = graphene.ID(required=False)
         password = graphene.String(required=True)
+        role = graphene.String(required=True)
 
     user = graphene.Field(UserType)
 
-    def mutate(self, info, username, first_name, last_name, email, telephone,password, team_id=None):
+    def mutate(self, info, username, first_name, last_name, email, telephone,password, role, team_id=None):
         # Si l'utilisateur appartient à une équipe
         team = None
         if team_id:
@@ -64,7 +65,8 @@ class CreateUser(graphene.Mutation):
             email=email,
             telephone=telephone,
             team=team,
-            password=password
+            password=password,
+            role=role
                     )
 
         return CreateUser(user=user)

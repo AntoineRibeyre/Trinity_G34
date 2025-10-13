@@ -35,10 +35,10 @@ export class AuthService {
     );
   }
 
-  register(userName: String, firstName: string, lastName: string, email: string, telephone: string, password: string) {
+  register(username: string, firstName: string, lastName: string, email: string, telephone: string, password: string, role: string) {
   const REGISTER_MUTATION = gql`
-    mutation createUser($userName: String!, $firstName: String!, $lastName: String!, $email: String!, $telephone: String!, $password: String!) {
-      createUser(username: $userName, firstName: $firstName, lastName: $lastName, email: $email, telephone: $telephone, password: $password) {
+    mutation createUser($username: String!, $firstName: String!, $lastName: String!, $email: String!, $telephone: String!, $password: String!, $role: String!) {
+      createUser(username: $username, firstName: $firstName, lastName: $lastName, email: $email, telephone: $telephone, password: $password, role: $role) {
         user {
           id
           email
@@ -49,7 +49,7 @@ export class AuthService {
 
   return this.apollo.mutate({
     mutation: REGISTER_MUTATION,
-    variables: { firstName, lastName, email, telephone, password }
+    variables: {username, firstName, lastName, email, telephone, password, role }
   });
 }
 
