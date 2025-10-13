@@ -34,6 +34,10 @@ class Query(graphene.ObjectType):
     all_Calendriers = graphene.List(CalendrierType)
     pointage_arrivee = graphene.List(PointageResponseType, user_id=graphene.Int(required=True))
     pointage_fin = graphene.List(PointageResponseType, user_id=graphene.Int(required=True))
+    journee_en_cours = graphene.Field(
+        CalendrierType,
+        user_id=graphene.Int(required=True)
+    )
 
     def resolve_all_users(self, info, *kwargs):
         return User.objects.all()
@@ -57,6 +61,16 @@ class Query(graphene.ObjectType):
         return [PointageResponseType(
             datetime_field=result.date_time_data,
             duration_field=result.duree_data)]
+
+    def resolve_journee_en_cours(self, info, user_id):
+        """Récupère la journée en cours (non terminée) pour un utilisateur"""
+        try:
+            return Calendrier.objects.get(
+                employee_id=user_id,
+                journee_finie=False
+            )
+        except Calendrier.DoesNotExist:
+            return None
 
 
 class CreateUser(graphene.Mutation):
