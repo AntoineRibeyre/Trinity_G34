@@ -141,19 +141,19 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-django pytest-cov
 
-#      - name: Run migrations
-#        working-directory: ./backend
-#        run: python manage.py migrate
-#        env:
-#          DJANGO_SETTINGS_MODULE: backend.settings
-#          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
-#          DEBUG: 'True'
-#          DJANGO_DB_NAME: test_db
-#          DJANGO_DB_USER: test_user
-#          DJANGO_DB_PASSWORD: test_password
-#          DJANGO_DB_HOST: localhost
-#          DJANGO_DB_PORT: 5432
-#          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+      - name: Run migrations
+        working-directory: ./backend
+        run: python manage.py migrate
+        env:
+          DJANGO_SETTINGS_MODULE: backend.settings
+          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
+          DEBUG: 'True'
+          DJANGO_DB_NAME: test_db
+          DJANGO_DB_USER: test_user
+          DJANGO_DB_PASSWORD: test_password
+          DJANGO_DB_HOST: localhost
+          DJANGO_DB_PORT: 5432
+          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
 
       - name: Run tests with coverage
         working-directory: ./backend
