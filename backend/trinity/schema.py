@@ -11,7 +11,7 @@ from .logic.calendarfactory import CalendarFactory
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        exclude = ('password',)
+        fields = '__all__'
 
 
 class TeamType(DjangoObjectType):

@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    NgIf,
     DatePipe
   ],
   templateUrl: './dashboard.html',
