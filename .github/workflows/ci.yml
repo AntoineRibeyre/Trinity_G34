@@ -3,9 +3,9 @@
 
 on:
   push:
-    branches: [ "main"]
+    branches: [ "main", "ci/cd"]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "ci/cd" ]
 
 env:
   NODE_VERSION: '20'
