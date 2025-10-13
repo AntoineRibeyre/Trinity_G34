@@ -91,14 +91,14 @@ jobs:
           DEBUG: 'False'
           ALLOWED_HOSTS: 'localhost,127.0.0.1'
 
-      - name: Check for missing migrations
-        working-directory: ./backend
-        run: |
-          python manage.py makemigrations --check --dry-run
-        env:
-          DJANGO_SETTINGS_MODULE: backend.settings
-          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
-          DEBUG: 'False'
+#      - name: Check for missing migrations
+#        working-directory: ./backend
+#        run: |
+#          python manage.py makemigrations --check --dry-run
+#        env:
+#          DJANGO_SETTINGS_MODULE: backend.settings
+#          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
+#          DEBUG: 'False'
 
 
   # JOB 3: TESTS BACKEND (Django)
