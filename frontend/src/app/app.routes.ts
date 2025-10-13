@@ -9,21 +9,23 @@ import {Team} from './features/main-layout/team/team';
 import {Admin} from './features/admin/admin';
 import {Home} from './features/home/home';
 import {MainLayout} from './features/main-layout/main-layout';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-
+  //pages publiques
   { path: '', component: Home}, //Accueil
   { path: 'login', component: Login },//login
   { path: 'register', component: Register },//register
   {
     path: '',
     component: MainLayout,
+    // Pages protégées (authentification requise)
     children: [
-      { path: 'dashboard', component: Dashboard },
-      { path: 'calendar', component: Calendar },//calendar/congés
-      { path: 'team', component: Team},//team (manager only)
-      { path: 'admin', component: Admin},//admin (admin only)
-      { path: 'settings', component: Settings }
+      { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
+      { path: 'calendar', component: Calendar, canActivate: [AuthGuard] },//calendar/congés
+      { path: 'team', component: Team, canActivate: [AuthGuard]},//team (manager only)
+      { path: 'admin', component: Admin, canActivate: [AuthGuard]},//admin (admin only)
+      { path: 'settings', component: Settings, canActivate: [AuthGuard] }
     ]
   },
   {path: '**', redirectTo: '' }

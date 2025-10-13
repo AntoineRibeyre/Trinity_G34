@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +21,7 @@ export class AuthService {
     }
   `;
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private router: Router) {}
 
   login(email: string, password: string) {
     return this.apollo.mutate({
@@ -56,6 +59,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('authToken');
+    this.router.navigate(['/']);
   }
 
   getToken() {
@@ -63,6 +67,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!localStorage.getItem('authToken');
   }
 }

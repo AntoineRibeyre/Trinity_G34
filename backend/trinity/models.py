@@ -20,7 +20,7 @@ class User(AbstractUser):
                              on_delete=models.SET_NULL, related_name="membres")
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['']
+    REQUIRED_FIELDS = ['username']
     def __str__(self):
         return self.first_name
 
