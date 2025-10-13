@@ -107,14 +107,14 @@ jobs:
     name: Test Backend (Django)
     runs-on: ubuntu-latest
     needs: build-backend
-    
+
     services:
       postgres:
         image: postgres:15
         env:
           POSTGRES_USER: test_user
           POSTGRES_PASSWORD: test_password
-          POSTGRES_DB: postgres
+          POSTGRES_DB: test_db
         ports:
           - 5432:5432
         options: >-
@@ -141,43 +141,45 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-django pytest-cov
 
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h postgres -p 5432 -U test_user && break
+            echo "⏳ Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+
       - name: Run migrations
         working-directory: ./backend
-        run: python manage.py migrate
+        run: python manage.py migrate --noinput
         env:
           DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'True'
-          DJANGO_DB_NAME: test_db
-          DJANGO_DB_USER: test_user
-          DJANGO_DB_PASSWORD: test_password
-          DJANGO_DB_HOST: localhost
-          DJANGO_DB_PORT: 5432
-          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
 
       - name: Run tests with coverage
         working-directory: ./backend
-        run: |
-          pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term-missing -v
+        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v
         env:
           DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'True'
-          DJANGO_DB_NAME: test_db
-          DJANGO_DB_USER: test_user
-          DJANGO_DB_PASSWORD: test_password
-          DJANGO_DB_HOST: localhost
-          DJANGO_DB_PORT: 5432
-          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
 
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: |
-            backend/htmlcov/
-            backend/coverage.xml
-          retention-days: 30
+          path: backend/coverage.xml
 
       - name: Display coverage summary
         working-directory: ./backend
