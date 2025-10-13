@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {catchError, Observable, throwError} from 'rxjs';
+import {catchError, interval, Observable, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 export interface DateTimeData {
@@ -30,129 +30,86 @@ export interface PointageResponse {
   calendrier: CalendrierData | null;
 }
 
+const GET_JOURNEE_EN_COURS = gql`
+  query GetJourneeEnCours($userId: Int!) {
+    journeeEnCours(userId: $userId) {
+      id
+      debut
+      fin
+      journeeFinie
+      duree
+    }
+  }
+`;
+
+const POINTAGE_ARRIVEE = gql`
+  query PointageArrivee($userId: Int!) {
+    pointageArrivee(userId: $userId) {
+      datetimeField
+      durationField
+    }
+  }
+`;
+
+const POINTAGE_FIN = gql`
+  query PointageFin($userId: Int!) {
+    pointageFin(userId: $userId) {
+      datetimeField
+      durationField
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root'
 })
 export class PointService {
-
-  // Mutation pour enregistrer l'arrivée
-  private ENREGISTRER_ARRIVEE_MUTATION = gql`
-    mutation EnregistrerArrivee {
-      enregistrerArrivee {
-        success
-        message
-        calendrier {
-          dateTimeData {
-            hour
-            minute
-            second
-            year
-            month
-            day
-          }
-        }
-      }
-    }
-  `;
-
-  // Mutation pour enregistrer la sortie
-  private ENREGISTRER_SORTIE_MUTATION = gql`
-    mutation EnregistrerSortie {
-      enregistrerSortie {
-        success
-        message
-        calendrier {
-          dateTimeData {
-            hour
-            minute
-            second
-            year
-            month
-            day
-          }
-          dureeData {
-            hours
-            minutes
-            seconds
-          }
-        }
-      }
-    }
-  `;
-
   constructor(private apollo: Apollo) {}
 
-  /**
-   * Enregistre l'arrivée de l'utilisateur
-   */
-  enregistrerArrivee(): Observable<PointageResponse> {
-    return this.apollo.mutate({
-      mutation: this.ENREGISTRER_ARRIVEE_MUTATION
+  // Récupérer la journée en cours
+  getJourneeEnCours(userId: number): Observable<any> {
+    return this.apollo.query({
+      query: GET_JOURNEE_EN_COURS,
+      variables: { userId },
+      fetchPolicy: 'network-only' // Force la récupération depuis le serveur
     }).pipe(
-      map((result: any) => {
-        const data = result?.data?.enregistrerArrivee;
-        return {
-          success: data?.success || false,
-          message: data?.message || 'Erreur inconnue',
-          calendrier: data?.calendrier || null
-        };
-      }),
-      catchError((error) => {
-        console.error('Erreur lors de l\'enregistrement de l\'arrivée:', error);
-        return throwError(() => error);
-      })
+      map((result: any) => result.data.journeeEnCours)
     );
   }
 
-  /**
-   * Enregistre la sortie de l'utilisateur
-   */
-  enregistrerSortie(): Observable<PointageResponse> {
-    return this.apollo.mutate({
-      mutation: this.ENREGISTRER_SORTIE_MUTATION
+  // Enregistrer l'arrivée
+  enregistrerArrivee(userId: number): Observable<any> {
+    return this.apollo.query({
+      query: POINTAGE_ARRIVEE,
+      variables: { userId }
     }).pipe(
-      map((result: any) => {
-        const data = result?.data?.enregistrerSortie;
-        return {
-          success: data?.success || false,
-          message: data?.message || 'Erreur inconnue',
-          calendrier: data?.calendrier || null
-        };
-      }),
-      catchError((error) => {
-        console.error('Erreur lors de l\'enregistrement de la sortie:', error);
-        return throwError(() => error);
-      })
+      map((result: any) => result.data.pointageArrivee)
     );
   }
 
-  /**
-   * Formate les données de date/heure pour l'affichage
-   */
-  formatDateTime(dateTimeData: DateTimeData): string {
-    const { day, month, year, hour, minute, second } = dateTimeData;
-    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} à ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+  // Enregistrer la sortie
+  enregistrerSortie(userId: number): Observable<any> {
+    return this.apollo.query({
+      query: POINTAGE_FIN,
+      variables: { userId }
+    }).pipe(
+      map((result: any) => result.data.pointageFin)
+    );
   }
 
-  /**
-   * Formate la durée pour l'affichage
-   */
-  formatDuree(dureeData: DureeData): string {
-    const { hours, minutes, seconds } = dureeData;
-    return `${hours}h ${minutes.toString().padStart(2, '0')}min ${seconds.toString().padStart(2, '0')}s`;
-  }
+  // Calculer la durée en temps réel
+  calculerDureeEnTempsReel(dateDebut: Date): Observable<string> {
+    return interval(1000).pipe( // Mise à jour chaque seconde
+      map(() => {
+        const maintenant = new Date();
+        const diff = maintenant.getTime() - dateDebut.getTime();
 
-  /**
-   * Crée un objet Date JavaScript à partir de DateTimeData
-   */
-  toDate(dateTimeData: DateTimeData): Date {
-    return new Date(
-      dateTimeData.year,
-      dateTimeData.month - 1, // Les mois en JS commencent à 0
-      dateTimeData.day,
-      dateTimeData.hour,
-      dateTimeData.minute,
-      dateTimeData.second
+        const heures = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+
+        return `${heures.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondes.toString().padStart(2, '0')}`;
+      })
     );
   }
 }

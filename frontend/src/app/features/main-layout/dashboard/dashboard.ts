@@ -1,12 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Subscription} from 'rxjs';
+import {PointService} from '../../../services/point.service';
+import {DatePipe, NgIf} from '@angular/common';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [
+    NgIf,
+    DatePipe
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit, OnDestroy {
+  //Horloge
   date: Date = new Date();
   day: string = '';
   month: string = '';
@@ -42,7 +50,22 @@ export class Dashboard implements OnInit, OnDestroy {
 
   private intervalId: any;
 
+  //Pointage
+  userId: number | null = null;
+  username: string | null = null;
+  journeeEnCours: any = null;
+  dureeActuelle: string = '00:00:00';
+  isPointeArrivee: boolean = false;
+
+  private dureeSubscription?: Subscription;
+
+  constructor(private pointService: PointService,
+              private authService: AuthService,) {}
+
   ngOnInit() {
+    this.userId = this.authService.getUserId();
+    this.username = this.authService.getUsername();
+
     this.updateTime(); // Initialiser immédiatement
     this.intervalId = setInterval(() => {
       this.updateTime();
@@ -66,9 +89,62 @@ export class Dashboard implements OnInit, OnDestroy {
     return value < 10 ? '0' + value : value.toString();
   }
 
+  //Pointage
+  chargerJourneeEnCours(): void {
+    if (!this.userId) return;
+
+    this.pointService.getJourneeEnCours(this.userId).subscribe({
+      next: (journee) => {
+        if (journee) {
+          this.journeeEnCours = journee;
+          this.isPointeArrivee = true;
+
+          // Lancer le compteur en temps réel
+          const dateDebut = new Date(journee.debut);
+          this.dureeSubscription = this.pointService
+            .calculerDureeEnTempsReel(dateDebut)
+            .subscribe(duree => {
+              this.dureeActuelle = duree;
+            });
+        } else {
+          this.isPointeArrivee = false;
+        }
+      },
+      error: (err) => console.error('Erreur lors du chargement:', err)
+    });
+  }
+
+  pointerArrivee(): void {
+    if (!this.userId) return;
+
+    this.pointService.enregistrerArrivee(this.userId).subscribe({
+      next: (result) => {
+        console.log('Arrivée enregistrée:', result);
+        this.chargerJourneeEnCours(); // Recharger après pointage
+      },
+      error: (err) => console.error('Erreur pointage arrivée:', err)
+    });
+  }
+
+  pointerSortie(): void {
+    if (!this.userId) return;
+
+    this.pointService.enregistrerSortie(this.userId).subscribe({
+      next: (result) => {
+        console.log('Sortie enregistrée:', result);
+        this.dureeSubscription?.unsubscribe(); // Arrêter le compteur
+        this.isPointeArrivee = false;
+        this.dureeActuelle = result[0].durationField || '00:00:00';
+      },
+      error: (err) => console.error('Erreur pointage sortie:', err)
+    });
+  }
+
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
+
+    this.dureeSubscription?.unsubscribe();
   }
 }

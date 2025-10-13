@@ -42,14 +42,17 @@
       </div>
 
       <div class="time">
-        Time
+        {{ dureeActuelle }}
       </div>
 
       <div class="point-buttons">
-        <div class="pointer">
+        <div class="pointer" [@If]="!isPointeArrivee" (click)="pointerArrivee()">
           Start
         </div>
-        <div class="pointer">
+        <div class="pointer" [@If]="isPointeArrivee">
+          {{ journeeEnCours.debut | date:'HH:mm' }}
+        </div>
+        <div class="pointer" (click)="pointerSortie()">
           End
         </div>
       </div>
