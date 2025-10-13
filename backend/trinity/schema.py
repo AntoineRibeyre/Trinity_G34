@@ -24,8 +24,8 @@ class CalendrierType(DjangoObjectType):
 
 
 class PointageResponseType(graphene.ObjectType):
-    datetime_field = graphene.DateTime()
-    duration_field = graphene.Time()
+    datetime_field = graphene.JSONString()
+    duration_field = graphene.JSONString()
 
 
 class Query(graphene.ObjectType):
@@ -45,22 +45,18 @@ class Query(graphene.ObjectType):
         return Calendrier.objects.all()
 
     def resolve_pointage_arrivee(self, info, user_id):
-         result = CalendrierFactory.enregistrer_arriver(user_id)
-         return [PointageResponseType(
-             datetime_field = result.date_time_data,
-             duration_field = None
-             
+        result = CalendrierFactory.enregistrer_arriver(user_id)
+        return [PointageResponseType(
+            datetime_field=result.date_time_data,
+            duration_field=None
+
          )]
-      
 
     def resolve_pointage_fin(self, info, user_id):
-         result =  CalendrierFactory.enregister_sortie(user_id)
-         return [ PointageResponseType(
-             datetime_field = result.date_time_data,
-             duration_field = result.duree_data
-             
-         )]
-    
+        result = CalendrierFactory.enregister_sortie(user_id)
+        return [PointageResponseType(
+            datetime_field=result.date_time_data,
+            duration_field=result.duree_data)]
 
 
 class CreateUser(graphene.Mutation):

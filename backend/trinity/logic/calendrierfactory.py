@@ -1,14 +1,38 @@
-from dataclasses import dataclass
 import datetime
 from zoneinfo import ZoneInfo
+from typing import Dict
+
 
 from ..models import Calendrier, User
 
 
-@dataclass
 class CalendrierQueryOutput:
-    date_time_data: datetime.datetime
-    duree_data: datetime.time | None
+    date_time_data: Dict[str, int]
+    duree_data: Dict[str, int] | None
+
+    def __init__(self, datetime: datetime.datetime,
+                 duration: datetime.timedelta | None):
+        self.date_time_data = {
+            'hour': datetime.hour,
+            'minute': datetime.minute,
+            'second': datetime.second,
+            'year': datetime.year,
+            'month': datetime.month,
+            'day': datetime.day
+        }
+        if duration is None:
+            self.duree_data = None
+        else:
+            seconds = duration.seconds
+            hours = seconds // 3600
+            minutes = (seconds % 3600) // 60
+            second = seconds % 60 
+            self.duree_data = {
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': second
+                
+            }
 
 
 class CalendrierFactory:
@@ -26,7 +50,7 @@ class CalendrierFactory:
             employee=user,
             journee_finie=False,
             duree=None)
-        return CalendrierQueryOutput(date_time_data=calendrier.debut, duree_data=None)
+        return CalendrierQueryOutput(calendrier.debut, None)
 
     @classmethod
     def close_calendrier(cls, user_id: int) -> CalendrierQueryOutput:
@@ -43,7 +67,7 @@ class CalendrierFactory:
         calendrier.fin = cloture
         calendrier.duree = duree
         calendrier.save_base()
-        return CalendrierQueryOutput(date_time_data=cloture, duree_data=datetime.time(second=duree.seconds))
+        return CalendrierQueryOutput(cloture, duree)
     @classmethod
     def enregistrer_arriver(cls, user_id: int) -> CalendrierQueryOutput:
         return CalendrierFactory.create_calendrier(user_id)
