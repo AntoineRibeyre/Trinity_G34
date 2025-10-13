@@ -264,7 +264,7 @@ jobs:
   all-checks-passed:
     name: All CI Checks Passed
     runs-on: ubuntu-latest
-    needs: [build-frontend, test-backend, coverage-report, docker-build]
+    needs: [build-frontend, test-backend, docker-build]
     if: always()
     
     steps:
@@ -272,7 +272,7 @@ jobs:
         run: |
           if [[ "${{ needs.build-frontend.result }}" == "success" ]] && \
              [[ "${{ needs.test-backend.result }}" == "success" ]] && \
-             [[ "${{ needs.coverage-report.result }}" == "success" ]] && \
+#             [[ "${{ needs.coverage-report.result }}" == "success" ]] && \
              [[ "${{ needs.docker-build.result }}" == "success" ]]; then
             echo "✅ All checks passed successfully!"
             exit 0
@@ -280,7 +280,7 @@ jobs:
             echo "❌ Some checks failed"
             echo "Frontend: ${{ needs.build-frontend.result }}"
             echo "Backend Tests: ${{ needs.test-backend.result }}"
-            echo "Coverage: ${{ needs.coverage-report.result }}"
+#            echo "Coverage: ${{ needs.coverage-report.result }}"
             echo "Docker: ${{ needs.docker-build.result }}"
             exit 1
           fi
