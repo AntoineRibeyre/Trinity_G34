@@ -30,8 +30,7 @@ class CalendarQueryOutput:
             self.duree_data = {
                 'hours': hours,
                 'minutes': minutes,
-                'seconds': second
-        }
+                'seconds': second}
 
 
 class CalendarFactory:

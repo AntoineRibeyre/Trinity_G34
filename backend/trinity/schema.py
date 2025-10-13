@@ -11,16 +11,19 @@ from .logic.calendarfactory import CalendarFactory
 class UserType(DjangoObjectType):
     class Meta:
         model = User
+        exclude = ('password',)
 
 
 class TeamType(DjangoObjectType):
     class Meta:
         model = Team
+        fields = '__all__'
 
 
 class CalendarType(DjangoObjectType):
     class Meta:
         model = Calendar
+        fields = '__all__'
 
 
 class RegisterResponseType(graphene.ObjectType):

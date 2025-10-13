@@ -31,7 +31,7 @@ COPY . .
 RUN chown -R appuser:appuser /app
 
 # Changer vers l'utilisateur non-root
-USER appuser
+USER root
 
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]
