@@ -86,7 +86,7 @@ jobs:
         run: |
           python manage.py check
         env:
-          DJANGO_SETTINGS_MODULE: backend.settings
+          DJANGO_SETTINGS_MODULE: settings.py
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'False'
           ALLOWED_HOSTS: 'localhost,127.0.0.1'
@@ -96,7 +96,7 @@ jobs:
         run: |
           python manage.py makemigrations --check --dry-run
         env:
-          DJANGO_SETTINGS_MODULE: backend.settings
+          DJANGO_SETTINGS_MODULE: settings.py
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'False'
 
@@ -145,7 +145,7 @@ jobs:
         working-directory: ./backend
         run: python manage.py migrate
         env:
-          DJANGO_SETTINGS_MODULE: backend.settings
+          DJANGO_SETTINGS_MODULE: settings.py
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'True'
           DJANGO_DB_NAME: test_db
@@ -160,7 +160,7 @@ jobs:
         run: |
           pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term-missing -v
         env:
-          DJANGO_SETTINGS_MODULE: backend.settings
+          DJANGO_SETTINGS_MODULE: settings.py
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'True'
           DJANGO_DB_NAME: test_db
@@ -240,7 +240,7 @@ jobs:
           DJANGO_DB_PORT=5432
           SECRET_KEY=ci-test-secret-key-not-for-production
           DEBUG=True
-          DJANGO_SETTINGS_MODULE=backend.settings
+          DJANGO_SETTINGS_MODULE=settings.py
           ALLOWED_HOSTS=localhost,127.0.0.1
           DATABASE_URL=postgresql://postgres:test_password@db:5432/mydatabase
           EOF
