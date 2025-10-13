@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgOptimizedImage, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 interface MenuItem {
   label: string;
@@ -58,7 +59,7 @@ export class SideNav {
     }
   ];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.currentRoute = this.router.url;
   }
 
@@ -92,7 +93,7 @@ export class SideNav {
   logout(): void {
     // Logique de déconnexion
     console.log('Déconnexion...');
-    // this.authService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logout();
+    //this.router.navigate(['/login']);
   }
 }
