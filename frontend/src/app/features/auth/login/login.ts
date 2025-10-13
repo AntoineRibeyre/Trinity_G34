@@ -9,7 +9,7 @@ import { AuthService } from '../../../services/auth.service';
   standalone: true, // obligatoire pour standalone
   imports: [CommonModule, FormsModule],
   templateUrl:'./login.html',
-  styleUrls: ['./login.css']
+  styleUrl: './login.css'
 })
 export class Login {
   email = '';
