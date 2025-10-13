@@ -6,8 +6,7 @@
 
 .content {
   flex: 1;
-  padding: 2rem;
-  transition: margin-left 0.3s ease;
-  overflow-x: hidden;
+  /*transition: margin-left 0.3s ease;*/
+  /*overflow-x: hidden;*/
 }
 
