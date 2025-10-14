@@ -11,7 +11,6 @@ from backend.schema import schema
 from trinity.models import Team
 
 
-
 @pytest.fixture
 def client():
     return Client(schema)
