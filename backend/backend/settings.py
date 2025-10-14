@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    "trinity.middlewares.jwt_cookie_auth.JWTAuthenticationMiddleware",
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -67,8 +68,9 @@ CORS_ALLOWED_ORIGINS = [
 GRAPHENE = {
     'SCHEMA': 'backend.schema.schema',  # Chemin vers votre schéma
     'MIDDLEWARE': [
-        'graphql_jwt.middleware.JSONWebTokenMiddleware',
-    ],
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',  # si JWT
+        'graphene_django.debug.DjangoDebugMiddleware',
+    ]
 }
 
 GRAPHQL_JWT = {
@@ -97,8 +99,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Optionnel : Configuration JWT pour l'authentification GraphQL
 AUTHENTICATION_BACKENDS = [
-    'graphql_jwt.backends.JSONWebTokenBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 ROOT_URLCONF = 'backend.urls'

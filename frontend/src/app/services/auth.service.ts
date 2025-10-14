@@ -7,17 +7,15 @@ import { Router } from '@angular/router';
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
-
-// interface représentant la réponse de l'api si l'on tente d'obtenir l'utilisateur connecté
+// Interface corrigée - sans le niveau 'data' en trop
 interface CurrentUserResponse {
-  data: {
-    currentUser: {
-      id: string;
-      email: string;
-      username: string;
-    } | null;
-  };
+  currentUser: {
+    id: string;
+    email: string;
+    username: string;
+  } | null;
 }
 
 @Injectable({
@@ -36,16 +34,15 @@ export class AuthService {
 
   // Mutation GraphQL pour login
   private LOGIN_MUTATION = gql`
-    mutation login($email: String!, $password: String!) {
-      login(email: $email, password: $password) {
-        success
-        message
-        csrfToken
-      }
+  mutation tokenAuth($email: String!, $password: String!) {
+    tokenAuth(email: $email, password: $password) {
+      token       # JWT renvoyé
+      csrfToken   # CSRF token pour Angular
+      payload
     }
-  `;
+  }
+`;
 
-  
 
   constructor(private apollo: Apollo, private router: Router, private http: HttpClient) {}
 
@@ -62,15 +59,14 @@ export class AuthService {
       })
     ).pipe(
       map((result: any) => {
-        const csrfToken = result?.data?.login?.csrfToken;
+        const csrfToken = result?.data?.tokenAuth?.csrfToken;
         if (csrfToken) {
           document.cookie = `csrftoken=${csrfToken}; path=/`;
         }
-        return result?.data?.login;
+        return result?.data?.tokenAuth;
       })
     );
   }
-
 
   /**
    * Inscription utilisateur
@@ -98,62 +94,48 @@ export class AuthService {
    * Supprime le cookie côté backend et redirige l'utilisateur sur la page login
    */
   logout() {
-  const LOGOUT_MUTATION = gql`
-    mutation logout {
-      logout {
-        success
+    const LOGOUT_MUTATION = gql`
+      mutation logout {
+        logout {
+          success
+        }
+      }
+    `;
+
+    this.apollo.mutate({ mutation: LOGOUT_MUTATION }).subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+  }
+
+  /**
+   * Vérifie si utilisateur authentifié
+   */
+  CURRENT_USER_QUERY = gql`
+    query CurrentUser {
+      currentUser {
+        id
+        email
+        username
       }
     }
   `;
 
-  this.apollo.mutate({ mutation: LOGOUT_MUTATION }).subscribe(() => {
-    this.router.navigate(['/login']);
-  });
-  }
-
-
-
-
-
-  /**
-   * Vérifie si utilisateur authentifié
-   * 
-   */
   async isAuthenticated(): Promise<boolean> {
     try {
-      // Récupérer le CSRF token depuis les cookies
-      const csrfToken = this.getCookie('csrftoken');
-      const body = {
-        query: `
-          query {
-            currentUser {
-              id
-              email
-              username
-            }
-          }
-        `
-      };
-      const res = await this.http.post<CurrentUserResponse>(
-        'http://localhost:8000/graphql/', 
-        body, 
-        { 
-          withCredentials: true,
-          headers: {
-            'X-CSRFToken': csrfToken || ''
-          }
-        }
-      ).toPromise();
-      console.log("Connecté");
-      return !!res?.data?.currentUser;
+      const result = await firstValueFrom(
+        this.apollo.query<CurrentUserResponse>({ // Bien appeler Apollo pour ajouter automatiquement le headers contenant le token dans les requêtes
+          query: this.CURRENT_USER_QUERY,
+          fetchPolicy: 'network-only'
+        })
+      );
+
+      console.log("Connecté", result.data.currentUser);
+      return !!result?.data?.currentUser;
     } catch (err) {
       console.log("Déconnecté", err);
       return false;
     }
   }
-
-
-
 
   /**
    * Récupère la valeur d'un cookie

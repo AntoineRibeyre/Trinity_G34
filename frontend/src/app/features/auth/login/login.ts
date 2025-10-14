@@ -21,14 +21,23 @@ export class Login {
 
   onLogin() {
     this.auth.login(this.email, this.password).subscribe({
-    next: (res: any) => {
-      if (res.success) {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.error = res.message;
-      }
-    },
-    error: () => this.error = 'Email ou mot de passe incorrect'
-  });
+      next: (res: any) => {
+        console.log("Réponse du login :", res);
+
+        if (res?.token) {
+          // Connexion réussie
+          console.log("JWT reçu :", res.token);
+          console.log("CSRF reçu :", res.csrfToken);
+
+          // Redirige vers le tableau de bord
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.error = 'Erreur lors de la connexion';
+        }
+      },
+      error: () => this.error = 'Email ou mot de passe incorrect'
+    });
   }
+
+
 }
