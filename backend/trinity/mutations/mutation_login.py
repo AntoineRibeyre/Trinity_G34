@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from django.middleware.csrf import get_token
 import graphene
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # =============================
 # LoginMutation
@@ -64,6 +65,7 @@ class LogoutMutation(graphene.Mutation):
     success = graphene.Boolean()
     message = graphene.String()
 
+    @csrf_exempt
     def mutate(self, info):
         request = info.context  # WSGIRequest
 
@@ -80,6 +82,12 @@ class LogoutMutation(graphene.Mutation):
             secure=True,
             samesite='Lax',
             max_age=0        # expiration immédiate
+        )
+
+        # Supprimer le CSRF token côté serveur
+        response.delete_cookie(
+            key='csrftoken',  
+            path='/',          
         )
 
         # Injecter la réponse pour Graphene-Django

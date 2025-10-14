@@ -21,8 +21,14 @@ export class Login {
 
   onLogin() {
     this.auth.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: () => this.error = 'Email ou mot de passe incorrect'
-    });
+    next: (res: any) => {
+      if (res.success) {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.error = res.message;
+      }
+    },
+    error: () => this.error = 'Email ou mot de passe incorrect'
+  });
   }
 }

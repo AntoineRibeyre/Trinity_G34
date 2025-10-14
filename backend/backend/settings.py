@@ -89,6 +89,10 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 # Optionnel : Configuration JWT pour l'authentification GraphQL

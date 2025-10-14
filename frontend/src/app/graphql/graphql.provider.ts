@@ -13,7 +13,6 @@ export function apolloOptionsFactory(): ApolloClientOptions<any> {
 
   // Middleware pour ajouter le CSRF token à chaque requête
   const csrfLink = new ApolloLink((operation, forward) => {
-    // Lire le token CSRF depuis le cookie normal
     const match = document.cookie.match(new RegExp('(^| )csrftoken=([^;]+)'));
     const csrfToken = match ? match[2] : '';
 
@@ -25,7 +24,7 @@ export function apolloOptionsFactory(): ApolloClientOptions<any> {
     return forward(operation);
   });
 
-  // Middleware pour gérer les erreurs (ex: session expirée)
+  // Middleware pour gérer les erreurs
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       for (const err of graphQLErrors) {
@@ -48,8 +47,13 @@ export function apolloOptionsFactory(): ApolloClientOptions<any> {
     }
   });
 
+  const http = httpLink.create({
+    uri,
+    withCredentials: true, // <-- indispensable pour envoyer les cookies
+  });
+
   // Chaîne des middlewares : erreurs -> CSRF -> http
-  const link = from([errorLink, csrfLink, httpLink.create({ uri })]);
+  const link = from([errorLink, csrfLink, http]);
 
   return {
     link,

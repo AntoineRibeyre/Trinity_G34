@@ -6,9 +6,19 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { from } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 
-
+// interface représentant la réponse de l'api si l'on tente d'obtenir l'utilisateur connecté
+interface CurrentUserResponse {
+  data: {
+    currentUser: {
+      id: string;
+      email: string;
+      username: string;
+    } | null;
+  };
+}
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +28,7 @@ export class AuthService {
   //Création d'un client particulier pour le login (sans token csrf)
   loginClient = new ApolloClient({
     link: new HttpLink({
-      uri: 'http://localhost:8000/graphql-login/', // endpoint login
+      uri: 'http://localhost:8000/graphql-login/', // endpoint login qui ne nécessite pas de token
       credentials: 'include', // envoie le cookie HttpOnly
     }),
     cache: new InMemoryCache(),
@@ -35,7 +45,9 @@ export class AuthService {
     }
   `;
 
-  constructor(private apollo: Apollo, private router: Router) {}
+  
+
+  constructor(private apollo: Apollo, private router: Router, private http: HttpClient) {}
 
   /**
    * Login utilisateur
@@ -95,19 +107,53 @@ export class AuthService {
   `;
 
   this.apollo.mutate({ mutation: LOGOUT_MUTATION }).subscribe(() => {
-    // Redirection après logout
-    document.cookie = 'csrftoken=; path=/; max-age=0'; // optionnel : supprimer le CSRF token
     this.router.navigate(['/login']);
   });
-}
+  }
+
+
+
+
+
   /**
    * Vérifie si utilisateur authentifié
-   * Ici, tu peux faire un call /me GraphQL ou vérifier le cookie CSRF
+   * 
    */
-  isAuthenticated(): boolean {
-    // par exemple : présence du CSRF token comme proxy
-    return !!this.getCookie('csrftoken');
+  async isAuthenticated(): Promise<boolean> {
+    try {
+      // Récupérer le CSRF token depuis les cookies
+      const csrfToken = this.getCookie('csrftoken');
+      const body = {
+        query: `
+          query {
+            currentUser {
+              id
+              email
+              username
+            }
+          }
+        `
+      };
+      const res = await this.http.post<CurrentUserResponse>(
+        'http://localhost:8000/graphql/', 
+        body, 
+        { 
+          withCredentials: true,
+          headers: {
+            'X-CSRFToken': csrfToken || ''
+          }
+        }
+      ).toPromise();
+      console.log("Connecté");
+      return !!res?.data?.currentUser;
+    } catch (err) {
+      console.log("Déconnecté", err);
+      return false;
+    }
   }
+
+
+
 
   /**
    * Récupère la valeur d'un cookie

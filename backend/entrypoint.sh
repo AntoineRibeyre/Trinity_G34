@@ -6,6 +6,9 @@ until pg_isready -h db -p 5432 -U "$POSTGRES_USER"; do
 done
 echo "DB ready!"
 
+# Créer un fichier de migration
+python manage.py makemigrations
+
 # Appliquer les migrations
 python manage.py migrate
 

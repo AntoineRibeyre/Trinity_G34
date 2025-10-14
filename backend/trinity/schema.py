@@ -34,7 +34,15 @@ class Query(graphene.ObjectType):
     all_Calendriers = graphene.List(CalendrierType)
     pointage_arrivee = graphene.List(PointageResponseType, user_id=graphene.Int(required=True))
     pointage_fin = graphene.List(PointageResponseType, user_id=graphene.Int(required=True))
+    current_user = graphene.Field(UserType) # utilisateur connecté
 
+    # renvoie l'utilisateur connecté s'il est connecté
+    def resolve_current_user(self, info):
+        user = info.context.user
+        if user.is_authenticated:
+            return user
+        return None
+    
     def resolve_all_users(self, info, *kwargs):
         return User.objects.all()
 
