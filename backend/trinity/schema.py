@@ -11,7 +11,7 @@ from .logic.calendarfactory import CalendarFactory
 class UserType(DjangoObjectType):
     class Meta:
         model = User
-        exclude = ('password',)
+        fields = '__all__'
 
 
 class TeamType(DjangoObjectType):
@@ -113,8 +113,6 @@ class Mutation(graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
     verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
     refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
-
-
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
 
