@@ -1,8 +1,6 @@
-<div class="login-container">
-  <div class="login-form">
-    <h1 class="login-title">Bienvenu sur [insérer_nom]</h1>
-
-  <form (submit)="onLogin(); $event.preventDefault()">
+<div class="general-space">
+<form (submit)="onLogin(); $event.preventDefault()" class="login-form">
+    <h1 class="login-title">Login</h1>
     <!-- Email -->
     <div>
       <label class="form-label" for="email">Email</label>
@@ -23,15 +21,14 @@
         type="password"
         id="password"
         class="form-input"
-        placeholder=""
+        placeholder="••••••••"
         name="password"
         [(ngModel)]="password"
         required>
     </div>
-    <button type="submit" class="btn-login">Se connecter</button>
-  </form>
 
     <!-- Boutons -->
-    <button type="button" class="btn-login" (click)="router.navigate(['/register'])">S'inscrire</button>
-  </div>
+    <button type="submit" class="btn-login">Se connecter</button>
+    <button type="button" class="signup-link" (click)="router.navigate(['/register'])">S'inscrire</button>
+  </form>
 </div>

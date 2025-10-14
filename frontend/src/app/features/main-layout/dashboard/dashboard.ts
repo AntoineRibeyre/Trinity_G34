@@ -114,6 +114,7 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   pointerArrivee(): void {
+    console.log('pointer arrivee', this.userId);
     if (!this.userId) return;
 
     this.pointService.enregistrerArrivee(this.userId).subscribe({

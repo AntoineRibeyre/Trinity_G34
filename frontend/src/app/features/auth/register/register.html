@@ -1,64 +1,102 @@
+<div class="general-space">
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-  <h1 class="">Inscription</h1>
+  <h1 class="register-title">Inscription</h1>
 
-  <div class="">
-    <label for="firstName">First Name</label>
+  <div>
+    <label class="form-label" for="firstName">First Name</label>
     <input
       type="text"
       id="firstName"
       formControlName="firstName"
-      class=""
+      class="form-input"
       placeholder="First Name"
       required>
   </div>
 
-  <div class="">
-    <label for="lastName">Name</label>
+  <div>
+    <label class="form-label" for="lastName">Name</label>
     <input
       type="text"
       id="lastName"
       formControlName="lastName"
-      class=""
+      class="form-input"
       placeholder="Name"
       required>
   </div>
 
-  <div class="">
-    <label for="email">Email</label>
+  <div>
+    <label class="form-label" for="email">Email</label>
     <input
       type="email"
       id="email"
       formControlName="email"
-      class=""
+      class="form-input"
       placeholder="votre@email.com"
       required>
   </div>
 
-  <div class="">
-    <label for="telephone">Téléphone</label>
+  <div>
+    <label class="form-label" for="telephone">Téléphone</label>
     <input
       type="tel"
       id="telephone"
       formControlName="telephone"
-      class=""
+      class="form-input"
       placeholder="0000000000"
       required>
   </div>
 
-  <div class="">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      id="password"
-      formControlName="password"
-      class=""
-      placeholder="Password"
-      required>
+  <div class="password-container">
+    <label class="form-label" for="password">Password</label>
+    <div class="password-input-wrapper">
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        class="form-input"
+        placeholder="Password"
+        (focus)="showPasswordRequirements = true"
+        (blur)="showPasswordRequirements = false"
+        required>
+
+      <!-- Popover des pré-requis -->
+      <div class="password-requirements" *ngIf="showPasswordRequirements">
+        <div class="requirements-title">Pré-requis du mot de passe :</div>
+        <div class="requirements-list">
+          <div
+            *ngFor="let req of passwordRequirements"
+            class="requirement-item"
+            [ngClass]="{ 'met': isRequirementMet(req.key), 'not-met': !isRequirementMet(req.key) }">
+          <span class="requirement-icon">
+            {{ isRequirementMet(req.key) ? '✓' : '✗' }}
+          </span>
+            <span class="requirement-text">{{ req.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <button class="btn btn-secondary" type="submit" [disabled]="isLoading">
+  <div>
+    <label class="form-label" for="confirmPassword">Confirm Password</label>
+    <input
+      type="password"
+      id="confirmPassword"
+      formControlName="confirmPassword"
+      class="form-input"
+      [ngClass]="{ 'input-error': passwordMismatch }"
+      placeholder="Confirm Password"
+      required>
+    <p *ngIf="passwordMismatch" class="error-text">
+      Les mots de passe ne correspondent pas
+    </p>
+  </div>
+
+
+  <button class="btn-register" type="submit" [disabled]="isLoading">
     {{ isLoading ? 'Chargement...' : 'S\'inscrire' }}
   </button>
 
   <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 </form>
+</div>
