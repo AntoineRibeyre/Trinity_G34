@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {catchError, interval, Observable, throwError} from 'rxjs';
+import {catchError, interval, Observable, startWith, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 export interface DateTimeData {
@@ -30,30 +30,31 @@ export interface PointageResponse {
   calendrier: CalendrierData | null;
 }
 
-const GET_JOURNEE_EN_COURS = gql`
-  query GetJourneeEnCours($userId: Int!) {
-    journeeEnCours(userId: $userId) {
+const GET_PENDING_DAY = gql`
+  query GetPendingDay($userId: Int!) {
+    pendingDay(userId: $userId) {
       id
-      debut
-      fin
-      journeeFinie
-      duree
+      begin
+      end
+      dayType
+      duration
+      dayOver
     }
   }
 `;
 
-const POINTAGE_ARRIVEE = gql`
-  query PointageArrivee($userId: Int!) {
-    pointageArrivee(userId: $userId) {
+const REGISTER_ARRIVAL = gql`
+  mutation RegisterArrival($userId: Int!) {
+    registerArrival(userId: $userId) {
       datetimeField
       durationField
     }
   }
 `;
 
-const POINTAGE_FIN = gql`
-  query PointageFin($userId: Int!) {
-    pointageFin(userId: $userId) {
+const REGISTER_END = gql`
+  mutation RegisterEnd($userId: Int!) {
+    registerEnd(userId: $userId) {
       datetimeField
       durationField
     }
@@ -67,49 +68,52 @@ export class PointService {
   constructor(private apollo: Apollo) {}
 
   // Récupérer la journée en cours
-  getJourneeEnCours(userId: number): Observable<any> {
+  getPendingDay(userId: number): Observable<any> {
     return this.apollo.query({
-      query: GET_JOURNEE_EN_COURS,
+      query: GET_PENDING_DAY,
       variables: { userId },
       fetchPolicy: 'network-only' // Force la récupération depuis le serveur
     }).pipe(
-      map((result: any) => result.data.journeeEnCours)
+      map((result: any) => result.data.pendingDay)
     );
   }
 
-  // Enregistrer l'arrivée
   enregistrerArrivee(userId: number): Observable<any> {
-    return this.apollo.query({
-      query: POINTAGE_ARRIVEE,
+    return this.apollo.mutate({
+      mutation: REGISTER_ARRIVAL,  // ✅ mutation (pas query)
       variables: { userId }
     }).pipe(
-      map((result: any) => result.data.pointageArrivee)
+      map((result: any) => result.data.registerArrival)
     );
   }
 
-  // Enregistrer la sortie
   enregistrerSortie(userId: number): Observable<any> {
-    return this.apollo.query({
-      query: POINTAGE_FIN,
+    return this.apollo.mutate({
+      mutation: REGISTER_END,  // ✅ mutation (pas query)
       variables: { userId }
     }).pipe(
-      map((result: any) => result.data.pointageFin)
+      map((result: any) => result.data.registerEnd)
     );
   }
 
   // Calculer la durée en temps réel
   calculerDureeEnTempsReel(dateDebut: Date): Observable<string> {
-    return interval(1000).pipe( // Mise à jour chaque seconde
+    return interval(1000).pipe(
+      startWith(0),
       map(() => {
         const maintenant = new Date();
-        const diff = maintenant.getTime() - dateDebut.getTime();
+        const diffMs = maintenant.getTime() - dateDebut.getTime();
 
-        const heures = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+        const heures = Math.floor(diffMs / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const secondes = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-        return `${heures.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secondes.toString().padStart(2, '0')}`;
+        return `${this.pad(heures)}:${this.pad(minutes)}:${this.pad(secondes)}`;
       })
     );
+  }
+
+  private pad(num: number): string {
+    return num.toString().padStart(2, '0');
   }
 }

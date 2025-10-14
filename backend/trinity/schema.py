@@ -50,29 +50,29 @@ class Query(graphene.ObjectType):
     def resolve_all_teams(self, info, *kwargs):
         return Team.objects.all()
 
-    def resolve_all_Calendriers(self, info, *kwargs):
+    def resolve_all_calendars(self, info, *kwargs):
         return Calendar.objects.all()
 
-    def resolve_register_arrival(self, info, user_id):
-        result = CalendarFactory.create_calendar(user_id)
-        return [RegisterResponseType(
-            datetime_field=result.date_time_data,
-            duration_field=None
-
-         )]
-
-    def resolve_register_end(self, info, user_id):
-        result = CalendarFactory.register_out(user_id)
-        return [RegisterResponseType(
-            datetime_field=result.date_time_data,
-            duration_field=result.duree_data)]
+    # def resolve_register_arrival(self, info, user_id):
+    #     result = CalendarFactory.create_calendar(user_id)
+    #     return [RegisterResponseType(
+    #         datetime_field=result.date_time_data,
+    #         duration_field=None
+    #
+    #      )]
+    #
+    # def resolve_register_end(self, info, user_id):
+    #     result = CalendarFactory.register_out(user_id)
+    #     return [RegisterResponseType(
+    #         datetime_field=result.date_time_data,
+    #         duration_field=result.duree_data)]
 
     def resolve_pending_day(self, info, user_id):
         try:
-            return Calendar.objects.get(
+            return Calendar.objects.filter(
                 employee_id=user_id,
-                journee_finie=False
-            )
+                day_over=False
+            ).last()
         except Calendar.DoesNotExist:
             return None
 
@@ -109,15 +109,47 @@ class CreateTeam(graphene.Mutation):
         return CreateTeam(team=team)
 
 
+class RegisterArrival(graphene.Mutation):
+
+    class Arguments:
+        user_id = graphene.Int(required=True)
+
+    datetime_field = graphene.JSONString()
+    duration_field = graphene.JSONString()
+
+    def mutate(self, info, user_id):
+        result = CalendarFactory.register_arrival(user_id)
+        return RegisterArrival(
+            datetime_field=result.date_time_data,
+            duration_field=None
+        )
+
+
+class RegisterEnd(graphene.Mutation):
+
+    class Arguments:
+        user_id = graphene.Int(required=True)
+
+    datetime_field = graphene.JSONString()
+    duration_field = graphene.JSONString()
+
+    def mutate(self, info, user_id):
+        result = CalendarFactory.register_out(user_id)
+        return RegisterEnd(
+            datetime_field=result.date_time_data,
+            duration_field=result.duree_data
+        )
+
 class Mutation(graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
     verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
     refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
 
-
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
 
+    register_arrival = RegisterArrival.Field()
+    register_end = RegisterEnd.Field()
 
 # Schema final
 schema = graphene.Schema(query=Query, mutation=Mutation)

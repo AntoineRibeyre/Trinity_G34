@@ -26,6 +26,7 @@ export class Login {
   }
 
   onLogin() {
+    console.log(this.email, this.password);
     this.auth.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(['/dashboard']),
       error: () => this.error = 'Email ou mot de passe incorrect'
