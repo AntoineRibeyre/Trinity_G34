@@ -164,6 +164,18 @@
   }
 }
 
+.input-error {
+  border-color: #F44336 !important;
+  background-color: #FFEBEE;
+}
+
+.error-text {
+  color: #F44336;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
 /* Animation pour l'apparition */
 .register-form {
   animation: slideInLeft 0.6s ease-out;

@@ -1,5 +1,6 @@
-  <form (submit)="onLogin(); $event.preventDefault()" class="login-form">
-    <h1 class="login-title">{{ "login.connexion"  }}</h1>
+<div class="general-space">
+<form (submit)="onLogin(); $event.preventDefault()" class="login-form">
+    <h1 class="login-title">Login</h1>
     <!-- Email -->
     <div>
       <label class="form-label" for="email">Email</label>
@@ -30,3 +31,4 @@
     <button type="submit" class="btn-login">Se connecter</button>
     <button type="button" class="signup-link" (click)="router.navigate(['/register'])">S'inscrire</button>
   </form>
+</div>

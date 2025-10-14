@@ -1,3 +1,4 @@
+<div class="general-space">
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
   <h1 class="register-title">Inscription</h1>
 
@@ -56,9 +57,26 @@
       required>
   </div>
 
+  <div>
+    <label class="form-label" for="confirmPassword">Confirm Password</label>
+    <input
+      type="password"
+      id="confirmPassword"
+      formControlName="confirmPassword"
+      class="form-input"
+      [ngClass]="{ 'input-error': passwordMismatch }"
+      placeholder="Confirm Password"
+      required>
+    <p *ngIf="passwordMismatch" class="error-text">
+      Les mots de passe ne correspondent pas
+    </p>
+  </div>
+
+
   <button class="btn-register" type="submit" [disabled]="isLoading">
     {{ isLoading ? 'Chargement...' : 'S\'inscrire' }}
   </button>
 
   <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 </form>
+</div>
