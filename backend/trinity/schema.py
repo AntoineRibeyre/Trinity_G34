@@ -145,6 +145,7 @@ class Mutation(graphene.ObjectType):
     verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
     refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
 
+
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
 
