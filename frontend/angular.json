@@ -19,7 +19,6 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
@@ -60,7 +59,12 @@
               "buildTarget": "frontend:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "host": "0.0.0.0",
+            "poll": 2000,
+            "liveReload": true
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"

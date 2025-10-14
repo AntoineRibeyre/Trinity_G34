@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    NgIf,
     DatePipe
   ],
   templateUrl: './dashboard.html',
@@ -53,7 +52,7 @@ export class Dashboard implements OnInit, OnDestroy {
   //Pointage
   userId: number | null = null;
   username: string | null = null;
-  journeeEnCours: any = null;
+  pendingDay: any = null;
   dureeActuelle: string = '00:00:00';
   isPointeArrivee: boolean = false;
 
@@ -76,7 +75,7 @@ export class Dashboard implements OnInit, OnDestroy {
     this.date = new Date();
 
     this.year = this.date.getFullYear().toString();
-    this.month = this.monthNames[this.date.getMonth() + 1];
+    this.month = this.monthNames[this.date.getMonth()];
     this.day = this.padZero(this.date.getDate());
     this.hour = this.padZero(this.date.getHours());
     this.minute = this.padZero(this.date.getMinutes());
@@ -93,14 +92,14 @@ export class Dashboard implements OnInit, OnDestroy {
   chargerJourneeEnCours(): void {
     if (!this.userId) return;
 
-    this.pointService.getJourneeEnCours(this.userId).subscribe({
-      next: (journee) => {
-        if (journee) {
-          this.journeeEnCours = journee;
+    this.pointService.getPendingDay(this.userId).subscribe({
+      next: (day) => {
+        if (day) {
+          this.pendingDay = day;
           this.isPointeArrivee = true;
 
           // Lancer le compteur en temps réel
-          const dateDebut = new Date(journee.debut);
+          const dateDebut = new Date(day.begin);
           this.dureeSubscription = this.pointService
             .calculerDureeEnTempsReel(dateDebut)
             .subscribe(duree => {
@@ -115,12 +114,13 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   pointerArrivee(): void {
+    console.log('pointer arrivee', this.userId);
     if (!this.userId) return;
 
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
         console.log('Arrivée enregistrée:', result);
-        this.chargerJourneeEnCours(); // Recharger après pointage
+        this.chargerJourneeEnCours();
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
     });
@@ -132,9 +132,9 @@ export class Dashboard implements OnInit, OnDestroy {
     this.pointService.enregistrerSortie(this.userId).subscribe({
       next: (result) => {
         console.log('Sortie enregistrée:', result);
-        this.dureeSubscription?.unsubscribe(); // Arrêter le compteur
+        this.dureeSubscription?.unsubscribe();
         this.isPointeArrivee = false;
-        this.dureeActuelle = result[0].durationField || '00:00:00';
+        this.dureeActuelle = '00:00:00';
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });

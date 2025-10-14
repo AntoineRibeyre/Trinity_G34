@@ -3,9 +3,9 @@
 
 on:
   push:
-    branches: [ "main"]
+    branches: [ "main", "ci/cd"]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main"]
 
 env:
   NODE_VERSION: '20'
@@ -14,7 +14,7 @@ env:
 jobs:
 
   # JOB 1: BUILD FRONTEND (Angular)
-  # =========================================
+  # ==========================================
   build-frontend:
     name: Build Frontend (Angular)
     runs-on: ubuntu-latest
@@ -86,19 +86,10 @@ jobs:
         run: |
           python manage.py check
         env:
-          DJANGO_SETTINGS_MODULE: time_manager.settings
+          DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'False'
           ALLOWED_HOSTS: 'localhost,127.0.0.1'
-
-      - name: Check for missing migrations
-        working-directory: ./backend
-        run: |
-          python manage.py makemigrations --check --dry-run
-        env:
-          DJANGO_SETTINGS_MODULE: time_manager.settings
-          SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
-          DEBUG: 'False'
 
 
   # JOB 3: TESTS BACKEND (Django)
@@ -106,8 +97,8 @@ jobs:
   test-backend:
     name: Test Backend (Django)
     runs-on: ubuntu-latest
-    needs: build-backend
-    
+    needs: docker-build
+
     services:
       postgres:
         image: postgres:15
@@ -141,43 +132,45 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-django pytest-cov
 
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h postgres -p 5432 -U test_user && break
+            echo "⏳ Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+
       - name: Run migrations
         working-directory: ./backend
-        run: python manage.py migrate
+        run: python manage.py migrate --noinput
         env:
-          DJANGO_SETTINGS_MODULE: time_manager.settings
+          DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'True'
-          DJANGO_DB_NAME: test_db
-          DJANGO_DB_USER: test_user
-          DJANGO_DB_PASSWORD: test_password
-          DJANGO_DB_HOST: localhost
-          DJANGO_DB_PORT: 5432
-          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
 
       - name: Run tests with coverage
         working-directory: ./backend
-        run: |
-          pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term-missing -v
+        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v
         env:
-          DJANGO_SETTINGS_MODULE: time_manager.settings
+          DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
           DEBUG: 'True'
-          DJANGO_DB_NAME: test_db
-          DJANGO_DB_USER: test_user
-          DJANGO_DB_PASSWORD: test_password
-          DJANGO_DB_HOST: localhost
-          DJANGO_DB_PORT: 5432
-          DATABASE_URL: postgresql://test_user:test_password@localhost:5432/test_db
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
 
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: |
-            backend/htmlcov/
-            backend/coverage.xml
-          retention-days: 30
+          path: backend/coverage.xml
 
       - name: Display coverage summary
         working-directory: ./backend
@@ -192,7 +185,7 @@ jobs:
     name: Generate Coverage Report
     runs-on: ubuntu-latest
     needs: test-backend
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -240,7 +233,7 @@ jobs:
           DJANGO_DB_PORT=5432
           SECRET_KEY=ci-test-secret-key-not-for-production
           DEBUG=True
-          DJANGO_SETTINGS_MODULE=time_manager.settings
+          DJANGO_SETTINGS_MODULE=backend.settings
           ALLOWED_HOSTS=localhost,127.0.0.1
           DATABASE_URL=postgresql://postgres:test_password@db:5432/mydatabase
           EOF

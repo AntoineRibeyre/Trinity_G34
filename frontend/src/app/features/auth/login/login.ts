@@ -1,4 +1,3 @@
-// login.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,9 +16,17 @@ export class Login {
   password = '';
   error = '';
 
+  // isAuthenticated = true;
+
+
   constructor(private auth: AuthService, public router: Router) {}
 
+  navigateToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
   onLogin() {
+    console.log(this.email, this.password);
     this.auth.login(this.email, this.password).subscribe({
       next: () => this.router.navigate(['/dashboard']),
       error: () => this.error = 'Email ou mot de passe incorrect'

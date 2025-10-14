@@ -1,33 +1,34 @@
-<div class="login-container">
-  <h1 class="login-title">{{ "login.connexion"  }}</h1>
-
-  <form (submit)="onLogin(); $event.preventDefault()">
+<div class="general-space">
+<form (submit)="onLogin(); $event.preventDefault()" class="login-form">
+    <h1 class="login-title">Login</h1>
     <!-- Email -->
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input 
-        type="email" 
-        id="email" 
-        class="form-control" 
-        placeholder="votre@email.com" 
+    <div>
+      <label class="form-label" for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        class="form-input"
+        placeholder="votre@email.com"
         name="email"
-        [(ngModel)]="email" 
+        [(ngModel)]="email"
         required>
     </div>
 
     <!-- Mot de passe -->
-    <div class="form-group">
-      <label for="password">Mot de passe</label>
-      <input 
-        type="password" 
-        id="password" 
-        class="form-control" 
-        placeholder="••••••••" 
+    <div>
+      <label class="form-label" for="password">Mot de passe</label>
+      <input
+        type="password"
+        id="password"
+        class="form-input"
+        placeholder="••••••••"
         name="password"
-        [(ngModel)]="password" 
+        [(ngModel)]="password"
         required>
     </div>
 
     <!-- Boutons -->
-    <button type="submit" class="btn btn-primary">Se connecter</button>
-    <button type="button" class="btn btn-secondary" (click)="router.navigate(['/register'])">S'inscrire</button>
+    <button type="submit" class="btn-login">Se connecter</button>
+    <button type="button" class="signup-link" (click)="router.navigate(['/register'])">S'inscrire</button>
+  </form>
+</div>
