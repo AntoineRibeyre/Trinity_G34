@@ -106,9 +106,9 @@ export class PointService {
 
         const heures = Math.floor(diffMs / (1000 * 60 * 60));
         const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        const secondes = Math.floor((diffMs % (1000 * 60)) / 1000);
+        // const secondes = Math.floor((diffMs % (1000 * 60)) / 1000);
 
-        return `${this.pad(heures)}:${this.pad(minutes)}:${this.pad(secondes)}`;
+        return `${this.pad(heures)}:${this.pad(minutes)}`;
       })
     );
   }

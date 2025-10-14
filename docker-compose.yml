@@ -18,8 +18,13 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+          #commande pour hotreload
+      dockerfile: Dockerfile.dev
     container_name: django_backend
+    #commande pour hotreload
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
       - /app/venv
@@ -34,14 +39,19 @@ services:
     tty: true
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+          #commande pour hotreload
+      dockerfile: Dockerfile.dev
     container_name: angular_frontend
+    #commande pour hotreload
+    command: ng serve --host 0.0.0.0 --port 4200 --poll 2000
     volumes:
       - ./frontend:/app
       - /app/node_modules
       - /app/.angular
     ports:
-      - "4200:80"
+      - "4200:4200"
     environment:
       NG_CACHE: /tmp/.angular/cache
     depends_on:

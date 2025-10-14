@@ -53,7 +53,7 @@ export class Dashboard implements OnInit, OnDestroy {
   userId: number | null = null;
   username: string | null = null;
   pendingDay: any = null;
-  dureeActuelle: string = '00:00:00';
+  dureeActuelle: string = '00:00';
   isPointeArrivee: boolean = false;
 
   private dureeSubscription?: Subscription;
@@ -134,7 +134,7 @@ export class Dashboard implements OnInit, OnDestroy {
         console.log('Sortie enregistrée:', result);
         this.dureeSubscription?.unsubscribe();
         this.isPointeArrivee = false;
-        this.dureeActuelle = '00:00:00';
+        this.dureeActuelle = '00:00';
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });
