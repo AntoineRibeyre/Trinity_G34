@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +17,7 @@ export class Dashboard implements OnInit, OnDestroy {
   minute: string = '';
   second: string = '';
   dayOfWeek: string = '';
+  currentUser: User | null = null;
 
   private dayNames = [
     'Dimanche',
@@ -42,7 +45,11 @@ export class Dashboard implements OnInit, OnDestroy {
 
   private intervalId: any;
 
-  ngOnInit() {
+  constructor(private userService: UserService) {}
+
+  async ngOnInit() {
+    // Charge ou récupère le currentUser
+    this.currentUser = await this.userService.loadCurrentUserFromServer();
     this.updateTime(); // Initialiser immédiatement
     this.intervalId = setInterval(() => {
       this.updateTime();

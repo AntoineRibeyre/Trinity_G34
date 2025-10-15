@@ -8,14 +8,9 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { from, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import {CurrentUserResponse} from "../models/user.model"
 
-interface CurrentUserResponse {
-  currentUser: {
-    id: string;
-    email: string;
-    username: string;
-  } | null;
-}
+
 
 @Injectable({
   providedIn: 'root'
