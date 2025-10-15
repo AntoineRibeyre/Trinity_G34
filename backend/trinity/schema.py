@@ -106,7 +106,7 @@ class CreateTeam(graphene.Mutation):
 
 
 class Mutation(graphene.ObjectType):
-    token_auth = CustomObtainJSONWebToken.Field() # Login avec token
+    token_auth = CustomObtainJSONWebToken.Field() # Login personnalisé avec token 
     verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
     refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
 

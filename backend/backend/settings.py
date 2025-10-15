@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'trinity',
     'rest_framework',
     'drf_yasg',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,28 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "trinity.middlewares.jwt_cookie_auth.JWTAuthenticationMiddleware",
     'trinity.middlewares.jwt_cookie_auth.JWTCookieMiddleware',
+    'csp.middleware.CSPMiddleware', 
 ]
+
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        # Scripts JS autorisés
+        'script-src': ["'self'", "http://localhost:4200"],
+
+        # Styles CSS autorisés
+        'style-src': ["'self'", "http://localhost:4200", "https://fonts.googleapis.com"],
+
+        # Images autorisées
+        'img-src': ["'self'", "http://localhost:4200"],
+
+        # Fonts autorisées
+        'font-src': ["'self'", "https://fonts.gstatic.com"],
+
+        # Par défaut pour tout autre type de contenu
+        'default-src': ["'self'"],
+    }
+}
+
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
