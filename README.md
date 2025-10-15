@@ -24,3 +24,8 @@ Puis
 ```bash
 python manage.py migrate
 ```
+# Pour accéder à une image docker :
+ 
+docker exec -it django_backend bash
+ 
+docker exec -it angular_frontend bash
