@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# Create your models here.
 
 
 class Team(models.Model):
@@ -11,20 +10,20 @@ class Team(models.Model):
 
 
 class User(AbstractUser):
-    # Django gère déjà username, password, email, etc.
-    username=models.CharField(blank=True,null=True)
+    # Django handles already  username, password, email, etc.
+    username = models.CharField(blank=True, null=True)
     email = models.EmailField(unique=True)
     telephone = models.CharField(max_length=100, blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
     team = models.ForeignKey(Team, null=True, blank=True,
                              on_delete=models.SET_NULL, related_name="membres")
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
     def __str__(self):
         return self.first_name
 
-    """This class defines a datastructure of an  employee"""
+    """This class defines a data structure of an  employee"""
 
 
 class Calendar(models.Model):

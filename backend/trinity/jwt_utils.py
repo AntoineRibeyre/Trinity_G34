@@ -3,6 +3,8 @@ from calendar import timegm
 
 
 def jwt_payload_handler(user, context=None):
+    """This method contains token characteristics, expiration, and information
+    that are returned."""
     now = datetime.utcnow()
     expiration = now + timedelta(minutes=5)
 

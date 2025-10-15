@@ -1,48 +1,23 @@
 import graphene
 import graphql_jwt
-from graphene_django.types import DjangoObjectType
-
-from .models import User, Team, Calendar
-from .logic.userfactory import UserFactory
-from .logic.teamfactory import TeamFactory
-from .logic.calendarfactory import CalendarFactory
-
-
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
-        fields = '__all__'
-
-
-class TeamType(DjangoObjectType):
-    class Meta:
-        model = Team
-        fields = '__all__'
-
-
-class CalendarType(DjangoObjectType):
-    class Meta:
-        model = Calendar
-        fields = '__all__'
-
-
-class RegisterResponseType(graphene.ObjectType):
-    datetime_field = graphene.JSONString()
-    duration_field = graphene.JSONString()
+from ..models import User, Team, Calendar
+from ..logic.userfactory import UserFactory
+from ..logic.teamfactory import TeamFactory
+from ..logic.calendarfactory import CalendarFactory
+import backend.trinity.schema.graphtypes as graphtype
 
 
 class Query(graphene.ObjectType):
-    all_users = graphene.List(UserType)
-    all_teams = graphene.List(TeamType)
-    all_calendars = graphene.List(CalendarType)
-    register_arrival = graphene.List(RegisterResponseType,
-                                     user_id=graphene.Int(required=True))
-    register_end = graphene.List(RegisterResponseType,
-                                 user_id=graphene.Int(required=True))
+    """This class is used to list and resolve all possible GraphQL queries."""
+    all_users = graphene.List(graphtype.UserType)
+    all_teams = graphene.List(graphtype.TeamType)
+    all_calendars = graphene.List(graphtype.CalendarType)
     pending_day = graphene.Field(
-        CalendarType,
+        graphtype.CalendarType,
         user_id=graphene.Int(required=True)
     )
+    manager_view = graphene.Field(graphtype.TeamViewType,
+                                  manager_id=graphene.Int(required=True))
 
     def resolve_all_users(self, info, *kwargs):
         return User.objects.all()
@@ -53,21 +28,8 @@ class Query(graphene.ObjectType):
     def resolve_all_calendars(self, info, *kwargs):
         return Calendar.objects.all()
 
-    # def resolve_register_arrival(self, info, user_id):
-    #     result = CalendarFactory.create_calendar(user_id)
-    #     return [RegisterResponseType(
-    #         datetime_field=result.date_time_data,
-    #         duration_field=None
-    #
-    #      )]
-    #
-    # def resolve_register_end(self, info, user_id):
-    #     result = CalendarFactory.register_out(user_id)
-    #     return [RegisterResponseType(
-    #         datetime_field=result.date_time_data,
-    #         duration_field=result.duree_data)]
-
     def resolve_pending_day(self, info, user_id):
+        """This method resolve pending_day querey """
         try:
             return Calendar.objects.filter(
                 employee_id=user_id,
@@ -76,8 +38,16 @@ class Query(graphene.ObjectType):
         except Calendar.DoesNotExist:
             return None
 
+    def resolve_manager_view(self, info, manager_id: int):
+        """This method shows all the team details"""
+        result = graphtype.ObjectTypeFactory.team_viewer_type_builder(
+            manager_id)
+        return result
+
 
 class CreateUser(graphene.Mutation):
+    """This class is a GraphQL mutation that creates a new user and pushes it
+    to the database."""
     class Arguments:
         username = graphene.String(required=True)
         first_name = graphene.String(required=True)
@@ -88,21 +58,24 @@ class CreateUser(graphene.Mutation):
         password = graphene.String(required=True)
         role = graphene.String(required=True)
 
-    user = graphene.Field(UserType)
+    user = graphene.Field(graphtype.UserType)
 
-    def mutate(self, info, username, first_name, last_name, email, telephone,password, role, team_id=None):
-        # Si l'utilisateur appartient à une équipe
-        user = UserFactory.create_new_user(username, first_name, last_name, email,
-                                           telephone, team_id, password, role)
+    def mutate(self, info, username, first_name, last_name, email, telephone,
+               password, role, team_id=None):
+        user = UserFactory.create_new_user(username, first_name, last_name,
+                                           email, telephone, team_id, password,
+                                           role)
         return CreateUser(user=user)
 
 
 class CreateTeam(graphene.Mutation):
+    """This class is a GraphQL mutation that creates a new team and pushes it
+    to the database."""
     class Arguments:
         name = graphene.String(required=True)
         description = graphene.String(required=False)
 
-    team = graphene.Field(TeamType)
+    team = graphene.Field(graphtype.TeamType)
 
     def mutate(self, info, name, description=None):
         team = TeamFactory.create_team(name, description)
@@ -110,7 +83,8 @@ class CreateTeam(graphene.Mutation):
 
 
 class RegisterArrival(graphene.Mutation):
-
+    """This class is used to create the mutations that
+    register the arrival time."""
     class Arguments:
         user_id = graphene.Int(required=True)
 
@@ -126,7 +100,8 @@ class RegisterArrival(graphene.Mutation):
 
 
 class RegisterEnd(graphene.Mutation):
-
+    """This class is used to create the mutations that
+    register the departure time."""
     class Arguments:
         user_id = graphene.Int(required=True)
 
@@ -140,17 +115,18 @@ class RegisterEnd(graphene.Mutation):
             duration_field=result.duree_data
         )
 
+
 class Mutation(graphene.ObjectType):
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
-    verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
-    refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
-
-
+    """This class is used to list and resolve all possible GraphQL mutations
+    ."""
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()  # Login with token
+    verify_token = graphql_jwt.Verify.Field()  # verifying the token
+    refresh_token = graphql_jwt.Refresh.Field()  # Refresh of the token
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
-
     register_arrival = RegisterArrival.Field()
     register_end = RegisterEnd.Field()
 
-# Schema final
+
+# final schema
 schema = graphene.Schema(query=Query, mutation=Mutation)
