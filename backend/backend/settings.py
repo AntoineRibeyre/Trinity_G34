@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -52,10 +53,11 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    "trinity.middlewares.jwt_cookie_auth.JWTAuthenticationMiddleware",
+    'django.contrib.auth.middleware.AuthenticationMiddleware', 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "trinity.middlewares.jwt_cookie_auth.JWTAuthenticationMiddleware",
+    'trinity.middlewares.jwt_cookie_auth.JWTCookieMiddleware',
 ]
 
 # CORS
@@ -79,6 +81,11 @@ GRAPHQL_JWT = {
         'graphql_jwt.mutations.Verify',
         'graphql_jwt.mutations.Refresh',
     ],
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': timedelta(hours=1),  # 🔥 1 heure
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+    'JWT_PAYLOAD_HANDLER': 'trinity.jwt_utils.jwt_payload', 
 }
 
 CORS_ALLOW_HEADERS = [

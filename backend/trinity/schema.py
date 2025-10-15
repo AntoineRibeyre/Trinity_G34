@@ -39,8 +39,13 @@ class Query(graphene.ObjectType):
     # renvoie l'utilisateur connecté s'il est connecté
     def resolve_current_user(self, info):
         user = info.context.user
-        if user.is_authenticated:
+        print(f"🔍 resolve_current_user - Type de user: {type(user)}")
+        print(f"🔍 resolve_current_user - User value: {user}")
+        print(f"🔍 resolve_current_user - Has is_authenticated: {hasattr(user, 'is_authenticated')}")
+        
+        if hasattr(user, 'is_authenticated') and user.is_authenticated:
             return user
+        
         return None
     
     def resolve_all_users(self, info, *kwargs):

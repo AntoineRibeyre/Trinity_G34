@@ -17,22 +17,13 @@ COPY package*.json ./
 # Installer les dépendances
 RUN npm install
 
-# Installer Apollo Client manuellement (pas avec ng add)
-#RUN npm install @apollo/client graphql
-#
-#RUN npm install @types/node
-#
-#RUN npm install @ngx-translate/core
-#
-#RUN npm install @ngx-translate/http-loader
-
 # Copier le code source
 COPY . .
 
 # Désactiver l'analytics pour ce projet aussi
 RUN ng analytics off || true
 
-# Build de production au lieu de ng serve
+# Build de production
 RUN ng build --configuration production
 
 # ==========================================
@@ -40,13 +31,16 @@ RUN ng build --configuration production
 # ==========================================
 FROM nginx:alpine
 
-# Copier les fichiers buildés
+# Supprimer la configuration par défaut
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copier VOTRE configuration nginx personnalisée
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copier les fichiers buildés depuis le stage builder
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 
-# Configuration nginx simple pour Angular
-RUN echo 'server {listen 80;root /usr/share/nginx/html;index index.html;location / {try_files $uri $uri/ /index.html;}}' > /etc/nginx/conf.d/default.conf
-
-# Exposer le port 80 (au lieu de 4200)
+# Exposer les ports
 EXPOSE 80
 
 # Démarrer nginx

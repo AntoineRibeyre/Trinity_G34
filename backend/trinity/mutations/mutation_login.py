@@ -28,7 +28,7 @@ class LoginMutation(graphene.Mutation):
         # Création du JWT
         payload = {
             'user_id': user.id,
-            'exp': datetime.utcnow() + timedelta(seconds=10),
+            'exp': datetime.utcnow() + timedelta(seconds=3600),
             'iat': datetime.utcnow()
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')

@@ -2,14 +2,13 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
-// Interface corrigée - sans le niveau 'data' en trop
 interface CurrentUserResponse {
   currentUser: {
     id: string;
@@ -23,93 +22,27 @@ interface CurrentUserResponse {
 })
 export class AuthService {
 
-  //Création d'un client particulier pour le login (sans token csrf)
+  // Client Apollo pour le login (sans CSRF, endpoint /graphql-login/)
   loginClient = new ApolloClient({
     link: new HttpLink({
-      uri: 'http://localhost:8000/graphql-login/', // endpoint login qui ne nécessite pas de token
-      credentials: 'include', // envoie le cookie HttpOnly
+      uri: '/graphql-login/',
+      credentials: 'include', // Envoie les cookies
     }),
     cache: new InMemoryCache(),
   });
 
   // Mutation GraphQL pour login
   private LOGIN_MUTATION = gql`
-  mutation tokenAuth($email: String!, $password: String!) {
-    tokenAuth(email: $email, password: $password) {
-      token       # JWT renvoyé
-      csrfToken   # CSRF token pour Angular
-      payload
+    mutation tokenAuth($email: String!, $password: String!) {
+      tokenAuth(email: $email, password: $password) {
+        token
+        csrfToken
+        payload
+      }
     }
-  }
-`;
+  `;
 
-
-  constructor(private apollo: Apollo, private router: Router, private http: HttpClient) {}
-
-  /**
-   * Login utilisateur
-   * Le JWT est stocké en cookie HttpOnly côté backend
-   * Le CSRF token est stocké dans un cookie normal
-   */
-  login(email: string, password: string) {
-    return from(
-      this.loginClient.mutate({
-        mutation: this.LOGIN_MUTATION,
-        variables: { email, password }
-      })
-    ).pipe(
-      map((result: any) => {
-        const csrfToken = result?.data?.tokenAuth?.csrfToken;
-        if (csrfToken) {
-          document.cookie = `csrftoken=${csrfToken}; path=/`;
-        }
-        return result?.data?.tokenAuth;
-      })
-    );
-  }
-
-  /**
-   * Inscription utilisateur
-   */
-  register(username: string, firstName: string, lastName: string, email: string, telephone: string, password: string, role: string) {
-    const REGISTER_MUTATION = gql`
-      mutation createUser($username: String!, $firstName: String!, $lastName: String!, $email: String!, $telephone: String!, $password: String!, $role: String!) {
-        createUser(username: $username, firstName: $firstName, lastName: $lastName, email: $email, telephone: $telephone, password: $password, role: $role) {
-          user {
-            id
-            email
-          }
-        }
-      }
-    `;
-
-    return this.apollo.mutate({
-      mutation: REGISTER_MUTATION,
-      variables: {username, firstName, lastName, email, telephone, password, role }
-    });
-  }
-
-  /**
-   * Logout utilisateur
-   * Supprime le cookie côté backend et redirige l'utilisateur sur la page login
-   */
-  logout() {
-    const LOGOUT_MUTATION = gql`
-      mutation logout {
-        logout {
-          success
-        }
-      }
-    `;
-
-    this.apollo.mutate({ mutation: LOGOUT_MUTATION }).subscribe(() => {
-      this.router.navigate(['/login']);
-    });
-  }
-
-  /**
-   * Vérifie si utilisateur authentifié
-   */
+  // Query pour récupérer l'utilisateur connecté
   CURRENT_USER_QUERY = gql`
     query CurrentUser {
       currentUser {
@@ -120,19 +53,146 @@ export class AuthService {
     }
   `;
 
-  async isAuthenticated(): Promise<boolean> {
+  constructor(
+    private apollo: Apollo, 
+    private router: Router, 
+    private http: HttpClient
+  ) {}
+
+  /**
+   * Login utilisateur ET récupère l'utilisateur connecté
+   * Le JWT est stocké en cookie HttpOnly côté backend
+   * Le CSRF token est stocké dans un cookie normal
+   */
+  async login(email: string, password: string): Promise<CurrentUserResponse['currentUser']> {
     try {
-      const result = await firstValueFrom(
-        this.apollo.query<CurrentUserResponse>({ // Bien appeler Apollo pour ajouter automatiquement le headers contenant le token dans les requêtes
+      // 1. Exécuter la mutation de login
+      const loginResult = await this.loginClient.mutate({
+        mutation: this.LOGIN_MUTATION,
+        variables: { email, password }
+      });
+
+      const csrfToken = loginResult?.data?.tokenAuth?.csrfToken;
+      
+      if (csrfToken) {
+        // Stocker le CSRF token dans un cookie accessible en JavaScript
+        document.cookie = `csrftoken=${csrfToken}; path=/; SameSite=Lax`;
+        console.log('CSRF token stocké:', csrfToken.substring(0, 20) + '...');
+      }
+      
+      console.log('Login réussi, récupération de l\'utilisateur...');
+      
+      // 2. Récupérer l'utilisateur connecté (le cookie JWT est maintenant défini)
+      const userResult = await firstValueFrom(
+        this.apollo.query<CurrentUserResponse>({
           query: this.CURRENT_USER_QUERY,
           fetchPolicy: 'network-only'
         })
       );
-
-      console.log("Connecté", result.data.currentUser);
-      return !!result?.data?.currentUser;
+      
+      const user = userResult.data.currentUser;
+      
+      if (user) {
+        console.log('Utilisateur récupéré:', user);
+        return user;
+      } else {
+        throw new Error('Impossible de récupérer l\'utilisateur après login');
+      }
+      
     } catch (err) {
-      console.log("Déconnecté", err);
+      console.error('Erreur login:', err);
+      throw err;
+    }
+  }
+
+  /**
+   * Inscription utilisateur
+   */
+  register(username: string, firstName: string, lastName: string, email: string, telephone: string, password: string, role: string) {
+    const REGISTER_MUTATION = gql`
+      mutation createUser(
+        $username: String!, 
+        $firstName: String!, 
+        $lastName: String!, 
+        $email: String!, 
+        $telephone: String!, 
+        $password: String!, 
+        $role: String!
+      ) {
+        createUser(
+          username: $username, 
+          firstName: $firstName, 
+          lastName: $lastName, 
+          email: $email, 
+          telephone: $telephone, 
+          password: $password, 
+          role: $role
+        ) {
+          user {
+            id
+            email
+          }
+        }
+      }
+    `;
+
+    return this.apollo.mutate({
+      mutation: REGISTER_MUTATION,
+      variables: { username, firstName, lastName, email, telephone, password, role }
+    });
+  }
+
+  /**
+   * Logout utilisateur
+   * Supprime les cookies et redirige vers login
+   */
+  logout() {
+    // Supprimer le cookie CSRF côté client
+    document.cookie = 'csrftoken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    
+    console.log('Déconnexion effectuée');
+    this.router.navigate(['/login']);
+  }
+
+  /**
+   * Vérifie si l'utilisateur est authentifié
+   * Retourne true si un utilisateur connecté existe, false sinon
+   */
+  async isAuthenticated(): Promise<boolean> {
+    try {
+      console.log('Vérification authentification...');
+      console.log('Cookies actuels:', document.cookie);
+      
+      const result = await firstValueFrom(
+        this.apollo.query<CurrentUserResponse>({
+          query: this.CURRENT_USER_QUERY,
+          fetchPolicy: 'network-only', // Force la requête réseau
+          errorPolicy: 'all' // Capture toutes les erreurs
+        })
+      );
+
+      const user = result.data.currentUser;
+      
+      if (user) {
+        console.log('Utilisateur connecté:', user);
+        return true;
+      } else {
+        console.log('Pas d\'utilisateur connecté (currentUser = null)');
+        return false;
+      }
+      
+    } catch (err: any) {
+      console.error('Erreur lors de la vérification:', err);
+      
+      // Log détaillé de l'erreur
+      if (err.graphQLErrors) {
+        console.error('GraphQL Errors:', err.graphQLErrors);
+      }
+      if (err.networkError) {
+        console.error('Network Error:', err.networkError);
+      }
+      
       return false;
     }
   }

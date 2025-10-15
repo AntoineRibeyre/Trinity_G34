@@ -1,9 +1,49 @@
-# backend/views.py
-from django.views.decorators.csrf import csrf_exempt
 from graphene_django.views import GraphQLView
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+import json
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginGraphQLView(GraphQLView):
-    # Le login ne nécessitera pas d'avoir un token déjà créé
-    @csrf_exempt
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    """
+    Vue GraphQL personnalisée pour le login.
+    Intercepte la réponse pour ajouter le JWT en cookie.
+    """
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Exécuter la requête GraphQL normalement
+        response = super().dispatch(request, *args, **kwargs)
+        
+        print("🔍 LoginGraphQLView - dispatch appelé")
+        
+        # Vérifier si un token JWT doit être mis en cookie
+        if hasattr(request, '_jwt_token_set_cookie') and request._jwt_token_set_cookie:
+            token = getattr(request, '_jwt_token', None)
+            
+            if token:
+                print(f"🔥 Ajout du cookie access_token: {token[:50]}...")
+                
+                response.set_cookie(
+                    key='access_token',
+                    value=token,
+                    httponly=True,        # Pas accessible en JavaScript
+                    secure=False,         # False en dev (HTTP), True en prod (HTTPS)
+                    samesite='Lax',       # Protection CSRF
+                    max_age=3600,         # 1 heure
+                    path='/',             # Disponible sur tout le site
+                    domain=None           # Domaine actuel
+                )
+                
+                print("✅ Cookie access_token ajouté avec succès")
+            else:
+                print("⚠️ Flag _jwt_token_set_cookie présent mais pas de token")
+        else:
+            print("ℹ️ Pas de demande de cookie JWT (requête non-login ou échec)")
+        
+        return response
+    
+    def execute_graphql_request(self, request, data, query, *args, **kwargs):
+        """Override pour logger les mutations"""
+        print(f"📝 GraphQL Query: {query[:100] if query else 'None'}...")
+        return super().execute_graphql_request(request, data, query, *args, **kwargs)

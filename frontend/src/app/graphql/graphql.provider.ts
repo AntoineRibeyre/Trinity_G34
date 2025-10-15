@@ -5,7 +5,7 @@ import { HttpLink } from 'apollo-angular/http';
 import { onError } from '@apollo/client/link/error';
 import { Router } from '@angular/router';
 
-const uri = 'http://localhost:8000/graphql/';
+const uri = '/graphql/';
 
 export function apolloOptionsFactory(): ApolloClientOptions<any> {
   const httpLink = inject(HttpLink);
