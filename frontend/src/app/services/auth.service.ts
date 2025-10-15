@@ -136,7 +136,7 @@ export class AuthService {
       }
     `;
 
-    return this.apollo.mutate({
+    return this.loginClient.mutate({
       mutation: REGISTER_MUTATION,
       variables: { username, firstName, lastName, email, telephone, password, role }
     });
@@ -147,13 +147,31 @@ export class AuthService {
    * Supprime les cookies et redirige vers login
    */
   logout() {
-    // Supprimer le cookie CSRF côté client
-    document.cookie = 'csrftoken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    
-    console.log('Déconnexion effectuée');
-    this.router.navigate(['/login']);
+    const LOGOUT_MUTATION = gql`
+      mutation {
+        logout {
+          success
+          message
+        }
+      }
+    `;
+
+    this.loginClient.mutate({ mutation: LOGOUT_MUTATION })
+      .then((response: any) => {
+        console.log('Réponse logout:', response);
+        
+        // Supprimer manuellement les cookies côté client (pour nettoyage visuel)
+        document.cookie = 'csrftoken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+
+        this.router.navigate(['/login']);
+      })
+      .catch((error: any) => {
+        console.error('Erreur logout:', error);
+        this.router.navigate(['/login']);
+      });
   }
+
 
   /**
    * Vérifie si l'utilisateur est authentifié

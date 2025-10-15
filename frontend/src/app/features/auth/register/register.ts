@@ -34,33 +34,31 @@ export class Register implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    if (this.registerForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
+  async onSubmit(): Promise<void> {
+  if (this.registerForm.valid) {
+    this.isLoading = true;
+    this.errorMessage = '';
 
-      const { firstName, lastName, email, telephone, password } = this.registerForm.value;
-      const role = "employe"
-      const username = firstName
+    const { firstName, lastName, email, telephone, password } = this.registerForm.value;
+    const role = 'employe';
+    const username = firstName;
 
-      this.authService.register(username, firstName, lastName, email, telephone, password, role).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          console.log('Inscription réussie:', response);
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message || "Erreur lors de l'inscription.";
-          console.error('Erreur inscription:', error);
-        }
-      });
-    } else {
-      // ✅ Marquer tous les champs comme "touched" pour afficher les erreurs
-      Object.keys(this.registerForm.controls).forEach(key => {
-        this.registerForm.get(key)?.markAsTouched();
-      });
-      this.errorMessage = 'Veuillez remplir tous les champs correctement.';
+    try {
+      const response = await this.authService.register(username, firstName, lastName, email, telephone, password, role);
+      this.isLoading = false;
+      console.log('Inscription réussie:', response);
+      this.router.navigate(['/login']);
+    } catch (error: any) {
+      this.isLoading = false;
+      this.errorMessage = error.message || "Erreur lors de l'inscription.";
+      console.error('Erreur inscription:', error);
     }
+  } else {
+    Object.keys(this.registerForm.controls).forEach(key => {
+      this.registerForm.get(key)?.markAsTouched();
+    });
+    this.errorMessage = 'Veuillez remplir tous les champs correctement.';
   }
+}
+
 }

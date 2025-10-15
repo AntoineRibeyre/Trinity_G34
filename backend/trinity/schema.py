@@ -6,6 +6,7 @@ from .logic.userfactory import UserFactory
 from .logic.teamfactory import TeamFactory
 from .logic.calendrierfactory import CalendrierFactory, CalendrierQueryOutput
 from .mutations.mutation_token import CustomObtainJSONWebToken
+from .mutations.mutation_logout import LogoutMutation
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -114,6 +115,6 @@ class Mutation(graphene.ObjectType):
     create_team = CreateTeam.Field()
 
     # login = LoginMutation.Field()
-    # logout = LogoutMutation.Field()
+    logout = LogoutMutation.Field()
 # Schema final
 schema = graphene.Schema(query=Query, mutation=Mutation)
