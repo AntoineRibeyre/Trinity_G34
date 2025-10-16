@@ -26,9 +26,9 @@ TIME_ZONE = "Europe/Paris"
 SECRET_KEY = 'django-insecure-%ffnyw2n674_5j(s!2kn%@glqn)nbblvyhqojk!63b0=vk8n2i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -57,18 +57,30 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
     "trinity.middlewares.jwt_cookie_auth.JWTAuthenticationMiddleware",
     'trinity.middlewares.jwt_cookie_auth.JWTCookieMiddleware',
-    'csp.middleware.CSPMiddleware',
+    
 ]
 
 CONTENT_SECURITY_POLICY = {
     'DIRECTIVES': {
         # Scripts JS autorisés
-        'script-src': ["'self'", "http://localhost:4200"],
+        'script-src': [
+            "'self'",
+            "http://localhost:4200",
+            "https://cdn.jsdelivr.net",  # CDN pour GraphiQL
+            "'unsafe-inline'"            # nécessaire pour les scripts inline de GraphiQL
+        ],
 
         # Styles CSS autorisés
-        'style-src': ["'self'", "http://localhost:4200", "https://fonts.googleapis.com"],
+        'style-src': [
+            "'self'",
+            "http://localhost:4200",
+            "https://fonts.googleapis.com",
+            "https://cdn.jsdelivr.net",  # CDN pour GraphiQL CSS
+            "'unsafe-inline'"            # nécessaire pour les styles inline de GraphiQL
+        ],
 
         # Images autorisées
         'img-src': ["'self'", "http://localhost:4200"],
@@ -80,6 +92,7 @@ CONTENT_SECURITY_POLICY = {
         'default-src': ["'self'"],
     }
 }
+
 
 
 # CORS

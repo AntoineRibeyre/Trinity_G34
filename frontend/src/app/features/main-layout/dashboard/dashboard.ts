@@ -53,7 +53,7 @@ export class Dashboard implements OnInit, OnDestroy {
   private intervalId: any;
 
   //Pointage
-  userId: string | null = null;
+  userId: number | null = null;
   username: string | null = null;
   pendingDay: any = null;
   dureeActuelle: string = '00:00:00';  // ✅ Durée de la période en cours
@@ -74,7 +74,7 @@ export class Dashboard implements OnInit, OnDestroy {
   async ngOnInit() {
     this.currentUser = await this.userService.loadCurrentUserFromServer();
     if (this.currentUser){
-      this.userId = this.currentUser.id
+      this.userId = Number(this.currentUser.id);
       this.username = this.currentUser.username
     }
 

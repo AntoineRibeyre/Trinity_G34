@@ -1,0 +1,14 @@
+{
+  "/graphql": {
+    "target": "http://backend:8000",
+    "secure": false,
+    "changeOrigin": true,
+    "cookieDomainRewrite": "localhost"
+  },
+  "/graphql-login": {
+    "target": "http://backend:8000",
+    "secure": false,
+    "changeOrigin": true,
+    "cookieDomainRewrite": "localhost"
+  }
+}

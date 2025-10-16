@@ -39,3 +39,5 @@ docker exec -it angular_frontend bash
 - sphinx-build -b html . _build/html
 
 # La doc angular est générée automatiquement (voir l'url http://localhost:4200/docs/)
+
+# ATTENTION A BIEN UTILISER LES DOCKERFILE ET LE DOCKER-COMPOSE AU LIEU DES DOCKERFILE.DEV ET DOCKER-COMPOSE.DEV

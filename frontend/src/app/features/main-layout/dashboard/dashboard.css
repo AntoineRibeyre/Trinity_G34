@@ -185,7 +185,7 @@
         letter-spacing: 1px;
       }
 
-    // Effet hover de base
+    /*// Effet hover de base*/
     &:hover:not(.disabled) {
       transform: translateY(-2px);
       box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2);

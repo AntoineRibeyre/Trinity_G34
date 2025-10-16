@@ -33,16 +33,16 @@ services:
     tty: true
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
     container_name: angular_frontend
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app:cached
       - /app/node_modules
       - /app/.angular
     ports:
-      - "4200:80"
-    environment:
-      NG_CACHE: /tmp/.angular/cache
+      - "4200:4200"
     depends_on:
       - backend
     stdin_open: true
