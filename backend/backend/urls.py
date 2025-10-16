@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from graphene_django.views import GraphQLView
-from django.urls import path, include
+from django.urls import path, include, re_path
 from . import schema
 from django.conf import settings
 from trinity.views.login import LoginGraphQLView
+from django.views.static import serve
+import pathlib
 
+docs_root = pathlib.Path(__file__).resolve().parent.parent / 'docs' / 'docs' / '_build' / 'html'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +33,7 @@ urlpatterns = [
     # endpoint GraphQL pour login (CSRF désactivé)
     path("graphql-login/", LoginGraphQLView.as_view(graphiql=True)),
 
+    re_path(r'^sphinx-docs/(?P<path>.*)$', serve, {
+            'document_root': str(docs_root),
+        }),
 ]
