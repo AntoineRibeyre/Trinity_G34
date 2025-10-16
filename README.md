@@ -24,3 +24,18 @@ Puis
 ```bash
 python manage.py migrate
 ```
+# Pour accéder à une image docker :
+ 
+docker exec -it django_backend bash
+ 
+docker exec -it angular_frontend bash
+
+# Générer la doc django
+
+- docker exec -it django_backend bash
+- sphinx-quickstart docs (docs doit déjà exister)
+- sphinx-apidoc -o docs/ /app/trinity
+- cd docs
+- sphinx-build -b html . _build/html
+
+# La doc angular est générée automatiquement (voir l'url http://localhost:4200/docs/)

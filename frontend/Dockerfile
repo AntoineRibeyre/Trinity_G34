@@ -1,10 +1,10 @@
 # ==========================================
-# Stage 1: Build
+# Stage 1: Build Angular + Compodoc
 # ==========================================
 FROM node:22-alpine AS builder
 
-# Installer Angular CLI version 20.3
-RUN npm install -g @angular/cli@20.3
+# Installer Angular CLI version 20.3 et Compodoc
+RUN npm install -g @angular/cli@20.3 @compodoc/compodoc
 
 # Désactiver l'analytics globalement
 RUN ng analytics off --global
@@ -14,17 +14,8 @@ WORKDIR /app
 # Copier package.json et package-lock.json
 COPY package*.json ./
 
-# Installer les dépendances
+# Installer les dépendances du projet
 RUN npm install
-
-# Installer Apollo Client manuellement (pas avec ng add)
-#RUN npm install @apollo/client graphql
-#
-#RUN npm install @types/node
-#
-#RUN npm install @ngx-translate/core
-#
-#RUN npm install @ngx-translate/http-loader
 
 # Copier le code source
 COPY . .
@@ -32,22 +23,31 @@ COPY . .
 # Désactiver l'analytics pour ce projet aussi
 RUN ng analytics off || true
 
-# Build de production au lieu de ng serve
+# Build de production Angular
 RUN ng build --configuration production
+
+# Génération de la documentation Compodoc
+RUN npx compodoc -p tsconfig.app.json -d docs
 
 # ==========================================
 # Stage 2: Serve avec Nginx
 # ==========================================
 FROM nginx:alpine
 
-# Copier les fichiers buildés
+# Supprimer la configuration par défaut
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copier la configuration Nginx personnalisée
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copier les fichiers Angular buildés
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 
-# Configuration nginx simple pour Angular
-RUN echo 'server {listen 80;root /usr/share/nginx/html;index index.html;location / {try_files $uri $uri/ /index.html;}}' > /etc/nginx/conf.d/default.conf
+# Copier la documentation générée (accessible via /docs)
+COPY --from=builder /app/docs /usr/share/nginx/html/docs
 
-# Exposer le port 80 (au lieu de 4200)
+# Exposer le port HTTP
 EXPOSE 80
 
-# Démarrer nginx
+# Démarrer Nginx
 CMD ["nginx", "-g", "daemon off;"]

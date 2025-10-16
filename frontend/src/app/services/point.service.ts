@@ -63,7 +63,7 @@ export class PointService {
   constructor(private apollo: Apollo) {}
 
   // Récupérer la journée en cours
-  getPendingDay(userId: number): Observable<any> {
+  getPendingDay(userId: string): Observable<any> {
     return this.apollo.query({
       query: GET_PENDING_DAY,
       variables: { userId },
@@ -73,7 +73,7 @@ export class PointService {
     );
   }
 
-  getTodayCalendar(userId: number): Observable<any[]> {
+  getTodayCalendar(userId: string): Observable<any[]> {
     return this.apollo.query({
       query: TODAY_CALENDARS_QUERY,
       variables: { userId },
@@ -144,7 +144,7 @@ export class PointService {
     );
   }
 
-  enregistrerArrivee(userId: number): Observable<any> {
+  enregistrerArrivee(userId: string): Observable<any> {
     return this.apollo.mutate({
       mutation: REGISTER_ARRIVAL,
       variables: { userId }
@@ -153,7 +153,7 @@ export class PointService {
     );
   }
 
-  enregistrerSortie(userId: number): Observable<any> {
+  enregistrerSortie(userId: string): Observable<any> {
     return this.apollo.mutate({
       mutation: REGISTER_END,
       variables: { userId }
