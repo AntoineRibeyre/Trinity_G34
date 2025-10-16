@@ -1,34 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {catchError, interval, Observable, startWith, throwError} from 'rxjs';
+import {catchError, interval, Observable, of, startWith, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
-
-export interface DateTimeData {
-  hour: number;
-  minute: number;
-  second: number;
-  year: number;
-  month: number;
-  day: number;
-}
-
-export interface DureeData {
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-export interface CalendrierData {
-  dateTimeData: DateTimeData;
-  dureeData?: DureeData | null;
-}
-
-export interface PointageResponse {
-  success: boolean;
-  message: string;
-  calendrier: CalendrierData | null;
-}
 
 const GET_PENDING_DAY = gql`
   query GetPendingDay($userId: Int!) {
@@ -42,6 +16,27 @@ const GET_PENDING_DAY = gql`
     }
   }
 `;
+
+const TODAY_CALENDARS_QUERY = gql`
+  query TodayCalendars($userId: Int!) {
+    todayCalendars(userId: $userId) {
+      id
+      begin
+      end
+      dayType
+      dayOver
+      duration          # En secondes
+      durationFormatted # Format HH:MM:SS
+      employee {
+        id
+        username
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
 
 const REGISTER_ARRIVAL = gql`
   mutation RegisterArrival($userId: Int!) {
@@ -78,9 +73,80 @@ export class PointService {
     );
   }
 
+  getTodayCalendar(userId: number): Observable<any[]> {
+    return this.apollo.query({
+      query: TODAY_CALENDARS_QUERY,
+      variables: { userId },
+      fetchPolicy: 'network-only'
+    }).pipe(
+      map((result: any) => {
+        console.log('Résultat brut:', result); // Debug
+        return result.data.todayCalendars || [];
+      }),
+      catchError(error => {
+        console.error('Erreur GraphQL:', error);
+        return of([]);
+      })
+    );
+  }
+
+  calculerDureeTotaleJournee(calendars: any[]): Observable<string> {
+    if (!calendars || calendars.length === 0) {
+      return of('00:00:00');
+    }
+
+    return interval(1000).pipe(
+      map(() => {
+        let totalSeconds = 0;
+
+        // 1. Additionner toutes les durées des périodes terminées
+        calendars.forEach(calendar => {
+          if (calendar.duration) {
+            totalSeconds += calendar.duration; // durée en secondes
+          }
+        });
+
+        // 2. Si une période est en cours (dayOver = false), ajouter le temps écoulé
+        const ongoingCalendar = calendars.find(cal => !cal.dayOver);
+        if (ongoingCalendar && ongoingCalendar.begin) {
+          const now = new Date();
+          const begin = new Date(ongoingCalendar.begin);
+          const elapsedSeconds = Math.floor((now.getTime() - begin.getTime()) / 1000);
+          totalSeconds += elapsedSeconds;
+        }
+
+        // 3. Formater en HH:MM:SS
+        return this.formatSecondsToTime(totalSeconds);
+      })
+    );
+  }
+
+  private formatSecondsToTime(totalSeconds: number): string {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${this.padZero(hours)}:${this.padZero(minutes)}:${this.padZero(seconds)}`;
+  }
+
+  private padZero(value: number): string {
+    return value < 10 ? '0' + value : value.toString();
+  }
+
+  calculerDuree(dateDebut: Date): Observable<string> {
+    return interval(1000).pipe(
+      map(() => {
+        const now = new Date();
+        const diff = now.getTime() - dateDebut.getTime();
+        const totalSeconds = Math.floor(diff / 1000);
+        return this.formatSecondsToTime(totalSeconds);
+      })
+    );
+  }
+
   enregistrerArrivee(userId: number): Observable<any> {
     return this.apollo.mutate({
-      mutation: REGISTER_ARRIVAL,  // ✅ mutation (pas query)
+      mutation: REGISTER_ARRIVAL,
       variables: { userId }
     }).pipe(
       map((result: any) => result.data.registerArrival)
@@ -89,7 +155,7 @@ export class PointService {
 
   enregistrerSortie(userId: number): Observable<any> {
     return this.apollo.mutate({
-      mutation: REGISTER_END,  // ✅ mutation (pas query)
+      mutation: REGISTER_END,
       variables: { userId }
     }).pipe(
       map((result: any) => result.data.registerEnd)

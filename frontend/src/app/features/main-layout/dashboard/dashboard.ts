@@ -53,22 +53,31 @@ export class Dashboard implements OnInit, OnDestroy {
   userId: number | null = null;
   username: string | null = null;
   pendingDay: any = null;
-  dureeActuelle: string = '00:00';
+  dureeActuelle: string = '00:00:00';  // ✅ Durée de la période en cours
+  dureeTotaleJournee: string = '00:00:00';  // ✅ NOUVEAU : Durée totale de la journée
   isPointeArrivee: boolean = false;
+  todayCalendars: any[] = [];
+  isLoading = false;
+  error: any;
 
   private dureeSubscription?: Subscription;
+  private dureeTotaleSubscription?: Subscription;  // ✅ NOUVEAU
 
   constructor(private pointService: PointService,
-              private authService: AuthService,) {}
+              private authService: AuthService,
+              ) {}
 
   ngOnInit() {
     this.userId = this.authService.getUserId();
     this.username = this.authService.getUsername();
 
-    this.updateTime(); // Initialiser immédiatement
+    this.updateTime();
     this.intervalId = setInterval(() => {
       this.updateTime();
     }, 1000);
+
+    this.chargerJourneeEnCours();
+    this.loadTodayCalendars();
   }
 
   updateTime() {
@@ -97,14 +106,6 @@ export class Dashboard implements OnInit, OnDestroy {
         if (day) {
           this.pendingDay = day;
           this.isPointeArrivee = true;
-
-          // Lancer le compteur en temps réel
-          const dateDebut = new Date(day.begin);
-          this.dureeSubscription = this.pointService
-            .calculerDureeEnTempsReel(dateDebut)
-            .subscribe(duree => {
-              this.dureeActuelle = duree;
-            });
         } else {
           this.isPointeArrivee = false;
         }
@@ -113,14 +114,67 @@ export class Dashboard implements OnInit, OnDestroy {
     });
   }
 
+  loadTodayCalendars(): void {
+    if (!this.userId) {
+      console.warn('Pas d\'userId disponible');
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = null;
+
+    this.pointService.getTodayCalendar(this.userId).subscribe({
+      next: (data) => {
+        this.todayCalendars = data;
+        console.log('Calendriers du jour chargés:', this.todayCalendars);
+
+        // ✅ Démarrer le calcul de la durée totale en temps réel
+        this.demarrerCalculDureeTotale();
+
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.error = 'Erreur lors du chargement des données';
+        console.error('Erreur:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private demarrerCalculDureeTotale(): void {
+    // Nettoyer l'ancienne subscription si elle existe
+    this.dureeTotaleSubscription?.unsubscribe();
+
+    // Lancer le calcul en temps réel
+    this.dureeTotaleSubscription = this.pointService
+      .calculerDureeTotaleJournee(this.todayCalendars)
+      .subscribe(duree => {
+        this.dureeTotaleJournee = duree;
+      });
+
+    // Mettre à jour l'état "pointé arrivée"
+    const ongoingCalendar = this.todayCalendars.find(cal => !cal.dayOver);
+    this.isPointeArrivee = !!ongoingCalendar;
+
+    // Calculer aussi la durée de la période en cours
+    if (ongoingCalendar) {
+      this.dureeSubscription?.unsubscribe();
+      const dateDebut = new Date(ongoingCalendar.begin);
+      this.dureeSubscription = this.pointService
+        .calculerDureeEnTempsReel(dateDebut)
+        .subscribe(duree => {
+          this.dureeActuelle = duree;
+        });
+    }
+  }
+
   pointerArrivee(): void {
     console.log('pointer arrivee', this.userId);
     if (!this.userId) return;
-
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
         console.log('Arrivée enregistrée:', result);
-        this.chargerJourneeEnCours();
+        this.loadTodayCalendars();
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
     });
@@ -132,7 +186,7 @@ export class Dashboard implements OnInit, OnDestroy {
     this.pointService.enregistrerSortie(this.userId).subscribe({
       next: (result) => {
         console.log('Sortie enregistrée:', result);
-        this.dureeSubscription?.unsubscribe();
+        this.loadTodayCalendars();
         this.isPointeArrivee = false;
         this.dureeActuelle = '00:00';
       },

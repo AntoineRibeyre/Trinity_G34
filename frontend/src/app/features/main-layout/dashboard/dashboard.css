@@ -51,7 +51,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 150px;
+  justify-content: space-between; /* Remplace le gap */
   color: #999999;
 
   .date-element {
@@ -61,56 +61,68 @@
 
     .days {
       padding-left: 20px;
-      font-size: 140px;
+      font-size: clamp(60px, 10vw, 140px);
+      font-variant-numeric: tabular-nums; /* Chiffres de largeur fixe */
     }
     .week {
       display: flex;
       flex-direction: column;
       align-items: start;
 
-      font-size: 30px;
+      font-size: clamp(16px, 2vw, 30px);
     }
   }
 
   .time {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-end; /* Aligne à droite */
 
-    font-size: 90px;
+    font-size: clamp(40px, 6vw, 90px);
     padding-right: 20px;
+    font-variant-numeric: tabular-nums; /* Chiffres de largeur fixe */
 
     .min {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: flex-end; /* Aligne à droite */
+
+      /* Fixe la largeur pour éviter les décalages */
+      > div:first-child {
+        min-width: 2ch; /* 2 caractères pour les minutes */
+        text-align: right;
+      }
     }
 
     .sec {
-      font-size: 20px;
+      font-size: clamp(14px, 1.5vw, 20px);
+      min-width: 2ch; /* 2 caractères pour les secondes */
+      text-align: right;
+      padding-left: 5px;
     }
   }
-
 }
 
 .manager {
   width: 100%;
   height: 40%;
-
   background: #F7F8FA;
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 10px;
 
-  .manager-title{
+  .manager-title {
     width: 100%;
     height: 20%;
-
+    font-size: clamp(14px, 1.8vw, 30px);
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: 500;
+    color: #333;
   }
 
   .time {
@@ -119,10 +131,20 @@
     background: #FFFFFF;
     border-radius: 40px;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.15);
-
+    font-size: clamp(24px, 4vw, 70px);
+    color: #999999;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+  /*// Animation quand le timer est actif*/
+  &.active {
+    color: #27ae60;
+    box-shadow: 0 0 20px rgba(39, 174, 96, 0.3);
+    animation: pulse-timer 2s infinite;
+  }
   }
 
   .point-buttons {
@@ -130,20 +152,164 @@
     height: 40%;
     display: flex;
     flex-direction: row;
-
     gap: 10px;
 
     .pointer {
       width: 100%;
       height: 100%;
       background: #FFFFFF;
-
+      font-size: clamp(16px, 2.5vw, 40px);
+      font-weight: 600;
+      color: #999999;
+      border: none;
       border-radius: 40px;
       box-shadow: 2px 0 4px rgba(0, 0, 0, 0.15);
-
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      .icon {
+        font-size: clamp(20px, 3vw, 50px);
+        transition: transform 0.3s ease;
+      }
+
+      .text {
+        font-size: clamp(14px, 2vw, 30px);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+    // Effet hover de base
+    &:hover:not(.disabled) {
+      transform: translateY(-2px);
+      box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.2);
     }
+
+      &:active:not(.disabled) {
+        transform: translateY(0);
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.15);
+      }
+
+    /*// État désactivé*/
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background: #f5f5f5;
+      color: #ccc;
+
+      .icon {
+        opacity: 0.5;
+      }
+    }
+
+    /*// Bouton START*/
+    &.start {
+    /*// État actif (peut être cliqué)*/
+    &.active {
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+
+      &:hover {
+        background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.5);
+      }
+
+      .icon {
+        animation: bounce 1s infinite;
+      }
+    }
+
+    /*// État désactivé (timer en cours)*/
+    &.disabled {
+      background: #ecf0f1;
+      color: #bdc3c7;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+    }
+    }
+
+    /*// Bouton END*/
+    &.end {
+    /*// État inactif (ne peut pas être cliqué)*/
+    &.disabled {
+      background: #ecf0f1;
+      color: #bdc3c7;
+    }
+
+    /*// État actif (peut être cliqué)*/
+    &.active {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+
+      &:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+      }
+
+      .icon {
+        animation: blink 1.5s infinite;
+      }
+    }
+    }
+    }
+  }
+}
+
+/*// Animations*/
+@keyframes pulse-timer {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(39, 174, 96, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(39, 174, 96, 0.6);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
   }
 }
