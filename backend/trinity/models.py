@@ -35,7 +35,4 @@ class Calendar(models.Model):
     day_over = models.BooleanField(null=False)
     duration = models.DurationField(null=True)
 
-    def save(self, **kwargs):
-        return super().save(**kwargs)
-
     """This class defines the data structure of a calendar"""

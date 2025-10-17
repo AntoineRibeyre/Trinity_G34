@@ -36,7 +36,7 @@ class TeamFactory:
         manger_user = UserFactory.get_team_manager(team)
         # Converting manager from User to a UserView object to get his planning
         manager = UserFactory.build_user_viewer(manger_user)
-        members = UserFactory.build_members_user_viewer(team)
+        members = UserFactory.build_members_userviewer_list(team)
         return TeamViewer(team_details=team, manager=manager, members=members)
 
 

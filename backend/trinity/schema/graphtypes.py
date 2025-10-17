@@ -11,7 +11,7 @@ class UserType(DjangoObjectType):
     """Graphene object connected to the Django User model."""
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name")
+        fields = ("id", "first_name", "last_name", "role")
 
 
 class TeamType(DjangoObjectType):
@@ -27,12 +27,22 @@ class CalendarType(DjangoObjectType):
         model = Calendar
         fields = "__all__"
 
+    def resolve_duration(self, info):
+        """We need to resolve this variable because in Graphene it is
+        considered as a float. If we don't handle this variable here,
+        GraphQL generates type errors."""
+
+        if self.duration is None:
+            return
+        else:
+            return self.duration.seconds/3600
+
 
 class DailyPlanningType(graphene.ObjectType):
     """Graphene object representing a daily planning."""
     date = graphene.String()
     calendar = graphene.List(CalendarType)
-    total_hours = graphene.Float()
+    total_hours = graphene.String()
 
 
 class UserViewType(graphene.ObjectType):
@@ -62,12 +72,14 @@ class ObjectTypeFactory:
                                     ) -> DailyPlanningType:
         """Builds a DailyPlanningType from a DailyPlanning object."""
         return DailyPlanningType(date=planning.date,
-                                 calendar=planning.calendars)
+                                 calendar=planning.calendars,
+                                 total_hours=str(planning.total_hours))
+
 
     @classmethod
     def user_view_type_builder(cls, user_view: UserViewer) -> UserViewType:
         """Builds a UserViewType from a UserView object."""
-        plannigtype = [ObjectTypeFactory.user_view_type_builder(calendar) for
+        plannigtype = [ObjectTypeFactory.daily_planning_type_builder(calendar) for
                        calendar in user_view.planning.values()]
         return UserViewType(user_details=user_view.user_details,
                             planning=plannigtype)

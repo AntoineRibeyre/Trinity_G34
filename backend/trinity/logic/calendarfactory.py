@@ -11,7 +11,7 @@ from ..models import Calendar, User
 class DailyPlanning:
     date: str
     calendars: List[Calendar]
-    total_hours: float
+    total_hours: datetime.timedelta
     """This class containes for a user a sorted calendars by date """
     def add_calendar(self, calendar: Calendar) -> None:
         """This method adds a new calendar to the list of calendars."""
@@ -23,8 +23,7 @@ class DailyPlanning:
         if duration is None:
             pass
         else:
-            added_duration = duration.days*24
-            self.total_hours += added_duration
+            self.total_hours += duration
 
 
 class CalendarQueryOutput:
@@ -125,8 +124,7 @@ class CalendarFactory:
                 # Add a daily planning under a new key
                 new_daily_planning = DailyPlanning(date=date,
                                                    calendars=[calendar],
-                                                   total_hours=0)
-                new_daily_planning.upadate_total_hours(calendar.duration)
+                                                   total_hours=calendar.duration)
                 sorted_planning_by_date[date] = new_daily_planning
             else:
                 # Updating the existing planning

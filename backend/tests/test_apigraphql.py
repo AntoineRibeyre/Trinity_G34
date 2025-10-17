@@ -33,13 +33,10 @@ def test_create_user(client):
         role: "manager"
       ) {
         user {
-          id
-          username
-          firstName
-          lastName
-          email
-          telephone
-          role
+        id,
+        firstName,
+        lastName,
+        role
         }
       }
     }

@@ -22,6 +22,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+
 # Copier l'entrypoint et donner les droits
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
@@ -31,7 +32,7 @@ COPY . .
 RUN chown -R appuser:appuser /app
 
 # Changer vers l'utilisateur non-root
-USER root
-
+USER appuser
+EXPOSE 8002
 EXPOSE 8000
 ENTRYPOINT ["/entrypoint.sh"]

@@ -79,7 +79,7 @@ class UserFactory:
         for member in members:
             # Building a dictionary with the user ID as the key, containing
             # members' details and plannings
-            mermber_list[member.ID] = UserFactory.build_user_viewer(member)
+            mermber_list[member.id] = UserFactory.build_user_viewer(member)
         return mermber_list
 
     @classmethod

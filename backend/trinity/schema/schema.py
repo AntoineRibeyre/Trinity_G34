@@ -4,7 +4,7 @@ from ..models import User, Team, Calendar
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
-import backend.trinity.schema.graphtypes as graphtype
+from . import graphtypes as graphtype
 
 
 class Query(graphene.ObjectType):
@@ -16,7 +16,7 @@ class Query(graphene.ObjectType):
         graphtype.CalendarType,
         user_id=graphene.Int(required=True)
     )
-    manager_view = graphene.Field(graphtype.TeamViewType,
+    manager_view = graphene.Field(graphtype.TeamViewerType,
                                   manager_id=graphene.Int(required=True))
 
     def resolve_all_users(self, info, *kwargs):
@@ -40,7 +40,7 @@ class Query(graphene.ObjectType):
 
     def resolve_manager_view(self, info, manager_id: int):
         """This method shows all the team details"""
-        result = graphtype.ObjectTypeFactory.team_viewer_type_builder(
+        result = graphtype.ObjectTypeFactory.resolve_manager_view(
             manager_id)
         return result
 
