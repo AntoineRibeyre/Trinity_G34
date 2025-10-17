@@ -1,0 +1,26 @@
+FROM python:3.12-slim
+
+# Variables d'environnement
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Installer dépendances système
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    postgresql-client \
+    git \
+    curl \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copier et installer les dépendances Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 🔥 Ne pas copier le code ici, il sera monté via volume
+
+EXPOSE 8000
+
+# 🔥 Pas de CMD ici, il est dans docker-compose

@@ -30,15 +30,16 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "16kB",
+                  "maximumError": "32kB"
                 }
               ],
+
               "outputHashing": "all"
             },
             "development": {
@@ -63,7 +64,9 @@
           "options": {
             "host": "0.0.0.0",
             "poll": 2000,
-            "liveReload": true
+            "liveReload": true,
+            "port": 4200,
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "extract-i18n": {
@@ -90,5 +93,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

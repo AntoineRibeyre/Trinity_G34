@@ -1,12 +1,16 @@
+import datetime
+from zoneinfo import ZoneInfo
 import graphene
 import graphql_jwt
 from graphene_django.types import DjangoObjectType
-
 from .models import User, Team, Calendar
 from .logic.userfactory import UserFactory
 from .logic.teamfactory import TeamFactory
 from .logic.calendarfactory import CalendarFactory
+from django.utils import timezone
 
+from .mutations.mutation_token import CustomObtainJSONWebToken
+from .mutations.mutation_logout import LogoutMutation
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -21,9 +25,25 @@ class TeamType(DjangoObjectType):
 
 
 class CalendarType(DjangoObjectType):
+    duration = graphene.Int()
+    duration_formatted = graphene.String()
     class Meta:
         model = Calendar
         fields = '__all__'
+
+    def resolve_duration(self, info):
+        if self.duration:
+            return int(self.duration.total_seconds())
+        return None
+
+    def resolve_duration_formatted(self, info):
+        if self.duration:
+            total_seconds = int(self.duration.total_seconds())
+            hours = total_seconds // 3600
+            minutes = (total_seconds % 3600) // 60
+            seconds = total_seconds % 60
+            return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        return None
 
 
 class RegisterResponseType(graphene.ObjectType):
@@ -35,14 +55,28 @@ class Query(graphene.ObjectType):
     all_users = graphene.List(UserType)
     all_teams = graphene.List(TeamType)
     all_calendars = graphene.List(CalendarType)
-    register_arrival = graphene.List(RegisterResponseType,
-                                     user_id=graphene.Int(required=True))
-    register_end = graphene.List(RegisterResponseType,
-                                 user_id=graphene.Int(required=True))
     pending_day = graphene.Field(
         CalendarType,
         user_id=graphene.Int(required=True)
     )
+    today_calendars = graphene.List(
+        CalendarType,
+        user_id=graphene.Int()
+    )
+    current_user = graphene.Field(UserType) # utilisateur connecté
+
+
+    # renvoie l'utilisateur connecté s'il est connecté
+    def resolve_current_user(self, info):
+        user = info.context.user
+        # print(f"🔍 resolve_current_user - Type de user: {type(user)}")
+        # print(f"🔍 resolve_current_user - User value: {user}")
+        # print(f"🔍 resolve_current_user - Has is_authenticated: {hasattr(user, 'is_authenticated')}")
+
+        if hasattr(user, 'is_authenticated') and user.is_authenticated:
+            return user
+
+        return None
 
     def resolve_all_users(self, info, *kwargs):
         return User.objects.all()
@@ -53,20 +87,6 @@ class Query(graphene.ObjectType):
     def resolve_all_calendars(self, info, *kwargs):
         return Calendar.objects.all()
 
-    # def resolve_register_arrival(self, info, user_id):
-    #     result = CalendarFactory.create_calendar(user_id)
-    #     return [RegisterResponseType(
-    #         datetime_field=result.date_time_data,
-    #         duration_field=None
-    #
-    #      )]
-    #
-    # def resolve_register_end(self, info, user_id):
-    #     result = CalendarFactory.register_out(user_id)
-    #     return [RegisterResponseType(
-    #         datetime_field=result.date_time_data,
-    #         duration_field=result.duree_data)]
-
     def resolve_pending_day(self, info, user_id):
         try:
             return Calendar.objects.filter(
@@ -76,6 +96,26 @@ class Query(graphene.ObjectType):
         except Calendar.DoesNotExist:
             return None
 
+    def resolve_today_calendars(self, info, user_id=None):
+        # Utiliser la même timezone que dans ton CalendarFactory
+        paris_tz = ZoneInfo("Europe/Paris")
+        now_paris = datetime.datetime.now(paris_tz)
+
+        # Début et fin du jour en heure de Paris
+        today_start = now_paris.replace(hour=0, minute=0, second=0, microsecond=0)
+        today_end = now_paris.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+        queryset = Calendar.objects.filter(
+            begin__gte=today_start,
+            begin__lte=today_end
+        )
+
+        if user_id:
+            queryset = queryset.filter(employee_id=user_id)
+
+        result = queryset.order_by('-begin')
+
+        return result
 
 class CreateUser(graphene.Mutation):
     class Arguments:
@@ -141,7 +181,7 @@ class RegisterEnd(graphene.Mutation):
         )
 
 class Mutation(graphene.ObjectType):
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field() # Login avec token
+    token_auth = CustomObtainJSONWebToken.Field() # Login personnalisé avec token
     verify_token = graphql_jwt.Verify.Field() # Vérification de la validité du token
     refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
 
@@ -152,5 +192,7 @@ class Mutation(graphene.ObjectType):
     register_arrival = RegisterArrival.Field()
     register_end = RegisterEnd.Field()
 
+    # login = LoginMutation.Field()
+    logout = LogoutMutation.Field()
 # Schema final
 schema = graphene.Schema(query=Query, mutation=Mutation)

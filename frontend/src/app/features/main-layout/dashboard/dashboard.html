@@ -1,5 +1,4 @@
 <div class="general-space">
-
   <div class="left-column">
 
     <div class="cards profil">
@@ -41,30 +40,39 @@
         Suivi des heures travaillées
       </div>
 
-      <div class="time">
-        {{ dureeActuelle }}
+      <div class="time" [class.active]="isPointeArrivee">
+        {{ dureeTotaleJournee }}
       </div>
 
       <div class="point-buttons">
-        <div class="pointer" [@If]="!isPointeArrivee" (click)="pointerArrivee()">
-          Start
-        </div>
-<!--        <div class="pointer" [@If]="isPointeArrivee">-->
-<!--          {{ journeeEnCours.debut | date:'HH:mm' }}-->
-<!--        </div>-->
-        <div class="pointer" (click)="pointerSortie()">
-          End
-        </div>
+        <button
+          class="pointer start"
+          [class.active]="!isPointeArrivee"
+          [class.disabled]="isPointeArrivee"
+          [disabled]="isPointeArrivee"
+          (click)="pointerArrivee()">
+          <span class="icon">▶</span>
+          <span class="text">Start</span>
+        </button>
+
+        <button
+          class="pointer end"
+          [class.active]="isPointeArrivee"
+          [class.disabled]="!isPointeArrivee"
+          [disabled]="!isPointeArrivee"
+          (click)="pointerSortie()">
+          <span class="icon">⏸</span>
+          <span class="text">End</span>
+        </button>
       </div>
     </div>
-
   </div>
 
-  <div class="cards right-column">
-
+  <div class="historical-column">
+    <app-historical-column></app-historical-column>
   </div>
 
-  <div class="cards right-column">
+  <div class="cards team-column">
 
   </div>
 
