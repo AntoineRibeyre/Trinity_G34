@@ -3,6 +3,8 @@ import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
 import {DatePipe} from '@angular/common';
 import {AuthService} from '../../../services/auth.service';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../models/user.model';
 import {HistoricalColumn} from '../../../shared/components/historical-column/historical-column';
 
 @Component({
@@ -24,6 +26,7 @@ export class Dashboard implements OnInit, OnDestroy {
   minute: string = '';
   second: string = '';
   dayOfWeek: string = '';
+  currentUser: User | null = null;
 
   private dayNames = [
     'Dimanche',
@@ -67,11 +70,15 @@ export class Dashboard implements OnInit, OnDestroy {
 
   constructor(private pointService: PointService,
               private authService: AuthService,
+              private userService: UserService
               ) {}
 
-  ngOnInit() {
-    this.userId = this.authService.getUserId();
-    this.username = this.authService.getUsername();
+  async ngOnInit() {
+    this.currentUser = await this.userService.loadCurrentUserFromServer();
+    if (this.currentUser){
+      this.userId = Number(this.currentUser.id);
+      this.username = this.currentUser.username
+    }
 
     this.updateTime();
     this.intervalId = setInterval(() => {

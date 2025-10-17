@@ -8,6 +8,9 @@ import { graphqlProvider } from './graphql/graphql.provider';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 import {provideTranslateService} from '@ngx-translate/core';
 
+
+
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

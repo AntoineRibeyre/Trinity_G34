@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+from datetime import timedelta
 import os
 from pathlib import Path
-from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,9 +26,9 @@ TIME_ZONE = "Europe/Paris"
 SECRET_KEY = 'django-insecure-%ffnyw2n674_5j(s!2kn%@glqn)nbblvyhqojk!63b0=vk8n2i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'trinity',
     'rest_framework',
     'drf_yasg',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -52,11 +53,47 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
+    "trinity.middlewares.jwt_cookie_auth.JWTAuthenticationMiddleware",
+    'trinity.middlewares.jwt_cookie_auth.JWTCookieMiddleware',
+    
 ]
+
+CONTENT_SECURITY_POLICY = {
+    'DIRECTIVES': {
+        # Scripts JS autorisés
+        'script-src': [
+            "'self'",
+            "http://localhost:4200",
+            "https://cdn.jsdelivr.net",  # CDN pour GraphiQL
+            "'unsafe-inline'"            # nécessaire pour les scripts inline de GraphiQL
+        ],
+
+        # Styles CSS autorisés
+        'style-src': [
+            "'self'",
+            "http://localhost:4200",
+            "https://fonts.googleapis.com",
+            "https://cdn.jsdelivr.net",  # CDN pour GraphiQL CSS
+            "'unsafe-inline'"            # nécessaire pour les styles inline de GraphiQL
+        ],
+
+        # Images autorisées
+        'img-src': ["'self'", "http://localhost:4200"],
+
+        # Fonts autorisées
+        'font-src': ["'self'", "https://fonts.gstatic.com"],
+
+        # Par défaut pour tout autre type de contenu
+        'default-src': ["'self'"],
+    }
+}
+
+
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
@@ -68,8 +105,9 @@ CORS_ALLOWED_ORIGINS = [
 GRAPHENE = {
     'SCHEMA': 'backend.schema.schema',  # Chemin vers votre schéma
     'MIDDLEWARE': [
-        'graphql_jwt.middleware.JSONWebTokenMiddleware',
-    ],
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',  # si JWT
+        'graphene_django.debug.DjangoDebugMiddleware',
+    ]
 }
 
 GRAPHQL_JWT = {
@@ -78,9 +116,11 @@ GRAPHQL_JWT = {
         'graphql_jwt.mutations.Verify',
         'graphql_jwt.mutations.Refresh',
     ],
-    'JWT_PAYLOAD_HANDLER': 'trinity.jwt_utils.jwt_payload_handler',
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': timedelta(hours=1),  # 🔥 1 heure
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+    'JWT_PAYLOAD_HANDLER': 'trinity.jwt_utils.jwt_payload',
 }
 
 CORS_ALLOW_HEADERS = [
@@ -93,10 +133,16 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:4200",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 # Optionnel : Configuration JWT pour l'authentification GraphQL
 AUTHENTICATION_BACKENDS = [
-    'graphql_jwt.backends.JSONWebTokenBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -124,7 +170,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# Database
 # Database
 DATABASES = {
     'default': {
