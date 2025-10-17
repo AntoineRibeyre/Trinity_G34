@@ -3,11 +3,13 @@ import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
 import {DatePipe} from '@angular/common';
 import {AuthService} from '../../../services/auth.service';
+import {HistoricalColumn} from '../../../shared/components/historical-column/historical-column';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    DatePipe
+    DatePipe,
+    HistoricalColumn
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -53,15 +55,15 @@ export class Dashboard implements OnInit, OnDestroy {
   userId: number | null = null;
   username: string | null = null;
   pendingDay: any = null;
-  dureeActuelle: string = '00:00:00';  // ✅ Durée de la période en cours
-  dureeTotaleJournee: string = '00:00:00';  // ✅ NOUVEAU : Durée totale de la journée
+  dureeActuelle: string = '00:00:00';
+  dureeTotaleJournee: string = '00:00:00';
   isPointeArrivee: boolean = false;
   todayCalendars: any[] = [];
-  isLoading = false;
+  isLoading: boolean = false;
   error: any;
 
   private dureeSubscription?: Subscription;
-  private dureeTotaleSubscription?: Subscription;  // ✅ NOUVEAU
+  private dureeTotaleSubscription?: Subscription;
 
   constructor(private pointService: PointService,
               private authService: AuthService,

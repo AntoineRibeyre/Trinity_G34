@@ -1,0 +1,37 @@
+<div class="historical-content">
+  <div class="title">
+    Votre Historique
+  </div>
+
+  <div class="bloc">
+    <div class="month">
+      {{ month.name }}
+    </div>
+
+    <div class="calendar">
+      <div class="day-item"
+           *ngFor="let day of days"
+           [class.weekend]="day.isWeekend"
+           [class.today]="day.isToday">
+
+        <div class="day-header">
+          <span class="day-number">{{ day.dayNumber }}</span>
+        </div>
+
+        <div class="day-separator">
+          <div class="separator">
+            <span *ngIf="day.hours" class="hours">{{ day.hours }}</span>
+            <!--          <span *ngIf="!day.hours && !day.isWeekend && day.dayNumber < days.length"-->
+            <!--                class="no-data">Pas de données</span>-->
+          </div>
+        </div>
+
+        <div class="day-info">
+          <span class="day-name">{{ day.dayName }}</span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Point } from './point';
+import { HistoricalColumn } from './historical-column';
 
-describe('Point', () => {
-  let component: Point;
-  let fixture: ComponentFixture<Point>;
+describe('HistoricalColumn', () => {
+  let component: HistoricalColumn;
+  let fixture: ComponentFixture<HistoricalColumn>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Point]
+      imports: [HistoricalColumn]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Point);
+    fixture = TestBed.createComponent(HistoricalColumn);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

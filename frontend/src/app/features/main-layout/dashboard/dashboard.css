@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 .general-space {
-  width: calc(100% - 50px);;
-  height: calc(100vh - 50px); /* Soustraire 2x le padding */
+  width: calc(100% - 50px);
+  height: calc(100vh - 50px);
   padding: 25px;
 
   background-color: #F7F8FA;
@@ -15,22 +15,10 @@
 
 .left-column {
   width: 40%;
-
   display: flex;
   flex-direction: column;
-  align-items: center;
-
   gap: 25px;
 }
-
-.right-column {
-  width: 30%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .cards {
   background: #FFFFFF;
   border-radius: 40px;
@@ -40,12 +28,10 @@
 }
 
 .profil {
-  width: 100%;
   height: 35%;
 }
 
 .date {
-  width: 100%;
   height: 25%;
 
   display: flex;
@@ -105,7 +91,6 @@
 }
 
 .manager {
-  width: 100%;
   height: 40%;
   background: #F7F8FA;
   display: flex;
@@ -312,4 +297,18 @@
   100% {
     left: 100%;
   }
+}
+
+.historical-column {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.team-column {
+  width: 30%;
+  background: #FFFFFF;
+  border-radius: 40px;
+  box-shadow: 1px 0 30px rgba(0, 0, 0, 0.15);
+  /*padding: 20px;*/
 }

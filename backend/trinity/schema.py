@@ -1,16 +1,12 @@
 import datetime
 from zoneinfo import ZoneInfo
-
 import graphene
 import graphql_jwt
 from graphene_django.types import DjangoObjectType
-
 from .models import User, Team, Calendar
 from .logic.userfactory import UserFactory
 from .logic.teamfactory import TeamFactory
 from .logic.calendarfactory import CalendarFactory
-from django.utils import timezone
-
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -91,10 +87,6 @@ class Query(graphene.ObjectType):
         today_start = now_paris.replace(hour=0, minute=0, second=0, microsecond=0)
         today_end = now_paris.replace(hour=23, minute=59, second=59, microsecond=999999)
 
-        print(f"🔍 Recherche pour user_id: {user_id}")
-        print(f"📅 Now Paris: {now_paris}")
-        print(f"📅 Plage: {today_start} -> {today_end}")
-
         queryset = Calendar.objects.filter(
             begin__gte=today_start,
             begin__lte=today_end
@@ -104,9 +96,6 @@ class Query(graphene.ObjectType):
             queryset = queryset.filter(employee_id=user_id)
 
         result = queryset.order_by('-begin')
-        print(f"✅ Résultats trouvés: {result.count()}")
-        for cal in result:
-            print(f"   - ID: {cal.id}, Begin: {cal.begin}, End: {cal.end}")
 
         return result
 
