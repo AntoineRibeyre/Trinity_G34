@@ -9,3 +9,4 @@ pytest
 pytest-django
 pytest-snapshot
 drf_yasg
+names_generator

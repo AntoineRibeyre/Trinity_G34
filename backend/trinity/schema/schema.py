@@ -1,35 +1,30 @@
 import graphene
 import graphql_jwt
-from ..models import User, Team, Calendar
+from ..models import Calendar
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
 from . import graphtypes as graphtype
+from .queryresolver import QueryResolver
 
 
 class Query(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL queries."""
-    all_users = graphene.List(graphtype.UserType)
-    all_teams = graphene.List(graphtype.TeamType)
-    all_calendars = graphene.List(graphtype.CalendarType)
     pending_day = graphene.Field(
         graphtype.CalendarType,
         user_id=graphene.Int(required=True)
     )
     manager_view = graphene.Field(graphtype.TeamViewerType,
                                   manager_id=graphene.Int(required=True))
-
-    def resolve_all_users(self, info, *kwargs):
-        return User.objects.all()
-
-    def resolve_all_teams(self, info, *kwargs):
-        return Team.objects.all()
-
-    def resolve_all_calendars(self, info, *kwargs):
-        return Calendar.objects.all()
+    admin_view = graphene.Field(graphtype.AdminViewType,
+                                admin_id=graphene.Int(required=True))
 
     def resolve_pending_day(self, info, user_id):
-        """This method resolve pending_day querey """
+        """Il faut aboslument modifier  ce code car il viole l'architecture
+        A ce niveau, la couche Schema ne doit pas  utliser la classe  Calendar.
+        Les seules Classes qui doivent être utlisées ici ce sont les factories
+        qui eux,  passent par  la classe QueryResolver
+        (voir methode resolve_manager_view)"""
         try:
             return Calendar.objects.filter(
                 employee_id=user_id,
@@ -40,8 +35,13 @@ class Query(graphene.ObjectType):
 
     def resolve_manager_view(self, info, manager_id: int):
         """This method shows all the team details"""
-        result = graphtype.ObjectTypeFactory.resolve_manager_view(
+        result = QueryResolver.resolve_manager_view(
             manager_id)
+        return result
+
+    def resolve_admin_view(self, info, admin_id: int):
+        """This method shows all teams details in the database"""
+        result = QueryResolver.resolve_admin_view(admin_id)
         return result
 
 

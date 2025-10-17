@@ -92,3 +92,14 @@ class UserFactory:
             return True
         else:
             return False
+
+    @classmethod
+    def user_is_an_admin(cls, user_id: int) -> bool:
+        """This method checks if the user is an admin;it will be used to
+        handle user view permissions in queries."""
+        person = UserFactory.get_user_by_id(user_id)
+        role = person.role
+        if role == "admin" or role == "Admin":
+            return True
+        else:
+            return False

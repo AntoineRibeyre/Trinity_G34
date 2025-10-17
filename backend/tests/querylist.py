@@ -36,7 +36,7 @@ def create_three_users(team_id: int) -> List[str]:
           firstName,
           lastName,
           role }} }}}}"""
-        
+
     mutation2 = f"""
      mutation {{
       createUser(
@@ -56,7 +56,7 @@ def create_three_users(team_id: int) -> List[str]:
         }} }}}}"""
 
     mutation3 = f"""
-        mutation{{ 
+        mutation{{
         createUser(
         email: "dev2@example.com"
         firstName: "Claire"
@@ -144,4 +144,95 @@ def manager_view_query(manager_id: int) -> str:
       }}
     }}}}
     """
+    return query
+
+
+def admin_view_query(admin_id: int) -> str:
+    """This query is used to get information about all teams in
+    the database."""
+    query = f"""
+      query {{
+        adminView(adminId: {admin_id}) {{
+          adminDetails {{
+            userDetails {{
+              id
+              lastName
+              role
+              firstName
+            }}
+            planning {{
+              date
+              totalHours
+              calendar {{
+                begin
+                dayOver
+                dayType
+                duration
+                end
+                id
+              }}
+            }}
+          }}
+          teams {{
+            teamDetails {{
+              id
+              description
+              name
+              membres {{
+                firstName
+                id
+                lastName
+                role
+              }}
+            }}
+            members {{
+              planning {{
+                date
+                totalHours
+                calendar {{
+                  begin
+                  dayOver
+                  dayType
+                  employee {{
+                    firstName
+                    id
+                    lastName
+                    role
+                  }}
+                  duration
+                  end
+                  id
+                }}
+              }}
+              userDetails {{
+                firstName
+                id
+                lastName
+                role
+              }}
+            }}
+            manager {{
+              planning {{
+                date
+                totalHours
+                calendar {{
+                  begin
+                  dayOver
+                  end
+                  id
+                  duration
+                  dayType
+                }}
+              }}
+              userDetails {{
+                firstName
+                id
+                lastName
+                role
+              }}
+            }}
+          }}
+        }}
+      }}
+      """
     return query

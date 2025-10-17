@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, List
 
-from ..models import Team
+from ..models import Team, User
 from .userfactory import UserFactory, UserViewer
 
 
@@ -14,6 +14,14 @@ class TeamViewer:
     including the manager, members, their details, and plannings."""
 
 
+@dataclass
+class AdminView:
+    admin_details: UserViewer
+    teams: Dict[int, TeamViewer]
+    """This class is an AdminView; it displays all details about all teams,
+    including the admin,all team members, their details, and plannings."""
+
+
 class TeamFactory:
     """This class is used to create and manage team model objects."""
     @classmethod
@@ -22,6 +30,11 @@ class TeamFactory:
         return Team.objects.create(
             name=name,
             description=description)
+
+    @classmethod
+    def get_all_teams(cls) -> List[Team]:
+        """Gets all teams in the DataBase."""
+        return Team.objects.all()
 
     @classmethod
     def get_team_by_user_id(cls, user_id: int) -> Team:
@@ -38,5 +51,16 @@ class TeamFactory:
         manager = UserFactory.build_user_viewer(manger_user)
         members = UserFactory.build_members_userviewer_list(team)
         return TeamViewer(team_details=team, manager=manager, members=members)
+
+    @classmethod
+    def build_admin_view(cls, admin: User) -> AdminView:
+        """This Method Builds an  AdminView object using admin details"""
+        team_list: Dict[int, TeamViewer] = {}
+        admin_user_view = UserFactory.build_user_viewer(admin)
+        teams = TeamFactory.get_all_teams()
+        for team in teams:
+            team_list[team.id] = TeamFactory.build_team_viewer(team)
+        return AdminView(admin_details=admin_user_view,
+                         teams=team_list)
 
 

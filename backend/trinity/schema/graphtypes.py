@@ -2,8 +2,8 @@ import graphene
 from graphene_django.types import DjangoObjectType
 
 from ..models import User, Team, Calendar
-from ..logic.userfactory import UserFactory, UserViewer
-from ..logic.teamfactory import TeamFactory, TeamViewer
+from ..logic.userfactory import UserViewer
+from ..logic.teamfactory import TeamViewer, AdminView
 from ..logic.calendarfactory import DailyPlanning
 
 
@@ -58,6 +58,12 @@ class TeamViewerType(graphene.ObjectType):
     members = graphene.List(UserViewType)
 
 
+class AdminViewType(graphene.ObjectType):
+    """Graphene object representing an admin view."""
+    admin_details = graphene.Field(UserViewType)
+    teams = graphene.List(TeamViewerType)
+
+
 class RegisterResponseType(graphene.ObjectType):
     """This class is used to create the response object for calendar
     manipulation operations."""
@@ -75,12 +81,11 @@ class ObjectTypeFactory:
                                  calendar=planning.calendars,
                                  total_hours=str(planning.total_hours))
 
-
     @classmethod
     def user_view_type_builder(cls, user_view: UserViewer) -> UserViewType:
         """Builds a UserViewType from a UserView object."""
-        plannigtype = [ObjectTypeFactory.daily_planning_type_builder(calendar) for
-                       calendar in user_view.planning.values()]
+        plannigtype = [ObjectTypeFactory.daily_planning_type_builder(calendar)
+                       for calendar in user_view.planning.values()]
         return UserViewType(user_details=user_view.user_details,
                             planning=plannigtype)
 
@@ -97,11 +102,11 @@ class ObjectTypeFactory:
                               members=members_type)
 
     @classmethod
-    def resolve_manager_view(cls, manager_id: int) -> TeamViewerType:
-        """Checks if the ID belongs to a manager and builds their team view."""
-        if UserFactory.user_is_a_manager(manager_id):
-            team = TeamFactory.get_team_by_user_id(manager_id)
-            return ObjectTypeFactory.team_viewer_type_builder(
-                TeamFactory.build_team_viewer(team))
-        else:
-            raise Exception("Permission denied !")
+    def build_admin_view_type(cls, admin_view: AdminView) -> AdminViewType:
+        """Builds a TeamViewerType from a TeamView object."""
+        admin_type = ObjectTypeFactory.user_view_type_builder(
+            admin_view.admin_details)
+        teams_type = [ObjectTypeFactory.team_viewer_type_builder(team_viewer)
+                      for team_viewer in admin_view.teams.values()]
+        return AdminViewType(admin_details=admin_type,
+                             teams=teams_type)
