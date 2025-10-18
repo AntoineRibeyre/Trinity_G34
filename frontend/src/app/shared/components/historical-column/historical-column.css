@@ -108,7 +108,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  min-width: 35px;
+  min-width: 25px;
 }
 
 .day-number {
@@ -127,23 +127,69 @@
 }
 
 .day-separator {
-  /*height: 2px;*/
-  /*background: linear-gradient(to right, #E0E0E0 0%, #E0E0E0 80%, transparent 100%);*/
   flex: 1;
-  margin: 0 20px;
-
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
-.separator {
+.time-display {
   width: 100%;
-  background: linear-gradient(to right, #E0E0E0 0%, #E0E0E0 80%, transparent 100%);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.time-start,
+.time-end {
+  color: #333;
+  font-size: 0.8rem;
+  font-weight: 300;
+  min-width: 50px;
+}
+
+.time-start {
+  text-align: right;
+}
+
+.time-end {
+  text-align: left;
+}
+
+.progress-bar-container {
+  flex: 1;
+  height: 8px;
+  position: relative;
+  display: flex;
   align-items: center;
 }
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background: #ADC0A2;
+  border-radius: 10px;
+}
+
+.time-worked {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ADC0A2;
+  font-size: 1.1rem;
+  font-weight: 300;
+  white-space: nowrap;
+  background: #FFFFFF;
+  padding: 0 8px;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #999;
+  font-style: italic;
+}
+
 
 .day-info {
   justify-content: flex-end;

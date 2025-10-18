@@ -10,27 +10,21 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
     
     def process_request(self, request):
         token = request.COOKIES.get("access_token")
-        print(f"Path: {request.path}")
-        print(f"access_token reçu : {token[:50] if token else None}...")
 
         # IMPORTANT : Si pas de token, créer un utilisateur anonyme
         if not token:
-            print("Pas de token, utilisateur anonyme")
             if not hasattr(request, 'user') or request.user is None:
                 request.user = AnonymousUser()
             return
 
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-            print(f"payload décodé : {payload}")
 
             user_id = payload.get("user_id")
             if user_id:
                 try:
                     request.user = User.objects.get(id=user_id)
-                    print(f"utilisateur trouvé : {request.user}")
                 except User.DoesNotExist:
-                    print(f"User ID {user_id} n'existe pas")
                     request.user = AnonymousUser()
             else:
                 print("Pas de user_id dans le payload")
@@ -51,16 +45,12 @@ class JWTCookieMiddleware(MiddlewareMixin):
     """Middleware pour ajouter le JWT en cookie après la mutation tokenAuth"""
     
     def process_response(self, request, response):
-        print("JWTCookieMiddleware appelé")
-        print(f"Attributs request: {dir(request)}")
-        print(f"Has _jwt_token_set_cookie: {hasattr(request, '_jwt_token_set_cookie')}")
         
         # Vérifier si la mutation a demandé de set le cookie
         if hasattr(request, '_jwt_token_set_cookie') and request._jwt_token_set_cookie:
             token = getattr(request, '_jwt_token', None)
             
             if token:
-                print("Ajout du cookie access_token dans la réponse")
                 response.set_cookie(
                     key='access_token',
                     value=token,

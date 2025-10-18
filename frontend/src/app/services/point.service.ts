@@ -3,6 +3,7 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {catchError, interval, Observable, of, startWith, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {TodayCalendars} from './service-interfaces';
 
 const GET_PENDING_DAY = gql`
   query GetPendingDay($userId: Int!) {
@@ -25,8 +26,8 @@ const TODAY_CALENDARS_QUERY = gql`
       end
       dayType
       dayOver
-      duration          # En secondes
-      durationFormatted # Format HH:MM:SS
+      duration
+      durationFormatted
       employee {
         id
         username
@@ -37,6 +38,17 @@ const TODAY_CALENDARS_QUERY = gql`
   }
 `;
 
+export const GET_CURRENT_MONTH_WORK = gql`
+  query GetCurrentMonthWork($userId: Int!) {
+    currentMonthWork(userId: $userId) {
+      date
+      dayNumber
+      firstCheckInTime
+      lastCheckOutTime
+      totalDurationFormatted
+    }
+  }
+`;
 
 const REGISTER_ARRIVAL = gql`
   mutation RegisterArrival($userId: Int!) {
@@ -73,14 +85,13 @@ export class PointService {
     );
   }
 
-  getTodayCalendar(userId: Number): Observable<any[]> {
+  getTodayCalendar(userId: Number): Observable<TodayCalendars[]> {
     return this.apollo.query({
       query: TODAY_CALENDARS_QUERY,
       variables: { userId },
       fetchPolicy: 'network-only'
     }).pipe(
       map((result: any) => {
-        console.log('Résultat brut:', result); // Debug
         return result.data.todayCalendars || [];
       }),
       catchError(error => {
@@ -88,6 +99,18 @@ export class PointService {
         return of([]);
       })
     );
+  }
+
+  getMonthCalendar(userId: Number): Observable<any> {
+    return this.apollo.query({
+      query: GET_CURRENT_MONTH_WORK,
+      variables: { userId },
+      fetchPolicy: 'network-only'
+    }).pipe(
+      map((result: any) => {
+        return result.data.currentMonthWork || [];
+      })
+    )
   }
 
   calculerDureeTotaleJournee(calendars: any[]): Observable<string> {

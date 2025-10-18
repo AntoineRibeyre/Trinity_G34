@@ -7,8 +7,6 @@ from .models import User, Team, Calendar
 from .logic.userfactory import UserFactory
 from .logic.teamfactory import TeamFactory
 from .logic.calendarfactory import CalendarFactory
-from django.utils import timezone
-
 from .mutations.mutation_token import CustomObtainJSONWebToken
 from .mutations.mutation_logout import LogoutMutation
 
@@ -46,6 +44,38 @@ class CalendarType(DjangoObjectType):
         return None
 
 
+class DailyWorkType(graphene.ObjectType):
+    date = graphene.Date()
+    day_number = graphene.Int()
+    first_check_in = graphene.DateTime()
+    first_check_in_time = graphene.String()
+    last_check_out = graphene.DateTime()
+    last_check_out_time = graphene.String()
+    total_duration_seconds = graphene.Int()
+    total_duration_formatted = graphene.String()
+
+    def resolve_first_check_in_time(self, info):
+        if self.first_check_in:
+            paris_tz = ZoneInfo("Europe/Paris")
+            time_paris = self.first_check_in.astimezone(paris_tz)
+            return time_paris.strftime("%H:%M:%S")  # Ex: "14:57:08"
+        return None
+
+    def resolve_last_check_out_time(self, info):
+        if self.last_check_out:
+            paris_tz = ZoneInfo("Europe/Paris")
+            time_paris = self.last_check_out.astimezone(paris_tz)
+            return time_paris.strftime("%H:%M:%S")  # Ex: "17:30:45"
+        return None
+
+    def resolve_total_duration_formatted(self, info):
+        if self.total_duration_seconds:
+            hours = self.total_duration_seconds // 3600
+            minutes = (self.total_duration_seconds % 3600) // 60
+            seconds = self.total_duration_seconds % 60
+            return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+        return "00:00:00"
+
 class RegisterResponseType(graphene.ObjectType):
     datetime_field = graphene.JSONString()
     duration_field = graphene.JSONString()
@@ -63,15 +93,15 @@ class Query(graphene.ObjectType):
         CalendarType,
         user_id=graphene.Int()
     )
-    current_user = graphene.Field(UserType) # utilisateur connecté
-
+    current_user = graphene.Field(UserType)
+    current_month_work = graphene.List(
+        DailyWorkType,
+        user_id=graphene.Int(required=True)
+    )
 
     # renvoie l'utilisateur connecté s'il est connecté
     def resolve_current_user(self, info):
         user = info.context.user
-        # print(f"🔍 resolve_current_user - Type de user: {type(user)}")
-        # print(f"🔍 resolve_current_user - User value: {user}")
-        # print(f"🔍 resolve_current_user - Has is_authenticated: {hasattr(user, 'is_authenticated')}")
 
         if hasattr(user, 'is_authenticated') and user.is_authenticated:
             return user
@@ -116,6 +146,60 @@ class Query(graphene.ObjectType):
         result = queryset.order_by('-begin')
 
         return result
+
+    def resolve_current_month_work(self, info, user_id):
+        paris_tz = ZoneInfo("Europe/Paris")
+        now = datetime.datetime.now(paris_tz)
+
+        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        if now.month == 12:
+            next_month = now.replace(year=now.year + 1, month=1, day=1)
+        else:
+            next_month = now.replace(month=now.month + 1, day=1)
+
+        month_end = next_month - datetime.timedelta(seconds=1)
+
+        sessions = Calendar.objects.filter(
+            employee_id=user_id,
+            begin__gte=month_start,
+            begin__lte=month_end,
+            day_over=True
+        ).order_by('begin')
+
+        from collections import defaultdict
+        days_data = defaultdict(list)
+
+        for session in sessions:
+            session_date = session.begin.astimezone(paris_tz).date()
+            days_data[session_date].append(session)
+
+        daily_summaries = []
+
+        for date in sorted(days_data.keys()):
+            day_sessions = days_data[date]
+
+            first_session = day_sessions[0]
+            first_check_in = first_session.begin
+
+            last_session = day_sessions[-1]
+            last_check_out = last_session.end if last_session.end else last_session.begin
+
+            total_seconds = 0
+            for session in day_sessions:
+                if session.duration:
+                    session_seconds = int(session.duration.total_seconds())
+                    total_seconds += session_seconds
+                    
+            daily_summaries.append(DailyWorkType(
+                date=date,
+                day_number=date.day,
+                first_check_in=first_check_in,
+                last_check_out=last_check_out,
+                total_duration_seconds=total_seconds
+            ))
+
+        return daily_summaries
 
 class CreateUser(graphene.Mutation):
     class Arguments:

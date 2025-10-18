@@ -10,7 +10,6 @@ echo "DB ready!"
 python manage.py makemigrations
 
 # Appliquer les migrations
-python manage.py makemigrations
 python manage.py migrate
 
 # Lancer le serveur Django

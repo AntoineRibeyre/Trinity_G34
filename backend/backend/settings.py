@@ -26,7 +26,7 @@ TIME_ZONE = "Europe/Paris"
 SECRET_KEY = 'django-insecure-%ffnyw2n674_5j(s!2kn%@glqn)nbblvyhqojk!63b0=vk8n2i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -217,6 +217,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

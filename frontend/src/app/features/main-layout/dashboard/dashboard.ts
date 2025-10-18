@@ -69,7 +69,6 @@ export class Dashboard implements OnInit, OnDestroy {
   private dureeTotaleSubscription?: Subscription;
 
   constructor(private pointService: PointService,
-              private authService: AuthService,
               private userService: UserService
               ) {}
 

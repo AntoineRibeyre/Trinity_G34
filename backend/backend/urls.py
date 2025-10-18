@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from graphene_django.views import GraphQLView
 from django.urls import path, include, re_path
-from . import schema
+from trinity.schema import schema
 from django.conf import settings
 from trinity.views.login import LoginGraphQLView
 from django.views.static import serve
@@ -28,10 +28,10 @@ docs_root = pathlib.Path(__file__).resolve().parent.parent / 'docs' / 'docs' / '
 urlpatterns = [
     path('admin/', admin.site.urls),
     # endpoint GraphQL normal (avec CSRF)
-    path("graphql/", GraphQLView.as_view(graphiql=True)),
+    path("graphql/", GraphQLView.as_view(schema=schema, graphiql=True)),
 
     # endpoint GraphQL pour login (CSRF désactivé)
-    path("graphql-login/", LoginGraphQLView.as_view(graphiql=True)),
+    path("graphql-login/", LoginGraphQLView.as_view(schema=schema, graphiql=True)),
 
     re_path(r'^sphinx-docs/(?P<path>.*)$', serve, {
             'document_root': str(docs_root),
