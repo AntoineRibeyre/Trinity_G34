@@ -153,17 +153,12 @@ class Query(graphene.ObjectType):
 
         month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
-        if now.month == 12:
-            next_month = now.replace(year=now.year + 1, month=1, day=1)
-        else:
-            next_month = now.replace(month=now.month + 1, day=1)
-
-        month_end = next_month - datetime.timedelta(seconds=1)
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
         sessions = Calendar.objects.filter(
             employee_id=user_id,
             begin__gte=month_start,
-            begin__lte=month_end,
+            begin__lte=today_start,
             day_over=True
         ).order_by('begin')
 

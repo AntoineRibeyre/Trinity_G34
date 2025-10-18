@@ -6,12 +6,14 @@ import {AuthService} from '../../../services/auth.service';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 import {HistoricalColumn} from '../../../shared/components/historical-column/historical-column';
+import {TeamColumn} from '../../../shared/components/team-column/team-column';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     DatePipe,
-    HistoricalColumn
+    HistoricalColumn,
+    TeamColumn
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
