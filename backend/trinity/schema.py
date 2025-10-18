@@ -190,7 +190,7 @@ class Query(graphene.ObjectType):
                 if session.duration:
                     session_seconds = int(session.duration.total_seconds())
                     total_seconds += session_seconds
-                    
+
             daily_summaries.append(DailyWorkType(
                 date=date,
                 day_number=date.day,
