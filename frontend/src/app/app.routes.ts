@@ -10,6 +10,7 @@ import {Admin} from './features/admin/admin';
 import {Home} from './features/home/home';
 import {MainLayout} from './features/main-layout/main-layout';
 import { AuthGuard } from './core/guards/auth.guard';
+import { Scheduler } from './features/scheduler/scheduler';
 
 export const routes: Routes = [
   //pages publiques
@@ -25,7 +26,8 @@ export const routes: Routes = [
       { path: 'calendar', component: Calendar, canActivate: [AuthGuard] },//calendar/congés
       { path: 'team', component: Team, canActivate: [AuthGuard]},//team (manager only)
       { path: 'admin', component: Admin, canActivate: [AuthGuard]},//admin (admin only)
-      { path: 'settings', component: Settings, canActivate: [AuthGuard] }
+      { path: 'settings', component: Settings, canActivate: [AuthGuard] },
+      { path: 'scheduler', component: Scheduler, canActivate: [AuthGuard] }
     ]
   },
   {path: '**', redirectTo: '' }

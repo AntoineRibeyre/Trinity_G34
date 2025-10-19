@@ -87,7 +87,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@syncfusion/ej2-schedule/styles/material.css"
             ]
           }
         }
