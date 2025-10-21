@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+
+.custom-dialog-container .mat-mdc-dialog-container {
+  border-radius: 40px !important;
+  /* ou toute autre valeur : 0, 10px, 50%, etc. */
+}

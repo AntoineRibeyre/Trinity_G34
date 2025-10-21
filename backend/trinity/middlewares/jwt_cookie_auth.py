@@ -64,6 +64,7 @@ class JWTCookieMiddleware(MiddlewareMixin):
             else:
                 print("_jwt_token_set_cookie est True mais pas de token trouvé")
         else:
-            print("Pas de demande de set cookie")
+            pass
+            # print("Pas de demande de set cookie")
         
         return response

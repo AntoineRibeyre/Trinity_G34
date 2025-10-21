@@ -156,17 +156,6 @@ export class PointService {
     return value < 10 ? '0' + value : value.toString();
   }
 
-  calculerDuree(dateDebut: Date): Observable<string> {
-    return interval(1000).pipe(
-      map(() => {
-        const now = new Date();
-        const diff = now.getTime() - dateDebut.getTime();
-        const totalSeconds = Math.floor(diff / 1000);
-        return this.formatSecondsToTime(totalSeconds);
-      })
-    );
-  }
-
   enregistrerArrivee(userId: Number): Observable<any> {
     return this.apollo.mutate({
       mutation: REGISTER_ARRIVAL,

@@ -125,6 +125,7 @@ export class HistoricalColumn implements OnInit {
         next: result => {
           if (result) {
             this.currentMonthWork = result;
+            console.log(this.currentMonthWork);
             resolve();
           } else {
             reject('Aucune donnée reçue');
