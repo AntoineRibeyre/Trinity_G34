@@ -11,7 +11,6 @@ from backend.schema import schema
 from trinity.models import Team
 
 
-
 @pytest.fixture
 def client():
     return Client(schema)
@@ -34,13 +33,10 @@ def test_create_user(client):
         role: "manager"
       ) {
         user {
-          id
-          username
-          firstName
-          lastName
-          email
-          telephone
-          role
+        id,
+        firstName,
+        lastName,
+        role
         }
       }
     }

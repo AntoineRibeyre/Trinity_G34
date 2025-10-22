@@ -1,12 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {PointService} from '../../../services/point.service';
+import {UserService} from '../../../services/user.service';
+import {User} from '../../../models/user.model';
+import {TodayCalendars} from '../../../services/service-interfaces';
 
 interface DayInfo {
   dayNumber: number;
   dayName: string;
   isWeekend: boolean;
   isToday: boolean;
-  hours?: string; // Tu pourras ajouter les heures travaillées ici
+  workDay: WorkDayInfo;
+}
+
+interface WorkDayInfo {
+  timeStart?: string;
+  timeEnd?: string;
+  timeWorked?: string;
 }
 
 @Component({
@@ -17,6 +27,12 @@ interface DayInfo {
 })
 export class HistoricalColumn implements OnInit {
 
+  constructor(private pointService: PointService,
+              private userService: UserService
+  ) {}
+
+  userId: number | null = null;
+  currentUser: User | null = null;
   private date: Date = new Date();
   month: {name: string; number: number} = {name: "", number: 0};
   days: DayInfo[] = [];
@@ -35,21 +51,46 @@ export class HistoricalColumn implements OnInit {
     { name: "Novembre", number: 30 },
     { name: "Décembre", number: 31 }
   ];
-
   private dayNames: string[] = ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'];
 
-  ngOnInit(): void {
-    this.date = new Date();
-    const currentMonth = this.date.getMonth();
-    const currentYear = this.date.getFullYear();
+  currentMonthWork: TodayCalendars[] = [];
+  isLoading: boolean = true;
+  hasError: boolean = false;
+  errorMessage: string = '';
 
-    // Gérer les années bissextiles
-    if (currentMonth === 1 && this.isLeapYear(currentYear)) {
-      this.monthDetail[1].number = 29;
+  async ngOnInit() {
+
+    try {
+      this.isLoading = true;
+
+      this.currentUser = await this.userService.loadCurrentUserFromServer();
+      if (!this.currentUser) {
+        throw new Error('Utilisateur non trouvé');
+      }
+      this.userId = Number(this.currentUser.id);
+
+      this.date = new Date();
+      const currentMonth = this.date.getMonth();
+      const currentYear = this.date.getFullYear();
+
+      if (currentMonth === 1 && this.isLeapYear(currentYear)) {
+        this.monthDetail[1].number = 29;
+      }
+
+      this.month = this.monthDetail[currentMonth];
+
+      await this.getMonthCalendar();
+
+      this.generateDays(currentYear, currentMonth);
+
+      this.isLoading = false;
+
+    } catch (error) {
+      console.error('Erreur lors de l\'initialisation:', error);
+      this.hasError = true;
+      this.errorMessage = 'Impossible de charger les données';
+      this.isLoading = false;
     }
-
-    this.month = this.monthDetail[currentMonth];
-    this.generateDays(currentYear, currentMonth);
   }
 
   private isLeapYear(year: number): boolean {
@@ -69,17 +110,50 @@ export class HistoricalColumn implements OnInit {
         dayName: this.dayNames[dayOfWeek],
         isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
         isToday: day === today,
-        hours: this.getMockHours(day) // À remplacer par tes vraies données
+        workDay: this.dayFromMonthCalendar(day)
       });
     }
   }
 
-  // Fonction temporaire pour simuler des données
-  private getMockHours(day: number): string {
-    // Tu remplaceras ça par tes vraies données depuis ton API
-    if (day <= this.date.getDate() && day > this.date.getDate() - 7) {
-      return '8:32';
+  private getMonthCalendar(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.userId) {
+        return;
+      }
+
+      this.pointService.getMonthCalendar(this.userId).subscribe({
+        next: result => {
+          if (result) {
+            this.currentMonthWork = result;
+            console.log(this.currentMonthWork);
+            resolve();
+          } else {
+            reject('Aucune donnée reçue');
+          }
+        },
+        error: error => {
+          console.error('❌ Erreur lors du chargement:', error);
+          reject(error);
+        }
+      });
+    });
+  }
+
+  private dayFromMonthCalendar(day: number): WorkDayInfo {
+    const workDay = this.currentMonthWork.find(work => work.dayNumber === day);
+
+    if (workDay) {
+      return {
+        timeStart: workDay.firstCheckInTime?.slice(0, -3),
+        timeEnd: workDay.lastCheckOutTime?.slice(0, -3),
+        timeWorked: workDay.totalDurationFormatted?.slice(0, -3)
+      };
     }
-    return '';
+
+    return {
+      timeStart: undefined,
+      timeEnd: undefined,
+      timeWorked: undefined
+    };
   }
 }

@@ -1,0 +1,21 @@
+<div class="delete-dialog">
+
+  <div class="delete-title">
+    {{ data.title }}
+  </div>
+
+  <div class="delete-message">
+    {{ data.message }}
+  </div>
+
+  <div class="buttons">
+      <div class="cancel-button" (click)="data.onCancel(dialog)">
+        {{ data.cancel }}
+      </div>
+
+      <div class="confirm-button" (click)="data.onConfirm(dialog)">
+        {{ data.confirm }}
+      </div>
+  </div>
+
+</div>

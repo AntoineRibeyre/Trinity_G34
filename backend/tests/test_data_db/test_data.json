@@ -1,0 +1,217 @@
+[
+{
+"model": "trinity.Team",
+"pk": 1,
+"fields": {
+"name": "Team Alpha",
+"description": "Software development team"
+}
+},
+{
+"model": "trinity.Team",
+"pk": 2,
+"fields": {
+"name": "Team Beta",
+"description": "Data analysis team"
+}
+},
+{
+"model": "trinity.Team",
+"pk": 3,
+"fields": {
+"name": "Team Gamma",
+"description": "Cybersecurity team"
+}
+},
+{
+"model": "trinity.User",
+"pk": 1,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword1",
+"last_login": null,
+"is_superuser": false,
+"first_name": "Alice",
+"last_name": "Martin",
+"email": "[alice.martin@example.com](mailto:alice.martin@example.com)",
+"telephone": "0600000001",
+"role": "Manager",
+"team": 1,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 2,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword2",
+"is_superuser": false,
+"first_name": "Bob",
+"last_name": "Dupont",
+"email": "[bob.dupont@example.com](mailto:bob.dupont@example.com)",
+"telephone": "0600000002",
+"role": "Employee",
+"team": 1,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 3,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword3",
+"is_superuser": false,
+"first_name": "Charlie",
+"last_name": "Lefevre",
+"email": "[charlie.lefevre@example.com](mailto:charlie.lefevre@example.com)",
+"telephone": "0600000003",
+"role": "Employee",
+"team": 1,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 4,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword4",
+"is_superuser": false,
+"first_name": "David",
+"last_name": "Renard",
+"email": "[david.renard@example.com](mailto:david.renard@example.com)",
+"telephone": "0600000004",
+"role": "Manager",
+"team": 2,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 5,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword5",
+"is_superuser": false,
+"first_name": "Emma",
+"last_name": "Laurent",
+"email": "[emma.laurent@example.com](mailto:emma.laurent@example.com)",
+"telephone": "0600000005",
+"role": "Employee",
+"team": 2,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 6,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword6",
+"is_superuser": false,
+"first_name": "Franck",
+"last_name": "Moreau",
+"email": "[franck.moreau@example.com](mailto:franck.moreau@example.com)",
+"telephone": "0600000006",
+"role": "Employee",
+"team": 2,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 7,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword7",
+"is_superuser": false,
+"first_name": "Gabriel",
+"last_name": "Lambert",
+"email": "[gabriel.lambert@example.com](mailto:gabriel.lambert@example.com)",
+"telephone": "0600000007",
+"role": "Manager",
+"team": 3,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 8,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword8",
+"is_superuser": false,
+"first_name": "Hélène",
+"last_name": "Petit",
+"email": "[helene.petit@example.com](mailto:helene.petit@example.com)",
+"telephone": "0600000008",
+"role": "Employee",
+"team": 3,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 9,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword9",
+"is_superuser": false,
+"first_name": "Ismael",
+"last_name": "Girard",
+"email": "[ismael.girard@example.com](mailto:ismael.girard@example.com)",
+"telephone": "0600000009",
+"role": "Employee",
+"team": 3,
+"is_staff": false,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+},
+{
+"model": "trinity.User",
+"pk": 10,
+"fields": {
+"password": "pbkdf2_sha256$216000$example$hashedpassword10",
+"is_superuser": true,
+"first_name": "Admin",
+"last_name": "System",
+"email": "[admin@example.com](mailto:admin@example.com)",
+"telephone": "0600000010",
+"role": "Admin",
+"team": null,
+"is_staff": true,
+"is_active": true,
+"date_joined": "2024-01-01T00:00:00Z",
+"groups": [],
+"user_permissions": []
+}
+}
+]

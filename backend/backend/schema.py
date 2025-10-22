@@ -1,5 +1,5 @@
 import graphene
-from trinity import schema
+from trinity.schema.schema import schema
 
 
 class Query(schema.Query):

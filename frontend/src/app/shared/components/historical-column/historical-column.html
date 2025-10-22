@@ -19,17 +19,22 @@
         </div>
 
         <div class="day-separator">
-          <div class="separator">
-            <span *ngIf="day.hours" class="hours">{{ day.hours }}</span>
-            <!--          <span *ngIf="!day.hours && !day.isWeekend && day.dayNumber < days.length"-->
-            <!--                class="no-data">Pas de données</span>-->
+          <div class="time-display">
+            <span class="time-start">{{ day.workDay.timeStart }}</span>
+
+            <div class="progress-bar-container">
+              <div *ngIf="day.workDay.timeStart" class="progress-bar"></div>
+              <span class="time-worked">{{ day.workDay.timeWorked }}</span>
+            </div>
+
+            <span class="time-end">{{ day.workDay.timeEnd }}</span>
           </div>
         </div>
 
         <div class="day-info">
           <span class="day-name">{{ day.dayName }}</span>
-
         </div>
+
       </div>
     </div>
   </div>
