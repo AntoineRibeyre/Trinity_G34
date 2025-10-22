@@ -6,7 +6,7 @@ import {Dashboard} from './features/main-layout/dashboard/dashboard';
 import {Settings} from './features/main-layout/settings/settings';
 import {Calendar} from './features/main-layout/calendar/calendar';
 import {Team} from './features/main-layout/team/team';
-import {Admin} from './features/admin/admin';
+import {Admin} from './features/main-layout/admin/admin';
 import {Home} from './features/home/home';
 import {MainLayout} from './features/main-layout/main-layout';
 import { AuthGuard } from './core/guards/auth.guard';
