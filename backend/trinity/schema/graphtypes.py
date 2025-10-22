@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 import graphene
 from graphene_django.types import DjangoObjectType
 
-from ..models import User, Team, Calendar
+from ..models import User, Team, Calendar, Event
 from ..logic.userfactory import UserViewer
 from ..logic.teamfactory import TeamViewer, AdminView
 from ..logic.calendarfactory import DailyPlanning
@@ -22,6 +22,145 @@ class TeamType(DjangoObjectType):
         model = Team
         fields = "__all__"
 
+class EventType(DjangoObjectType):
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+class CreateEvent(graphene.Mutation):
+    class Arguments:
+        subject = graphene.String(required=True)
+        start_time = graphene.DateTime(required=True)
+        end_time = graphene.DateTime(required=True)
+        is_all_day = graphene.Boolean(required=False)
+        attendee_ids = graphene.List(graphene.Int)
+
+    event = graphene.Field(EventType)
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, subject, start_time, end_time, attendee_ids, is_all_day=False):
+        try:
+            event = Event.objects.create(
+                subject=subject,
+                start_time=start_time,
+                end_time=end_time,
+                is_all_day=is_all_day
+            )
+            if attendee_ids:
+                event.attendees.set(User.objects.filter(id__in=attendee_ids))
+            return CreateEvent(event=event, success=True, message="Événement créé avec succès")
+        except Exception as e:
+            return CreateEvent(event=None, success=False, message=str(e))
+
+
+class UpdateEvent(graphene.Mutation):
+    class Arguments:
+        event_id = graphene.Int(required=True)
+        subject = graphene.String(required=True)
+        start_time = graphene.DateTime(required=True)
+        end_time = graphene.DateTime(required=True)
+        is_all_day = graphene.Boolean(required=False)
+        attendee_ids = graphene.List(graphene.Int, required=False)
+
+    event = graphene.Field(EventType)
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, event_id, subject, start_time, end_time, is_all_day=False, attendee_ids=None):
+        try:
+            # Récupérer l'événement
+            event = Event.objects.get(id=event_id)
+
+            # Mettre à jour les champs (sans .set(), directement)
+            event.subject = subject
+            event.start_time = start_time
+            event.end_time = end_time
+            event.is_all_day = is_all_day
+
+            # Sauvegarder les modifications
+            event.save()
+
+            # Mettre à jour les participants (ManyToMany)
+            if attendee_ids is not None:
+                event.attendees.set(User.objects.filter(id__in=attendee_ids))
+
+            return UpdateEvent(
+                event=event,
+                success=True,
+                message="Événement mis à jour avec succès"
+            )
+        except Event.DoesNotExist:
+            return UpdateEvent(
+                event=None,
+                success=False,
+                message=f"Événement avec l'ID {event_id} introuvable"
+            )
+        except Exception as e:
+            return UpdateEvent(
+                event=None,
+                success=False,
+                message=f"Erreur lors de la mise à jour: {str(e)}"
+            )
+
+
+class AddAttendeeToEvent(graphene.Mutation):
+    class Arguments:
+        event_id = graphene.Int(required=True)
+        user_id = graphene.Int(required=True)
+
+    event = graphene.Field(EventType)
+
+    def mutate(self, info, event_id, user_id):
+        event = Event.objects.get(id=event_id)
+        user = User.objects.get(id=user_id)
+        event.attendees.add(user)
+        return AddAttendeeToEvent(event=event)
+
+
+class RemoveAttendeeFromEvent(graphene.Mutation):
+    class Arguments:
+        event_id = graphene.Int(required=True)
+        user_id = graphene.Int(required=True)
+
+    event = graphene.Field(EventType)
+
+    def mutate(self, info, event_id, user_id):
+        event = Event.objects.get(id=event_id)
+        user = User.objects.get(id=user_id)
+        event.attendees.remove(user)
+        return RemoveAttendeeFromEvent(event=event)
+
+
+class DeleteEvent(graphene.Mutation):
+    class Arguments:
+        event_id = graphene.Int(required=True)
+
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, event_id):
+        try:
+            # Récupérer l'événement
+            event = Event.objects.get(id=event_id)
+
+            # Supprimer l'événement (avec les parenthèses!)
+            event.delete()
+
+            return DeleteEvent(
+                success=True,
+                message="Événement supprimé avec succès"
+            )
+        except Event.DoesNotExist:
+            return DeleteEvent(
+                success=False,
+                message=f"Événement avec l'ID {event_id} introuvable"
+            )
+        except Exception as e:
+            return DeleteEvent(
+                success=False,
+                message=f"Erreur lors de la suppression: {str(e)}"
+            )
 
 class CalendarType(DjangoObjectType):
     """Graphene object connected to the Django Calendar model."""
@@ -151,3 +290,4 @@ class ObjectTypeFactory:
                       for team_viewer in admin_view.teams.values()]
         return AdminViewType(admin_details=admin_type,
                              teams=teams_type)
+

@@ -14,8 +14,9 @@
 #     class Meta:
 #         model = User
 #         fields = '__all__'
-#
-#
+
+    #
+    #
 # class TeamType(DjangoObjectType):
 #     class Meta:
 #         model = Team
@@ -82,6 +83,8 @@
 #
 #
 # class Query(graphene.ObjectType):
+
+
 #     all_users = graphene.List(UserType)
 #     all_teams = graphene.List(TeamType)
 #     all_calendars = graphene.List(CalendarType)
@@ -265,6 +268,8 @@
 #     refresh_token = graphql_jwt.Refresh.Field() # Refresh du token
 #
 #
+
+
 #     create_user = CreateUser.Field()
 #     create_team = CreateTeam.Field()
 #
