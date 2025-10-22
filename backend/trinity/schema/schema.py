@@ -6,7 +6,7 @@ import graphql_jwt
 
 from .graphtypes import CalendarType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
     AddAttendeeToEvent, RemoveAttendeeFromEvent
-from ..models import Calendar, Event
+from ..models import Calendar, Event, User
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
@@ -147,6 +147,9 @@ class Query(graphene.ObjectType):
 
     def resolve_event(self, info, id):
         return Event.objects.prefetch_related('attendees').get(id=id)
+    
+    def resolve_all_users(self, info, *kwargs):
+        return User.objects.all()
 
 
 class CreateUser(graphene.Mutation):

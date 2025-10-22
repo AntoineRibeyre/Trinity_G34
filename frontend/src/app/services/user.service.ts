@@ -4,6 +4,30 @@ import { firstValueFrom } from "rxjs";
 import {CurrentUserResponse, User} from "../models/user.model"
 import gql from 'graphql-tag';
 
+interface GraphQLUser {
+  id: number;
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+interface AllUsersResponse {
+  allUsers: GraphQLUser[];
+}
+
+const GET_ALL_USERS = gql`
+  query GetAllUsers {
+    allUsers {
+      id
+      username
+      email
+      firstName
+      lastName
+    }
+  }
+`;
+
 @Injectable({ providedIn: 'root' })
 
 
@@ -14,6 +38,8 @@ export class UserService {
   constructor(private apollo: Apollo) {
     this.loadCurrentUserFromServer();
   }
+
+  
 
   CURRENT_USER_QUERY = gql`
       query CurrentUser {
@@ -41,4 +67,35 @@ export class UserService {
   clearCurrentUser() {
     this.currentUser = null;
   }
+
+  async getAllUsers(): Promise<User[]> {
+      try {
+        const response = await firstValueFrom(
+          this.apollo.query<AllUsersResponse>({
+            query: GET_ALL_USERS,
+            fetchPolicy: 'network-only'
+          })
+        );
+        
+        const users = (response.data?.allUsers || []).map(user => 
+          this.convertUser(user)
+        );
+        
+        return users;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+        throw error;
+      }
+    }
+
+    // Fonction utilitaire pour convertir GraphQLUser en User
+    convertUser(graphqlUser: GraphQLUser): User {
+      return {
+        id: graphqlUser.id.toString(),
+        username: graphqlUser.username,
+        email: graphqlUser.email,
+        firstName: graphqlUser.firstName || '',
+        lastName: graphqlUser.lastName || ''
+      };
+    }
 }

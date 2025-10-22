@@ -48,7 +48,7 @@ export class SideNav {
     {
       label: 'Admin',
       icon: 'assets/icons/nav-admin.svg',
-      route: 'admin',
+      route: 'admin/users',
       section: 'top'
     },
     {

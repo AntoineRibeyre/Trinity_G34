@@ -1,0 +1,26 @@
+<div class="search-bar">
+  <div class="search-input-wrapper" role="search" aria-label="Rechercher">
+
+    <input
+      type="search"
+      class="search-input"
+      placeholder="Rechercher"
+      [(ngModel)]="query"
+      (ngModelChange)="onQueryChange($event)"
+      aria-label="Rechercher"
+      autocomplete="off"
+    />
+
+    <button
+      *ngIf="query"
+      class="icon-btn clear"
+      type="button"
+      (click)="clear()"
+      aria-label="Effacer la recherche"
+      title="Effacer"
+    >
+      ✕
+    </button>
+
+  </div>
+</div>
