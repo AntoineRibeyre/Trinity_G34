@@ -4,8 +4,9 @@ from zoneinfo import ZoneInfo
 import graphene
 import graphql_jwt
 
-from .graphtypes import CalendarType, UserType, DailyWorkType
-from ..models import Calendar
+from .graphtypes import CalendarType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
+    AddAttendeeToEvent, RemoveAttendeeFromEvent
+from ..models import Calendar, Event
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
@@ -17,6 +18,7 @@ from ..mutations.mutation_token import CustomObtainJSONWebToken
 
 class Query(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL queries."""
+    all_users = graphene.List(UserType)
     pending_day = graphene.Field(
         graphtype.CalendarType,
         user_id=graphene.Int(required=True)
@@ -34,6 +36,8 @@ class Query(graphene.ObjectType):
         graphtype.DailyWorkType,
         user_id=graphene.Int(required=True)
     )
+    all_events = graphene.List(graphtype.EventType)
+    event = graphene.Field(graphtype.EventType, id=graphene.Int(required=True))
 
     def resolve_pending_day(self, info, user_id):
         """Il faut aboslument modifier  ce code car il viole l'architecture
@@ -138,6 +142,12 @@ class Query(graphene.ObjectType):
 
         return daily_summaries
 
+    def resolve_all_events(self, info):
+        return Event.objects.prefetch_related('attendees').all().order_by('-created_at')
+
+    def resolve_event(self, info, id):
+        return Event.objects.prefetch_related('attendees').get(id=id)
+
 
 class CreateUser(graphene.Mutation):
     """This class is a GraphQL mutation that creates a new user and pushes it
@@ -221,6 +231,12 @@ class Mutation(graphene.ObjectType):
     register_arrival = RegisterArrival.Field()
     register_end = RegisterEnd.Field()
     logout = LogoutMutation.Field()
+    create_event = CreateEvent.Field()
+    update_event = UpdateEvent.Field()
+    delete_event = DeleteEvent.Field()
+    update_event_attendees = UpdateEvent.Field()
+    add_attendee = AddAttendeeToEvent.Field()
+    remove_attendee = RemoveAttendeeFromEvent.Field()
 
 
 # final schema
