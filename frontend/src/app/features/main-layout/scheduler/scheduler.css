@@ -1,0 +1,15 @@
+@import '@syncfusion/ej2-schedule/styles/material.css';
+
+.general-space {
+  width: calc(100% - 50px);
+  height: calc(100vh - 50px);
+  padding: 25px;
+
+  background-color: #F7F8FA;
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+
+  font-family: 'Inter', sans-serif;
+}
+
