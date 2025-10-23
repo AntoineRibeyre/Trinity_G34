@@ -1,52 +1,81 @@
 {
-  "login": {
-    "connexion": "Connexion",
-    "mdp": "Password",
-    "email": "Email",
-    "seconnecter": "Login",
-    "sinscrire": "Register",
-    "motdepasseoublié": "Forgotten password"
+  "SETTINGS": {
+    "FIRST_NAME": "First name",
+    "LAST_NAME": "Last name",
+    "EMAIL": "Email",
+    "SAVE": "Save",
+    "LANGUAGE": "Language",
+    "YOUR_STATS": "Your stats",
+    "TOTAL_HOURS": "Total hours",
+    "MONTH_HOURS": "This month",
+    "REMAINING_LEAVE": "Days off left",
+    "COMPLETED_TASKS": "Completed tasks",
+    "UPCOMING_LEAVES": "Upcoming days off",
+    "NO_UPCOMING_LEAVES": "NO upcoming days off",
+    "SAVE_SUCCESS": "Save",
+    "SAVE_ERROR": "Error during save"
   },
-
-  "register": {
-    "inscription": "Register",
-    "nom": "First Name",
-    "prénom": "Name",
-    "email": "Email",
-    "numérodecarte": "Card Number",
-    "mdp": "Password",
-    "motdepasseoublié": "Forgotten password",
-    "sinscrire": "Register"
+  "LOGIN": {
+    "CONNEXION": "Connexion",
+    "PASSWORD": "Password",
+    "EMAIL": "Email",
+    "LOGIN": "Login",
+    "REGISTER": "Register",
+    "FORGOTTEN_PASSWORD": "Forgotten password"
   },
-
-  "home": {
-    "sinscrire": "Register",
-    "seconnecter": "Login",
-    "fonctionalitésprincipales": "Key Features",
-    "pointagesimplifié": "Simplified clock in",
-    "enregistrezvosheuresdarrivéeetdedépartenunclic": "Record your arrival and departure times with one click",
-    "gestiondéquipes": "Team management",
-    "organisezvoscollaborateursetsuivezleuractivité": "Organize your employees and monitor their activity",
-    "rapportKPI": "KPI report",
-    "analysezlesindicateursdeperformancesdevotreentreprise": "Analyze your company's performance indicators",
-    "tableaudebord": "Dashboard",
-    "visualisezvosheuresdetravailetvosstatistiques": "View your working hours and statistics"
+  "REGISTER": {
+    "REGISTER": "Register",
+    "FIRST_NAME": "First name",
+    "LAST_NAME": "Name",
+    "EMAIL": "Email",
+    "CARD_NUMBER": "Card number",
+    "PASSWORD": "Password",
+    "REGISTER": "Register"
   },
-
-  "app": {
-
+  "HOME": {
+    "REGISTER": "Register",
+    "LOGIN": "Login",
+    "KEY_FEATURES": "Key features",
+    "SIMPLIFIED_CLOCK_IN": "Simplified clock'in",
+    "RECORD_TIME_ONE_CLICK": "Record time in one click",
+    "TEAM_MANAGEMENT": "Team management",
+    "ORGANIZE_EMPLOYEES": "Organize employees",
+    "KPI_REPORT": "KPI report",
+    "ANALYZE_COMPANY_PERFORMANCE": "Analyze company's performance",
+    "DASHBOARD": "Dashboard",
+    "VIEW_WORK_HOURS_AND_STATS": "View work hours and stats"
   },
-
-  "dashboard": {
-
+  "DASHBOARD": {
+    "HELLO": "Hello",
+    "WORK_HOURS_TRACKING": "Work hours tracking",
+    "START": "Start",
+    "END": "End",
+    "YOUR_HISTORY": "Your history",
+    "JANUARY": "January",
+    "FEBRUARY": "February",
+    "MARCH": "Mach",
+    "APRIL": "April",
+    "MAY": "May",
+    "JUNE": "June",
+    "JULY": "July",
+    "AUGUST": "August",
+    "SEPTEMBER": "September",
+    "OCTOBER": "October",
+    "NOVEMBER": "November",
+    "DECEMBER": "December",
+    "YOUR_COLLABORATORS": "Your collaborators",
+    "MONDAY": "Monday",
+    "TUESDAY": "Tuesday",
+    "WEDNESDAY": "Wednesday",
+    "THURSDAY": "Thursday",
+    "FRIDAY": "Friday",
+    "SATURDAY": "Saturday",
+    "SUNDAY": "Sunday"
   },
-
-  "settings": {
-
-  },
-
-  "team": {
-
+  "TEAM": {
+    "AVERAGE_WEEK_WORK": "Average weekly work time",
+    "AVERAGE_MONTH_WORK": "Average monthly work time",
+    "AVERAGE_WEEK_ARRIVED": "Average weekly arrive time",
+    "AVERAGE_WEEK_DEPARTURE": "Average weekly departure time"
   }
-
 }

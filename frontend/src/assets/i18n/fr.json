@@ -1,0 +1,85 @@
+{
+  "SETTINGS": {
+    "FIRST_NAME": "Prénom",
+    "LAST_NAME": "Nom",
+    "EMAIL": "Email",
+    "SAVE": "Enregistrer",
+    "LANGUAGE": "Langue",
+    "YOUR_STATS": "Vos stats",
+    "TOTAL_HOURS": "Heures totales",
+    "MONTH_HOURS": "Ce mois",
+    "REMAINING_LEAVE": "Jours restants",
+    "COMPLETED_TASKS": "Tâches complétées",
+    "UPCOMING_LEAVES": "Vos prochains congés",
+    "NO_UPCOMING_LEAVES": "Aucun congé prévu",
+    "SAVE_SUCCESS": "Modifications enregistrées avec succès",
+    "SAVE_ERROR": "Erreur lors de l'enregistrement"
+  },
+  "LOGIN": {
+    "CONNEXION": "Connexion",
+    "PASSWORD": "Mot de passe",
+    "EMAIL": "Email",
+    "LOGIN": "Se connecter",
+    "REGISTER": "S'inscrire",
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié"
+  },
+  "REGISTER": {
+    "REGISTER": "Inscription",
+    "FIRST_NAME": "Prénom",
+    "LAST_NAME": "Nom",
+    "EMAIL": "Email",
+    "CARD_NUMBER": "Numéro de carte",
+    "PASSWORD": "Mot de passe",
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié",
+    "REGISTER": "S’inscrire"
+  },
+  "HOME": {
+    "REGISTER": "S’inscrire",
+    "LOGIN": "Se connecter",
+    "KEY_FEATURES": "Fonctionnalités principales",
+    "SIMPLIFIED_CLOCK_IN": "Pointage simplifié",
+    "RECORD_TIME_ONE_CLICK": "Enregistrez vos heures d’arrivée et de départ en un clic",
+    "TEAM_MANAGEMENT": "Gestion d’équipes",
+    "ORGANIZE_EMPLOYEES": "Organisez vos collaborateurs et suivez leur activité",
+    "KPI_REPORT": "Rapport KPI",
+    "ANALYZE_COMPANY_PERFORMANCE": "Analysez les indicateurs de performance de votre entreprise",
+    "DASHBOARD": "Tableau de bord",
+    "VIEW_WORK_HOURS_AND_STATS": "Visualisez vos heures de travail et vos statistiques"
+  },
+  "DASHBOARD": {
+    "HELLO": "Bonjour",
+    "WORK_HOURS_TRACKING": "Suivi des heures travaillées",
+    "START": "Début",
+    "END": "Fin",
+    "YOUR_HISTORY": "Votre historique",
+    "JANUARY": "Janvier",
+    "FEBRUARY": "Février",
+    "MARCH": "Mars",
+    "APRIL": "Avril",
+    "MAY": "Mai",
+    "JUNE": "Juin",
+    "JULY": "Juillet",
+    "AUGUST": "Août",
+    "SEPTEMBER": "Septembre",
+    "OCTOBER": "Octobre",
+    "NOVEMBER": "Novembre",
+    "DECEMBER": "Décembre",
+    "YOUR_COLLABORATORS": "Vos collègues",
+    "MONDAY": "Lundi",
+    "TUESDAY": "Mardi",
+    "WEDNESDAY": "Mercredi",
+    "THURSDAY": "Jeudi",
+    "FRIDAY": "Vendredi",
+    "SATURDAY": "Samedi",
+    "SUNDAY": "Dimanche"
+  },
+  "TEAM": {
+    "AVERAGE_WEEK_WORK": "Moyenne du temps de travail hebdomadaire",
+    "AVERAGE_MONTH_WORK": "Moyenne du temps de travail mensuel",
+    "AVERAGE_WEEK_ARRIVED": "Moyenne d'heure d’arriver hebdomadaire",
+    "AVERAGE_WEEK_DEPARTURE": "Moyenne d'heure de départ hebdomadaire"
+  }
+}
+
+
+
