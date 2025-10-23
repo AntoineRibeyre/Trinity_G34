@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.basic-button {
+  min-width: 14.5vw;
+  height: 60px;
+  border: none;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 2vw, 20px);
+  cursor: pointer;
+  color: white;
+}
+
+.basic-button:hover:not(.disabled) {
+  opacity: 0.8;
+}
+
+.basic-button:active:not(.disabled) {
+  transform: scale(0.98);
+}
+
+.basic-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,9 @@
+<select
+  [value]="selectedValue ?? placeholder"
+  (change)="handleChange($event)"
+  class="basic-dropdown">
+  <option value= 0 selected>{{ placeholder }}</option>
+  <option *ngFor="let option of options" [value]="option.value">
+    {{ option.label }}
+  </option>
+</select>

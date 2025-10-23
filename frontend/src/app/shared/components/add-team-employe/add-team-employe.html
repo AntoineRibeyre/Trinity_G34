@@ -1,4 +1,4 @@
-<div class="delete-dialog">
+<div class="add-team-dialog">
 
   <div class="title">
     {{ data.title }}
@@ -7,6 +7,12 @@
   <div class="message">
     {{ data.message }}
   </div>
+
+  <app-basic-dropdown
+    [options]="data.dropdownOptions"
+    placeholder="Employé..."
+    (onSelectionChange)="onChange($event)">
+  </app-basic-dropdown>
 
   <div class="buttons">
     <app-basic-text-button
@@ -17,8 +23,9 @@
 
     <app-basic-text-button
       text="{{ data.confirm }}"
-      color="#AA3333"
-      (onClick)="data.onConfirm(dialog)">
+      color="#336CAA"
+      [disabled]= "!isSelected"
+      (onClick)="data.onConfirm(dialog, selectedEmployeeId)">
     </app-basic-text-button>
   </div>
 
