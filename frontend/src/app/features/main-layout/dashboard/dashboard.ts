@@ -6,12 +6,18 @@ import {AuthService} from '../../../services/auth.service';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 import {HistoricalColumn} from '../../../shared/components/historical-column/historical-column';
+import {TeamColumn} from '../../../shared/components/team-column/team-column';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
+import {AddTeamEmploye} from '../../../shared/components/add-team-employe/add-team-employe';
+import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dropdown';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     DatePipe,
-    HistoricalColumn
+    HistoricalColumn,
+    TeamColumn,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -64,14 +70,21 @@ export class Dashboard implements OnInit, OnDestroy {
   todayCalendars: any[] = [];
   isLoading: boolean = false;
   error: any;
+  //TEMP
+  dropdownOptions: DropdownOption[] = [
+    { label: 'Ryan Wittert', value: 1 },
+    { label: 'Antoine Ribeyre ', value: 2 },
+    { label: 'Joan Guillard', value: 3 }
+  ];
 
   private dureeSubscription?: Subscription;
   private dureeTotaleSubscription?: Subscription;
 
-  constructor(private pointService: PointService,
-              private authService: AuthService,
-              private userService: UserService
-              ) {}
+  constructor(
+    private pointService: PointService,
+    private userService: UserService,
+    private dialog : MatDialog,
+  ) {}
 
   async ngOnInit() {
     this.currentUser = await this.userService.loadCurrentUserFromServer();
@@ -137,7 +150,6 @@ export class Dashboard implements OnInit, OnDestroy {
         this.todayCalendars = data;
         console.log('Calendriers du jour chargés:', this.todayCalendars);
 
-        // ✅ Démarrer le calcul de la durée totale en temps réel
         this.demarrerCalculDureeTotale();
 
         this.isLoading = false;
@@ -201,6 +213,44 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });
+  }
+
+  //TEMPS
+  // openDialog(): void {
+  //   this.dialog.open(DeleteDialog, {
+  //     data: {
+  //       title: "Supprimer un employé",
+  //       message: "Etes-vous sur de vouloir supprimer cet employé?\n Cette action est irréversible",
+  //       cancel: "Annuler",
+  //       confirm: "Supprimer",
+  //       onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
+  //         dialogRef.close();
+  //       },
+  //       onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+  //         dialogRef.close();
+  //       },
+  //     },
+  //     panelClass: 'custom-dialog-container'
+  //   })
+  // }
+
+  openDialog(): void {
+    this.dialog.open(AddTeamEmploye, {
+      data: {
+        title: "team_name",
+        message: "Ajouter un employé a cette équipe",
+        cancel: "Annuler",
+        confirm: "Ajouter",
+        dropdownOptions: this.dropdownOptions,
+        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          dialogRef.close();
+        },
+        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          dialogRef.close();
+        },
+      },
+      panelClass: 'custom-dialog-container'
+    })
   }
 
   ngOnDestroy() {

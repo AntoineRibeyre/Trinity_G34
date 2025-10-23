@@ -1,0 +1,25 @@
+<div class="delete-dialog">
+
+  <div class="title">
+    {{ data.title }}
+  </div>
+
+  <div class="message">
+    {{ data.message }}
+  </div>
+
+  <div class="buttons">
+    <app-basic-text-button
+      text="{{ data.cancel }}"
+      color="#999999"
+      (onClick)="data.onCancel(dialog)">
+    </app-basic-text-button>
+
+    <app-basic-text-button
+      text="{{ data.confirm }}"
+      color="#AA3333"
+      (onClick)="data.onConfirm(dialog)">
+    </app-basic-text-button>
+  </div>
+
+</div>

@@ -1,9 +1,21 @@
 # Lancer le build des containers :7
+Pour la Dev:
+```bash
+docker compose -f docker-compose.dev.yml build --no-cache
+```
+
+Pour la Prod:
 ```bash
  docker compose build --no-cache
 ```
  
 # Démarrer les containers :
+Pour la Dev:
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+Pour la Prod:
 ```bash
 docker compose up
 ```
@@ -26,8 +38,6 @@ python manage.py migrate
 ```
 # Pour accéder à une image docker :
 
-
- 
 docker exec -it django_backend bash
  
 docker exec -it angular_frontend bash

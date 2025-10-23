@@ -1,0 +1,14 @@
+<div class="general-space">
+  <ejs-schedule 
+    #scheduleObj
+    [selectedDate]='selectedDate' 
+    [currentView]='currentView'
+    [eventSettings]='eventSettings'
+    [height]='scheduleHeight'
+    [startHour]='startHour'
+    [endHour]='endHour'
+    [timeScale]='timeScale'
+    (actionComplete)='onActionComplete($event)'
+    (popupOpen)="onPopupOpen($event)">
+  </ejs-schedule>
+</div>
