@@ -5,6 +5,9 @@ import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/user.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
+import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
 
 @Component({
   selector: 'app-employee-list',
@@ -26,10 +29,17 @@ export class EmployeeList implements OnDestroy {
 
   placeHolderText: string = "No data";
 
+  dropdownOptions: DropdownOption[] = [
+    { label: 'Ryan Wittert', value: 1 },
+    { label: 'Antoine Ribeyre ', value: 2 },
+    { label: 'Joan Guillard', value: 3 },
+    {label: 'Houssem Jeguirim', value: 4}
+  ];
+
   private q$ = new Subject<string>();
   private sub: Subscription;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,private dialog : MatDialog) {
     this.sub = this.q$.pipe(
       debounceTime(300),
       distinctUntilChanged()
@@ -116,5 +126,28 @@ export class EmployeeList implements OnDestroy {
   closeModal() {
     this.isModalOpen = false;
     this.selectedEmployee = null;
+  }
+
+
+  openDialog(id: string): void {
+    this.dialog.open(DeleteDialog, {
+      data: {
+        title: "Supprimer un employé",
+        message: "Êtes-vous sûr de vouloir supprimer cet employé ? Cette action est irréversible.",
+        cancel: "Annuler",
+        confirm: "Supprimer",
+        dropdownOptions: this.dropdownOptions,
+        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          this.userService.deleteUser(id)
+          this.loadUsers();
+          window.location.reload();
+          dialogRef.close();
+        },
+        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          dialogRef.close();
+        },
+      },
+      panelClass: 'custom-dialog-container'
+    })
   }
 }

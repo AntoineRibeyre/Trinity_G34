@@ -13,7 +13,6 @@
 
     <button
       *ngIf="query"
-      class="icon-btn clear"
       type="button"
       (click)="clear()"
       aria-label="Effacer la recherche"
@@ -46,7 +45,7 @@
             <img src="assets/icons/edit_square.svg" alt="Edit" class="icon" />
           </button>
 
-          <button class="icon-btn">
+          <button class="icon-btn" (click)="$event.stopPropagation();openDialog(employee.id)">
             <img src="assets/icons/delete_bin.svg" alt="Delete" class="icon" />
           </button>
         </div>

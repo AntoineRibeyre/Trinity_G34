@@ -148,8 +148,10 @@ class Query(graphene.ObjectType):
     def resolve_event(self, info, id):
         return Event.objects.prefetch_related('attendees').get(id=id)
     
-    def resolve_all_users(self, info, *kwargs):
-        return User.objects.all()
+    def resolve_all_users(self, info):
+        users = User.objects.all()
+        users = users.filter(is_active=True)
+        return users
 
 
 class CreateUser(graphene.Mutation):
@@ -173,6 +175,24 @@ class CreateUser(graphene.Mutation):
                                            email, telephone, team_id, password,
                                            role)
         return CreateUser(user=user)
+    
+class DeleteUser(graphene.Mutation):
+    class Arguments:
+        user_id = graphene.Int(required=True)
+    
+    ok = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            user.is_active = False
+            user.save()
+            return DeleteUser(ok=True, message=f"Utilisateur {user_id} supprimé avec succès.")
+        except User.DoesNotExist:
+            return DeleteUser(ok=False, message="Utilisateur introuvable.")
+        except Exception as e:
+            return DeleteUser(ok=False, message=f"Erreur: {str(e)}")
 
 
 class CreateTeam(graphene.Mutation):
@@ -240,6 +260,7 @@ class Mutation(graphene.ObjectType):
     update_event_attendees = UpdateEvent.Field()
     add_attendee = AddAttendeeToEvent.Field()
     remove_attendee = RemoveAttendeeFromEvent.Field()
+    delete_user = DeleteUser.Field()
 
 
 # final schema

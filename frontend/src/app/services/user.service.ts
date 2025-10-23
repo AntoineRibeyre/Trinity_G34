@@ -28,9 +28,25 @@ const GET_ALL_USERS = gql`
       lastName
       telephone
       role
+      isActive
     }
   }
 `;
+
+const DELETE_USER = gql`
+  mutation DeleteUser($userId: Int!) {
+    deleteUser(userId: $userId) {
+      message
+    }
+  }
+`;
+
+interface DeleteUserResponse {
+  deleteUser: {
+    message: string;
+  };
+}
+
 
 @Injectable({ providedIn: 'root' })
 
@@ -103,5 +119,22 @@ export class UserService {
         telephone: graphqlUser.telephone || '',
         role: graphqlUser.role || ''
       };
+    }
+
+    async deleteUser(id: string): Promise<string> {
+      try {
+        const response = await firstValueFrom(
+          this.apollo.mutate<DeleteUserResponse>({
+            mutation: DELETE_USER,
+            variables: { userId: Number(id) },
+            fetchPolicy: 'no-cache'
+          })
+        );
+
+        return response.data?.deleteUser?.message || 'Utilisateur désactivé avec succès.';
+      } catch (error) {
+        console.error('Erreur lors de la désactivation de l’utilisateur :', error);
+        throw error;
+      }
     }
 }
