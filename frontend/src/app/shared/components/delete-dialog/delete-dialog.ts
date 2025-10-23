@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {DIALOG_DATA, DialogModule} from '@angular/cdk/dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {BasicTextButton} from '../basic-text-button/basic-text-button';
 
 export interface DeleteDialog {
   title: string;
@@ -15,6 +16,7 @@ export interface DeleteDialog {
   selector: 'app-delete-dialog',
   imports: [
     DialogModule,
+    BasicTextButton,
   ],
   templateUrl: './delete-dialog.html',
   styleUrl: './delete-dialog.css'

@@ -7,7 +7,7 @@
   height: 25vh;
 }
 
-.delete-dialog {
+.add-team-dialog {
   height: 100%;
   font-family: 'Inter', sans-serif;
   display: flex;
@@ -36,7 +36,6 @@
   white-space: pre-line;
 
   text-align: center;
-  font-size: clamp(12px, 2vw, 17px);
 }
 
 .buttons {
@@ -45,4 +44,25 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
+
+  .cancel-button,
+  .confirm-button {
+    width: 100%;
+    height: 60px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    font-size: clamp(10px, 2vw, 20px);
+    cursor: pointer;
+  }
+  .cancel-button {
+    background: #999999;
+  }
+
+  .confirm-button {
+    background: #AA3333;
+  }
 }

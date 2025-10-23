@@ -9,6 +9,8 @@ import {HistoricalColumn} from '../../../shared/components/historical-column/his
 import {TeamColumn} from '../../../shared/components/team-column/team-column';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
+import {AddTeamEmploye} from '../../../shared/components/add-team-employe/add-team-employe';
+import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dropdown';
 
 @Component({
   selector: 'app-dashboard',
@@ -68,6 +70,12 @@ export class Dashboard implements OnInit, OnDestroy {
   todayCalendars: any[] = [];
   isLoading: boolean = false;
   error: any;
+  //TEMP
+  dropdownOptions: DropdownOption[] = [
+    { label: 'Ryan Wittert', value: 1 },
+    { label: 'Antoine Ribeyre ', value: 2 },
+    { label: 'Joan Guillard', value: 3 }
+  ];
 
   private dureeSubscription?: Subscription;
   private dureeTotaleSubscription?: Subscription;
@@ -208,13 +216,32 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   //TEMPS
+  // openDialog(): void {
+  //   this.dialog.open(DeleteDialog, {
+  //     data: {
+  //       title: "Supprimer un employé",
+  //       message: "Etes-vous sur de vouloir supprimer cet employé?\n Cette action est irréversible",
+  //       cancel: "Annuler",
+  //       confirm: "Supprimer",
+  //       onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
+  //         dialogRef.close();
+  //       },
+  //       onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+  //         dialogRef.close();
+  //       },
+  //     },
+  //     panelClass: 'custom-dialog-container'
+  //   })
+  // }
+
   openDialog(): void {
-    this.dialog.open(DeleteDialog, {
+    this.dialog.open(AddTeamEmploye, {
       data: {
-        title: "Supprimer un employé",
-        message: "Etes-vous sur de vouloir supprimer cet employé?\n Cette action est irréversible",
+        title: "team_name",
+        message: "Ajouter un employé a cette équipe",
         cancel: "Annuler",
-        confirm: "Supprimer",
+        confirm: "Ajouter",
+        dropdownOptions: this.dropdownOptions,
         onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
           dialogRef.close();
         },
