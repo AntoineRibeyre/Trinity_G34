@@ -57,16 +57,17 @@ export class Settings implements OnInit, OnDestroy {
   /**
    * Charge les données utilisateur
    */
-  // private loadUserData(): void {
-  //   //
-  //   const userData = {
-  //     firstName: 'Jean',
-  //     lastName: 'Dupont',
-  //     email: 'jean.dupont@example.com'
-  //   };
-  //
-  //   this.settingsForm.patchValue(userData);
-  // }
+  private loadUserData(): void {
+    //
+    const userData = {
+      firstName: 'Jean',
+      lastName: 'Dupont',
+      email: 'jean.dupont@example.com',
+      password:'Superstrongpwd123'
+    };
+
+    this.settingsForm.patchValue(userData);
+  }
 
   /**
    * Change la langue via le service

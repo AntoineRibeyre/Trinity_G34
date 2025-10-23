@@ -13,7 +13,8 @@
     "UPCOMING_LEAVES": "Upcoming days off",
     "NO_UPCOMING_LEAVES": "NO upcoming days off",
     "SAVE_SUCCESS": "Save",
-    "SAVE_ERROR": "Error during save"
+    "SAVE_ERROR": "Error during save",
+    "PASSWORD": "Password"
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
