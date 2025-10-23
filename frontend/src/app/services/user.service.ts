@@ -10,6 +10,8 @@ interface GraphQLUser {
   email: string;
   firstName?: string;
   lastName?: string;
+  telephone?: string;
+  role?: string;
 }
 
 interface AllUsersResponse {
@@ -24,6 +26,8 @@ const GET_ALL_USERS = gql`
       email
       firstName
       lastName
+      telephone
+      role
     }
   }
 `;
@@ -95,7 +99,9 @@ export class UserService {
         username: graphqlUser.username,
         email: graphqlUser.email,
         firstName: graphqlUser.firstName || '',
-        lastName: graphqlUser.lastName || ''
+        lastName: graphqlUser.lastName || '',
+        telephone: graphqlUser.telephone || '',
+        role: graphqlUser.role || ''
       };
     }
 }

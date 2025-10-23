@@ -6,53 +6,76 @@ import { User } from '../../../../models/user.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 
-
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule,
-    FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })
-export class EmployeeList {
-  //Pour la search-bar
+export class EmployeeList implements OnDestroy {
   @Output() search = new EventEmitter<string>();
   @Output() openOptions = new EventEmitter<void>();
 
   public allUsers: User[] = [];
-  
+  public filteredUsers: User[] = [];
+
+  selectedEmployee: User | null = null;
+  isModalOpen: boolean = false;
+  editableModal: boolean = true;
   query: string = '';
+
+  placeHolderText: string = "No data";
 
   private q$ = new Subject<string>();
   private sub: Subscription;
 
   constructor(private userService: UserService) {
-    // émets la valeur après 300ms d'inactivité et seulement si différente
     this.sub = this.q$.pipe(
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(q => {
+      this.filterUsers(q);
       this.search.emit(q);
     });
+    this.loadUsers();
   }
-
 
   async loadUsers() {
     try {
       this.allUsers = await this.userService.getAllUsers();
+      this.filteredUsers = this.allUsers; // Initialiser la liste filtrée
       console.log('Utilisateurs chargés:', this.allUsers);
     } catch (error) {
       console.error('Erreur lors du chargement des utilisateurs:', error);
     }
   }
 
+  filterUsers(searchTerm: string) {
+    if (!searchTerm || searchTerm === '') {
+      this.filteredUsers = this.allUsers;
+      return;
+    }
+
+    const term = searchTerm.toLowerCase();
+    
+    this.filteredUsers = this.allUsers.filter(employee => {
+      const lastName = employee.lastName?.toLowerCase() || '';
+      const firstName = employee.firstName?.toLowerCase() || '';
+      const email = employee.email?.toLowerCase() || '';
+      
+      return lastName.includes(term) || 
+             firstName.includes(term) || 
+             email.includes(term);
+    });
+  }
+
   onQueryChange(value: string) {
-    // appelé à chaque frappe via ngModelChange
     this.q$.next(value.trim());
   }
 
   clear() {
     this.query = '';
+    this.filteredUsers = this.allUsers;
     this.q$.next('');
     this.search.emit('');
   }
@@ -61,10 +84,37 @@ export class EmployeeList {
     this.openOptions.emit();
   }
 
-  
-
   ngOnDestroy() {
-  this.sub.unsubscribe();
+    this.sub.unsubscribe();
+  }
+
+  displayEmployeeData(id: string, editable: boolean) {
+    const user = this.allUsers.find(user => user.id === id);
+    if (user) {
+      this.selectedEmployee = user;
+      this.isModalOpen = true;
+      this.editableModal = editable;
+      console.log(editable)
+    }
+  }
+
+  async saveChanges() {
+  if (!this.selectedEmployee) return;
+
+  // try {
+  //   await this.userService.updateUser(this.selectedEmployee.id, this.selectedEmployee);
+  //   // Mets à jour la liste locale
+  //   const index = this.allUsers.findIndex(u => u.id === this.selectedEmployee!.id);
+  //   if (index !== -1) this.allUsers[index] = { ...this.selectedEmployee };
+  //   this.filteredUsers = [...this.allUsers];
+  //   this.closeModal();
+  // } catch (error) {
+  //   console.error('Erreur lors de la sauvegarde:', error);
+  // }
 }
 
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedEmployee = null;
+  }
 }
