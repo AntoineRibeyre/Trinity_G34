@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgOptimizedImage, NgFor } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
@@ -14,7 +14,7 @@ interface MenuItem {
 
 @Component({
   selector: 'app-side-nav',
-  imports: [NgOptimizedImage, NgFor],
+  imports: [NgOptimizedImage],
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.css'
 })
