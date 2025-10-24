@@ -1,4 +1,9 @@
 {
+  "BASE": {
+    "CANCEL": "Annuler",
+    "CREATE": "Créer",
+    "SUPPRIMER": "Supprimer"
+  },
   "SETTINGS": {
     "FIRST_NAME": "Prénom",
     "LAST_NAME": "Nom",
@@ -30,8 +35,7 @@
     "EMAIL": "Email",
     "CARD_NUMBER": "Numéro de carte",
     "PASSWORD": "Mot de passe",
-    "FORGOTTEN_PASSWORD": "Mot de passe oublié",
-    "REGISTER": "S’inscrire"
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié"
   },
   "HOME": {
     "REGISTER": "S’inscrire",
@@ -52,6 +56,7 @@
     "START": "Début",
     "END": "Fin",
     "YOUR_HISTORY": "Votre historique",
+    "COLLEAGUE": "Vos Collègues",
     "JANUARY": "Janvier",
     "FEBRUARY": "Février",
     "MARCH": "Mars",
@@ -71,15 +76,32 @@
     "THURSDAY": "Jeudi",
     "FRIDAY": "Vendredi",
     "SATURDAY": "Samedi",
-    "SUNDAY": "Dimanche"
+    "SUNDAY": "Dimanche",
+    "SHORT": {
+      "MON": "Lun.",
+      "TUE": "Mar.",
+      "WED": "Mer.",
+      "THU": "Jeu.",
+      "FRI": "Ven.",
+      "SAT": "Sam.",
+      "SUN": "Dim."
+    }
   },
   "TEAM": {
     "AVERAGE_WEEK_WORK": "Moyenne du temps de travail hebdomadaire",
     "AVERAGE_MONTH_WORK": "Moyenne du temps de travail mensuel",
     "AVERAGE_WEEK_ARRIVED": "Moyenne d'heure d’arriver hebdomadaire",
-    "AVERAGE_WEEK_DEPARTURE": "Moyenne d'heure de départ hebdomadaire"
+    "AVERAGE_WEEK_DEPARTURE": "Moyenne d'heure de départ hebdomadaire",
+    "DIALOG": {
+      "CREATE-TEAM": {
+        "TITLE": "Créer une nouvelle équipe",
+        "NAME-TITLE": "Nom de l’équipe",
+        "NAME-PLACEHOLDER": "Nom...",
+        "FIELD-TITLE": "Type d’équipe",
+        "FIELD-PLACEHOLDER": "Type...",
+        "DESCRIPTION-TITLE": "Description de l’équipe",
+        "DESCRIPTION-PLACEHOLDER": "Description..."
+      }
+    }
   }
 }
-
-
-

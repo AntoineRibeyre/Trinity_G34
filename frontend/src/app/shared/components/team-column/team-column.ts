@@ -5,8 +5,6 @@ import {TranslatePipe} from '@ngx-translate/core';
 @Component({
   selector: 'app-team-column',
   imports: [
-    NgForOf,
-    NgIf,
     TranslatePipe
   ],
   templateUrl: './team-column.html',

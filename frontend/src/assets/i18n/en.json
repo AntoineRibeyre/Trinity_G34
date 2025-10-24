@@ -1,4 +1,9 @@
 {
+  "BASE": {
+    "CANCEL": "Cancel",
+    "CREATE": "Create",
+    "SUPPRIMER": "Delete"
+  },
   "SETTINGS": {
     "FIRST_NAME": "First name",
     "LAST_NAME": "Last name",
@@ -30,7 +35,7 @@
     "EMAIL": "Email",
     "CARD_NUMBER": "Card number",
     "PASSWORD": "Password",
-    "REGISTER": "Register"
+    "FORGOTTEN_PASSWORD": "Forgot your password"
   },
   "HOME": {
     "REGISTER": "Register",
@@ -51,6 +56,7 @@
     "START": "Start",
     "END": "End",
     "YOUR_HISTORY": "Your history",
+    "COLLEAGUE": "Your Colleague",
     "JANUARY": "January",
     "FEBRUARY": "February",
     "MARCH": "Mach",
@@ -70,12 +76,32 @@
     "THURSDAY": "Thursday",
     "FRIDAY": "Friday",
     "SATURDAY": "Saturday",
-    "SUNDAY": "Sunday"
+    "SUNDAY": "Sunday",
+    "SHORT": {
+      "MON": "Mon.",
+      "TUE": "Tue.",
+      "WED": "Wed.",
+      "THU": "Thu.",
+      "FRI": "Fri.",
+      "SAT": "Sat.",
+      "SUN": "Sun."
+    }
   },
   "TEAM": {
     "AVERAGE_WEEK_WORK": "Average weekly work time",
     "AVERAGE_MONTH_WORK": "Average monthly work time",
     "AVERAGE_WEEK_ARRIVED": "Average weekly arrive time",
-    "AVERAGE_WEEK_DEPARTURE": "Average weekly departure time"
+    "AVERAGE_WEEK_DEPARTURE": "Average weekly departure time",
+    "DIALOG": {
+      "CREATE-TEAM": {
+        "TITLE": "Create a new team",
+        "NAME-TITLE": "Team name",
+        "NAME-PLACEHOLDER": "Name...",
+        "FIELD-TITLE": "Team type",
+        "FIELD-PLACEHOLDER": "Type...",
+        "DESCRIPTION-TITLE": "Team description",
+        "DESCRIPTION-PLACEHOLDER": "Description..."
+      }
+    }
   }
 }

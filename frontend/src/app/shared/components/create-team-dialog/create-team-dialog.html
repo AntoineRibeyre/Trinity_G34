@@ -1,0 +1,55 @@
+<div class="add-team-dialog">
+
+  <div class="title">
+    {{ data.title }}
+  </div>
+
+  <div class="message">
+    {{ "TEAM.DIALOG.CREATE-TEAM.NAME-TITLE" | translate }}
+  </div>
+
+  <app-basic-text-field
+    placeholder={{namePlaceholder}}
+    width = "300px"
+    [rows]="1"
+    (onTextChange)="onChangeName($event)">
+  </app-basic-text-field>
+
+  <div class="message">
+    {{ "TEAM.DIALOG.CREATE-TEAM.FIELD-TITLE" | translate }}
+  </div>
+
+  <app-basic-dropdown
+    [options]="data.dropdownOptions"
+    placeholder={{fieldPlaceholder}}
+    (onSelectionChange)="onChangeField($event)">
+  </app-basic-dropdown>
+
+  <div class="message">
+    {{ "TEAM.DIALOG.CREATE-TEAM.DESCRIPTION-TITLE" | translate }}
+  </div>
+
+  <app-basic-text-field
+    placeholder={{descriptionPlaceholder}}
+    width = "300px"
+    [maxLength]="500"
+    [rows]="5"
+    (onTextChange)="onChangeDescription($event)">
+  </app-basic-text-field>
+
+  <div class="buttons">
+    <app-basic-text-button
+      text="{{ data.cancel }}"
+      color="#999999"
+      (onClick)="data.onCancel(dialog)">
+    </app-basic-text-button>
+
+    <app-basic-text-button
+      text="{{ data.confirm }}"
+      color="#336CAA"
+      [disabled]= "!isSelected"
+      (onClick)="data.onConfirm(dialog, teamName, teamField, teamDescription)">
+    </app-basic-text-button>
+  </div>
+
+</div>

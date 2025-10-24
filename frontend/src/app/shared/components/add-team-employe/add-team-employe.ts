@@ -20,7 +20,6 @@ export interface AddTeamEmployee {
   imports: [
     DialogModule,
     BasicTextButton,
-    BasicTextField,
     BasicDropdown,
   ],
   templateUrl: './add-team-employe.html',
@@ -38,11 +37,5 @@ export class AddTeamEmploye {
   onChange(employeeId: number): void {
     employeeId === 0 ? this.isSelected = false : this.isSelected = true
     this.selectedEmployeeId = employeeId;
-  }
-  description: string = '';
-
-  onDescriptionChange(text: string): void {
-    console.log('Text:', text);
-    console.log('Model:', this.description);
   }
 }

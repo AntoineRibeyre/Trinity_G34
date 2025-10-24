@@ -8,6 +8,7 @@
 @import "../node_modules/@syncfusion/ej2-lists/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 
 .custom-dialog-container .mat-mdc-dialog-container {

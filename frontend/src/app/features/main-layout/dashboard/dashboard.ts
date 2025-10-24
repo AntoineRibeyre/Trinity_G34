@@ -12,6 +12,7 @@ import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dial
 import {AddTeamEmploye} from '../../../shared/components/add-team-employe/add-team-employe';
 import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dropdown';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {CreateTeamDialog} from '../../../shared/components/create-team-dialog/create-team-dialog';
 
 @Component({
   selector: 'app-dashboard',
@@ -231,13 +232,31 @@ export class Dashboard implements OnInit, OnDestroy {
   //   })
   // }
 
+  // openDialog(): void {
+  //   this.dialog.open(AddTeamEmploye, {
+  //     data: {
+  //       title: "team_name",
+  //       message: "Ajouter un employé a cette équipe",
+  //       cancel: "Annuler",
+  //       confirm: "Ajouter",
+  //       dropdownOptions: this.dropdownOptions,
+  //       onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
+  //         dialogRef.close();
+  //       },
+  //       onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+  //         dialogRef.close();
+  //       },
+  //     },
+  //     panelClass: 'custom-dialog-container'
+  //   })
+  // }
+
   openDialog(): void {
-    this.dialog.open(AddTeamEmploye, {
+    this.dialog.open(CreateTeamDialog, {
       data: {
-        title: "team_name",
-        message: "Ajouter un employé a cette équipe",
-        cancel: "Annuler",
-        confirm: "Ajouter",
+        title: this.translateService.instant('TEAM.DIALOG.CREATE-TEAM.TITLE'),
+        cancel: this.translateService.instant('BASE.CANCEL'),
+        confirm: this.translateService.instant('BASE.CREATE'),
         dropdownOptions: this.dropdownOptions,
         onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
           dialogRef.close();

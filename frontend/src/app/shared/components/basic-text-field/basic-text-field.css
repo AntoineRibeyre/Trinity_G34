@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
 .textarea-container {
   position: relative;
   width: 100%;
 }
 
 .basic-textarea {
+  background: #F7F8FA;
   padding: 10px;
   border: 0.5px solid #999999;
   border-radius: 8px;
