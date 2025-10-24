@@ -63,13 +63,13 @@ export class UserService {
       this.currentUser = res.data.currentUser;
       return this.currentUser;
     } catch (error) {
-      console.error('Error loading current user:', error);
+      console.error("Error loading current user:", error);
       this.currentUser = null;
       return null;
     }
   }
 
-  async updateUser(data: Partial<User> & { password?: string }): Promise<User> {
+  async updateUser(data: Partial<User> & { password?: string }): Promise<User | null> {
     try {
       const res = await firstValueFrom(
         this.apollo.mutate<{ updateUser: { user: User } }>({
@@ -79,14 +79,18 @@ export class UserService {
       );
 
       if (!res.data?.updateUser?.user) {
-        throw new Error('Failed to update user: Invalid response from server');
+        throw new Error("Failed to update user: Invalid response from server");
       }
 
       this.currentUser = res.data.updateUser.user;
       return this.currentUser;
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error("Error updating user:", error);
       throw error;
     }
+  }
+
+  clearCurrentUser(): void {
+    this.currentUser = null;
   }
 }

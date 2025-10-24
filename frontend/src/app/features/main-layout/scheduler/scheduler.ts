@@ -15,7 +15,7 @@ import {
 } from '@syncfusion/ej2-angular-schedule';
 import { registerLicense } from '@syncfusion/ej2-base';
 import { EventService } from '../../../services/event.service';
-import UserService from '../../../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 
 registerLicense('Ngo9BigBOggjHTQxAR8/V1JFaF1cX2hIf0x3TXxbf1x1ZFBMYlRbRHVPMyBoS35Rc0RjWHZedXBWRWJVUUVzVEFc');

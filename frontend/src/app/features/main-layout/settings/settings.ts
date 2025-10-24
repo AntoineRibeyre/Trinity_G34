@@ -106,7 +106,6 @@ export class Settings implements OnInit, OnDestroy {
     this.settingsForm.markAllAsTouched();
   }
 }
-
   /**
    * Vérifie si un champ est invalide
    */
