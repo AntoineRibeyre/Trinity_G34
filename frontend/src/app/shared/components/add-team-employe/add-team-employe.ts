@@ -3,6 +3,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {DIALOG_DATA, DialogModule} from '@angular/cdk/dialog';
 import {BasicTextButton} from '../basic-text-button/basic-text-button';
 import {BasicDropdown, DropdownOption} from '../basic-dropdown/basic-dropdown';
+import {BasicTextField} from '../basic-text-field/basic-text-field';
 
 export interface AddTeamEmployee {
   title: string;

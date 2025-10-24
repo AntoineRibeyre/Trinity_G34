@@ -1,1 +1,72 @@
-<p>settings works!</p>
+<div class="settings-container">
+  <div class="settings-content">
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="profile-avatar"></div>
+    </div>
+
+    <!-- Settings Form -->
+    <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" class="settings-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="firstName">{{ 'SETTINGS.FIRST_NAME' | translate }}</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            class="form-input"
+            [ngClass]="{'invalid': isInvalid('firstName')}"
+            [placeholder]="'SETTINGS.FIRST_NAME' | translate">
+          <div *ngIf="isInvalid('firstName')" class="error-message">
+            {{ 'SETTINGS.FIRST_NAME_REQUIRED' | translate }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="lastName">{{ 'SETTINGS.LAST_NAME' | translate }}</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            class="form-input"
+            [ngClass]="{'invalid': isInvalid('lastName')}"
+            [placeholder]="'SETTINGS.LAST_NAME' | translate">
+          <div *ngIf="isInvalid('lastName')" class="error-message">
+            {{ 'SETTINGS.LAST_NAME_REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">{{ 'SETTINGS.EMAIL' | translate }}</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-input"
+          [ngClass]="{'invalid': isInvalid('email')}"
+          [placeholder]="'SETTINGS.EMAIL' | translate">
+        <div *ngIf="isInvalid('email')" class="error-message">
+          {{ 'SETTINGS.EMAIL_INVALID' | translate }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="language">{{ 'SETTINGS.LANGUAGE' | translate }}</label>
+        <select
+          id="language"
+          class="form-select"
+          [value]="currentLanguage"
+          (change)="changeLanguage($event)">
+          <option *ngFor="let lang of availableLanguages" [value]="lang.code">
+            {{ lang.label }}
+          </option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-save" [disabled]="settingsForm.invalid">
+        {{ 'SETTINGS.SAVE' | translate }}
+      </button>
+    </form>
+  </div>
+</div>
