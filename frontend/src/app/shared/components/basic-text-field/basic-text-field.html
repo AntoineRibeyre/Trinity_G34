@@ -1,0 +1,27 @@
+<div class="textarea-container">
+  <textarea
+    [style.width]="width"
+    [(ngModel)]="value"
+    [placeholder]="placeholder"
+    [rows]="rows"
+    [maxLength]="maxLength || undefined"
+    [disabled]="disabled"
+    [readonly]="readonly"
+    (ngModelChange)="handleInput()"
+    (blur)="handleBlur()"
+    class="basic-textarea"
+    [class.disabled]="disabled"
+    [class.readonly]="readonly">
+  </textarea>
+
+  <div class="char-count" *ngIf="showCharCount && maxLength">
+    {{ value.length }} / {{ maxLength }}
+  </div>
+</div>
+
+<!--<app-basic-text-field-->
+<!--  placeholder="Décrivez votre problème..."-->
+<!--  width = "400px"-->
+<!--  [rows]="1"-->
+<!--  (onTextChange)="onDescriptionChange($event)">-->
+<!--</app-basic-text-field>-->

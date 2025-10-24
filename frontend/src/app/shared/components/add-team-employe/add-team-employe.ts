@@ -3,6 +3,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {DIALOG_DATA, DialogModule} from '@angular/cdk/dialog';
 import {BasicTextButton} from '../basic-text-button/basic-text-button';
 import {BasicDropdown, DropdownOption} from '../basic-dropdown/basic-dropdown';
+import {BasicTextField} from '../basic-text-field/basic-text-field';
 
 export interface AddTeamEmployee {
   title: string;
@@ -19,6 +20,7 @@ export interface AddTeamEmployee {
   imports: [
     DialogModule,
     BasicTextButton,
+    BasicTextField,
     BasicDropdown,
   ],
   templateUrl: './add-team-employe.html',
@@ -36,5 +38,11 @@ export class AddTeamEmploye {
   onChange(employeeId: number): void {
     employeeId === 0 ? this.isSelected = false : this.isSelected = true
     this.selectedEmployeeId = employeeId;
+  }
+  description: string = '';
+
+  onDescriptionChange(text: string): void {
+    console.log('Text:', text);
+    console.log('Model:', this.description);
   }
 }

@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PointService} from '../../../services/point.service';
 import {UserService} from '../../../services/user.service';
 import {User} from '../../../models/user.model';
 import {TodayCalendars} from '../../../services/service-interfaces';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 interface DayInfo {
   dayNumber: number;
@@ -21,7 +22,7 @@ interface WorkDayInfo {
 
 @Component({
   selector: 'app-historical-column',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './historical-column.html',
   styleUrl: './historical-column.css'
 })
@@ -31,6 +32,7 @@ export class HistoricalColumn implements OnInit {
               private userService: UserService
   ) {}
 
+  private translateService: TranslateService = inject(TranslateService);
   userId: number | null = null;
   currentUser: User | null = null;
   private date: Date = new Date();
@@ -38,20 +40,28 @@ export class HistoricalColumn implements OnInit {
   days: DayInfo[] = [];
 
   private monthDetail: {name: string, number: number}[] = [
-    { name: "Janvier", number: 31 },
-    { name: "Février", number: 28 },
-    { name: "Mars", number: 31 },
-    { name: "Avril", number: 30 },
-    { name: "Mai", number: 31 },
-    { name: "Juin", number: 30 },
-    { name: "Juillet", number: 31 },
-    { name: "Août", number: 31 },
-    { name: "Septembre", number: 30 },
-    { name: "Octobre", number: 31 },
-    { name: "Novembre", number: 30 },
-    { name: "Décembre", number: 31 }
+    { name: this.translateService.instant('DASHBOARD.JANUARY'), number: 31 },
+    { name: this.translateService.instant('DASHBOARD.FEBRUARY'), number: 28 },
+    { name: this.translateService.instant('DASHBOARD.MARCH'), number: 31 },
+    { name: this.translateService.instant('DASHBOARD.APRIL'), number: 30 },
+    { name: this.translateService.instant('DASHBOARD.MAY'), number: 31 },
+    { name: this.translateService.instant('DASHBOARD.JUNE'), number: 30 },
+    { name: this.translateService.instant('DASHBOARD.JULY'), number: 31 },
+    { name: this.translateService.instant('DASHBOARD.AUGUST'), number: 31 },
+    { name: this.translateService.instant('DASHBOARD.SEPTEMBER'), number: 30 },
+    { name: this.translateService.instant('DASHBOARD.OCTOBER'), number: 31 },
+    { name: this.translateService.instant('DASHBOARD.NOVEMBER'), number: 30 },
+    { name: this.translateService.instant('DASHBOARD.DECEMBER'), number: 31 }
   ];
-  private dayNames: string[] = ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'];
+  private dayNames: string[] = [
+    this.translateService.instant('DASHBOARD.SHORT.SUN'),
+    this.translateService.instant('DASHBOARD.SHORT.MON'),
+    this.translateService.instant('DASHBOARD.SHORT.TUE'),
+    this.translateService.instant('DASHBOARD.SHORT.WED'),
+    this.translateService.instant('DASHBOARD.SHORT.THU'),
+    this.translateService.instant('DASHBOARD.SHORT.FRI'),
+    this.translateService.instant('DASHBOARD.SHORT.SAT')
+  ];
 
   currentMonthWork: TodayCalendars[] = [];
   isLoading: boolean = true;

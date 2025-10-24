@@ -3,7 +3,7 @@
 :host {
   display: block;
   padding: 10px;
-  width: 30vw;
+  min-width: 30vw;
   height: 25vh;
 }
 

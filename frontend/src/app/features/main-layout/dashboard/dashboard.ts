@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, inject} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
 import {DatePipe} from '@angular/common';
@@ -11,13 +11,14 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
 import {AddTeamEmploye} from '../../../shared/components/add-team-employe/add-team-employe';
 import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dropdown';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    DatePipe,
     HistoricalColumn,
     TeamColumn,
+    TranslatePipe,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
@@ -34,28 +35,30 @@ export class Dashboard implements OnInit, OnDestroy {
   dayOfWeek: string = '';
   currentUser: User | null = null;
 
+  private translateService: TranslateService = inject(TranslateService);
+
   private dayNames = [
-    'Dimanche',
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi',
-    'Samedi'
+    this.translateService.instant('DASHBOARD.SUNDAY'),
+    this.translateService.instant('DASHBOARD.MONDAY'),
+    this.translateService.instant('DASHBOARD.TUESDAY'),
+    this.translateService.instant('DASHBOARD.WEDNESDAY'),
+    this.translateService.instant('DASHBOARD.THURSDAY'),
+    this.translateService.instant('DASHBOARD.FRIDAY'),
+    this.translateService.instant('DASHBOARD.SATURDAY')
   ];
   private monthNames = [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Aout',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre',
+    this.translateService.instant('DASHBOARD.JANUARY'),
+    this.translateService.instant('DASHBOARD.FEBRUARY'),
+    this.translateService.instant('DASHBOARD.MARCH'),
+    this.translateService.instant('DASHBOARD.APRIL'),
+    this.translateService.instant('DASHBOARD.MAY'),
+    this.translateService.instant('DASHBOARD.JUNE'),
+    this.translateService.instant('DASHBOARD.JULY'),
+    this.translateService.instant('DASHBOARD.AUGUST'),
+    this.translateService.instant('DASHBOARD.SEPTEMBER'),
+    this.translateService.instant('DASHBOARD.OCTOBER'),
+    this.translateService.instant('DASHBOARD.NOVEMBER'),
+    this.translateService.instant('DASHBOARD.DECEMBER'),
   ]
 
   private intervalId: any;
@@ -148,10 +151,7 @@ export class Dashboard implements OnInit, OnDestroy {
     this.pointService.getTodayCalendar(this.userId).subscribe({
       next: (data) => {
         this.todayCalendars = data;
-        console.log('Calendriers du jour chargés:', this.todayCalendars);
-
         this.demarrerCalculDureeTotale();
-
         this.isLoading = false;
       },
       error: (error) => {
@@ -190,11 +190,9 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   pointerArrivee(): void {
-    console.log('pointer arrivee', this.userId);
     if (!this.userId) return;
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
-        console.log('Arrivée enregistrée:', result);
         this.loadTodayCalendars();
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
@@ -206,7 +204,6 @@ export class Dashboard implements OnInit, OnDestroy {
 
     this.pointService.enregistrerSortie(this.userId).subscribe({
       next: (result) => {
-        console.log('Sortie enregistrée:', result);
         this.loadTodayCalendars();
         this.isPointeArrivee = false;
         this.dureeActuelle = '00:00';
