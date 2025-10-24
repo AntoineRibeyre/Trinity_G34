@@ -91,7 +91,7 @@
         <div class="info-item">
           <label>Poste:</label>
           @if (!editableModal) {
-            <span> selectedEmployee.position </span>
+            <span> {{selectedEmployee.role}} </span>
           } @else {
             <input [(ngModel)]="placeHolderText" />
           }

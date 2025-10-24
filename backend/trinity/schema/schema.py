@@ -4,9 +4,9 @@ from zoneinfo import ZoneInfo
 import graphene
 import graphql_jwt
 
-from .graphtypes import CalendarType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
+from .graphtypes import CalendarType, TeamType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
     AddAttendeeToEvent, RemoveAttendeeFromEvent
-from ..models import Calendar, Event, User
+from ..models import Calendar, Event, Team, User
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
@@ -19,6 +19,7 @@ from ..mutations.mutation_token import CustomObtainJSONWebToken
 class Query(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL queries."""
     all_users = graphene.List(UserType)
+    all_teams = graphene.List(TeamType)
     pending_day = graphene.Field(
         graphtype.CalendarType,
         user_id=graphene.Int(required=True)
@@ -152,6 +153,9 @@ class Query(graphene.ObjectType):
         users = User.objects.all()
         users = users.filter(is_active=True)
         return users
+    
+    def resolve_all_teams(self, info):
+        return Team.objects.all()
 
 
 class CreateUser(graphene.Mutation):
@@ -187,6 +191,7 @@ class DeleteUser(graphene.Mutation):
         try:
             user = User.objects.get(id=user_id)
             user.is_active = False
+            user.team = None
             user.save()
             return DeleteUser(ok=True, message=f"Utilisateur {user_id} supprimé avec succès.")
         except User.DoesNotExist:
@@ -201,11 +206,12 @@ class CreateTeam(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
         description = graphene.String(required=False)
+        field = graphene.String(required=True)
 
     team = graphene.Field(graphtype.TeamType)
 
-    def mutate(self, info, name, description=None):
-        team = TeamFactory.create_team(name, description)
+    def mutate(self, info, name, field, description=None):
+        team = TeamFactory.create_team(name, field, description)
         return CreateTeam(team=team)
 
 

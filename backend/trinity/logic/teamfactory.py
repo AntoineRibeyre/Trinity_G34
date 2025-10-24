@@ -25,11 +25,12 @@ class AdminView:
 class TeamFactory:
     """This class is used to create and manage team model objects."""
     @classmethod
-    def create_team(cls, name: str, description: str | None) -> Team:
+    def create_team(cls, name: str,field: str, description: str | None) -> Team:
         """Creates a team."""
         return Team.objects.create(
             name=name,
-            description=description)
+            description=description,
+            field=field)
 
     @classmethod
     def get_all_teams(cls) -> List[Team]:
@@ -46,9 +47,9 @@ class TeamFactory:
         """This method builds a teamviewer object using a team"""
         # The manager is a User object, while members are stored in a
         # Dict[int, UserViewer] object
-        manger_user = UserFactory.get_team_manager(team)
+        manager_user = UserFactory.get_team_manager(team)
         # Converting manager from User to a UserView object to get his planning
-        manager = UserFactory.build_user_viewer(manger_user)
+        manager = UserFactory.build_user_viewer(manager_user)
         members = UserFactory.build_members_userviewer_list(team)
         return TeamViewer(team_details=team, manager=manager, members=members)
 
