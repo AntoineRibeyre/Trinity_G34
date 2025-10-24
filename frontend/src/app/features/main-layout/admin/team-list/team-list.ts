@@ -3,6 +3,11 @@ import { Filter, FilterService } from '../../../../services/filter.service';
 import { TeamService } from '../../../../services/team.service';
 import { Subscription } from 'rxjs';
 import { Team } from '../../../../models/team.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CreateTeamDialog } from '../../../../shared/components/create-team-dialog/create-team-dialog';
+import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
 
 
 
@@ -19,9 +24,17 @@ export class TeamList implements OnInit, OnDestroy {
   private filterSub?: Subscription;
   private teamSub?: Subscription;
 
+  dropdownOptions: DropdownOption[] = [
+    { label: 'Commerce', value: 1 },
+    { label: 'Finance', value: 2 },
+    { label: 'Design', value: 3 }
+  ];
+
   constructor(
     private filterService: FilterService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private dialog : MatDialog,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -45,10 +58,7 @@ export class TeamList implements OnInit, OnDestroy {
   /**
    * 🔹 Crée une nouvelle équipe
    */
-  createTeam() {
-    const name = prompt('Nom de l’équipe :');
-    const field = prompt('Domaine :');
-    const description = prompt('Description :');
+  createTeam(name:string, field:string | null, description:string) {
 
     if (!name || !field || !description) {
       console.warn('Création annulée — champs manquants');
@@ -89,6 +99,31 @@ export class TeamList implements OnInit, OnDestroy {
 
   getManager(team: any) {
     return team.members.find((m: any) => m.role === 'manager');
+  }
+
+  openDialog(): void {
+    this.dialog.open(CreateTeamDialog, {
+      data: {
+        title: this.translateService.instant('TEAM.DIALOG.CREATE-TEAM.TITLE'),
+        cancel: this.translateService.instant('BASE.CANCEL'),
+        confirm: this.translateService.instant('BASE.CREATE'),
+        dropdownOptions: this.dropdownOptions,
+        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>, 
+          teamName: string ,
+          teamField: number ,
+          teamDescription: string) => {
+            const selectedOption = this.dropdownOptions.find(option => option.value === teamField);
+            const label = selectedOption ? selectedOption.label.toLowerCase() : null;
+            this.createTeam(teamName, label, teamDescription);
+            window.location.reload();
+            dialogRef.close();
+        },
+        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          dialogRef.close();
+        },
+      },
+      panelClass: 'custom-dialog-container'
+    })
   }
 
   

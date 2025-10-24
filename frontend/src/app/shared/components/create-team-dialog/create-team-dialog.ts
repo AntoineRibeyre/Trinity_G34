@@ -53,8 +53,8 @@ export class CreateTeamDialog {
     this.isValid()
   }
 
-  onChangeField(employeeId: number): void {
-    this.teamField = employeeId;
+  onChangeField(fieldId: number): void {
+    this.teamField = fieldId;
     this.isValid()
   }
 

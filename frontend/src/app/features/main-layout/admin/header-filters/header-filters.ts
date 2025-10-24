@@ -47,4 +47,8 @@ export class HeaderFilters implements OnInit{
     this.router.navigate([filter.route]);
     this.currentRoute = `/${filter.route}`;
   }
+
+  ngOnDestroy(): void {
+    this.filterService.clearSelectedFilter();
+  }
 }
