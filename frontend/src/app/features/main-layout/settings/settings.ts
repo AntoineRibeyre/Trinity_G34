@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/lang.service';
 import { Subscription } from 'rxjs';
-import {UserService} from '../../../services/user.service';
+import UserService from '../../../services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -85,7 +85,7 @@ export class Settings implements OnInit, OnDestroy {
     }
 
     // Utiliser le service pour changer la langue
-    // La langue sera automatiquement sauvegardée dans le localStorage
+    //  sera automatiquement sauvegardée dans le localStorage
     this.languageService.setLanguage(lang);
   }
 

@@ -8,11 +8,7 @@ import gql from "graphql-tag";
 export class UserService {
   currentUser: User | null = null;
 
-  constructor(private apollo: Apollo) {
-    this.loadCurrentUserFromServer();
-  }
-
-  CURRENT_USER_QUERY = gql`
+  private readonly CURRENT_USER_QUERY = gql`
     query CurrentUser {
       currentUser {
         id
@@ -26,7 +22,7 @@ export class UserService {
     }
   `;
 
-  UPDATE_USER_MUTATION = gql`
+  private readonly UPDATE_USER_MUTATION = gql`
     mutation UpdateUser(
       $firstName: String
       $lastName: String
@@ -52,33 +48,45 @@ export class UserService {
     }
   `;
 
+  constructor(private apollo: Apollo) {
+    this.loadCurrentUserFromServer();
+  }
+
   async loadCurrentUserFromServer(): Promise<User | null> {
-    const res = await firstValueFrom(
-      this.apollo.query<CurrentUserResponse>({
-        query: this.CURRENT_USER_QUERY,
-        fetchPolicy: "network-only",
-      })
-    );
-    this.currentUser = res.data.currentUser;
-    return this.currentUser;
+    try {
+      const res = await firstValueFrom(
+        this.apollo.query<CurrentUserResponse>({
+          query: this.CURRENT_USER_QUERY,
+          fetchPolicy: "network-only",
+        })
+      );
+      this.currentUser = res.data.currentUser;
+      return this.currentUser;
+    } catch (error) {
+      console.error('Error loading current user:', error);
+      this.currentUser = null;
+      return null;
+    }
   }
 
   async updateUser(data: Partial<User> & { password?: string }): Promise<User> {
-    const res = await firstValueFrom(
-      this.apollo.mutate<{ updateUser: { user: User } }>({
-        mutation: this.UPDATE_USER_MUTATION,
-        variables: data,
-      })
-    );
+    try {
+      const res = await firstValueFrom(
+        this.apollo.mutate<{ updateUser: { user: User } }>({
+          mutation: this.UPDATE_USER_MUTATION,
+          variables: data,
+        })
+      );
 
-    if (res.data?.updateUser?.user) {
+      if (!res.data?.updateUser?.user) {
+        throw new Error('Failed to update user: Invalid response from server');
+      }
+
       this.currentUser = res.data.updateUser.user;
+      return this.currentUser;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw error;
     }
-
-    return this.currentUser!;
-  }
-
-  clearCurrentUser() {
-    this.currentUser = null;
   }
 }

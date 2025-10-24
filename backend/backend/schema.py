@@ -10,4 +10,8 @@ class Mutation(schema.Mutation):
     pass 
 
 
+class UpdateUser:
+        pass
+
+
 schema = graphene.Schema(query=Query, mutation=Mutation)
