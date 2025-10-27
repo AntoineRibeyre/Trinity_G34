@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../../../services/lang.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,14 @@ export class LoginComponent {
   private authService = inject(AuthService);
   public router = inject(Router);
   private translateService = inject(TranslateService);
+  private languageService = inject(LanguageService);
+
+  ngOnInit(): void {
+    // Appliquer la langue sauvegardée en localStorage
+    const lang = this.languageService.getCurrentLanguage();
+    this.translateService.use(lang);
+  }
+
 
   // Méthode onLogin() appelée par votre formulaire
   async onLogin() {
