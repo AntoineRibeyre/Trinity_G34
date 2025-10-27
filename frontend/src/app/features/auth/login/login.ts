@@ -4,16 +4,17 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule], // FormsModule pour ngModel
+  imports: [CommonModule, FormsModule, TranslateModule], // FormsModule pour ngModel
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class LoginComponent {
-  // Propriétés utilisées dans votre template HTML
+
   email: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -22,11 +23,12 @@ export class LoginComponent {
   // Injection de dépendances
   private authService = inject(AuthService);
   public router = inject(Router);
+ private translateService = inject(TranslateService);
 
   // Méthode onLogin() appelée par votre formulaire
   async onLogin() {
     if (!this.email || !this.password) {
-      this.errorMessage = 'Veuillez remplir tous les champs';
+      this.errorMessage = this.translateService.instant('ERRORS.FILL_ALL_FIELDS');
       return;
     }
 
@@ -36,23 +38,23 @@ export class LoginComponent {
     try {
       // Appel du service d'authentification
       const user = await this.authService.login(this.email, this.password);
-      
+
       console.log('Utilisateur connecté:', user);
-      
+
       // Redirection vers le dashboard
       this.router.navigate(['/dashboard']);
-      
+
     } catch (error: any) {
       console.error('Erreur de connexion:', error);
-      
+
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         this.errorMessage = error.graphQLErrors[0].message;
       } else if (error.networkError) {
-        this.errorMessage = 'Erreur de connexion au serveur';
+        this.errorMessage = this.translateService.instant('ERRORS.NETWORK_ERROR');
       } else {
-        this.errorMessage = 'Email ou mot de passe incorrect';
+        this.errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
       }
-      
+
     } finally {
       this.loading = false;
     }

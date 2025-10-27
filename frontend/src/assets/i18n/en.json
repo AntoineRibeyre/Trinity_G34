@@ -19,7 +19,10 @@
     "NO_UPCOMING_LEAVES": "NO upcoming days off",
     "SAVE_SUCCESS": "Save",
     "SAVE_ERROR": "Error during save",
-    "PASSWORD": "Password"
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Leave empty to keep unchanged",
+    "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
+    "SAVING": "Saving in progress..."
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
