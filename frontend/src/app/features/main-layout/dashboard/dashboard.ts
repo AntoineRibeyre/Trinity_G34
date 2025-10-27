@@ -195,6 +195,7 @@ export class Dashboard implements OnInit, OnDestroy {
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
+        console.log(result);
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
     });

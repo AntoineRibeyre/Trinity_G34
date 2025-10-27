@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PointService} from '../../../services/point.service';
-import UserService from '../../../services/user.service';
+import {UserService} from '../../../services/user.service';
 import {User} from '../../../models/user.model';
 import {TodayCalendars} from '../../../services/service-interfaces';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
