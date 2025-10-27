@@ -3,18 +3,24 @@ from zoneinfo import ZoneInfo
 
 import graphene
 import graphql_jwt
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.middleware import get_user
 
-from .graphtypes import CalendarType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
-    AddAttendeeToEvent, RemoveAttendeeFromEvent
-from ..models import Calendar, Event
-from ..logic.userfactory import UserFactory
-from ..logic.teamfactory import TeamFactory
-from ..logic.calendarfactory import CalendarFactory
+from backend.schema import UpdateUser
 from . import graphtypes as graphtype
+from .graphtypes import DailyWorkType, CreateEvent, UpdateEvent, DeleteEvent, \
+    AddAttendeeToEvent, RemoveAttendeeFromEvent
+from .graphtypes import UserType
 from .queryresolver import QueryResolver
+from ..logic.calendarfactory import CalendarFactory
+from ..logic.teamfactory import TeamFactory
+from ..logic.userfactory import UserFactory
+from ..models import Calendar, Event
 from ..mutations.mutation_logout import LogoutMutation
 from ..mutations.mutation_token import CustomObtainJSONWebToken
 
+User = get_user_model()
 
 class Query(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL queries."""
@@ -220,6 +226,7 @@ class RegisterEnd(graphene.Mutation):
         )
 
 
+
 class Mutation(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL mutations
     ."""
@@ -237,7 +244,38 @@ class Mutation(graphene.ObjectType):
     update_event_attendees = UpdateEvent.Field()
     add_attendee = AddAttendeeToEvent.Field()
     remove_attendee = RemoveAttendeeFromEvent.Field()
+    update_user = UpdateUser.Field()
 
+
+class UpdateUser(graphene.Mutation):
+    """
+    Mutation GraphQL pour mettre à jour les informations d'un utilisateur.
+    """
+    class Arguments:
+        first_name = graphene.String(required=False)
+        last_name = graphene.String(required=False)
+        email = graphene.String(required=False)
+        password = graphene.String(required=False)
+
+    user = graphene.Field(UserType)
+
+    def mutate(cls, root, info, first_name=None, last_name=None, email=None, password=None):
+        user = info.context.user
+
+        if not user.is_authenticated:
+            raise Exception("Authentification requise")
+
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+        if email:
+            user.email = email
+        if password:
+            user.password = make_password(password)
+
+        user.save()
+        return UpdateUser(user=user)
 
 # final schema
 schema = graphene.Schema(query=Query, mutation=Mutation)

@@ -18,7 +18,8 @@
     "UPCOMING_LEAVES": "Vos prochains congés",
     "NO_UPCOMING_LEAVES": "Aucun congé prévu",
     "SAVE_SUCCESS": "Modifications enregistrées avec succès",
-    "SAVE_ERROR": "Erreur lors de l'enregistrement"
+    "SAVE_ERROR": "Erreur lors de l'enregistrement",
+    "PASSWORD": "Mot de passe"
   },
   "LOGIN": {
     "CONNEXION": "Connexion",

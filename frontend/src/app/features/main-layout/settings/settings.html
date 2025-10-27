@@ -52,6 +52,20 @@
       </div>
 
       <div class="form-group">
+        <label class="form-label" for="password">{{ 'SETTINGS.PASSWORD' | translate }}</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-input"
+          [ngClass]="{'invalid': isInvalid('password')}"
+          [placeholder]="'SETTINGS.PASSWORD' | translate">
+        <div *ngIf="isInvalid('password')" class="error-message">
+          {{ 'SETTINGS.PASSWORD_INVALID' | translate }}
+        </div>
+      </div>
+
+      <div class="form-group">
         <label class="form-label" for="language">{{ 'SETTINGS.LANGUAGE' | translate }}</label>
         <select
           id="language"

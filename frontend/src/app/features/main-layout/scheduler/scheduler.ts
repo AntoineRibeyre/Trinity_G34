@@ -1,17 +1,17 @@
 // scheduler.component.ts
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { 
-  ScheduleModule, 
-  View, 
+import {
+  ScheduleModule,
+  View,
   EventSettingsModel,
-  ScheduleComponent 
+  ScheduleComponent
 } from '@syncfusion/ej2-angular-schedule';
-import { 
-  DayService, 
-  WeekService, 
-  WorkWeekService, 
-  MonthService, 
-  AgendaService 
+import {
+  DayService,
+  WeekService,
+  WorkWeekService,
+  MonthService,
+  AgendaService
 } from '@syncfusion/ej2-angular-schedule';
 import { registerLicense } from '@syncfusion/ej2-base';
 import { EventService } from '../../../services/event.service';
@@ -42,7 +42,7 @@ export class Scheduler implements OnInit {
   //-------------------------------ATTRIBUTS--------------------------------------------------
 
   @ViewChild('scheduleObj') public scheduleObj!: ScheduleComponent;
-  
+
   userId: number | null = null;
   username: string | null = null;
   public selectedDate: Date = new Date();
@@ -65,7 +65,7 @@ export class Scheduler implements OnInit {
 
   // Option pour afficher tous les événements ou seulement ceux de l'utilisateur
   public showOnlyMyEvents: boolean = true;
-  
+
   private eventService = inject(EventService);
   private userService = inject(UserService);
 
@@ -82,10 +82,10 @@ export class Scheduler implements OnInit {
       this.userId = Number(this.currentUser.id);
       this.username = this.currentUser.username;
     }
-    
+
     // Charger tous les utilisateurs (pour sélection des participants)
     await this.loadUsers();
-    
+
     // Charger les événements
     await this.loadEvents();
   }
@@ -106,7 +106,7 @@ export class Scheduler implements OnInit {
   async loadEvents() {
     try {
       const events = await this.eventService.getAllEvents();
-      
+
       // Transformer les données du backend au format Syncfusion
       let transformedEvents = events.map(event => ({
         Id: event.id,
@@ -118,22 +118,22 @@ export class Scheduler implements OnInit {
         // Garder les ID en tant que string pour être cohérent avec le modèle User
         AttendeeIds: event.attendees?.map(a => a.id) || []
       }));
-      
+
       // Filtrer par utilisateur si l'option est activée
       if (this.showOnlyMyEvents && this.userId) {
         const userIdStr = this.userId.toString();
-        transformedEvents = transformedEvents.filter(event => 
+        transformedEvents = transformedEvents.filter(event =>
           event.AttendeeIds?.includes(userIdStr)
         );
       }
-      
+
       this.data = transformedEvents;
-      
+
       // Mettre à jour les eventSettings
       this.eventSettings = {
         dataSource: this.data
       };
-      
+
       console.log('Événements chargés:', this.data);
     } catch (error) {
       console.error('Erreur lors du chargement des événements:', error);
@@ -166,12 +166,12 @@ export class Scheduler implements OnInit {
       for (const event of args.addedRecords) {
         try {
           // Par défaut, ajouter l'utilisateur courant comme participant
-          const attendeeIds = event.AttendeeIds 
+          const attendeeIds = event.AttendeeIds
             ? event.AttendeeIds.map((id: string) => parseInt(id))
             : (this.userId ? [this.userId] : []);
-          
+
           const result = await this.eventService.createEvent(event, attendeeIds);
-          
+
           if (result && result.success) {
             console.log('Événement créé avec succès:', result.event);
             event.Id = result.event.id;
@@ -188,23 +188,23 @@ export class Scheduler implements OnInit {
         }
       }
     }
-  
+
     // ========== MODIFICATION D'ÉVÉNEMENT ==========
     if (args.requestType === 'eventChanged' && args.changedRecords) {
       for (const event of args.changedRecords) {
         try {
           const eventId = typeof event.Id === 'string' ? parseInt(event.Id) : event.Id;
           // Récupérer les IDs des participants (string[] -> number[])
-          const attendeeIds = event.AttendeeIds 
+          const attendeeIds = event.AttendeeIds
             ? event.AttendeeIds.map((id: string) => parseInt(id))
             : [];
-          
+
           const result = await this.eventService.updateEvent(
-            eventId, 
-            event, 
+            eventId,
+            event,
             attendeeIds
           );
-          
+
           if (result && result.success) {
             console.log('Événement modifié avec succès:', result.event);
             await this.loadEvents();
@@ -220,14 +220,14 @@ export class Scheduler implements OnInit {
         }
       }
     }
-    
+
     // ========== SUPPRESSION D'ÉVÉNEMENT ==========
     if (args.requestType === 'eventRemoved' && args.deletedRecords) {
       for (const event of args.deletedRecords) {
         try {
           const eventId = typeof event.Id === 'string' ? parseInt(event.Id) : event.Id;
           const result = await this.eventService.deleteEvent(eventId);
-          
+
           if (result && result.success) {
             console.log('Événement supprimé avec succès');
             await this.loadEvents();

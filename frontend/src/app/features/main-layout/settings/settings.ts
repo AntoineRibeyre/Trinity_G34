@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/lang.service';
 import { Subscription } from 'rxjs';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -25,12 +26,14 @@ export class Settings implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private userService: UserService,
   ) {
     this.settingsForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
@@ -57,16 +60,17 @@ export class Settings implements OnInit, OnDestroy {
   /**
    * Charge les données utilisateur
    */
-  // private loadUserData(): void {
-  //   //
-  //   const userData = {
-  //     firstName: 'Jean',
-  //     lastName: 'Dupont',
-  //     email: 'jean.dupont@example.com'
-  //   };
-  //
-  //   this.settingsForm.patchValue(userData);
-  // }
+  private loadUserData(): void {
+    //
+    const userData = {
+      firstName: 'Jean',
+      lastName: 'Dupont',
+      email: 'jean.dupont@example.com',
+      password:'Pwd123'
+    };
+
+    this.settingsForm.patchValue(userData);
+  }
 
   /**
    * Change la langue via le service
@@ -81,25 +85,27 @@ export class Settings implements OnInit, OnDestroy {
     }
 
     // Utiliser le service pour changer la langue
-    // La langue sera automatiquement sauvegardée dans le localStorage
+    //  sera automatiquement sauvegardée dans le localStorage
     this.languageService.setLanguage(lang);
   }
 
   /**
    * Soumet le formulaire
    */
-  onSubmit(): void {
-    if (this.settingsForm.valid) {
-      console.log('Formulaire soumis:', this.settingsForm.value);
-      //Ajout de route pour save les choix
-
-      // Exemple de feedback utilisateur
+  async onSubmit(): Promise<void> {
+  if (this.settingsForm.valid) {
+    try {
+      const updatedUser = await this.userService.updateUser(this.settingsForm.value);
+      console.log('Utilisateur mis à jour:', updatedUser);
       alert('Paramètres sauvegardés avec succès !');
-    } else {
-      this.settingsForm.markAllAsTouched();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+      alert("Une erreur est survenue lors de la sauvegarde.");
     }
+  } else {
+    this.settingsForm.markAllAsTouched();
   }
-
+}
   /**
    * Vérifie si un champ est invalide
    */
