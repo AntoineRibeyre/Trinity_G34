@@ -32,6 +32,14 @@
     "REGISTER": "Register",
     "FORGOTTEN_PASSWORD": "Forgotten password"
   },
+  "ERRORS": {
+    "FILL_ALL_FIELDS": "Fill all fields",
+    "INVALID_CREDENTIALS": "Email or password is incorrect",
+    "USER_NOT_FOUND": "User not found",
+    "ACCOUNT_LOCKED": "Locked account",
+    "EMAIL_NOT_VERIFIED": "Not verified email",
+    "NETWORK_ERROR": "Network error"
+  },
   "REGISTER": {
     "REGISTER": "Register",
     "FIRST_NAME": "First name",

@@ -23,7 +23,7 @@ export class LoginComponent {
   // Injection de dépendances
   private authService = inject(AuthService);
   public router = inject(Router);
- private translateService = inject(TranslateService);
+  private translateService = inject(TranslateService);
 
   // Méthode onLogin() appelée par votre formulaire
   async onLogin() {
