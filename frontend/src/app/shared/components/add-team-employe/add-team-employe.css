@@ -64,3 +64,28 @@
     background: #AA3333;
   }
 }
+
+/* Styles pour le panneau de dropdown - AJOUTEZ CECI */
+::ng-deep .mat-mdc-select-panel {
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+::ng-deep .mat-mdc-option {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+::ng-deep .mat-mdc-option:hover {
+  background: #f5f5f5 !important;
+}
+
+::ng-deep .mat-mdc-option.mat-mdc-option-active {
+  background: #e3f2fd !important;
+}
+
+/* Style pour les checkboxes */
+::ng-deep .mat-pseudo-checkbox {
+  border-color: #000000 !important;
+}

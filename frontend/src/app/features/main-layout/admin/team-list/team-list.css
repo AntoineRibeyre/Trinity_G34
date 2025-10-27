@@ -15,9 +15,11 @@
 
 .team-card {
   width: 280px;
-  min-height: 650px;
-  max-height: 650px;
+  min-height: 640px;
+  max-height: 640px;
   background-color: #fff;
+  margin-bottom: 2px;
+  flex-shrink: 0;
   border-radius: 20px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   padding: 1rem;
@@ -45,7 +47,6 @@
 .team-description {
   font-size: 20px;
   color: black;
-  text-align: justify;
   margin-bottom: 10px;
   padding: 0.75rem;
   border-radius: 12px;
@@ -204,5 +205,15 @@
   color: #aeaeae; /* Couleur du + plus discrète */
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.teams {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+  max-width: 80vw; /* Important ! */
 }
 

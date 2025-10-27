@@ -3,6 +3,7 @@ import { Apollo } from "apollo-angular";
 import { firstValueFrom } from "rxjs";
 import {CurrentUserResponse, User} from "../models/user.model"
 import gql from 'graphql-tag';
+import { Team } from "../models/team.model";
 
 interface GraphQLUser {
   id: number;
@@ -12,6 +13,7 @@ interface GraphQLUser {
   lastName?: string;
   telephone?: string;
   role?: string;
+  team?: Team;
 }
 
 interface AllUsersResponse {
@@ -29,6 +31,12 @@ const GET_ALL_USERS = gql`
       telephone
       role
       isActive
+      team{
+        id
+        field
+        name
+        description
+    }
     }
   }
 `;
@@ -71,6 +79,13 @@ export class UserService {
             lastName
             telephone
             role
+            isActive
+            team{
+              id
+              field
+              name
+              description
+          }
         }
       }
     `;
@@ -117,7 +132,8 @@ export class UserService {
         firstName: graphqlUser.firstName || '',
         lastName: graphqlUser.lastName || '',
         telephone: graphqlUser.telephone || '',
-        role: graphqlUser.role || ''
+        role: graphqlUser.role || '',
+        team: graphqlUser.team || undefined
       };
     }
 

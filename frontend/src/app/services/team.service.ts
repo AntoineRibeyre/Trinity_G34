@@ -52,6 +52,23 @@ const CREATE_TEAM = gql`
       }
     }`
 
+const ADD_EMPLOYEES = gql`
+  mutation AddEmployeeToTeam($teamId: Int!, $employeeIds: [Int]!) {
+    addEmployeeToTeam(teamId: $teamId, employeeIds: $employeeIds) {
+      message
+      team {
+        id
+        name
+        members {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -88,6 +105,16 @@ export class TeamService implements OnInit{
     .pipe(
       map(result => result.data!.createTeam.team)
     );
+  }
+
+  addEmployees(teamId: number, employeeIds: number[]): Observable<any> {
+    return this.apollo.mutate({
+      mutation: ADD_EMPLOYEES,
+      variables: {
+        teamId: teamId,
+        employeeIds: employeeIds
+      }
+    });
   }
 
 
