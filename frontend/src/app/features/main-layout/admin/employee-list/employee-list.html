@@ -1,0 +1,172 @@
+<div class="search-bar">
+  <div class="search-input-wrapper" role="search" aria-label="Rechercher">
+
+    <input
+      type="search"
+      class="search-input"
+      placeholder="Rechercher"
+      [(ngModel)]="query"
+      (ngModelChange)="onQueryChange($event)"
+      aria-label="Rechercher"
+      autocomplete="off"
+    />
+
+    <button
+      *ngIf="query"
+      type="button"
+      (click)="clear()"
+      aria-label="Effacer la recherche"
+      title="Effacer"
+    >
+      ✕
+    </button>
+
+  </div>
+</div>
+
+<div class="user-table">
+
+  <div class="table-header">
+    <div>Nom</div>
+    <div>Prénom</div>
+    <div>Email</div>
+    <div>Équipe</div>
+    <div></div>
+  </div>
+  <div class="table-body">
+    @for (employee of filteredUsers; track employee.id ) {
+      <div class="table-row" (click)="displayEmployeeData(employee.id,false)">
+        <div class="table-cell cell-name">{{employee.lastName}}</div>
+        <div class="table-cell cell-name">{{employee.firstName}}</div>
+        <div class="table-cell cell-email">{{employee.email}}</div>
+        <div class="table-cell cell-team">Team</div>
+        <div class="buttons-div">
+          <button class="icon-btn" (click)="$event.stopPropagation();displayEmployeeData(employee.id,true) ">
+            <img src="assets/icons/edit_square.svg" alt="Edit" class="icon" />
+          </button>
+
+          <button class="icon-btn" (click)="$event.stopPropagation();openDialog(employee.id)">
+            <img src="assets/icons/delete_bin.svg" alt="Delete" class="icon" />
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedEmployee">
+    <div class="modal-header">
+      <h2>{{ selectedEmployee.firstName }} {{ selectedEmployee.lastName }}</h2>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Section personnelle -->
+      <div class="info-section">
+        <h3>Personnel</h3>
+
+        <div class="info-item">
+          <label>Date de naissance:</label>
+          <span> selectedEmployee.birthDate </span>
+        </div>
+        <div class="info-item">
+          <label>Email:</label>
+          <span>{{ selectedEmployee.email }}</span>
+        </div>
+        <div class="info-item">
+          <label>Tél:</label>
+          <span>{{ selectedEmployee.telephone }}</span>
+        </div>
+        <div class="info-item">
+          <label>Numéros de SECU:</label>
+          <span> selectedEmployee.socialSecurityNumber </span>
+        </div>
+      </div>
+
+      <!-- Section professionnelle -->
+      <div class="info-section">
+        <h3>Professionnel</h3>
+
+        <div class="info-item">
+          <label>Poste:</label>
+          @if (!editableModal) {
+            <span> {{selectedEmployee.role}} </span>
+          } @else {
+            <input [(ngModel)]="placeHolderText" />
+          }
+        </div>
+
+        <div class="info-item">
+          <label>Contrat:</label>
+          @if (!editableModal) {
+            <span> selectedEmployee.contractType </span>
+          } @else {
+            <input [(ngModel)]="placeHolderText" />
+          }
+        </div>
+
+        <div class="info-item">
+          <label>Équipe:</label>
+          <span> selectedEmployee.team </span>
+        </div>
+
+        <div class="info-item">
+          <label>Manager:</label>
+          <span> selectedEmployee.manager </span>
+        </div>
+      </div>
+
+      <!-- Section temps de travail et salaire -->
+      <div class="info-section">
+        <h3>Temps de travail & salaire</h3>
+        <div class="info-grid">
+
+          <div class="info-item">
+            <label>Temps de travail:</label>
+            @if (!editableModal) {
+              <span> selectedEmployee.workingHours </span>
+            } @else {
+              <input [(ngModel)]="placeHolderText" />
+            }
+          </div>
+
+          <div class="info-item">
+            <label>Temps de travail effectif:</label>
+            <span> selectedEmployee.effectiveHours </span>
+          </div>
+
+          <div class="info-item">
+            <label>Solde de congés:</label>
+            <span> selectedEmployee.leaveBalance </span>
+          </div>
+
+          <div class="info-item">
+            <label>Salaire annuel:</label>
+            @if (!editableModal) {
+              <span> selectedEmployee.annualSalary </span>
+            } @else {
+              <input type="number" [(ngModel)]="placeHolderText" />
+            }
+          </div>
+
+          <div class="info-item">
+            <label>Date d'arrivée:</label>
+            @if (!editableModal) {
+              <span> selectedEmployee.startDate </span>
+            } @else {
+              <input type="date" [(ngModel)]="placeHolderText" />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      @if (editableModal) {
+        <div class="modal-actions">
+          <button class="btn btn-save" (click)="saveChanges()">💾 Sauvegarder</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

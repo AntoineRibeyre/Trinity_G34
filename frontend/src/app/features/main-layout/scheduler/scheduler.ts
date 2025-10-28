@@ -94,7 +94,7 @@ export class Scheduler implements OnInit {
 
   async loadUsers() {
     try {
-      this.allUsers = await this.eventService.getAllUsers();
+      this.allUsers = await this.userService.getAllUsers();
       console.log('Utilisateurs chargés:', this.allUsers);
     } catch (error) {
       console.error('Erreur lors du chargement des utilisateurs:', error);

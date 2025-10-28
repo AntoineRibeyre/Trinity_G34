@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class Team(models.Model):
     name = models.CharField(max_length=100, null=False)
     description = models.CharField(max_length=100, null=True)
+    field = models.CharField(max_length=100, null=True)
 
     """This class defines the data structure of a team"""
 
@@ -17,7 +18,7 @@ class User(AbstractUser):
     telephone = models.CharField(max_length=100, blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
     team = models.ForeignKey(Team, null=True, blank=True,
-                             on_delete=models.SET_NULL, related_name="membres")
+                             on_delete=models.SET_NULL, related_name="members")
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 

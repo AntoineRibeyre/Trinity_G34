@@ -11,6 +11,8 @@ import {Home} from './features/home/home';
 import {MainLayout} from './features/main-layout/main-layout';
 import { AuthGuard } from './core/guards/auth.guard';
 import { Scheduler } from './features/main-layout/scheduler/scheduler';
+import { EmployeeList } from './features/main-layout/admin/employee-list/employee-list';
+import { TeamList } from './features/main-layout/admin/team-list/team-list';
 
 export const routes: Routes = [
   //pages publiques
@@ -25,8 +27,16 @@ export const routes: Routes = [
       { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
       { path: 'calendar', component: Scheduler, canActivate: [AuthGuard] },//calendar/congés
       { path: 'team', component: Team, canActivate: [AuthGuard]},//team (manager only)
-      { path: 'admin', component: Admin, canActivate: [AuthGuard]},//admin (admin only)
       { path: 'settings', component: Settings, canActivate: [AuthGuard] },
+      {
+        path: 'admin',
+        component: Admin,
+        children: [
+          { path: 'users', component: EmployeeList, canActivate: [AuthGuard] },
+          { path: 'teams', component: TeamList, canActivate: [AuthGuard] }
+        ]
+      }
+      
     ]
   },
   {path: '**', redirectTo: '' }

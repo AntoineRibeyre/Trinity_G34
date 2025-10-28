@@ -7,6 +7,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.middleware import get_user
 
+from .graphtypes import CalendarType, TeamType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
+    AddAttendeeToEvent, RemoveAttendeeFromEvent
+from ..models import Calendar, Event, Team, User
+from ..logic.userfactory import UserFactory
+from ..logic.teamfactory import TeamFactory
+from ..logic.calendarfactory import CalendarFactory
 from . import graphtypes as graphtype
 from .graphtypes import DailyWorkType, CreateEvent, UpdateEvent, DeleteEvent, \
     AddAttendeeToEvent, RemoveAttendeeFromEvent
@@ -24,6 +30,7 @@ User = get_user_model()
 class Query(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL queries."""
     all_users = graphene.List(UserType)
+    all_teams = graphene.List(TeamType)
     pending_day = graphene.Field(
         graphtype.CalendarType,
         user_id=graphene.Int(required=True)
@@ -153,6 +160,14 @@ class Query(graphene.ObjectType):
     def resolve_event(self, info, id):
         return Event.objects.prefetch_related('attendees').get(id=id)
 
+    def resolve_all_users(self, info):
+        users = User.objects.all()
+        users = users.filter(is_active=True)
+        return users
+
+    def resolve_all_teams(self, info):
+        return Team.objects.all()
+
 
 class CreateUser(graphene.Mutation):
     """This class is a GraphQL mutation that creates a new user and pushes it
@@ -175,6 +190,25 @@ class CreateUser(graphene.Mutation):
                                            email, telephone, team_id, password,
                                            role)
         return CreateUser(user=user)
+
+class DeleteUser(graphene.Mutation):
+    class Arguments:
+        user_id = graphene.Int(required=True)
+
+    ok = graphene.Boolean()
+    message = graphene.String()
+
+        def mutate(self, info, user_id):
+            try:
+                user = User.objects.get(id=user_id)
+                user.is_active = False
+                user.team = None
+                user.save()
+                return DeleteUser(ok=True, message=f"Utilisateur {user_id} supprimé avec succès.")
+            except User.DoesNotExist:
+                return DeleteUser(ok=False, message="Utilisateur introuvable.")
+            except Exception as e:
+                return DeleteUser(ok=False, message=f"Erreur: {str(e)}")
 
 class UpdateUser(graphene.Mutation):
     """
@@ -207,18 +241,63 @@ class UpdateUser(graphene.Mutation):
         return UpdateUser(user=user)
 
 
+
 class CreateTeam(graphene.Mutation):
     """This class is a GraphQL mutation that creates a new team and pushes it
     to the database."""
     class Arguments:
         name = graphene.String(required=True)
         description = graphene.String(required=False)
+        field = graphene.String(required=True)
 
     team = graphene.Field(graphtype.TeamType)
 
-    def mutate(self, info, name, description=None):
-        team = TeamFactory.create_team(name, description)
+    def mutate(self, info, name, field, description=None):
+        team = TeamFactory.create_team(name, field, description)
         return CreateTeam(team=team)
+
+class AddEmployeeToTeam(graphene.Mutation):
+    class Arguments:
+        teamId = graphene.Int(required=True)
+        employeeIds = graphene.List(graphene.Int, required=True)
+
+    message = graphene.String()
+    team = graphene.Field(TeamType)  # Ajoutez ceci pour retourner l'équipe mise à jour
+
+    def mutate(self, info, teamId, employeeIds):
+        try:
+            # Récupérer l'équipe
+            team = Team.objects.get(id=teamId)
+
+            # Récupérer tous les employés
+            employees = User.objects.filter(id__in=employeeIds)
+
+            # Vérifier que tous les employés existent
+            if employees.count() != len(employeeIds):
+                return AddEmployeeToTeam(
+                    message="Certains employés n'existent pas",
+                    team=None
+                )
+
+            # Ajouter les employés à l'équipe
+            team.members.add(*employees)
+
+            return AddEmployeeToTeam(
+                message=f"{employees.count()} employé(s) ajouté(s) avec succès",
+                team=team
+            )
+
+        except Team.DoesNotExist:
+            return AddEmployeeToTeam(
+                message="Équipe introuvable",
+                team=None
+            )
+        except Exception as e:
+            return AddEmployeeToTeam(
+                message=f"Erreur : {str(e)}",
+                team=None
+            )
+
 
 
 class RegisterArrival(graphene.Mutation):
@@ -255,7 +334,6 @@ class RegisterEnd(graphene.Mutation):
         )
 
 
-
 class Mutation(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL mutations
     ."""
@@ -265,6 +343,7 @@ class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
     register_arrival = RegisterArrival.Field()
+    add_employee_to_team = AddEmployeeToTeam.Field()
     register_end = RegisterEnd.Field()
     logout = LogoutMutation.Field()
     create_event = CreateEvent.Field()
@@ -274,6 +353,8 @@ class Mutation(graphene.ObjectType):
     add_attendee = AddAttendeeToEvent.Field()
     remove_attendee = RemoveAttendeeFromEvent.Field()
     update_user = UpdateUser.Field()
+    delete_user = DeleteUser.Field()
+
 
 # final schema
 schema = graphene.Schema(query=Query, mutation=Mutation)

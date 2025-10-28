@@ -102,7 +102,15 @@
         "FIELD-PLACEHOLDER": "Type...",
         "DESCRIPTION-TITLE": "Description de l’équipe",
         "DESCRIPTION-PLACEHOLDER": "Description..."
+      },
+      "ADD-EMPLOYE": {
+        "TITLE": "Ajouter un employé à l'équipe",
+        "NAME-TITLE": "Nom et prénom de l'employé",
+        "NAME-PLACEHOLDER": "Nom et prénom..."
       }
     }
+  },
+  "ADMIN": {
+    
   }
 }

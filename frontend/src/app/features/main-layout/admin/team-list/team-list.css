@@ -1,0 +1,234 @@
+.teams-container {
+  height: calc(100vh - (60px));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  /*padding: 1rem;*/
+  /*gap: 1rem; !* Utilisez gap au lieu de margin sur les enfants *!*/
+  font-family: 'Inter', sans-serif;
+}
+
+.team-card-add {
+  margin: 1rem 0 1rem 1rem;
+  width: 280px;
+  /*min-height: 640px;*/
+  background-color: #fff;
+  flex-shrink: 0;
+  border-radius: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.team-card {
+  width: 280px;
+  /*min-height: 640px;*/
+  background-color: #fff;
+  flex-shrink: 0;
+  border-radius: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  padding: 0.5rem;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.team-card:hover {
+  border: 2px solid #e8e8f0;
+}
+
+.card {
+  border-radius: 12px;
+  background-color: #F7F8FA;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.team-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  /*margin-bottom: 15px; !* Réduit de 4px à 0.5rem *!*/
+  min-height: 10%;
+}
+
+.team-description {
+  font-size: 15px;
+  color: black;
+  /*margin-bottom: 10px;*/
+  padding: 0.75rem;
+  height: 30%;
+  min-height: 150px;
+  word-spacing: -2px; /* Réduit l'espace entre les mots */
+  letter-spacing: -0.5px; /* Optionnel : réduit légèrement l'espace entre les lettres */
+}
+.section h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  margin: 0; /* Supprime les marges par défaut du h4 */
+  padding: 0.5rem 0.75rem; /* Padding contrôlé */
+}
+
+.section-manager {
+  /*border-radius: 12px;*/
+  /*background-color: #e8e8f0;*/
+  /*margin-bottom: 20px;*/
+  padding: 0.5rem 0;
+  /*margin-top: 10px;*/
+  min-height: 100px;
+}
+
+.section {
+  height: 100%;
+  border-radius: 12px;
+  /*background-color: #e8e8f0;*/
+  padding: 0.5rem 0.75rem;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  /*background-color: #e8e8f0; !* Même couleur que la section *!*/
+  z-index: 1;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: black;
+  font: bold;
+}
+
+.section-members {
+  /*border-radius: 12px;*/
+  /*background-color: #e8e8f0;*/
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  min-height: 100px;
+  overflow-y: auto; /* Scrollbar verticale si dépassement */
+}
+
+/* Personnalisation de la scrollbar pour les navigateurs Webkit (Chrome, Safari, Edge) */
+.section-members::-webkit-scrollbar {
+  width: 4px; /* Largeur réduite */
+  height: 80%;
+}
+
+.section-members::-webkit-scrollbar-track {
+  background: transparent; /* Piste invisible */
+}
+
+.section-members::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2); /* Couleur discrète et semi-transparente */
+  border-radius: 2px;
+}
+
+.section-members::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3); /* Légèrement plus visible au hover */
+}
+
+/* Pour Firefox */
+.section {
+  scrollbar-width: thin; /* thin ou none */
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* thumb track */
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem; /* Réduit de 0.4rem à 0.3rem */
+}
+
+.avatar {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #00c853;
+  border: 2px solid #fff;
+}
+
+.name {
+  font-size: 0.9rem;
+}
+
+.add-button {
+  display: flex;
+  justify-content: center;
+  /*margin-top: 5px;*/
+}
+
+
+.add-button button {
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  /*background-color: #f0f0f0;*/
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add-button button:hover {
+  background-color: gray;
+  color: white;
+}
+
+.create-button {
+  min-height: 550px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.create-button button {
+  width: 200px;
+  height: 200px;
+  border: none;
+  /*background-color: transparent; !* Fond transparent *!*/
+  font-size: 4rem;
+  color: #aeaeae; /* Couleur du + plus discrète */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.teams {
+  padding: 1rem;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+  max-width: 80vw; /* Important ! */
+}
+
