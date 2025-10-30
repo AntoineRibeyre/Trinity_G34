@@ -4,14 +4,15 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from '../../../../services/user.service';
 import { User } from '../../../../models/user.model';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
 import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
+import {BasicTextField} from '../../../../shared/components/basic-text-field/basic-text-field';
 
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BasicTextField],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })
@@ -67,14 +68,14 @@ export class EmployeeList implements OnDestroy {
     }
 
     const term = searchTerm.toLowerCase();
-    
+
     this.filteredUsers = this.allUsers.filter(employee => {
       const lastName = employee.lastName?.toLowerCase() || '';
       const firstName = employee.firstName?.toLowerCase() || '';
       const email = employee.email?.toLowerCase() || '';
-      
-      return lastName.includes(term) || 
-             firstName.includes(term) || 
+
+      return lastName.includes(term) ||
+             firstName.includes(term) ||
              email.includes(term);
     });
   }

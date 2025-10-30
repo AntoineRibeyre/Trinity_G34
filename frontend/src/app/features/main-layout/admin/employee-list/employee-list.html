@@ -1,15 +1,23 @@
+<div class="general">
 <div class="search-bar">
   <div class="search-input-wrapper" role="search" aria-label="Rechercher">
 
-    <input
-      type="search"
-      class="search-input"
+    <app-basic-text-field
       placeholder="Rechercher"
-      [(ngModel)]="query"
-      (ngModelChange)="onQueryChange($event)"
-      aria-label="Rechercher"
-      autocomplete="off"
-    />
+      width="500px"
+      [rows]="1"
+      (onTextChange)="onQueryChange($event)"
+    style="padding-top:5px;">
+    </app-basic-text-field>
+<!--    <input-->
+<!--      type="search"-->
+<!--      class="search-input"-->
+<!--      placeholder="Rechercher"-->
+<!--      [(ngModel)]="query"-->
+<!--      (ngModelChange)="onQueryChange($event)"-->
+<!--      aria-label="Rechercher"-->
+<!--      autocomplete="off"-->
+<!--    />-->
 
     <button
       *ngIf="query"
@@ -169,4 +177,5 @@
       }
     </div>
   </div>
+</div>
 </div>

@@ -16,11 +16,12 @@
   flex-shrink: 0;
   border-radius: 20px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-  padding: 1rem;
+  padding: 0.5rem;
   transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .team-card {
@@ -185,13 +186,12 @@
   /*margin-top: 5px;*/
 }
 
-
 .add-button button {
   width: 100%;
   height: 40px;
   border-radius: 12px;
   border: none;
-  /*background-color: #f0f0f0;*/
+  background-color: #f0f0f0;
   font-size: 1.5rem;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -207,14 +207,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
+  /*margin-top: 5px;*/
 }
 
 .create-button button {
-  width: 200px;
-  height: 200px;
+
   border: none;
-  /*background-color: transparent; !* Fond transparent *!*/
+  background-color: transparent; /* Fond transparent */
   font-size: 4rem;
   color: #aeaeae; /* Couleur du + plus discrète */
   cursor: pointer;
