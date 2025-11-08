@@ -9,10 +9,12 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
 import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
 import {BasicTextField} from '../../../../shared/components/basic-text-field/basic-text-field';
+import {TranslatePipe} from '@ngx-translate/core';
+import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
 
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule, FormsModule, BasicTextField],
+  imports: [CommonModule, FormsModule, BasicTextField, TranslatePipe, EmployeeDrawer],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })
@@ -23,9 +25,9 @@ export class EmployeeList implements OnDestroy {
   public allUsers: User[] = [];
   public filteredUsers: User[] = [];
 
-  selectedEmployee: User | null = null;
-  isModalOpen: boolean = false;
-  editableModal: boolean = true;
+  selectedEmployee: User | undefined = undefined;
+  isDrawerOpen: boolean = false;
+  editableDrawer: boolean = false;
   query: string = '';
 
   placeHolderText: string = "No data";
@@ -99,36 +101,30 @@ export class EmployeeList implements OnDestroy {
     this.sub.unsubscribe();
   }
 
-  displayEmployeeData(id: string, editable: boolean) {
-    const user = this.allUsers.find(user => user.id === id);
-    if (user) {
-      this.selectedEmployee = user;
-      this.isModalOpen = true;
-      this.editableModal = editable;
-      console.log(editable)
+  displayEmployeeData(employeeId: string, editable: boolean): void {
+    this.selectedEmployee = this.filteredUsers.find(emp => emp.id === employeeId);
+    this.editableDrawer = editable;
+    this.isDrawerOpen = true;
+  }
+
+  closeDrawer(): void {
+    this.isDrawerOpen = false;
+    this.selectedEmployee = undefined;
+    this.editableDrawer = false;
+  }
+
+  saveEmployeeChanges(updatedEmployee: any): void {
+    // Ta logique de sauvegarde ici
+    console.log('Sauvegarde:', updatedEmployee);
+
+    // Exemple: mettre à jour dans la liste
+    const index = this.filteredUsers.findIndex(emp => emp.id === updatedEmployee.id);
+    if (index !== -1) {
+      this.filteredUsers[index] = updatedEmployee;
     }
+
+    this.closeDrawer();
   }
-
-  async saveChanges() {
-  if (!this.selectedEmployee) return;
-
-  // try {
-  //   await this.userService.updateUser(this.selectedEmployee.id, this.selectedEmployee);
-  //   // Mets à jour la liste locale
-  //   const index = this.allUsers.findIndex(u => u.id === this.selectedEmployee!.id);
-  //   if (index !== -1) this.allUsers[index] = { ...this.selectedEmployee };
-  //   this.filteredUsers = [...this.allUsers];
-  //   this.closeModal();
-  // } catch (error) {
-  //   console.error('Erreur lors de la sauvegarde:', error);
-  // }
-}
-
-  closeModal() {
-    this.isModalOpen = false;
-    this.selectedEmployee = null;
-  }
-
 
   openDialog(id: string): void {
     this.dialog.open(DeleteDialog, {
