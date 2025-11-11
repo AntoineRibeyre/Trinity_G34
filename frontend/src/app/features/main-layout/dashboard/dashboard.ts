@@ -9,6 +9,7 @@ import {HistoricalColumn} from '../../../shared/components/historical-column/his
 import {TeamColumn} from '../../../shared/components/team-column/team-column';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
+import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -76,13 +77,14 @@ export class Dashboard implements OnInit, OnDestroy {
     private pointService: PointService,
     private userService: UserService,
     private dialog : MatDialog,
+    private teamService: TeamService
   ) {}
 
   async ngOnInit() {
     this.currentUser = await this.userService.loadCurrentUserFromServer();
     if (this.currentUser){
       this.userId = Number(this.currentUser.id);
-      this.username = this.currentUser.username
+      this.username = this.currentUser.username;
     }
 
     this.updateTime();
@@ -207,24 +209,22 @@ export class Dashboard implements OnInit, OnDestroy {
     });
   }
 
-  //TEMPS
-  openDialog(): void {
-    this.dialog.open(DeleteDialog, {
-      data: {
-        title: "Supprimer un employé",
-        message: "Etes-vous sur de vouloir supprimer cet employé?\n Cette action est irréversible",
-        cancel: "Annuler",
-        confirm: "Supprimer",
-        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
-          dialogRef.close();
-        },
-        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
-          dialogRef.close();
-        },
-      },
-      panelClass: 'custom-dialog-container'
-    })
-  }
+openDialog(): void {
+  console.log(this.userId)
+  if (!this.userId) return;
+
+
+  this.teamService.getManagerView(this.userId).subscribe({
+    next: (data: any) => {
+      console.log('Données reçues:', data); // ✅ Ici tu devrais voir les données
+    },
+    error: (error: any) => {
+      console.error('Erreur:', error);
+    }
+  });
+}
+
+ 
 
   ngOnDestroy() {
     if (this.intervalId) {
