@@ -25,6 +25,17 @@
     (onSelectionChange)="onChangeField($event)">
   </app-basic-dropdown>
 
+
+    <div class="message">
+    {{ "TEAM.DIALOG.CREATE-TEAM.MANAGER" | translate }}
+  </div>
+
+  <app-basic-dropdown
+    [options]="data.managerList"
+    placeholder={{managerPlaceholder}}
+    (onSelectionChange)="onChangeManager($event)">
+  </app-basic-dropdown>
+
   <div class="message">
     {{ "TEAM.DIALOG.CREATE-TEAM.DESCRIPTION-TITLE" | translate }}
   </div>
@@ -48,7 +59,7 @@
       text="{{ data.confirm }}"
       color="#336CAA"
       [disabled]= "!isSelected"
-      (onClick)="data.onConfirm(dialog, teamName, teamField, teamDescription)">
+      (onClick)="data.onConfirm(dialog, teamName, teamField, manager, teamDescription)">
     </app-basic-text-button>
   </div>
 

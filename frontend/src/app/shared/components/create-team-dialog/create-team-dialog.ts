@@ -5,15 +5,18 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {DIALOG_DATA} from '@angular/cdk/dialog';
 import {BasicTextField} from '../basic-text-field/basic-text-field';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import { User } from '../../../models/user.model';
 
 export interface CreateTeamDialog {
   title: string;
   confirm: string;
+  managerList: DropdownOption[];
   dropdownOptions: DropdownOption[];
   onConfirm: (
     dialogRef: MatDialogRef<CreateTeamDialog>,
     teamName: string | null,
     teamField: number | null,
+    manager : number | null,
     teamDescription: string | null
   ) => void;
   cancel: string;
@@ -38,10 +41,12 @@ export class CreateTeamDialog {
   teamName: string | null = null;
   teamField: number | null = null;
   teamDescription: string | null = null;
+  manager: number | null = null;
 
   namePlaceholder: string = this.translate.instant('TEAM.DIALOG.CREATE-TEAM.NAME-PLACEHOLDER');
   fieldPlaceholder: string = this.translate.instant('TEAM.DIALOG.CREATE-TEAM.FIELD-PLACEHOLDER');
   descriptionPlaceholder: string = this.translate.instant('TEAM.DIALOG.CREATE-TEAM.DESCRIPTION-PLACEHOLDER');
+  managerPlaceholder: string = this.translate.instant('TEAM.DIALOG.CREATE-TEAM.MANAGER-PLACEHOLDER');
 
   constructor(
     public dialog: MatDialogRef<CreateTeamDialog>,
@@ -58,6 +63,11 @@ export class CreateTeamDialog {
     this.isValid()
   }
 
+  onChangeManager(managerID: number): void {
+    this.manager = managerID;
+    this.isValid()
+  }
+
   onChangeDescription(description: string): void {
     this.teamDescription = description
     this.isValid()
@@ -66,6 +76,6 @@ export class CreateTeamDialog {
   isValid(): void {
     this.isSelected = !!(this.teamName &&
       this.teamField &&
-      this.teamDescription);
+      this.teamDescription && this.manager);
   }
 }

@@ -36,6 +36,7 @@ export class TeamList implements OnInit, OnDestroy {
   ];
 
   dropdownOptionsUsers: DropdownOption[] = []
+  dropdownOptionsManagers: DropdownOption[] = []
 
   constructor(
     private filterService: FilterService,
@@ -74,8 +75,17 @@ export class TeamList implements OnInit, OnDestroy {
     // 🔹 On garde uniquement ceux qui n'ont pas d'équipe
     const usersWithoutTeam = this.allUsers.filter((user: User) => user.team == null);
 
+    const employees = usersWithoutTeam.filter((user: User)=> user.role == "employe");
+
     // 🔹 Puis on construit les options du dropdown
-    this.dropdownOptionsUsers = usersWithoutTeam.map((user: User) => ({
+    this.dropdownOptionsUsers = employees.map((user: User) => ({
+      label: `${user.firstName} ${user.lastName}`,
+      value: Number(user.id)
+    }));
+
+    const managers = usersWithoutTeam.filter((user: User) => user.role == "manager");
+
+    this.dropdownOptionsManagers = managers.map((user: User) => ({
       label: `${user.firstName} ${user.lastName}`,
       value: Number(user.id)
     }));
@@ -91,14 +101,14 @@ export class TeamList implements OnInit, OnDestroy {
   /**
    * 🔹 Crée une nouvelle équipe
    */
-  createTeam(name:string, field:string | null, description:string) {
+  createTeam(name:string, field:string | null, description:string, manager: number) {
 
     if (!name || !field || !description) {
       console.warn('Création annulée — champs manquants');
       return;
     }
 
-    this.teamService.createTeam(name, field, description).subscribe({
+    this.teamService.createTeam(name, field, description, manager).subscribe({
       next: (newTeam) => {
         console.log('Équipe créée :', newTeam);
         this.teams.push(newTeam);
@@ -176,14 +186,19 @@ export class TeamList implements OnInit, OnDestroy {
         title: this.translateService.instant('TEAM.DIALOG.CREATE-TEAM.TITLE'),
         cancel: this.translateService.instant('BASE.CANCEL'),
         confirm: this.translateService.instant('BASE.CREATE'),
+        managerList: this.dropdownOptionsManagers,
         dropdownOptions: this.dropdownOptions,
         onConfirm: (dialogRef: MatDialogRef<DeleteDialog>, 
           teamName: string ,
           teamField: number ,
+          manager: number,
           teamDescription: string) => {
-            const selectedOption = this.dropdownOptions.find(option => option.value === teamField);
-            const label = selectedOption ? selectedOption.label.toLowerCase() : null;
-            this.createTeam(teamName, label, teamDescription);
+            //Récupération du field en fonction de l'id de son dropDownOption
+            const selectedField = this.dropdownOptions.find(option => option.value === teamField);
+            const label = selectedField ? selectedField.label.toLowerCase() : null;
+            //Récupération du manager en fonction de l'id de son dropDownOption
+            const selectedManager = this.dropdownOptionsManagers.find(option => option.value === manager);
+            this.createTeam(teamName, label, teamDescription, manager);
             window.location.reload();
             dialogRef.close();
         },

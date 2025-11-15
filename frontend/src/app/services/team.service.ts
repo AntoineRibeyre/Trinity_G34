@@ -3,6 +3,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map, Observable } from 'rxjs';
 import { Team } from '../models/team.model';
+import { User } from '../models/user.model';
 
 
 
@@ -44,8 +45,8 @@ const GET_ALL_TEAMS = gql`
 `;
 
 const CREATE_TEAM = gql`
-  mutation CreateTeam($description: String!, $field: String!,$name: String!){
-    createTeam(description: $description, field: $field, name: $name){
+  mutation CreateTeam($description: String!, $field: String!,$name: String!, $managerID: Int!){
+    createTeam(description: $description, field: $field, name: $name, managerID: $managerID){
       team {
        id
        }
@@ -97,10 +98,12 @@ export class TeamService implements OnInit{
    * @param field Domaine de l'équipe
    * @param description Description de l'équipe
    */
-  createTeam(name: string, field: string, description: string): Observable<any> {
+  createTeam(name: string, field: string, description: string, managerID: number): Observable<any> {
+    console.log("manager")
+    console.log(managerID)
     return this.apollo.mutate<CreateTeamResponse>({
       mutation: CREATE_TEAM,
-      variables: { name, field, description }
+      variables: { name, field, description, managerID }
     })
     .pipe(
       map(result => result.data!.createTeam.team)
