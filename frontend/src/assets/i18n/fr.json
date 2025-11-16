@@ -111,6 +111,29 @@
     }
   },
   "ADMIN": {
-    
+    "ALL": {
+      "NAME": "Nom",
+      "FIRSTNAME": "Prénom",
+      "EMAIL": "Email",
+      "TEAM": "Équipe",
+      "PERSONAL-DRAWER": {
+        "PERSONAL": "Personnel",
+        "BIRTH-DATE": "Date de naissance:",
+        "EMAIL": "Email:",
+        "PHONE": "Téléphone:",
+        "SECU": "Social Security numbers:",
+        "PROFESSIONAL": "Professionnel",
+        "JOB": "Poste:",
+        "CONTRACT": "Contrat:",
+        "TEAM": "Équipe:",
+        "MANAGER": "Manager",
+        "WORKING-TIME": "Temps de travail & salaire",
+        "TIME": "Temps de travail:",
+        "EFFECTIF-TIME": "Temps de travail effectif:",
+        "HOLIDAYS": "Solde de congés:",
+        "ANNUAL-SALARY": "Salaire annuel:",
+        "ARRIVAL": "Date d'arrivée:"
+      }
+    }
   }
 }
