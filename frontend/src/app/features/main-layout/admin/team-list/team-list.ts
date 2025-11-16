@@ -13,8 +13,6 @@ import { AddTeamEmploye } from '../../../../shared/components/add-team-employe/a
 import { User } from '../../../../models/user.model';
 import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
 
-
-
 @Component({
   selector: 'app-team-list',
   templateUrl: './team-list.html',
@@ -68,7 +66,7 @@ export class TeamList implements OnInit, OnDestroy {
 
   async loadUsers() {
   try {
-    this.allUsers = await this.userService.getAllUsers(); 
+    this.allUsers = await this.userService.getAllUsers();
     console.log('Utilisateurs chargés:', this.allUsers);
 
     // 🔹 On garde uniquement ceux qui n'ont pas d'équipe
@@ -122,8 +120,6 @@ export class TeamList implements OnInit, OnDestroy {
     this.teamSub?.unsubscribe();
   }
 
-
-
   addMemberDialog(teamID: string) {
     console.log("add employees");
 
@@ -135,7 +131,7 @@ export class TeamList implements OnInit, OnDestroy {
         dropdownOptions: this.dropdownOptionsUsers,
 
         onConfirm: (
-          dialogRef: MatDialogRef<DeleteDialog>, 
+          dialogRef: MatDialogRef<DeleteDialog>,
           selectedEmployeeIds: number[]
         ) => {
           console.log("Selected employee IDs:", selectedEmployeeIds);
@@ -177,7 +173,7 @@ export class TeamList implements OnInit, OnDestroy {
         cancel: this.translateService.instant('BASE.CANCEL'),
         confirm: this.translateService.instant('BASE.CREATE'),
         dropdownOptions: this.dropdownOptions,
-        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>, 
+        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>,
           teamName: string ,
           teamField: number ,
           teamDescription: string) => {
@@ -194,8 +190,4 @@ export class TeamList implements OnInit, OnDestroy {
       panelClass: 'custom-dialog-container'
     })
   }
-
-  
-
-  
 }
