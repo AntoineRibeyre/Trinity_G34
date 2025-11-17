@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Team(models.Model):
     name = models.CharField(max_length=100, null=False)
-    description = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=500, null=True)
     field = models.CharField(max_length=100, null=True)
 
     """This class defines the data structure of a team"""

@@ -25,7 +25,7 @@ from ..models import Calendar, Event
 from ..mutations.mutation_logout import LogoutMutation
 from ..mutations.mutation_token import CustomObtainJSONWebToken
 
-User = get_user_model()
+# User = get_user_model()
 
 class Query(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL queries."""
@@ -198,17 +198,17 @@ class DeleteUser(graphene.Mutation):
     ok = graphene.Boolean()
     message = graphene.String()
 
-        def mutate(self, info, user_id):
-            try:
-                user = User.objects.get(id=user_id)
-                user.is_active = False
-                user.team = None
-                user.save()
-                return DeleteUser(ok=True, message=f"Utilisateur {user_id} supprimé avec succès.")
-            except User.DoesNotExist:
-                return DeleteUser(ok=False, message="Utilisateur introuvable.")
-            except Exception as e:
-                return DeleteUser(ok=False, message=f"Erreur: {str(e)}")
+    def mutate(self, info, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            user.is_active = False
+            user.team = None
+            user.save()
+            return DeleteUser(ok=True, message=f"Utilisateur {user_id} supprimé avec succès.")
+        except User.DoesNotExist:
+            return DeleteUser(ok=False, message="Utilisateur introuvable.")
+        except Exception as e:
+            return DeleteUser(ok=False, message=f"Erreur: {str(e)}")
 
 class UpdateUser(graphene.Mutation):
     """
@@ -219,9 +219,10 @@ class UpdateUser(graphene.Mutation):
         last_name = graphene.String(required=False)
         email = graphene.String(required=False)
         password = graphene.String(required=False)
+        # user = graphene.Field(UserType)
 
-    user = graphene.Field(UserType)
-
+    user = graphene.Field(graphtype.UserType)
+    
     def mutate(cls, root, info, first_name=None, last_name=None, email=None, password=None):
         user = info.context.user
 
@@ -297,8 +298,6 @@ class AddEmployeeToTeam(graphene.Mutation):
                 message=f"Erreur : {str(e)}",
                 team=None
             )
-
-
 
 class RegisterArrival(graphene.Mutation):
     """This class is used to create the mutations that
