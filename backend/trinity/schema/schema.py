@@ -250,11 +250,16 @@ class CreateTeam(graphene.Mutation):
         name = graphene.String(required=True)
         description = graphene.String(required=False)
         field = graphene.String(required=True)
+        managerID = graphene.Int(required=True)
 
     team = graphene.Field(graphtype.TeamType)
 
-    def mutate(self, info, name, field, description=None):
+    def mutate(self, info, name, field, managerID, description=None):
+        print(f"{managerID} manager")
         team = TeamFactory.create_team(name, field, description)
+        manager = User.objects.filter(id=managerID)
+        print(f"{manager}")
+        team.members.add(*manager)
         return CreateTeam(team=team)
 
 class AddEmployeeToTeam(graphene.Mutation):
