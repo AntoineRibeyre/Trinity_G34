@@ -2,7 +2,8 @@
   "BASE": {
     "CANCEL": "Cancel",
     "CREATE": "Create",
-    "SUPPRIMER": "Delete"
+    "SUPPRIMER": "Delete",
+    "EDIT": "Edit"
   },
   "SETTINGS": {
     "FIRST_NAME": "First name",

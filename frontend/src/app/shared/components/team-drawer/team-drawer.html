@@ -1,0 +1,119 @@
+<div class="drawer-overlay" *ngIf="isOpen" (click)="close()">
+  <div class="drawer-content" (click)="$event.stopPropagation()">
+    <div class="drawer-header">
+      @if (!isEditable) {
+        <h2>{{ team?.name }}</h2>
+      } @else {
+        <app-basic-text-field
+          [(ngModel)]="team!.name"
+          width = "300px"
+          [rows]="1"
+          (onTextChange)="onChangeName($event)">
+        </app-basic-text-field>
+      }
+      <div class="header-actions">
+        @if (!isEditable) {
+          <button class="icon-btn" (click)="toggleEdit()" title="Modifier">
+            <img src="assets/icons/edit_square.svg" alt="Edit" class="icon" />
+          </button>
+          <button class="icon-btn delete" (click)="deleteTeam()" title="Supprimer">
+            <img src="assets/icons/delete_bin.svg" alt="Delete" class="icon" />
+          </button>
+        }
+        <button class="close-btn" (click)="close()">✕</button>
+      </div>
+    </div>
+
+    <div class="drawer-body" *ngIf="team">
+
+      <!-- Section Description -->
+      <div class="info-section">
+        <h3>{{ "ADMIN.TEAMS.DRAWER.DESCRIPTION" | translate }}</h3>
+        <div class="description-content">
+          @if (!isEditable) {
+            <p>{{ team.description || 'Aucune description disponible' }}</p>
+          } @else {
+            <app-basic-text-field
+              [(ngModel)]="team.description"
+              width = "300px"
+              [maxLength]="500"
+              [rows]="4"
+              (onTextChange)="onChangeDescription($event)">
+            </app-basic-text-field>
+          }
+        </div>
+      </div>
+
+      <!-- Section Statistiques -->
+      <div class="info-section">
+        <h3>{{ "ADMIN.TEAMS.DRAWER.STATISTICS" | translate }}</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Membres actifs</div>
+            <div class="stat-value">{{ team.members?.length || 0 }}</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Heures totales</div>
+<!--            <div class="stat-value">{{ team.stats?.totalHours || 0 }}<span class="unit">h</span></div>-->
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Taux de présence</div>
+<!--            <div class="stat-value">{{ team.stats?.averageAttendance || 0 }}<span class="unit">%</span></div>-->
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Manager</div>
+            <div class="stat-value manager-name">{{ teamManager?.firstName }} {{ teamManager?.lastName }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Liste des membres -->
+      <div class="info-section">
+        <h3>{{ "ADMIN.TEAMS.DRAWER.MEMBERS" | translate }} ({{ team.members?.length || 0 }})</h3>
+
+        <div class="members-list">
+          @for (member of team.members; track member.id) {
+            <div class="member-row" (click)="openMemberDetails(member.id, $event)">
+              <div class="member-avatar">
+                {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+              </div>
+              <div class="member-info">
+                <div class="member-name">{{ member.firstName }} {{ member.lastName }}</div>
+                <div class="member-role">{{ member.role }}</div>
+              </div>
+              <div class="member-email">{{ member.email }}</div>
+              <button class="icon-btn-small">
+                <span>›</span>
+              </button>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <p>Aucun membre dans cette équipe</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      @if (isEditable) {
+        <div class="drawer-actions">
+          <app-basic-text-button
+            width="20vw"
+            text="Annuler"
+            color="#999999"
+            (onClick)="cancelEdit()">
+          </app-basic-text-button>
+          <app-basic-text-button
+            width="20vw"
+            text="Sauvegarder"
+            color="#336CAA"
+            (onClick)="saveChanges()">
+          </app-basic-text-button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

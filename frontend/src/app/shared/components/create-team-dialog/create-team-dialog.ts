@@ -5,7 +5,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {DIALOG_DATA} from '@angular/cdk/dialog';
 import {BasicTextField} from '../basic-text-field/basic-text-field';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import { User } from '../../../models/user.model';
+import {FormsModule} from '@angular/forms';
 
 export interface CreateTeamDialog {
   title: string;
@@ -29,7 +29,8 @@ export interface CreateTeamDialog {
     BasicDropdown,
     BasicTextButton,
     BasicTextField,
-    TranslatePipe
+    TranslatePipe,
+    FormsModule
   ],
   templateUrl: './create-team-dialog.html',
   styleUrl: './create-team-dialog.css'

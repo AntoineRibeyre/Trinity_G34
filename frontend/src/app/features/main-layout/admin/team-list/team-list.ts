@@ -12,10 +12,16 @@ import { UserService } from '../../../../services/user.service';
 import { AddTeamEmploye } from '../../../../shared/components/add-team-employe/add-team-employe';
 import { User } from '../../../../models/user.model';
 import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
+import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
+import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
 
 @Component({
   selector: 'app-team-list',
   templateUrl: './team-list.html',
+  imports: [
+    TeamDrawer,
+    EmployeeDrawer
+  ],
   styleUrls: ['./team-list.css']
 })
 export class TeamList implements OnInit, OnDestroy {
@@ -35,6 +41,12 @@ export class TeamList implements OnInit, OnDestroy {
 
   dropdownOptionsUsers: DropdownOption[] = []
   dropdownOptionsManagers: DropdownOption[] = []
+
+  selectedTeam: Team | undefined = undefined;
+  isTeamDrawerOpen: boolean = false;
+
+  selectedEmployee: User | undefined = undefined;
+  isEmployeeDrawerOpen: boolean = false;
 
   constructor(
     private filterService: FilterService,
@@ -184,7 +196,7 @@ export class TeamList implements OnInit, OnDestroy {
         confirm: this.translateService.instant('BASE.CREATE'),
         managerList: this.dropdownOptionsManagers,
         dropdownOptions: this.dropdownOptions,
-        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>,
+        onConfirm: (dialogRef: MatDialogRef<CreateTeamDialog>,
           teamName: string ,
           teamField: number ,
           manager: number,
@@ -204,5 +216,25 @@ export class TeamList implements OnInit, OnDestroy {
       },
       panelClass: 'custom-dialog-container'
     })
+  }
+
+  displayTeamData(teamId: string): void {
+    this.selectedTeam = this.teams.find(team => team.id === teamId);
+    this.isTeamDrawerOpen = true;
+  }
+
+  closeTeamDrawer(): void {
+    this.isTeamDrawerOpen = false;
+    this.selectedTeam = undefined;
+  }
+
+  onMemberClick(memberId: string): void {
+    this.selectedEmployee = this.allUsers.find((user) => user.id === memberId);
+    this.isEmployeeDrawerOpen = true;
+    console.log(this.selectedEmployee);
+  }
+
+  closeEmployeeDrawer() {
+    this.isEmployeeDrawerOpen = false;
   }
 }

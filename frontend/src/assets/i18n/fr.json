@@ -2,7 +2,8 @@
   "BASE": {
     "CANCEL": "Annuler",
     "CREATE": "Créer",
-    "SUPPRIMER": "Supprimer"
+    "SUPPRIMER": "Supprimer",
+    "EDIT": "Modifier"
   },
   "SETTINGS": {
     "FIRST_NAME": "Prénom",

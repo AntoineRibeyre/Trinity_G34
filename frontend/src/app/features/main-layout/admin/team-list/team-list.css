@@ -1,17 +1,16 @@
 .teams-container {
-  height: calc(100vh - (60px));
+  height: calc(100vh - 60px);
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
-  /*padding: 1rem;*/
-  /*gap: 1rem; !* Utilisez gap au lieu de margin sur les enfants *!*/
   font-family: 'Inter', sans-serif;
+  overflow: hidden; /* Empêche le débordement */
 }
 
 .team-card-add {
   margin: 1rem 0 1rem 1rem;
   width: 280px;
-  /*min-height: 640px;*/
+  max-height: calc(100vh - (92px + 1rem)); /* Hauteur fixe basée sur le viewport */
   background-color: #fff;
   flex-shrink: 0;
   border-radius: 20px;
@@ -26,7 +25,7 @@
 
 .team-card {
   width: 280px;
-  /*min-height: 640px;*/
+  max-height: calc(100vh - (92px + 1rem)); /* Hauteur fixe basée sur le viewport */
   background-color: #fff;
   flex-shrink: 0;
   border-radius: 20px;
@@ -37,6 +36,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 0.5rem;
+  overflow: scroll; /* Important pour contenir les enfants */
 }
 
 .team-card:hover {
@@ -57,112 +57,138 @@
   font-size: 1.2rem;
   font-weight: 600;
   text-align: center;
-  /*margin-bottom: 15px; !* Réduit de 4px à 0.5rem *!*/
-  min-height: 10%;
+  min-height: 60px; /* Hauteur minimale fixe */
+  flex-shrink: 0; /* Ne se réduit pas */
+  padding: 0.5rem;
 }
 
 .team-description {
   font-size: 15px;
   color: black;
-  /*margin-bottom: 10px;*/
   padding: 0.75rem;
-  height: 30%;
-  min-height: 150px;
-  word-spacing: -2px; /* Réduit l'espace entre les mots */
-  letter-spacing: -0.5px; /* Optionnel : réduit légèrement l'espace entre les lettres */
+  min-height: 50px; /* Réduit pour mieux s'adapter */
+  height: 150px; /* Limite la hauteur maximale */
+  overflow-y: auto; /* Scroll si trop de texte */
+  word-spacing: -2px;
+  letter-spacing: -0.5px;
+  /*flex-shrink: 0; !* Ne se réduit pas *!*/
 }
+
+/* Scrollbar pour la description */
+.team-description::-webkit-scrollbar {
+  width: 4px;
+}
+
+.team-description::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.team-description::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.team-description::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
 .section h4 {
   font-size: 0.9rem;
   font-weight: 600;
   color: #666;
-  margin: 0; /* Supprime les marges par défaut du h4 */
-  padding: 0.5rem 0.75rem; /* Padding contrôlé */
+  margin: 0;
+  padding: 0.5rem 0.75rem;
 }
 
 .section-manager {
-  /*border-radius: 12px;*/
-  /*background-color: #e8e8f0;*/
-  /*margin-bottom: 20px;*/
   padding: 0.5rem 0;
-  /*margin-top: 10px;*/
-  min-height: 100px;
+  min-height: 80px; /* Réduit */
+  flex-shrink: 0;
 }
 
 .section {
-  height: 100%;
+  flex: 1; /* Prend l'espace restant */
   border-radius: 12px;
-  /*background-color: #e8e8f0;*/
   padding: 0.5rem 0.75rem;
+  overflow: hidden; /* Important */
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
 }
 
 .sticky-header {
   position: sticky;
   top: 0;
-  /*background-color: #e8e8f0; !* Même couleur que la section *!*/
   z-index: 1;
   margin: 0;
   padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
   font-weight: 600;
   color: black;
-  font: bold;
+  font-weight: bold;
+  background-color: #F7F8FA; /* Important pour masquer le contenu en dessous */
+  flex-shrink: 0;
 }
 
 .section-members {
-  /*border-radius: 12px;*/
-  /*background-color: #e8e8f0;*/
-  margin-bottom: 0.75rem;
+  flex: 1; /* Prend l'espace restant */
   padding: 0.5rem 0.75rem;
-  min-height: 100px;
-  overflow-y: auto; /* Scrollbar verticale si dépassement */
+  min-height: 0; /* Permet de se rétrécir */
+  gap: 0.5rem;
+  overflow-y: auto;
 }
 
-/* Personnalisation de la scrollbar pour les navigateurs Webkit (Chrome, Safari, Edge) */
+/* Personnalisation de la scrollbar pour les navigateurs Webkit */
 .section-members::-webkit-scrollbar {
-  width: 4px; /* Largeur réduite */
-  height: 80%;
+  width: 4px;
 }
 
 .section-members::-webkit-scrollbar-track {
-  background: transparent; /* Piste invisible */
+  background: transparent;
 }
 
 .section-members::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2); /* Couleur discrète et semi-transparente */
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
 }
 
 .section-members::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3); /* Légèrement plus visible au hover */
+  background: rgba(0, 0, 0, 0.3);
 }
 
 /* Pour Firefox */
-.section {
-  scrollbar-width: thin; /* thin ou none */
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* thumb track */
+.section-members {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Avatar avec initiales */
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #336CAA 0%, #4a8bc2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
 .member {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.3rem; /* Réduit de 0.4rem à 0.3rem */
+  margin-bottom: 0.5rem;
+  flex-shrink: 0; /* Les membres ne se rétrécissent pas */
 }
 
-.avatar {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  background-color: #f0f0f0;
+.member .name {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
 }
 
 .status-dot {
@@ -183,7 +209,7 @@
 .add-button {
   display: flex;
   justify-content: center;
-  /*margin-top: 5px;*/
+  flex-shrink: 0; /* Ne se réduit pas */
 }
 
 .add-button button {
@@ -203,19 +229,17 @@
 }
 
 .create-button {
-  min-height: 550px;
+  flex: 1; /* Prend tout l'espace disponible */
   display: flex;
   justify-content: center;
   align-items: center;
-  /*margin-top: 5px;*/
 }
 
 .create-button button {
-
   border: none;
-  background-color: transparent; /* Fond transparent */
+  background-color: transparent;
   font-size: 4rem;
-  color: #aeaeae; /* Couleur du + plus discrète */
+  color: #aeaeae;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -228,6 +252,6 @@
   gap: 1rem;
   flex: 1;
   min-width: 0;
-  max-width: 80vw; /* Important ! */
+  max-width: 80vw;
+  height: 100% ;
 }
-
