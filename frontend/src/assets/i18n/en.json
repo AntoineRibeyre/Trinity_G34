@@ -20,7 +20,10 @@
     "NO_UPCOMING_LEAVES": "NO upcoming days off",
     "SAVE_SUCCESS": "Save",
     "SAVE_ERROR": "Error during save",
-    "PASSWORD": "Password"
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Leave empty to keep unchanged",
+    "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
+    "SAVING": "Saving in progress..."
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
@@ -30,6 +33,14 @@
     "REGISTER": "Register",
     "FORGOTTEN_PASSWORD": "Forgotten password"
   },
+  "ERRORS": {
+    "FILL_ALL_FIELDS": "Fill all fields",
+    "INVALID_CREDENTIALS": "Email or password is incorrect",
+    "USER_NOT_FOUND": "User not found",
+    "ACCOUNT_LOCKED": "Locked account",
+    "EMAIL_NOT_VERIFIED": "Not verified email",
+    "NETWORK_ERROR": "Network error"
+  },
   "REGISTER": {
     "REGISTER": "Register",
     "FIRST_NAME": "First name",
@@ -37,7 +48,10 @@
     "EMAIL": "Email",
     "CARD_NUMBER": "Card number",
     "PASSWORD": "Password",
-    "FORGOTTEN_PASSWORD": "Forgot your password"
+    "CONFIRM_PWD": "Confirm password",
+    "FORGOTTEN_PASSWORD": "Forgot your password",
+    "PHONE_NUMBER": "Phone number",
+    "PWD_REQUIREMENT": "Password Requirements"
   },
   "HOME": {
     "REGISTER": "Register",

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
+import {LanguageService} from '../../../services/lang.service';
 
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
@@ -40,8 +41,10 @@ export class Register implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private translateService: TranslateService,
+    private languageService: LanguageService,
+  ){}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group(
@@ -55,6 +58,9 @@ export class Register implements OnInit {
       },
       { validators: passwordMatchValidator }
     );
+
+    const lang = this.languageService.getCurrentLanguage();
+    this.translateService.use(lang);
   }
 
   // Validateur personnalisé pour la force du mot de passe

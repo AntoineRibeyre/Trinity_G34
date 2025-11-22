@@ -1,9 +1,9 @@
 <div class="general-space">
 <form (submit)="onLogin(); $event.preventDefault()" class="login-form">
-    <h1 class="login-title">Login</h1>
+    <h1 class="login-title">{{ 'LOGIN.CONNEXION' | translate }}</h1>
     <!-- Email -->
     <div>
-      <label class="form-label" for="email">Email</label>
+      <label class="form-label" for="email">{{'LOGIN.EMAIL' |translate }}</label>
       <input
         type="email"
         id="email"
@@ -16,7 +16,7 @@
 
     <!-- Mot de passe -->
     <div>
-      <label class="form-label" for="password">Mot de passe</label>
+      <label class="form-label" for="password">{{ 'LOGIN.PASSWORD'| translate }}</label>
       <input
         type="password"
         id="password"
@@ -28,7 +28,7 @@
     </div>
 
     <!-- Boutons -->
-    <button type="submit" class="btn-login">Se connecter</button>
-    <button type="button" class="signup-link" (click)="router.navigate(['/register'])">S'inscrire</button>
+    <button type="submit" class="btn-login">{{'LOGIN.LOGIN' |translate }}</button>
+    <button type="button" class="signup-link" (click)="router.navigate(['/register'])">{{'LOGIN.REGISTER' | translate}}</button>
   </form>
 </div>

@@ -20,7 +20,10 @@
     "NO_UPCOMING_LEAVES": "Aucun congé prévu",
     "SAVE_SUCCESS": "Modifications enregistrées avec succès",
     "SAVE_ERROR": "Erreur lors de l'enregistrement",
-    "PASSWORD": "Mot de passe"
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_PLACEHOLDER": "Laissez vide pour ne pas changer",
+    "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
+    "SAVING": "Sauvegarde en cours"
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
@@ -30,6 +33,14 @@
     "REGISTER": "S'inscrire",
     "FORGOTTEN_PASSWORD": "Mot de passe oublié"
   },
+  "ERRORS": {
+      "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
+      "INVALID_CREDENTIALS": "Email ou mot de passe incorrect",
+      "USER_NOT_FOUND": "Utilisateur introuvable",
+      "ACCOUNT_LOCKED": "Compte verrouillé",
+      "EMAIL_NOT_VERIFIED": "Email non vérifié",
+      "NETWORK_ERROR": "Erreur de connexion au serveur"
+    },
   "REGISTER": {
     "REGISTER": "Inscription",
     "FIRST_NAME": "Prénom",
@@ -37,7 +48,10 @@
     "EMAIL": "Email",
     "CARD_NUMBER": "Numéro de carte",
     "PASSWORD": "Mot de passe",
-    "FORGOTTEN_PASSWORD": "Mot de passe oublié"
+    "CONFIRM_PWD": "Confirmation du mot de pass",
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié",
+    "PHONE_NUMBER": "Numéro de téléphone",
+    "PWD_REQUIREMENT": "Pré-requis du mot de passe"
   },
   "HOME": {
     "REGISTER": "S’inscrire",

@@ -64,18 +64,8 @@ export class UserService {
     this.loadCurrentUserFromServer();
   }
   private readonly UPDATE_USER_MUTATION = gql`
-    mutation UpdateUser(
-      $firstName: String
-      $lastName: String
-      $email: String
-      $password: String
-    ) {
-      updateUser(
-        firstName: $firstName
-        lastName: $lastName
-        email: $email
-        password: $password
-      ) {
+    mutation UpdateUser($userData: UserInput!) {
+      updateUser(userData: $userData) {
         user {
           id
           firstName
@@ -132,7 +122,9 @@ export class UserService {
       const res = await firstValueFrom(
         this.apollo.mutate<{ updateUser: { user: User } }>({
           mutation: this.UPDATE_USER_MUTATION,
-          variables: data,
+          variables: {
+            userData: data  // ✅ Utilise "userData" au lieu de "info"
+          },
         })
       );
 

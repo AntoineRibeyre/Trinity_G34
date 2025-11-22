@@ -210,38 +210,35 @@ class DeleteUser(graphene.Mutation):
         except Exception as e:
             return DeleteUser(ok=False, message=f"Erreur: {str(e)}")
 
+
+class UserInput(graphene.InputObjectType):
+    first_name = graphene.String(required=False)
+    last_name = graphene.String(required=False)
+    email = graphene.String(required=False)
+    password = graphene.String(required=False)
+
 class UpdateUser(graphene.Mutation):
-    """
-    Mutation GraphQL pour mettre à jour les informations d'un utilisateur.
-    """
     class Arguments:
-        first_name = graphene.String(required=False)
-        last_name = graphene.String(required=False)
-        email = graphene.String(required=False)
-        password = graphene.String(required=False)
-        # user = graphene.Field(UserType)
+        user_data = UserInput(required=True)  # ✅ Changé de "info" à "user_data"
 
-    user = graphene.Field(graphtype.UserType)
-    
-    def mutate(cls, root, info, first_name=None, last_name=None, email=None, password=None):
+    user = graphene.Field(UserType)
+
+    def mutate(self, info, user_data):  # ✅ Plus de conflit
         user = info.context.user
-
         if not user.is_authenticated:
             raise Exception("Authentification requise")
 
-        if first_name:
-            user.first_name = first_name
-        if last_name:
-            user.last_name = last_name
-        if email:
-            user.email = email
-        if password:
-            user.password = make_password(password)
+        if user_data.first_name:
+            user.first_name = user_data.first_name
+        if user_data.last_name:
+            user.last_name = user_data.last_name
+        if user_data.email:
+            user.email = user_data.email
+        if user_data.password:
+            user.password = make_password(user_data.password)
 
         user.save()
         return UpdateUser(user=user)
-
-
 
 class CreateTeam(graphene.Mutation):
     """This class is a GraphQL mutation that creates a new team and pushes it
