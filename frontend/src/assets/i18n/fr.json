@@ -23,7 +23,12 @@
     "PASSWORD": "Mot de passe",
     "PASSWORD_PLACEHOLDER": "Laissez vide pour ne pas changer",
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
-    "SAVING": "Sauvegarde en cours"
+    "SAVING": "Sauvegarde en cours",
+    "DIALOG": {
+      "TITLE": "Modifier votre mot de passe",
+      "PASSWORD": "Votre mot de passe",
+      "CONFIRM": "Confirmer votre mot de passe"
+    }
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
