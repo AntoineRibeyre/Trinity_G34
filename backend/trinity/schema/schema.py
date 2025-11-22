@@ -176,32 +176,29 @@ class CreateUser(graphene.Mutation):
                                            role)
         return CreateUser(user=user)
 
+class UserInput(graphene.InputObjectType):
+    first_name = graphene.String(required=False)
+    last_name = graphene.String(required=False)
+    email = graphene.String(required=False)
+    password = graphene.String(required=False)
+
 class UpdateUser(graphene.Mutation):
-    """
-    Mutation GraphQL pour mettre à jour les informations d'un utilisateur.
-    """
     class Arguments:
-        first_name = graphene.String(required=False)
-        last_name = graphene.String(required=False)
-        email = graphene.String(required=False)
-        password = graphene.String(required=False)
-
+        info = UserInput(required=True)
     user = graphene.Field(UserType)
-
-    def mutate(cls, root, info, first_name=None, last_name=None, email=None, password=None):
+    def mutate(self, info, info_data):
         user = info.context.user
-
         if not user.is_authenticated:
             raise Exception("Authentification requise")
 
-        if first_name:
-            user.first_name = first_name
-        if last_name:
-            user.last_name = last_name
-        if email:
-            user.email = email
-        if password:
-            user.password = make_password(password)
+        if info_data.first_name:
+            user.first_name = info_data.first_name
+        if info_data.last_name:
+            user.last_name = info_data.last_name
+        if info_data.email:
+            user.email = info_data.email
+        if info_data.password:
+            user.password = make_password(info_data.password)
 
         user.save()
         return UpdateUser(user=user)
