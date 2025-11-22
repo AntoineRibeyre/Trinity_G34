@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/lang.service';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
+import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {SettingEditPassword} from '../../../shared/components/setting-edit-password/setting-edit-password';
 
 @Component({
   selector: 'app-settings',
@@ -13,7 +16,8 @@ import { User } from '../../../models/user.model';
   imports: [
     CommonModule,
     TranslateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BasicTextButton
   ],
   templateUrl: './settings.html',
   styleUrls: ['./settings.css']
@@ -31,6 +35,8 @@ export class Settings implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private languageService: LanguageService,
     private userService: UserService,
+    private dialog : MatDialog,
+    private translateService: TranslateService,
   ) {
     this.settingsForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -138,5 +144,21 @@ export class Settings implements OnInit, OnDestroy {
   isInvalid(controlName: string): boolean {
     const control = this.settingsForm.get(controlName);
     return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  openEditPassword(): void {
+    this.dialog.open(SettingEditPassword, {
+      data: {
+        title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
+        confirm: this.translateService.instant('BASE.EDIT'),
+        cancel: this.translateService.instant('BASE.CANCEL'),
+        onConfirm: (dialogRef: MatDialogRef<SettingEditPassword>,
+                    newPassword: string,
+                    ) => {},
+        onCancel: (dialogRef: MatDialogRef<SettingEditPassword>) => {
+          dialogRef.close();
+        }
+      }
+    })
   }
 }

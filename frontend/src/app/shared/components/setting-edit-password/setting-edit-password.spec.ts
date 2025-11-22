@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditTeamDialog } from './edit-team-dialog';
+import { SettingEditPassword } from './setting-edit-password';
 
-describe('EditTeamDialog', () => {
-  let component: EditTeamDialog;
-  let fixture: ComponentFixture<EditTeamDialog>;
+describe('SettingEditPassword', () => {
+  let component: SettingEditPassword;
+  let fixture: ComponentFixture<SettingEditPassword>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditTeamDialog]
+      imports: [SettingEditPassword]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditTeamDialog);
+    fixture = TestBed.createComponent(SettingEditPassword);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
