@@ -6,7 +6,7 @@
       } @else {
         <app-basic-text-field
           [(ngModel)]="team!.name"
-          width = "300px"
+          width = "100%"
           [rows]="1"
           (onTextChange)="onChangeName($event)">
         </app-basic-text-field>
@@ -28,14 +28,14 @@
 
       <!-- Section Description -->
       <div class="info-section">
-        <h3>{{ "ADMIN.TEAMS.DRAWER.DESCRIPTION" | translate }}</h3>
+        <h3>{{ "ADMIN.TEAMS.DRAWER.DESCRIPTION-TITLE" | translate }}</h3>
         <div class="description-content">
           @if (!isEditable) {
             <p>{{ team.description || 'Aucune description disponible' }}</p>
           } @else {
             <app-basic-text-field
               [(ngModel)]="team.description"
-              width = "300px"
+              width = "100%"
               [maxLength]="500"
               [rows]="4"
               (onTextChange)="onChangeDescription($event)">

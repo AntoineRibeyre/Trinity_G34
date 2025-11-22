@@ -137,6 +137,13 @@
         "ANNUAL-SALARY": "Annual salary:",
         "ARRIVAL": "Arrival:"
       }
+    },
+    "TEAMS": {
+      "DRAWER": {
+        "DESCRIPTION-TITLE": "Team description",
+        "STATISTICS": "Team stats",
+        "MEMBERS": "Team members"
+      }
     }
   }
 }
