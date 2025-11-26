@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Team } from '../../../models/team.model';
 import { User } from '../../../models/user.model';
 import {BasicTextField} from '../basic-text-field/basic-text-field';
+import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-team-drawer',
@@ -32,11 +33,17 @@ import {BasicTextField} from '../basic-text-field/basic-text-field';
   ]
 })
 export class TeamDrawer implements OnInit {
+
+  
   @Input() isOpen: boolean = false;
   @Input() team: Team | undefined = undefined;
 
   @Output() onClose = new EventEmitter<void>();
   @Output() onMemberClick = new EventEmitter<string>();
+
+  constructor(private teamService: TeamService){
+    
+  }
 
   isEditable: boolean = false;
   teamManager: User | undefined;
@@ -74,9 +81,24 @@ export class TeamDrawer implements OnInit {
 
   }
 
-  deleteTeam(): void {
-
+deleteTeam(): void {
+  // ✅ Vérification que team existe et a un id
+  if (!this.team?.id) {
+    console.error('Impossible de supprimer : équipe non définie');
+    return;
   }
+
+  this.teamService.deleteTeam(Number(this.team.id)).subscribe({
+    next: (response) => {
+      console.log('Équipe supprimée avec succès', response);
+      window.location.reload();
+      this.close(); // Ferme le drawer après suppression
+    },
+    error: (err) => {
+      console.error('Erreur lors de la suppression de l\'équipe:', err);
+    }
+  });
+}
 
   openMemberDetails(memberId: string, event: Event): void {
     event.stopPropagation();

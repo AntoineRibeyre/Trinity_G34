@@ -19,6 +19,13 @@ interface CreateTeamResponse {
   };
 }
 
+const DELETE_TEAM = gql`
+  mutation DeleteTeam($teamId : Int!){
+    deleteTeam(teamId: $teamId){
+      ok,
+      message
+    }
+  }`
 
 const GET_ALL_TEAMS = gql`
   query GetAllTeams{
@@ -116,6 +123,15 @@ export class TeamService implements OnInit{
       variables: {
         teamId: teamId,
         employeeIds: employeeIds
+      }
+    });
+  }
+
+  deleteTeam(teamId: number):Observable<any> {
+    return this.apollo.mutate({
+      mutation: DELETE_TEAM,
+      variables: {
+        teamId: teamId
       }
     });
   }

@@ -258,6 +258,39 @@ class CreateTeam(graphene.Mutation):
         print(f"{manager}")
         team.members.add(*manager)
         return CreateTeam(team=team)
+    
+class DeleteTeam(graphene.Mutation):
+    class Arguments:
+        team_id = graphene.Int(required=True)
+
+    ok = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, team_id):
+        try:
+            team = Team.objects.get(id=team_id)
+            team_name = team.name
+            
+            # Retirer tous les membres de l'équipe
+            team.members.clear()
+            
+            # Supprimer l'équipe
+            team.delete()
+            
+            return DeleteTeam(
+                ok=True, 
+                message=f"Équipe '{team_name}' supprimée avec succès."
+            )
+        except Team.DoesNotExist:
+            return DeleteTeam(
+                ok=False, 
+                message="Équipe introuvable."
+            )
+        except Exception as e:
+            return DeleteTeam(
+                ok=False, 
+                message=f"Erreur : {str(e)}"
+            )
 
 class AddEmployeeToTeam(graphene.Mutation):
     class Arguments:
@@ -343,6 +376,7 @@ class Mutation(graphene.ObjectType):
     refresh_token = graphql_jwt.Refresh.Field()  # Refresh of the token
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
+    delete_team = DeleteTeam.Field()
     register_arrival = RegisterArrival.Field()
     add_employee_to_team = AddEmployeeToTeam.Field()
     register_end = RegisterEnd.Field()

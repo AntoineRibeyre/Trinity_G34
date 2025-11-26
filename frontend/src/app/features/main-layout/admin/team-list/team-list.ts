@@ -14,6 +14,7 @@ import { User } from '../../../../models/user.model';
 import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-team-list',
@@ -236,5 +237,18 @@ export class TeamList implements OnInit, OnDestroy {
 
   closeEmployeeDrawer() {
     this.isEmployeeDrawerOpen = false;
+  }
+}
+
+@Directive({
+  selector: "[appHorizontalScroll]",
+})
+export class HorizontalScrollDirective {
+  constructor(private element: ElementRef) {}
+
+  @HostListener("wheel", ["$event"])
+  public onScroll(event: WheelEvent) {
+    console.log("marche")
+    this.element.nativeElement.scrollLeft += event.deltaY;
   }
 }
