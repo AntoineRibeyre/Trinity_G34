@@ -3,7 +3,7 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {catchError, interval, Observable, of, startWith, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {TodayCalendars} from './service-interfaces';
+import {PendingDay, TodayCalendar, TodayCalendars} from './service-interfaces';
 
 const GET_PENDING_DAY = gql`
   query GetPendingDay($userId: Int!) {
@@ -85,7 +85,7 @@ export class PointService {
     );
   }
 
-  getTodayCalendar(userId: Number): Observable<TodayCalendars[]> {
+  getTodayCalendar(userId: Number): Observable<TodayCalendar[]> {
     return this.apollo.query({
       query: TODAY_CALENDARS_QUERY,
       variables: { userId },
@@ -101,7 +101,7 @@ export class PointService {
     );
   }
 
-  getMonthCalendar(userId: Number): Observable<any> {
+  getMonthCalendar(userId: Number): Observable<TodayCalendars[]> {
     return this.apollo.query({
       query: GET_CURRENT_MONTH_WORK,
       variables: { userId },

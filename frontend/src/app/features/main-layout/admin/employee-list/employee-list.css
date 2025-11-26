@@ -65,6 +65,11 @@
   opacity: 1;
 }
 
+.icon-btn:hover {
+  color: #333;
+  background-color: #e0e0e0;
+}
+
 /* === TABLEAU === */
 .user-table {
   display: flex;

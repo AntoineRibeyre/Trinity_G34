@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
 import {BasicTextButton} from '../basic-text-button/basic-text-button';
 import {TranslatePipe} from '@ngx-translate/core';
+import {UserService} from '../../../services/user.service';
+import {PointService} from '../../../services/point.service';
+import {User} from '../../../models/user.model';
 
 @Component({
   selector: 'app-employee-drawer',
@@ -35,8 +38,32 @@ export class EmployeeDrawer {
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<any>();
 
+  private currentMonthWork: any
+  private userId: number | undefined;
+
+  constructor(
+    private pointService: PointService
+  ) {
+
+  }
+
   close(): void {
     this.onClose.emit();
+  }
+
+  export(): void {
+    this.userId = Number(this.employee.id);
+
+    this.pointService.getMonthCalendar(this.userId).subscribe({
+      next: result => {
+        if (result) {
+          this.currentMonthWork = result;
+        }
+      },
+      error: error => {
+        console.error('❌ Erreur lors du chargement:', error);
+      }
+    });
   }
 
   saveChanges(): void {
