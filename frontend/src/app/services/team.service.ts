@@ -19,6 +19,12 @@ interface CreateTeamResponse {
   };
 }
 
+interface UpdateTeamResponse {
+  message: string;
+
+
+}
+
 const DELETE_TEAM = gql`
   mutation DeleteTeam($teamId : Int!){
     deleteTeam(teamId: $teamId){
@@ -76,6 +82,14 @@ const ADD_EMPLOYEES = gql`
     }
   }
 `;
+
+const UPDATE_TEAM = gql`
+mutation UpdateTeam($teamToUpdate: TeamInput!) {
+    updateTeam(teamToUpdate: $teamToUpdate) {
+      message
+    }
+  }
+`
 
 @Injectable({
   providedIn: 'root'
@@ -135,6 +149,34 @@ export class TeamService implements OnInit{
       }
     });
   }
+
+  updateTeam( teamToUpdate: {
+    id: number;
+    name?: string;
+    description?: string;
+    field?: string;
+    managerId?: number;
+  }): Observable<UpdateTeamResponse> {
+    console.log('ID:', teamToUpdate.id);
+    console.log('Name:', teamToUpdate.name);
+    console.log('Description:', teamToUpdate.description);
+    console.log('Field:', teamToUpdate.field);
+    console.log('ManagerId:', teamToUpdate.managerId);
+    return this.apollo.mutate<UpdateTeamResponse>({
+      mutation: UPDATE_TEAM,
+      variables: {
+        teamToUpdate: teamToUpdate
+      },
+      //Rafraîchir automatiquement la liste des équipes après la mise à jour
+      refetchQueries: [{
+        query: GET_ALL_TEAMS
+      }]
+    })
+    .pipe(
+      map(result => result.data!)
+    );
+  }
+
 
 
 

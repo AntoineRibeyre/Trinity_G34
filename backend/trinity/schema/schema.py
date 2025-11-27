@@ -291,6 +291,43 @@ class DeleteTeam(graphene.Mutation):
                 ok=False, 
                 message=f"Erreur : {str(e)}"
             )
+        
+class TeamInput(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    name = graphene.String(required=False)
+    description = graphene.String(required=False)
+    field = graphene.String(required=False)
+    manager_id = graphene.Int(required=False)        
+
+class UpdateTeam(graphene.Mutation) :
+    class Arguments:
+        team_to_update = TeamInput(required=True)
+    
+    message = graphene.String()
+
+    def mutate(self, info, team_to_update):
+        try:
+            team = Team.objects.get(id=team_to_update.id)
+            if team_to_update.name is not None:
+                team.name = team_to_update.name
+            if team_to_update.description is not None:
+                team.description = team_to_update.description
+            if team_to_update.field is not None:
+                team.field = team_to_update.field
+            team.save()
+            return UpdateTeam(
+                message="Mise à jour effectuée avec succès",
+            )
+        except Team.DoesNotExist:
+            return UpdateTeam(
+                message="Équipe introuvable",
+            )
+        except Exception as e:
+            return UpdateTeam(
+                message=f"Erreur : {str(e)}",
+            )
+        
+
 
 class AddEmployeeToTeam(graphene.Mutation):
     class Arguments:
@@ -376,6 +413,7 @@ class Mutation(graphene.ObjectType):
     refresh_token = graphql_jwt.Refresh.Field()  # Refresh of the token
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
+    update_team = UpdateTeam.Field()
     delete_team = DeleteTeam.Field()
     register_arrival = RegisterArrival.Field()
     add_employee_to_team = AddEmployeeToTeam.Field()
