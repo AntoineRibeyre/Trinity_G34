@@ -1,0 +1,53 @@
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: #fff; /* même couleur que la nav-bar */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* ombre douce et identique */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: #2E2E2E;
+
+  border-radius: 0 0 20px 0; /* petit arrondi pour rappeler la douceur du design */
+  position: sticky;
+  top: 0;
+  z-index: 900; /* juste en dessous de la nav-bar (1000) */
+}
+
+.header-filters {
+    height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #fff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-button {
+    height: 40px;
+    width: 10%;
+  background-color: #f8f9fa;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  padding: 6px 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.filter-button:hover {
+  background-color: #f0f0f5;
+}
+
+.filter-button.active {
+  background-color: #e8e8f0;
+  border-color: #bcbcbc;
+  font-weight: 600;
+}

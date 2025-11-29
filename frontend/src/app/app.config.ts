@@ -13,6 +13,7 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import { graphqlProvider } from './graphql/graphql.provider';
 import { LanguageService } from './services/lang.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 /**
  * Factory pour initialiser la langue au démarrage de l'application
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(),
+    provideAnimationsAsync(),
     graphqlProvider,
 
     // Configuration de la traduction

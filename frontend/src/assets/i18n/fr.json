@@ -2,7 +2,8 @@
   "BASE": {
     "CANCEL": "Annuler",
     "CREATE": "Créer",
-    "SUPPRIMER": "Supprimer"
+    "SUPPRIMER": "Supprimer",
+    "EDIT": "Modifier"
   },
   "SETTINGS": {
     "FIRST_NAME": "Prénom",
@@ -22,7 +23,12 @@
     "PASSWORD": "Mot de passe",
     "PASSWORD_PLACEHOLDER": "Laissez vide pour ne pas changer",
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
-    "SAVING": "Sauvegarde en cours"
+    "SAVING": "Sauvegarde en cours",
+    "DIALOG": {
+      "TITLE": "Modifier votre mot de passe",
+      "PASSWORD": "Votre mot de passe",
+      "CONFIRM": "Confirmer votre mot de passe"
+    }
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
@@ -115,7 +121,47 @@
         "FIELD-TITLE": "Type d’équipe",
         "FIELD-PLACEHOLDER": "Type...",
         "DESCRIPTION-TITLE": "Description de l’équipe",
-        "DESCRIPTION-PLACEHOLDER": "Description..."
+        "DESCRIPTION-PLACEHOLDER": "Description...",
+        "MANAGER": "Manager de l'équipe",
+        "MANAGER-PLACEHOLDER": "Manager..."
+      },
+      "ADD-EMPLOYE": {
+        "TITLE": "Ajouter un employé à l'équipe",
+        "NAME-TITLE": "Nom et prénom de l'employé",
+        "NAME-PLACEHOLDER": "Nom et prénom..."
+      }
+    }
+  },
+  "ADMIN": {
+    "ALL": {
+      "NAME": "Nom",
+      "FIRSTNAME": "Prénom",
+      "EMAIL": "Email",
+      "TEAM": "Équipe",
+      "PERSONAL-DRAWER": {
+        "PERSONAL": "Personnel",
+        "BIRTH-DATE": "Date de naissance:",
+        "EMAIL": "Email:",
+        "PHONE": "Téléphone:",
+        "SECU": "Social Security numbers:",
+        "PROFESSIONAL": "Professionnel",
+        "JOB": "Poste:",
+        "CONTRACT": "Contrat:",
+        "TEAM": "Équipe:",
+        "MANAGER": "Manager",
+        "WORKING-TIME": "Temps de travail & salaire",
+        "TIME": "Temps de travail:",
+        "EFFECTIF-TIME": "Temps de travail effectif:",
+        "HOLIDAYS": "Solde de congés:",
+        "ANNUAL-SALARY": "Salaire annuel:",
+        "ARRIVAL": "Date d'arrivée:"
+      }
+    },
+    "TEAMS": {
+      "DRAWER": {
+        "DESCRIPTION-TITLE": "Description de l’équipe",
+        "STATISTICS": "Statistique de l’équipe",
+        "MEMBERS": "Membres de l'équipes"
       }
     }
   }

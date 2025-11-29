@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { firstValueFrom } from 'rxjs';
+import { UserService } from './user.service';
 
 import { User } from '../models/user.model';
 
@@ -59,9 +60,6 @@ interface AllEventsResponse {
   allEvents: GraphQLEvent[];
 }
 
-interface AllUsersResponse {
-  allUsers: GraphQLUser[];
-}
 
 interface UpdateAttendeesResponse {
   updateEventAttendees: {
@@ -100,17 +98,6 @@ const GET_ALL_EVENTS = gql`
   }
 `;
 
-const GET_ALL_USERS = gql`
-  query GetAllUsers {
-    allUsers {
-      id
-      username
-      email
-      firstName
-      lastName
-    }
-  }
-`;
 
 const CREATE_EVENT = gql`
   mutation CreateEvent(
@@ -240,24 +227,15 @@ const REMOVE_ATTENDEE = gql`
 })
 export class EventService {
   
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private userService: UserService) {}
   
-  // Fonction utilitaire pour convertir GraphQLUser en User
-  private convertUser(graphqlUser: GraphQLUser): User {
-    return {
-      id: graphqlUser.id.toString(),
-      username: graphqlUser.username,
-      email: graphqlUser.email,
-      firstName: graphqlUser.firstName || '',
-      lastName: graphqlUser.lastName || ''
-    };
-  }
+  
   
   // Fonction utilitaire pour convertir GraphQLEvent en Event
   private convertEvent(graphqlEvent: GraphQLEvent): Event {
     return {
       ...graphqlEvent,
-      attendees: graphqlEvent.attendees?.map(u => this.convertUser(u))
+      attendees: graphqlEvent.attendees?.map(u => this.userService.convertUser(u))
     };
   }
   
@@ -281,25 +259,7 @@ export class EventService {
     }
   }
 
-  async getAllUsers(): Promise<User[]> {
-    try {
-      const response = await firstValueFrom(
-        this.apollo.query<AllUsersResponse>({
-          query: GET_ALL_USERS,
-          fetchPolicy: 'network-only'
-        })
-      );
-      
-      const users = (response.data?.allUsers || []).map(user => 
-        this.convertUser(user)
-      );
-      
-      return users;
-    } catch (error) {
-      console.error('Erreur lors de la récupération des utilisateurs:', error);
-      throw error;
-    }
-  }
+  
   
   async createEvent(eventData: any, attendeeIds?: number[]) {
     try {

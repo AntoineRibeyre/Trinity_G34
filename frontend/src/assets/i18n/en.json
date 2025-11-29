@@ -2,7 +2,8 @@
   "BASE": {
     "CANCEL": "Cancel",
     "CREATE": "Create",
-    "SUPPRIMER": "Delete"
+    "SUPPRIMER": "Delete",
+    "EDIT": "Edit"
   },
   "SETTINGS": {
     "FIRST_NAME": "First name",
@@ -115,7 +116,47 @@
         "FIELD-TITLE": "Team type",
         "FIELD-PLACEHOLDER": "Type...",
         "DESCRIPTION-TITLE": "Team description",
-        "DESCRIPTION-PLACEHOLDER": "Description..."
+        "DESCRIPTION-PLACEHOLDER": "Description...",
+        "MANAGER": "Team manager",
+        "MANAGER-PLACEHOLDER": "Manager..."
+      },
+      "ADD-EMPLOYE": {
+        "TITLE": "Add employee to the team",
+        "NAME-TITLE": "Last and first name of the employee",
+        "NAME-PLACEHOLDER": "Name..."
+      }
+    }
+  },
+  "ADMIN": {
+    "ALL": {
+      "NAME": "Name",
+      "FIRSTNAME": "Firstname",
+      "EMAIL": "Email",
+      "TEAM": "Team",
+      "PERSONAL-DRAWER": {
+        "PERSONAL": "Personal",
+        "BIRTH-DATE": "Date of birth:",
+        "EMAIL": "Email:",
+        "PHONE": "Phone number:",
+        "SECU": "Numéros de SECU:",
+        "PROFESSIONAL": "Professional",
+        "JOB": "Job:",
+        "CONTRACT": "Contract:",
+        "TEAM": "Team:",
+        "MANAGER": "Manager",
+        "WORKING-TIME": "Working hours & salary",
+        "TIME": "Working hours:",
+        "EFFECTIF-TIME": "Actual working time:",
+        "HOLIDAYS": "Vacation balance:",
+        "ANNUAL-SALARY": "Annual salary:",
+        "ARRIVAL": "Arrival:"
+      }
+    },
+    "TEAMS": {
+      "DRAWER": {
+        "DESCRIPTION-TITLE": "Team description",
+        "STATISTICS": "Team stats",
+        "MEMBERS": "Team members"
       }
     }
   }

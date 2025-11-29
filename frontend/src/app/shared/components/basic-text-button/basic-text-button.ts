@@ -9,6 +9,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class BasicTextButton {
   @Input() text: string = 'Button';
   @Input() color: string = '#007bff';
+  @Input() width: string = '14.5vw';
   @Input() disabled: boolean = false;
   @Output() onClick = new EventEmitter<void>();
 

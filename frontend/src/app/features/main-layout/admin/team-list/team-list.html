@@ -1,0 +1,68 @@
+<div class="teams-container">
+  <div class="team-card-add" (click)="$event.stopPropagation();createTeamDialog()">
+    <div class="card team-title">Créer une équipe</div>
+    <div class="card create-button">
+      <button>+</button>
+    </div>
+  </div>
+  <div class="teams">
+    @for (team of filteredTeams; track team.id) {
+      <div class="team-card" (click)="displayTeamData(team.id)">
+        <!-- Nom de l'équipe -->
+        <div class="card team-title">{{ team.name }}</div>
+
+        <!-- Description -->
+        <div class="card team-description">{{ team.description }}</div>
+
+        <!-- Manager -->
+        <div class="card section">
+          <div class="section-manager">
+            <h4>Manager</h4>
+            @if (getManager(team); as manager) {
+              <div class="member">
+                <div class="member-avatar">
+                  {{ manager.firstName.charAt(0) }}{{ manager.lastName.charAt(0) }}
+                </div>
+                <span class="name">{{ manager.firstName }} {{ manager.lastName }}</span>
+              </div>
+            }
+          </div>
+
+          <h4 class="sticky-header">Équipe</h4>
+          <div class="section-members">
+            @for (member of team.members; track member.id) {
+              @if (member.role !== 'manager') {
+                <div class="member">
+                  <div class="member-avatar">
+                    {{ member.firstName.charAt(0) }}{{ member.lastName.charAt(0) }}
+<!--                    <span class="status-dot"></span>-->
+                  </div>
+                  <span class="name">{{ member.firstName }} {{ member.lastName }}</span>
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Bouton d'ajout -->
+        <div class="card add-button">
+          <button (click)="$event.stopPropagation();addMemberDialog(team.id)">+</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<app-team-drawer
+  [isOpen]="isTeamDrawerOpen"
+  [team]="selectedTeam"
+  (onClose)="closeTeamDrawer()"
+  (onMemberClick)="onMemberClick($event)">
+</app-team-drawer>
+
+<app-employee-drawer
+  [isOpen]="isEmployeeDrawerOpen"
+  [employee]="selectedEmployee"
+  [isEditable]="false"
+  (onClose)="closeEmployeeDrawer()">
+</app-employee-drawer>

@@ -27,6 +27,7 @@ export class BasicTextField implements ControlValueAccessor {
   @Input() disabled: boolean = false;
   @Input() readonly: boolean = false;
   @Input() showCharCount: boolean = false;
+  @Input() showClearButton: boolean = false;
   @Output() onTextChange = new EventEmitter<string>();
 
   value: string = '';
@@ -57,5 +58,10 @@ export class BasicTextField implements ControlValueAccessor {
 
   handleBlur(): void {
     this.onTouched();
+  }
+
+  clearText(): void {
+    this.value = '';
+    this.handleInput(); // Pour déclencher les mises à jour
   }
 }
