@@ -20,8 +20,8 @@ export interface AddTeamEmployee {
 
 @Component({
   selector: 'app-add-team-employe',
-  imports: [DialogModule, BasicTextButton,MatFormFieldModule,  
-    MatSelectModule,     
+  imports: [DialogModule, BasicTextButton,MatFormFieldModule,
+    MatSelectModule,
     MatOptionModule, ],
   templateUrl: './add-team-employe.html',
   styleUrl: './add-team-employe.css'
@@ -42,8 +42,6 @@ export class AddTeamEmploye {
       this.selectedEmployeeIds = this.selectedEmployeeIds.filter(id => id !== employeeId);
     }
   }
-
-
 
   get isSelected(): boolean {
     return this.selectedEmployeeIds.length > 0;
