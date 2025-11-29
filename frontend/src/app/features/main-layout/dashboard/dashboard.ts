@@ -214,7 +214,7 @@ openDialog(): void {
   if (!this.userId) return;
 
 
-  this.teamService.getManagerView(this.userId).subscribe({
+  this.teamService.getManagerData(this.userId).subscribe({
     next: (data: any) => {
       console.log('Données reçues:', data); // ✅ Ici tu devrais voir les données
     },

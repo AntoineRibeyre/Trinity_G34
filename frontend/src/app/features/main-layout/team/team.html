@@ -1,32 +1,125 @@
 <div class="general-space">
 
-  <div class="top-cards">
-
-    <div class="cards">
-      <p class="card-text">Moyenne du temps de travail hebdomadaire</p>
-    </div>
-    <div class="cards">
-      <p class="card-text">Moyenne du temps de travail mensuel</p>
-
-    </div>
-    <div class="cards">
-      <p class="card-text">Moyen heure d’arriver hebdomadaire</p>
-
-    </div>
-    <div class="cards">
-      <p class="card-text">Moyen heure de départ hebdomadaire</p>
-
-    </div>
-
+  <!-- Loader -->
+  <div *ngIf="loading" class="loader-container">
+    <div class="loader"></div>
+    <p>Chargement des données...</p>
   </div>
 
-  <div class="bottom-cards">
+  <!-- Erreur -->
+  <div *ngIf="error && !loading" class="error-container">
+    <p class="error-message">{{ error }}</p>
+    <button (click)="loadTeamData()" class="retry-button">Réessayer</button>
+  </div>
 
-    <div class="team-info">
+  <!-- Contenu principal -->
+  <div *ngIf="!loading && !error && managerView">
 
+    <!-- Cards du haut -->
+    <div class="top-cards">
+      <div class="cards">
+        <p class="card-label">Moyenne du temps de travail hebdomadaire</p>
+        <p class="card-value">{{ avgWeeklyHours }}</p>
+      </div>
+      
+      <div class="cards">
+        <p class="card-label">Moyenne du temps de travail mensuel</p>
+        <p class="card-value">{{ avgMonthlyHours }}</p>
+      </div>
+      
+      <div class="cards">
+        <p class="card-label">Moyenne heure d'arrivée hebdomadaire</p>
+        <p class="card-value">{{ avgArrivalTime }}</p>
+      </div>
+      
+      <div class="cards">
+        <p class="card-label">Moyenne heure de départ hebdomadaire</p>
+        <p class="card-value">{{ avgDepartureTime }}</p>
+      </div>
     </div>
 
-    <div class="table-card">
+    <!-- Cards du bas -->
+    <div class="bottom-cards">
+
+      <!-- Informations de l'équipe -->
+      <div class="team-info">
+        <h2 class="team-title">{{ managerView.teamDetails.name }}</h2>
+        <p class="team-description">{{ managerView.teamDetails.description }}</p>
+        
+        <div class="team-stats">
+          <div class="stat-item">
+            <span class="stat-label">Membres:</span>
+            <span class="stat-value">{{ managerView.members.length + 1 }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Manager:</span>
+            <span class="stat-value">
+              {{ managerView.manager.userDetails.firstName }} 
+              {{ managerView.manager.userDetails.lastName }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tableau des membres -->
+      <div class="table-card">
+        <h3 class="table-title">Membres de l'équipe</h3>
+        
+        <table class="team-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Rôle</th>
+              <th>Statut</th>
+              <th>Heures aujourd'hui</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Manager -->
+            <tr class="manager-row">
+              <td class="member-name">
+                <strong>
+                  {{ managerView.manager.userDetails.firstName }} 
+                  {{ managerView.manager.userDetails.lastName }}
+                </strong>
+              </td>
+              <td>
+                <span class="role-badge manager">Manager</span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass({userDetails: managerView.manager.userDetails, planning: managerView.manager.planning})">
+                  {{ getStatusText({userDetails: managerView.manager.userDetails, planning: managerView.manager.planning}) }}
+                </span>
+              </td>
+              <td>{{ getTodayHours({userDetails: managerView.manager.userDetails, planning: managerView.manager.planning}) }}</td>
+            </tr>
+
+            <!-- Membres de l'équipe -->
+            <tr *ngFor="let member of managerView.members">
+              <td class="member-name">
+                {{ member.userDetails.firstName }} 
+                {{ member.userDetails.lastName }}
+              </td>
+              <td>
+                <span class="role-badge" [ngClass]="member.userDetails.role?.toLowerCase()">
+                  {{ member.userDetails.role || 'Employé' }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(member)">
+                  {{ getStatusText(member) }}
+                </span>
+              </td>
+              <td>{{ getTodayHours(member) }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Message si aucun membre -->
+        <div *ngIf="!managerView.members || managerView.members.length === 0" class="no-members">
+          <p>Aucun membre dans l'équipe pour le moment.</p>
+        </div>
+      </div>
 
     </div>
 
