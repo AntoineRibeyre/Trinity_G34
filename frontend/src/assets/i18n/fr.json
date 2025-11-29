@@ -1,0 +1,99 @@
+{
+  "login": {
+    "connexion": "Connexion",
+    "mdp": "Mot de passe",
+    "email": "Email",
+    "seconnecter": "Se connecter",
+    "sinscrire": "S'inscrire",
+    "motdepasseoublié": "Mot de passe oublié"
+  },
+
+  "register": {
+    "inscription": "Inscription",
+    "nom": "Nom",
+    "prénom": "Prénom",
+    "email": "Email",
+    "numérodecarte": "Numéro de carte",
+    "mdp": "Mot de passe",
+    "motdepasseoublié": "Mot de passe oublié",
+    "sinscrire": "S'inscrire"
+  },
+
+  "home": {
+    "sinscrire": "S'inscrire",
+    "seconnecter": "Se connecter",
+    "fonctionalitésprincipales": "Fonctionnalités principales",
+    "pointagesimplifié": "Pointage simplifié",
+    "enregistrezvosheuresdarrivéeetdedépartenunclic": "Enregistrez vos heures d'arrivée et de départ en un clic",
+    "gestiondéquipes": "Gestion d'équipes",
+    "organisezvoscollaborateursetsuivezleuractivité": "Organisez vos collaborateurs et suivez leur activité",
+    "rapportKPI": "Rapport KPI",
+    "analysezlesindicateursdeperformancesdevotreentreprise": "Analysez les indicateurs de performances de votre entreprise",
+    "tableaudebord": "Tableau de bord",
+    "visualisezvosheuresdetravailetvosstatistiques": "Visualisez vos heures de travail et vos statistiques"
+  },
+
+  "app": {
+    "chargement": "Chargement...",
+    "erreur": "Erreur",
+    "reessayer": "Réessayer",
+    "aucunedonnee": "Aucune donnée disponible"
+  },
+
+  "dashboard": {
+    "titre": "Tableau de bord",
+    "heuresaujourdhui": "Heures aujourd'hui",
+    "heurescemois": "Heures ce mois",
+    "statistiques": "Statistiques"
+  },
+
+  "settings": {
+    "titre": "Paramètres",
+    "profil": "Profil",
+    "preferences": "Préférences",
+    "deconnexion": "Déconnexion"
+  },
+
+  "team": {
+    "titre": "Mon Équipe",
+    "chargementdesdonnees": "Chargement des données...",
+    "impossibledecharger": "Impossible de charger les données de l'équipe",
+    "reessayer": "Réessayer",
+    "erreursurvenue": "Une erreur est survenue",
+    
+    "statistiques": {
+      "moyennehebdomadaire": "Moyenne du temps de travail hebdomadaire",
+      "moyennemensuelle": "Moyenne du temps de travail mensuel",
+      "moyennearrivee": "Moyenne heure d'arrivée hebdomadaire",
+      "moyennedepart": "Moyenne heure de départ hebdomadaire"
+    },
+    
+    "informations": {
+      "titre": "Informations de l'équipe",
+      "membres": "Membres",
+      "manager": "Manager"
+    },
+    
+    "tableau": {
+      "titre": "Membres de l'équipe",
+      "nom": "Nom",
+      "role": "Rôle",
+      "statut": "Statut",
+      "heuresaujourdhui": "Heures aujourd'hui",
+      "aucunmembre": "Aucun membre dans l'équipe pour le moment."
+    },
+    
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employé",
+      "admin": "Administrateur"
+    },
+    
+    "statuts": {
+      "present": "Présent",
+      "absent": "Absent",
+      "termine": "Terminé",
+      "inconnu": "Inconnu"
+    }
+  }
+}

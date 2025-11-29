@@ -1,17 +1,17 @@
 {
   "login": {
-    "connexion": "Connexion",
+    "connexion": "Login",
     "mdp": "Password",
     "email": "Email",
-    "seconnecter": "Login",
+    "seconnecter": "Log in",
     "sinscrire": "Register",
     "motdepasseoublié": "Forgotten password"
   },
 
   "register": {
     "inscription": "Register",
-    "nom": "First Name",
-    "prénom": "Name",
+    "nom": "Last Name",
+    "prénom": "First Name",
     "email": "Email",
     "numérodecarte": "Card Number",
     "mdp": "Password",
@@ -21,32 +21,79 @@
 
   "home": {
     "sinscrire": "Register",
-    "seconnecter": "Login",
+    "seconnecter": "Log in",
     "fonctionalitésprincipales": "Key Features",
-    "pointagesimplifié": "Simplified clock in",
+    "pointagesimplifié": "Simplified Clock-In",
     "enregistrezvosheuresdarrivéeetdedépartenunclic": "Record your arrival and departure times with one click",
-    "gestiondéquipes": "Team management",
+    "gestiondéquipes": "Team Management",
     "organisezvoscollaborateursetsuivezleuractivité": "Organize your employees and monitor their activity",
-    "rapportKPI": "KPI report",
+    "rapportKPI": "KPI Report",
     "analysezlesindicateursdeperformancesdevotreentreprise": "Analyze your company's performance indicators",
     "tableaudebord": "Dashboard",
     "visualisezvosheuresdetravailetvosstatistiques": "View your working hours and statistics"
   },
 
   "app": {
-
+    "chargement": "Loading...",
+    "erreur": "Error",
+    "reessayer": "Retry",
+    "aucunedonnee": "No data available"
   },
 
   "dashboard": {
-
+    "titre": "Dashboard",
+    "heuresaujourdhui": "Hours Today",
+    "heurescemois": "Hours This Month",
+    "statistiques": "Statistics"
   },
 
   "settings": {
-
+    "titre": "Settings",
+    "profil": "Profile",
+    "preferences": "Preferences",
+    "deconnexion": "Logout"
   },
 
   "team": {
-
+    "titre": "My Team",
+    "chargementdesdonnees": "Loading data...",
+    "impossibledecharger": "Unable to load team data",
+    "reessayer": "Retry",
+    "erreursurvenue": "An error occurred",
+    
+    "statistiques": {
+      "moyennehebdomadaire": "Average Weekly Working Time",
+      "moyennemensuelle": "Average Monthly Working Time",
+      "moyennearrivee": "Average Weekly Arrival Time",
+      "moyennedepart": "Average Weekly Departure Time"
+    },
+    
+    "informations": {
+      "titre": "Team Information",
+      "membres": "Members",
+      "manager": "Manager"
+    },
+    
+    "tableau": {
+      "titre": "Team Members",
+      "nom": "Name",
+      "role": "Role",
+      "statut": "Status",
+      "heuresaujourdhui": "Hours Today",
+      "aucunmembre": "No members in the team yet."
+    },
+    
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employee",
+      "admin": "Administrator"
+    },
+    
+    "statuts": {
+      "present": "Present",
+      "absent": "Absent",
+      "termine": "Finished",
+      "inconnu": "Unknown"
+    }
   }
-
 }

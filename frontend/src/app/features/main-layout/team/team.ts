@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { TeamService, ManagerViewResponse } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 
@@ -27,7 +28,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './team.html',
   styleUrl: './team.css'
 })
@@ -73,14 +74,14 @@ export class Team implements OnInit {
         },
         error: (err) => {
           console.error('Erreur lors du chargement des données:', err);
-          this.error = 'Impossible de charger les données de l\'équipe';
+          this.error = 'team.impossibledecharger';
           this.loading = false;
         }
       });
 
     } catch (err) {
       console.error('Erreur:', err);
-      this.error = 'Une erreur est survenue';
+      this.error = 'team.erreursurvenue';
       this.loading = false;
     }
   }
@@ -200,12 +201,7 @@ export class Team implements OnInit {
 
   getStatusText(member: TeamMember): string {
     const status = this.getStatusClass(member);
-    switch(status) {
-      case 'present': return 'Présent';
-      case 'finished': return 'Terminé';
-      case 'absent': return 'Absent';
-      default: return 'Inconnu';
-    }
+    return `team.statuts.${status === 'present' ? 'present' : status === 'finished' ? 'termine' : 'absent'}`;
   }
 
   getTodayHours(member: TeamMember): string {
@@ -221,5 +217,14 @@ export class Team implements OnInit {
 
     const [hours, minutes] = today.totalHours.split(':').map(Number);
     return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  }
+
+  getRoleTranslationKey(role?: string): string {
+    const roleMap: { [key: string]: string } = {
+      'manager': 'team.roles.manager',
+      'employee': 'team.roles.employee',
+      'admin': 'team.roles.admin'
+    };
+    return roleMap[role?.toLowerCase() || 'employee'] || 'team.roles.employee';
   }
 }
