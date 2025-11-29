@@ -48,7 +48,6 @@ export class Settings implements OnInit, OnDestroy {
     this.languageSubscription = this.languageService.currentLanguage$.subscribe(lang => {
       this.currentLanguage = lang;
     });
-
     // Charger les données du user
     this.currentUser = await this.userService.loadCurrentUserFromServer();
     if (this.currentUser) {

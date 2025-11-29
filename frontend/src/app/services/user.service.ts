@@ -4,6 +4,13 @@ import { firstValueFrom } from "rxjs";
 import { CurrentUserResponse, User } from "../models/user.model";
 import gql from "graphql-tag";
 
+interface UserInput {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+}
+
 @Injectable({ providedIn: "root" })
 export class UserService {
   currentUser: User | null = null;
@@ -23,18 +30,8 @@ export class UserService {
   `;
 
   private readonly UPDATE_USER_MUTATION = gql`
-    mutation UpdateUser(
-      $firstName: String
-      $lastName: String
-      $email: String
-      $password: String
-    ) {
-      updateUser(
-        firstName: $firstName
-        lastName: $lastName
-        email: $email
-        password: $password
-      ) {
+    mutation UpdateUser($info: UserInput!) {
+      updateUser(info: $info) {
         user {
           id
           firstName
@@ -74,14 +71,12 @@ export class UserService {
       const res = await firstValueFrom(
         this.apollo.mutate<{ updateUser: { user: User } }>({
           mutation: this.UPDATE_USER_MUTATION,
-          variables: data,
+          variables: { info: data },  // Pass data wrapped in 'info'
         })
       );
-
       if (!res.data?.updateUser?.user) {
         throw new Error("Failed to update user: Invalid response from server");
       }
-
       this.currentUser = res.data.updateUser.user;
       return this.currentUser;
     } catch (error) {
