@@ -3,10 +3,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { DIALOG_DATA, DialogModule } from '@angular/cdk/dialog';
 import { BasicTextButton } from '../basic-text-button/basic-text-button';
 import { DropdownOption } from '../basic-dropdown/basic-dropdown';
-
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { BasicTextField } from '../basic-text-field/basic-text-field';
+import { CommonModule } from '@angular/common';
 
 export interface AddTeamEmployee {
   title: string;
@@ -20,19 +18,34 @@ export interface AddTeamEmployee {
 
 @Component({
   selector: 'app-add-team-employe',
-  imports: [DialogModule, BasicTextButton,MatFormFieldModule,  
-    MatSelectModule,     
-    MatOptionModule, ],
+  imports: [DialogModule, BasicTextButton, BasicTextField, CommonModule],
   templateUrl: './add-team-employe.html',
   styleUrl: './add-team-employe.css'
 })
 export class AddTeamEmploye {
   selectedEmployeeIds: number[] = [];
+  searchQuery: string = '';
+  filteredOptions: DropdownOption[] = [];
 
   constructor(
     public dialog: MatDialogRef<AddTeamEmployee>,
     @Inject(DIALOG_DATA) public data: AddTeamEmployee,
-  ) {}
+  ) {
+    this.filteredOptions = this.data.dropdownOptions;
+  }
+
+  onSearchChange(query: string): void {
+    this.searchQuery = query;
+    if (!query || query.trim() === '') {
+      this.filteredOptions = this.data.dropdownOptions;
+      return;
+    }
+
+    const term = query.toLowerCase().trim();
+    this.filteredOptions = this.data.dropdownOptions.filter(option =>
+      option.label.toLowerCase().includes(term)
+    );
+  }
 
   onEmployeeToggle(employeeId: number, event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
@@ -43,7 +56,9 @@ export class AddTeamEmploye {
     }
   }
 
-
+  isEmployeeSelected(employeeId: number): boolean {
+    return this.selectedEmployeeIds.includes(employeeId);
+  }
 
   get isSelected(): boolean {
     return this.selectedEmployeeIds.length > 0;
