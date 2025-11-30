@@ -97,6 +97,10 @@
     {{ isLoading ? 'Chargement...' : 'S\'inscrire' }}
   </button>
 
+  <button class="btn-home" type="button" (click)="goHome()">
+    Retour à l'accueil
+  </button>
+
   <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 </form>
 </div>
