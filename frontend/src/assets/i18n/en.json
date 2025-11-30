@@ -23,7 +23,12 @@
     "PASSWORD": "Password",
     "PASSWORD_PLACEHOLDER": "Leave empty to keep unchanged",
     "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
-    "SAVING": "Saving in progress..."
+    "SAVING": "Saving in progress...",
+    "DIALOG": {
+      "TITLE": "Edit your password",
+      "PASSWORD": "Your password",
+      "CONFIRM": "Confirm your password"
+    }
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
