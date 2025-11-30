@@ -57,18 +57,23 @@ export class LoginComponent {
       console.error('Erreur de connexion:', error);
 
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-        this.errorMessage = error.graphQLErrors[0].message;
+
+        const message = error.graphQLErrors[0].message;
+
+        if (message.includes("credentials") || message.includes("Invalid")) {
+          this.errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
+        } else {
+          this.errorMessage = message;  // message serveur générique
+        }
+
       } else if (error.networkError) {
         this.errorMessage = this.translateService.instant('ERRORS.NETWORK_ERROR');
+
       } else {
         this.errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
       }
-
-    } finally {
-      this.loading = false;
     }
   }
 }
-
 // Export nommé "Login" pour app.routes.ts
 export { LoginComponent as Login };

@@ -115,7 +115,7 @@ export class Settings implements OnInit, OnDestroy {
           this.currentUser = updatedUser;
 
           // Notification de succès
-          alert('Paramètres sauvegardés avec succès !');
+          // alert('Paramètres sauvegardés avec succès !');
 
           // Vider le champ mot de passe après la sauvegarde
           this.settingsForm.patchValue({ password: '' });
@@ -147,17 +147,30 @@ export class Settings implements OnInit, OnDestroy {
 
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
+      width: '500px',
       data: {
         title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
         confirm: this.translateService.instant('BASE.EDIT'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-        onConfirm: (dialogRef: MatDialogRef<SettingEditPassword>,
-                    newPassword: string,
-                    ) => {},
+        onConfirm: async (
+          dialogRef: MatDialogRef<SettingEditPassword>,
+          newPassword: string
+        ) => {
+          try {
+            // Mettre à jour le mot de passe via le service
+            await this.userService.updateUser({ password: newPassword });
+
+            alert(this.translateService.instant('SETTINGS.PASSWORD_UPDATED_SUCCESS'));
+            dialogRef.close();
+          } catch (error) {
+
+            alert(this.translateService.instant('SETTINGS.PASSWORD_UPDATE_ERROR'));
+          }
+        },
         onCancel: (dialogRef: MatDialogRef<SettingEditPassword>) => {
           dialogRef.close();
         }
       }
-    })
+    });
   }
 }

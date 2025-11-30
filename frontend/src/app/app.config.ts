@@ -38,8 +38,8 @@ export const appConfig: ApplicationConfig = {
 
     // Configuration de la traduction
     provideTranslateService({
-      defaultLanguage: 'fr',
-      fallbackLang: 'fr',
+      defaultLanguage: 'en',
+      fallbackLang: 'en',
       loader: provideTranslateHttpLoader({
         prefix: '/assets/i18n/',
         suffix: '.json'
