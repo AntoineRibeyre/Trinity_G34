@@ -229,8 +229,8 @@ export class TeamList implements OnInit, OnDestroy {
     this.selectedTeam = undefined;
   }
 
-  onMemberClick(memberId: string): void {
-    this.selectedEmployee = this.allUsers.find((user) => user.id === memberId);
+  onMemberClick(memberId: number): void {
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
     this.isEmployeeDrawerOpen = true;
     console.log(this.selectedEmployee);
   }

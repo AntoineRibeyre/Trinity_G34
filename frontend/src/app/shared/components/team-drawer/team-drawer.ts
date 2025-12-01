@@ -8,6 +8,8 @@ import { Team } from '../../../models/team.model';
 import { User } from '../../../models/user.model';
 import {BasicTextField} from '../basic-text-field/basic-text-field';
 import { TeamService } from '../../../services/team.service';
+import { DeleteDialog } from '../delete-dialog/delete-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-team-drawer',
@@ -42,26 +44,26 @@ export class TeamDrawer implements OnChanges {
   @Output() onTeamDeleted = new EventEmitter<number>();
   @Output() onTeamUpdated = new EventEmitter<Team>();
 
-  constructor(private teamService: TeamService) {}
+  constructor(private teamService: TeamService,private dialog : MatDialog) {}
 
   isEditable: boolean = false;
   teamManager: User | undefined;
   
-  // ✅ Créer une copie mutable pour l'édition
+  // Créer une copie mutable pour l'édition
   editableTeam: Team | undefined;
   private originalTeam: Team | undefined;
 
-  // ✅ Supprimer ngOnInit et garder uniquement ngOnChanges
+  // Supprimer ngOnInit et garder uniquement ngOnChanges
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ngOnChanges appelé', changes);
     
-    // ✅ Initialiser dès que team change ou au premier chargement
+    // Initialiser dès que team change ou au premier chargement
     if (changes['team']) {
       console.log('Team changé:', changes['team'].currentValue);
       this.initializeTeam();
     }
     
-    // ✅ Réinitialiser aussi quand le drawer s'ouvre
+    // Réinitialiser aussi quand le drawer s'ouvre
     if (changes['isOpen'] && changes['isOpen'].currentValue === true) {
       console.log('Drawer ouvert, réinitialisation');
       this.initializeTeam();
@@ -73,7 +75,7 @@ export class TeamDrawer implements OnChanges {
     
     if (this.team) {
       try {
-        // ✅ Créer une copie profonde pour l'édition
+        // Créer une copie profonde pour l'édition
         this.editableTeam = JSON.parse(JSON.stringify(this.team));
         this.originalTeam = JSON.parse(JSON.stringify(this.team));
         
@@ -106,7 +108,7 @@ export class TeamDrawer implements OnChanges {
       return;
     }
     
-    // ✅ Modifier la copie mutable
+    // Modifier la copie mutable
     this.editableTeam.name = name;
     console.log('Nom mis à jour:', this.editableTeam.name);
   }
@@ -119,7 +121,7 @@ export class TeamDrawer implements OnChanges {
       return;
     }
     
-    // ✅ Modifier la copie mutable
+    // Modifier la copie mutable
     this.editableTeam.description = description;
     console.log('Description mise à jour:', this.editableTeam.description);
   }
@@ -131,7 +133,7 @@ export class TeamDrawer implements OnChanges {
 
   toggleEdit(): void {
     this.isEditable = true;
-    // ✅ Sauvegarder l'état actuel avant modification
+    // Sauvegarder l'état actuel avant modification
     if (this.editableTeam) {
       this.originalTeam = JSON.parse(JSON.stringify(this.editableTeam));
       console.log('Mode édition activé, sauvegarde originale:', this.originalTeam);
@@ -139,7 +141,7 @@ export class TeamDrawer implements OnChanges {
   }
 
   cancelEdit(): void {
-    // ✅ Restaurer les valeurs originales
+    // Restaurer les valeurs originales
     if (this.originalTeam) {
       this.editableTeam = JSON.parse(JSON.stringify(this.originalTeam));
       console.log('Modifications annulées, restauration:', this.editableTeam);
@@ -160,7 +162,7 @@ export class TeamDrawer implements OnChanges {
       field?: string;
     } = {id:Number(this.team?.id)};
     updatedData.id = Number(this.team?.id)
-    // ✅ Comparer avec l'original
+    // Comparer avec l'original
     if (this.editableTeam.name !== this.originalTeam?.name) {
       updatedData.name = this.editableTeam.name;
     }
@@ -181,16 +183,16 @@ export class TeamDrawer implements OnChanges {
 
     this.teamService.updateTeam( updatedData).subscribe({
       next: (response) => {
-        console.log('✅ Équipe mise à jour:', response.message);
+        console.log('Équipe mise à jour:', response.message);
         
-        // ✅ Mettre à jour les valeurs
+        // Mettre à jour les valeurs
         if (this.editableTeam) {
           this.originalTeam = JSON.parse(JSON.stringify(this.editableTeam));
         }
         
       },
       error: (err) => {
-        console.error('❌ Erreur lors de la mise à jour:', err);
+        console.error('Erreur lors de la mise à jour:', err);
         alert('Erreur lors de la sauvegarde des modifications');
       }
     });
@@ -198,28 +200,42 @@ export class TeamDrawer implements OnChanges {
   }
 
   deleteTeam(): void {
-    if (!this.editableTeam?.id) {
-      console.error('Impossible de supprimer : équipe non définie');
-      return;
-    }
+    this.dialog.open(DeleteDialog, {
+      data: {
+        title: "Supprimer une équipe",
+        message: "Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action est irréversible.",
+        cancel: "Annuler",
+        confirm: "Supprimer",
+        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          if (!this.editableTeam?.id) {
+            console.error('Impossible de supprimer : équipe non définie');
+            return;
+          }
 
-    const confirmDelete = confirm(`Êtes-vous sûr de vouloir supprimer l'équipe "${this.editableTeam.name}" ?`);
-    
-    if (!confirmDelete) {
-      return;
-    }
 
-    this.teamService.deleteTeam(Number(this.editableTeam.id)).subscribe({
-      next: (response) => {
-        console.log('✅ Équipe supprimée avec succès', response);
-        this.onTeamDeleted.emit(Number(this.editableTeam!.id));
-        this.close();
+          this.teamService.deleteTeam(Number(this.editableTeam.id)).subscribe({
+            next: (response) => {
+              console.log('✅ Équipe supprimée avec succès', response);
+              this.onTeamDeleted.emit(Number(this.editableTeam!.id));
+              window.location.reload();
+              this.close();
+            },
+            error: (err) => {
+              console.error('Erreur lors de la suppression:', err);
+              alert('Erreur lors de la suppression de l\'équipe');
+            }
+          });
+          window.location.reload();
+          dialogRef.close();
+        },
+        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          dialogRef.close();
+        },
       },
-      error: (err) => {
-        console.error('❌ Erreur lors de la suppression:', err);
-        alert('Erreur lors de la suppression de l\'équipe');
-      }
-    });
+      panelClass: 'custom-dialog-container'
+    })
+
+    
   }
 
   openMemberDetails(memberId: String, event: Event): void {
