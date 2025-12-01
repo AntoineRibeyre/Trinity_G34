@@ -124,6 +124,7 @@ export class Settings implements OnInit, OnDestroy {
         firstName: this.currentUser.firstName,
         lastName: this.currentUser.lastName,
         email: this.currentUser.email,
+        telephone: this.currentUser.telephone,
       });
     }
   }
