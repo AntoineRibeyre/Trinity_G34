@@ -49,12 +49,6 @@ export class SideNav implements OnInit{
       section: 'top'
     },
     {
-      label: 'Admin',
-      icon: 'assets/icons/nav-admin.svg',
-      route: 'admin/users',
-      section: 'top'
-    },
-    {
       label: 'Paramètres',
       icon: 'assets/icons/nav-parameter.svg',
       route: 'settings',
@@ -68,49 +62,20 @@ export class SideNav implements OnInit{
     }
   ];
 
+
+
   constructor(private router: Router, private authService: AuthService, private userService: UserService) {
     this.currentRoute = this.router.url;
   }
   async ngOnInit(): Promise<void> {
     this.currentUser = await this.userService.loadCurrentUserFromServer();
-    if (this.currentUser?.role.toLowerCase() != "admin"){
-      this.menuItems = [
-    {
-      label: 'Logo',
-      icon: '', // Vide pour le logo
+    if (this.currentUser?.role.toLowerCase() == "admin"){
+      this.menuItems.push({
+      label: 'Admin',
+      icon: 'assets/icons/nav-admin.svg',
+      route: 'admin/users',
       section: 'top'
-    },
-    {
-      label: 'Accueil',
-      icon: 'assets/icons/nav-home.svg',
-      route: 'dashboard',
-      section: 'top'
-    },
-    {
-      label: 'Calendrier',
-      icon: 'assets/icons/nav-calendar.svg',
-      route: 'calendar',
-      section: 'top'
-    },
-    {
-      label: 'Équipe',
-      icon: 'assets/icons/nav-team.svg',
-      route: 'team',
-      section: 'top'
-    },
-    {
-      label: 'Paramètres',
-      icon: 'assets/icons/nav-parameter.svg',
-      route: 'settings',
-      section: 'bottom'
-    },
-    {
-      label: 'Déconnexion',
-      icon: 'assets/icons/nav-exit.svg',
-      section: 'bottom',
-      action: () => this.logout()
-    }
-  ];
+    })
     }
   }
 

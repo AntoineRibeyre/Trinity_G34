@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable, of } from 'rxjs';
@@ -76,6 +76,23 @@ interface UpdateTeamResponse {
 
 
 }
+
+const DELETE_MEMBER = gql`
+  mutation DeleteMember($teamId: Int!, $employeeIds: [Int]!) {
+    deleteMember(teamId: $teamId, employeeIds: $employeeIds) {
+      message
+      team {
+        id
+        name
+        members {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`;
 
 const DELETE_TEAM = gql`
   mutation DeleteTeam($teamId : Int!){
@@ -277,6 +294,20 @@ export class TeamService {
       })
     );
   }
+
+  removeMembers(teamId: number, employeeIds: number[]): Observable<any> {
+    return this.apollo.mutate({
+      mutation: DELETE_MEMBER,
+      variables: {
+        teamId: teamId,
+        employeeIds: employeeIds
+      }
+    });
+  }
+
+
+
+
 
   deleteTeam(teamId: number):Observable<any> {
     return this.apollo.mutate({

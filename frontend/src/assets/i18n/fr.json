@@ -129,6 +129,12 @@
         "TITLE": "Ajouter un employé à l'équipe",
         "NAME-TITLE": "Nom et prénom de l'employé",
         "NAME-PLACEHOLDER": "Nom et prénom..."
+      },
+      "REMOVE-MEMBERS": {
+        "TITLE": "Retirer des employés de l'équipe",
+        "NAME-TITLE": "Nom et prénom de l'employé",
+        "NAME-PLACEHOLDER": "Nom et prénom...",
+        "RETIRER": "Retirer"
       }
     }
   },
