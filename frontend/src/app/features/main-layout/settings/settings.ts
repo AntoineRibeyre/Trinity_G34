@@ -79,6 +79,7 @@ export class Settings implements OnInit, OnDestroy {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
+        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
         password: ['', [passwordStrengthValidator]],
         confirmPassword: [''],
       },
