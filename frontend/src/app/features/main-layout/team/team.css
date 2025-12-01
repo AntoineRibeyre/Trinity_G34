@@ -1,7 +1,8 @@
 .general-space {
   padding: 20px;
-  max-width: 1400px;
+  /*max-width: 1400px;*/
   margin: 0 auto;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Loader */
@@ -51,9 +52,23 @@
 /* Top cards */
 .top-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 colonnes par défaut */
   gap: 20px;
   margin-bottom: 30px;
+}
+
+/* Écrans moyens : 2 colonnes (2x2) */
+@media (max-width: 1024px) {
+  .top-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Petits écrans : 1 colonne (empilées) */
+@media (max-width: 640px) {
+  .top-cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cards {
@@ -64,10 +79,10 @@
   transition: transform 0.2s;
 }
 
-.cards:hover {
+/*.cards:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+}*/
 
 .card-label {
   font-size: 14px;
@@ -81,10 +96,11 @@
   color: #2c3e50;
 }
 
+
 /* Bottom cards */
 .bottom-cards {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 3fr;
   gap: 20px;
 }
 
@@ -237,11 +253,11 @@
   .top-cards {
     grid-template-columns: 1fr;
   }
-  
+
   .team-table {
     font-size: 14px;
   }
-  
+
   .team-table th,
   .team-table td {
     padding: 10px 8px;

@@ -23,17 +23,17 @@
         <p class="card-label">{{ 'team.statistiques.moyennehebdomadaire' | translate }}</p>
         <p class="card-value">{{ avgWeeklyHours }}</p>
       </div>
-      
+
       <div class="cards">
         <p class="card-label">{{ 'team.statistiques.moyennemensuelle' | translate }}</p>
         <p class="card-value">{{ avgMonthlyHours }}</p>
       </div>
-      
+
       <div class="cards">
         <p class="card-label">{{ 'team.statistiques.moyennearrivee' | translate }}</p>
         <p class="card-value">{{ avgArrivalTime }}</p>
       </div>
-      
+
       <div class="cards">
         <p class="card-label">{{ 'team.statistiques.moyennedepart' | translate }}</p>
         <p class="card-value">{{ avgDepartureTime }}</p>
@@ -47,7 +47,7 @@
       <div class="team-info">
         <h2 class="team-title">{{ managerView.teamDetails.name }}</h2>
         <p class="team-description">{{ managerView.teamDetails.description }}</p>
-        
+
         <div class="team-stats">
           <div class="stat-item">
             <span class="stat-label">{{ 'team.informations.membres' | translate }}:</span>
@@ -56,7 +56,7 @@
           <div class="stat-item">
             <span class="stat-label">{{ 'team.informations.manager' | translate }}:</span>
             <span class="stat-value">
-              {{ managerView.manager.userDetails.firstName }} 
+              {{ managerView.manager.userDetails.firstName }}
               {{ managerView.manager.userDetails.lastName }}
             </span>
           </div>
@@ -66,7 +66,7 @@
       <!-- Tableau des membres -->
       <div class="table-card">
         <h3 class="table-title">{{ 'team.tableau.titre' | translate }}</h3>
-        
+
         <table class="team-table">
           <thead>
             <tr>
@@ -81,7 +81,7 @@
             <tr class="manager-row">
               <td class="member-name">
                 <strong>
-                  {{ managerView.manager.userDetails.firstName }} 
+                  {{ managerView.manager.userDetails.firstName }}
                   {{ managerView.manager.userDetails.lastName }}
                 </strong>
               </td>
@@ -101,7 +101,7 @@
             <!-- Membres de l'équipe -->
             <tr *ngFor="let member of managerView.members">
               <td class="member-name">
-                {{ member.userDetails.firstName }} 
+                {{ member.userDetails.firstName }}
                 {{ member.userDetails.lastName }}
               </td>
               <td>
