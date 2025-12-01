@@ -18,7 +18,7 @@ import { EventService } from '../../../services/event.service';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 
-registerLicense('Ngo9BigBOggjHTQxAR8/V1JFaF1cX2hIf0x3TXxbf1x1ZFBMYlRbRHVPMyBoS35Rc0RjWHZedXBWRWJVUUVzVEFc');
+registerLicense('Ngo9BigBOggjHTQxAR8/V1JFaF1cXGFCf1FpRmJGfV5ycUVDal9ZTndcUiweQnxTdEBiW39fcHFRRWRZWE1wWEleYg==');
 
 interface SchedulerEvent {
   Id: number;
