@@ -1,19 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
-import {BasicTextButton} from '../basic-text-button/basic-text-button';
-import {TranslatePipe} from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { BasicTextButton } from '../basic-text-button/basic-text-button';
+import { TranslatePipe } from '@ngx-translate/core';
+import { Scheduler } from '../../../features/main-layout/scheduler/scheduler';
 
 @Component({
   selector: 'app-employee-drawer',
+  standalone: true,
   templateUrl: './employee-drawer.html',
   styleUrls: ['./employee-drawer.css'],
   imports: [
     FormsModule,
     NgIf,
     BasicTextButton,
-    TranslatePipe
+    TranslatePipe,
+    Scheduler
   ],
   animations: [
     trigger('slideIn', [
@@ -34,6 +37,10 @@ export class EmployeeDrawer {
 
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<any>();
+
+
+
+ 
 
   close(): void {
     this.onClose.emit();

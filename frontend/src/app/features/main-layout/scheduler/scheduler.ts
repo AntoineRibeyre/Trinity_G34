@@ -1,5 +1,5 @@
 // scheduler.component.ts
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import {
   ScheduleModule,
   View,
@@ -38,6 +38,7 @@ interface SchedulerEvent {
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService],
 })
 export class Scheduler implements OnInit {
+  @Input() targetUserId?: number;
 
   //-------------------------------ATTRIBUTS--------------------------------------------------
 
@@ -77,17 +78,45 @@ export class Scheduler implements OnInit {
 
   async ngOnInit() {
     // Charger l'utilisateur courant
-    this.currentUser = await this.userService.loadCurrentUserFromServer();
-    if (this.currentUser) {
-      this.userId = Number(this.currentUser.id);
-      this.username = this.currentUser.username;
-    }
+    this.initializeUser();
 
     // Charger tous les utilisateurs (pour sélection des participants)
     await this.loadUsers();
 
     // Charger les événements
     await this.loadEvents();
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    // ✅ Se déclenche quand targetUserId change
+    if (changes['targetUserId'] && !changes['targetUserId'].firstChange) {
+      await this.initializeUser();
+    }
+  }
+
+  async initializeUser() {
+    if (this.targetUserId) {
+      // ✅ Utiliser l'ID fourni en input
+      this.userId = this.targetUserId;
+      const user = this.allUsers.find(u => Number(u.id) === this.targetUserId);
+      if (user) {
+        this.username = user.username;
+      }
+    } else {
+      // ✅ Sinon charger l'utilisateur courant
+      this.currentUser = await this.userService.loadCurrentUserFromServer();
+      if (this.currentUser) {
+        this.userId = Number(this.currentUser.id);
+        this.username = this.currentUser.username;
+      }
+    }
+    
+    // Charger les événements
+    await this.loadEvents();
+  }
+
+  async setUserID(userID: number){
+    this.userId = userID;
   }
 
 
@@ -107,7 +136,6 @@ export class Scheduler implements OnInit {
     try {
       const events = await this.eventService.getAllEvents();
 
-      // Transformer les données du backend au format Syncfusion
       let transformedEvents = events.map(event => ({
         Id: event.id,
         Subject: event.subject,
@@ -115,11 +143,10 @@ export class Scheduler implements OnInit {
         EndTime: new Date(event.endTime),
         IsAllDay: event.isAllDay,
         Attendees: event.attendees || [],
-        // Garder les ID en tant que string pour être cohérent avec le modèle User
         AttendeeIds: event.attendees?.map(a => a.id) || []
       }));
 
-      // Filtrer par utilisateur si l'option est activée
+      // ✅ Filtrer par l'userId actuel (qu'il soit passé en input ou chargé)
       if (this.showOnlyMyEvents && this.userId) {
         const userIdStr = this.userId.toString();
         transformedEvents = transformedEvents.filter(event =>
@@ -128,13 +155,11 @@ export class Scheduler implements OnInit {
       }
 
       this.data = transformedEvents;
-
-      // Mettre à jour les eventSettings
       this.eventSettings = {
         dataSource: this.data
       };
 
-      console.log('Événements chargés:', this.data);
+      console.log('Événements chargés pour userId:', this.userId, this.data);
     } catch (error) {
       console.error('Erreur lors du chargement des événements:', error);
     }
