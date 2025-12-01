@@ -11,6 +11,7 @@ import { DropdownOption } from '../../../../shared/components/basic-dropdown/bas
 import {BasicTextField} from '../../../../shared/components/basic-text-field/basic-text-field';
 import {TranslatePipe} from '@ngx-translate/core';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
+import {ExcelExportService} from '../../../../services/excel-export.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -32,6 +33,7 @@ export class EmployeeList implements OnDestroy {
 
   placeHolderText: string = "No data";
 
+
   dropdownOptions: DropdownOption[] = [
     { label: 'Ryan Wittert', value: 1 },
     { label: 'Antoine Ribeyre ', value: 2 },
@@ -42,7 +44,11 @@ export class EmployeeList implements OnDestroy {
   private q$ = new Subject<string>();
   private sub: Subscription;
 
-  constructor(private userService: UserService,private dialog : MatDialog) {
+  constructor(
+    private userService: UserService,
+    private dialog : MatDialog,
+    private exportService: ExcelExportService
+  ) {
     this.sub = this.q$.pipe(
       debounceTime(300),
       distinctUntilChanged()
@@ -146,5 +152,24 @@ export class EmployeeList implements OnDestroy {
       },
       panelClass: 'custom-dialog-container'
     })
+  }
+
+  export(): void {
+    const columns = [
+      { header: 'Nom', key: 'lastName', width: 20 },
+      { header: 'Prénom', key: 'firstName', width: 20 },
+      { header: 'Email', key: 'email', width: 30 },
+      { header: 'Téléphone', key: 'telephone', width: 15 },
+      { header: 'Équipe', key: 'team', width: 20 },
+      { header: 'Poste', key: 'role', width: 25 },
+    ];
+
+    this.exportService.exportWithCustomColumns(
+      this.allUsers,
+      columns,
+      'employes-details',
+      'Liste détaillée'
+    );
+
   }
 }

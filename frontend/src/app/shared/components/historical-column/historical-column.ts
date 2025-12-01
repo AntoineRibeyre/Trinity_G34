@@ -127,9 +127,7 @@ export class HistoricalColumn implements OnInit {
 
   private getMonthCalendar(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!this.userId) {
-        return;
-      }
+      if (!this.userId) return;
 
       this.pointService.getMonthCalendar(this.userId).subscribe({
         next: result => {

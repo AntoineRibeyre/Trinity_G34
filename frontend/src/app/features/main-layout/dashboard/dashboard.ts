@@ -13,6 +13,7 @@ import {AddTeamEmploye} from '../../../shared/components/add-team-employe/add-te
 import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dropdown';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CreateTeamDialog} from '../../../shared/components/create-team-dialog/create-team-dialog';
+import {PendingDay, TodayCalendar} from '../../../services/service-interfaces';
 
 @Component({
   selector: 'app-dashboard',
@@ -62,16 +63,16 @@ export class Dashboard implements OnInit, OnDestroy {
     this.translateService.instant('DASHBOARD.DECEMBER'),
   ]
 
-  private intervalId: any;
+  public intervalId: any;
 
   //Pointage
   userId: number | null = null;
   username: string | null = null;
-  pendingDay: any = null;
+  pendingDay: PendingDay | null = null;
   dureeActuelle: string = '00:00:00';
   dureeTotaleJournee: string = '00:00:00';
   isPointeArrivee: boolean = false;
-  todayCalendars: any[] = [];
+  todayCalendars: TodayCalendar[] = [];
   isLoading: boolean = false;
   error: any;
   //TEMP
@@ -212,62 +213,6 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });
-  }
-
-  //TEMPS
-  // openDialog(): void {
-  //   this.dialog.open(DeleteDialog, {
-  //     data: {
-  //       title: "Supprimer un employé",
-  //       message: "Etes-vous sur de vouloir supprimer cet employé?\n Cette action est irréversible",
-  //       cancel: "Annuler",
-  //       confirm: "Supprimer",
-  //       onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
-  //         dialogRef.close();
-  //       },
-  //       onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
-  //         dialogRef.close();
-  //       },
-  //     },
-  //     panelClass: 'custom-dialog-container'
-  //   })
-  // }
-
-  // openDialog(): void {
-  //   this.dialog.open(AddTeamEmploye, {
-  //     data: {
-  //       title: "team_name",
-  //       message: "Ajouter un employé a cette équipe",
-  //       cancel: "Annuler",
-  //       confirm: "Ajouter",
-  //       dropdownOptions: this.dropdownOptions,
-  //       onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
-  //         dialogRef.close();
-  //       },
-  //       onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
-  //         dialogRef.close();
-  //       },
-  //     },
-  //     panelClass: 'custom-dialog-container'
-  //   })
-  // }
-
-  openDialog(): void {
-    this.dialog.open(CreateTeamDialog, {
-      data: {
-        title: this.translateService.instant('TEAM.DIALOG.CREATE-TEAM.TITLE'),
-        cancel: this.translateService.instant('BASE.CANCEL'),
-        confirm: this.translateService.instant('BASE.CREATE'),
-        dropdownOptions: this.dropdownOptions,
-        onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
-          dialogRef.close();
-        },
-        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
-          dialogRef.close();
-        },
-      },
-      panelClass: 'custom-dialog-container'
-    })
   }
 
   ngOnDestroy() {

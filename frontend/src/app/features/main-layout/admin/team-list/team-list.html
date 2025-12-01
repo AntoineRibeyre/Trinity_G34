@@ -5,7 +5,8 @@
       <button>+</button>
     </div>
   </div>
-  <div class="teams" appHorizontalScroll>
+
+  <div class="teams" #teamsContainer>
     @for (team of filteredTeams; track team.id) {
       <div class="team-card" (click)="displayTeamData(team.id)">
         <!-- Nom de l'équipe -->
