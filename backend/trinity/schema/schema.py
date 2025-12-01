@@ -383,6 +383,48 @@ class AddEmployeeToTeam(graphene.Mutation):
                 message=f"Erreur : {str(e)}",
                 team=None
             )
+        
+class DeleteMember(graphene.Mutation):
+    class Arguments:
+        teamId = graphene.Int(required=True)
+        employeeIds = graphene.List(graphene.Int, required=True)
+
+    message = graphene.String()
+    team = graphene.Field(TeamType)  # Ajoutez ceci pour retourner l'équipe mise à jour
+
+    def mutate(self, info, teamId, employeeIds):
+        try:
+            # Récupérer l'équipe
+            team = Team.objects.get(id=teamId)
+
+            # Récupérer tous les employés
+            employees = User.objects.filter(id__in=employeeIds)
+
+            # Vérifier que tous les employés existent
+            if employees.count() != len(employeeIds):
+                return DeleteMember(
+                    message="Certains employés n'existent pas",
+                    team=None
+                )
+
+            # Retirer les employés de l'équipe
+            team.members.remove(*employees)
+
+            return DeleteMember(
+                message=f"{employees.count()} employé(s) retirés de la team avec succès",
+                team=team
+            )
+
+        except Team.DoesNotExist:
+            return DeleteMember(
+                message="Équipe introuvable",
+                team=None
+            )
+        except Exception as e:
+            return DeleteMember(
+                message=f"Erreur : {str(e)}",
+                team=None
+            )
 
 class RegisterArrival(graphene.Mutation):
     """This class is used to create the mutations that
@@ -428,6 +470,7 @@ class Mutation(graphene.ObjectType):
     create_team = CreateTeam.Field()
     update_team = UpdateTeam.Field()
     delete_team = DeleteTeam.Field()
+    delete_member = DeleteMember.Field()
     register_arrival = RegisterArrival.Field()
     add_employee_to_team = AddEmployeeToTeam.Field()
     register_end = RegisterEnd.Field()

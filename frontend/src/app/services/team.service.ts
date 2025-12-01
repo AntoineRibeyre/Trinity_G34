@@ -25,6 +25,23 @@ interface UpdateTeamResponse {
 
 }
 
+const DELETE_MEMBER = gql`
+  mutation DeleteMember($teamId: Int!, $employeeIds: [Int]!) {
+    deleteMember(teamId: $teamId, employeeIds: $employeeIds) {
+      message
+      team {
+        id
+        name
+        members {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`;
+
 const DELETE_TEAM = gql`
   mutation DeleteTeam($teamId : Int!){
     deleteTeam(teamId: $teamId){
@@ -140,6 +157,20 @@ export class TeamService implements OnInit{
       }
     });
   }
+
+  removeMembers(teamId: number, employeeIds: number[]): Observable<any> {
+    return this.apollo.mutate({
+      mutation: DELETE_MEMBER,
+      variables: {
+        teamId: teamId,
+        employeeIds: employeeIds
+      }
+    });
+  }
+
+
+
+
 
   deleteTeam(teamId: number):Observable<any> {
     return this.apollo.mutate({

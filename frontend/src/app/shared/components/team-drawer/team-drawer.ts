@@ -3,13 +3,16 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BasicTextButton } from '../basic-text-button/basic-text-button';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Team } from '../../../models/team.model';
 import { User } from '../../../models/user.model';
 import {BasicTextField} from '../basic-text-field/basic-text-field';
 import { TeamService } from '../../../services/team.service';
 import { DeleteDialog } from '../delete-dialog/delete-dialog';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UserService } from '../../../services/user.service';
+import { AddTeamEmploye } from '../add-team-employe/add-team-employe';
+import { DropdownOption } from '../basic-dropdown/basic-dropdown';
 
 @Component({
   selector: 'app-team-drawer',
@@ -44,8 +47,8 @@ export class TeamDrawer implements OnChanges {
   @Output() onTeamDeleted = new EventEmitter<number>();
   @Output() onTeamUpdated = new EventEmitter<Team>();
 
-  constructor(private teamService: TeamService,private dialog : MatDialog) {}
-
+  constructor(private teamService: TeamService,private dialog : MatDialog, private translateService: TranslateService, private userService: UserService) {}
+  dropdownOptionsUsers: DropdownOption[] = []
   isEditable: boolean = false;
   teamManager: User | undefined;
   
@@ -236,6 +239,58 @@ export class TeamDrawer implements OnChanges {
     })
 
     
+  }
+
+  
+
+  async openDialog(): Promise<void> {
+    const allUsers = await this.userService.getAllUsers();
+   
+    // 🔹 On garde uniquement ceux qui n'ont pas d'équipe
+    const usersWithoutTeam = allUsers.filter((user: User) => user.team?.id == this.team?.id);
+    const employees = usersWithoutTeam.filter((user: User)=> user.role == "employe");
+
+    // 🔹 Puis on construit les options du dropdown
+    this.dropdownOptionsUsers = employees.map((user: User) => ({
+      label: `${user.firstName} ${user.lastName}`,
+      value: Number(user.id)
+    }));
+    this.dialog.open(AddTeamEmploye, {
+      data: {
+        title: this.translateService.instant('TEAM.DIALOG.REMOVE-MEMBERS.TITLE'),
+        cancel: this.translateService.instant('BASE.CANCEL'),
+        confirm: this.translateService.instant('BASE.SUPPRIMER'),
+        dropdownOptions: this.dropdownOptionsUsers,
+
+        onConfirm: (
+          dialogRef: MatDialogRef<DeleteDialog>,
+          selectedEmployeeIds: number[]
+        ) => {
+          console.log("Selected employee IDs:", selectedEmployeeIds);
+
+          // Appel à la mutation GraphQL
+          this.teamService.removeMembers(Number(this.team?.id), selectedEmployeeIds)
+            .subscribe({
+              next: (res) => {
+                window.location.reload();
+                console.log("Mutation success:", res);
+                // Optionnel : rafraîchir la liste des équipes ici si besoin
+
+                dialogRef.close();
+              },
+              error: (err) => {
+                console.error("Mutation error:", err);
+                // Optionnel : afficher un message d'erreur à l'utilisateur
+              }
+            });
+        },
+
+        onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
+          dialogRef.close();
+        },
+      },
+      panelClass: 'custom-dialog-container'
+    });
   }
 
   openMemberDetails(memberId: String, event: Event): void {

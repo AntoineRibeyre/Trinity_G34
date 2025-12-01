@@ -124,6 +124,12 @@
         "TITLE": "Add employee to the team",
         "NAME-TITLE": "Last and first name of the employee",
         "NAME-PLACEHOLDER": "Name..."
+      },
+      "REMOVE-MEMBERS": {
+        "TITLE": "Remove employees from the team",
+        "NAME-TITLE": "Last and first name of the employee",
+        "NAME-PLACEHOLDER": "Name...",
+        "RETIRER": "Remove"
       }
     }
   },

@@ -69,12 +69,22 @@
           </div>
         </div>
       </div>
+      
+      <div class="info-section">
+        <button class="btn" (click)="$event.stopPropagation(); openDialog()">
+            {{ "TEAM.DIALOG.REMOVE-MEMBERS.TITLE" | translate }}
+          </button>
+      </div>
+      
+          
 
       <!-- Section Liste des membres -->
       <div class="info-section">
-        <h3>{{ "ADMIN.TEAMS.DRAWER.MEMBERS" | translate }} ({{ team.members?.length || 0 }})</h3>
+        <h3>{{ "ADMIN.TEAMS.DRAWER.MEMBERS" | translate }} ({{ team.members?.length || 0 }}) </h3>
+        
 
         <div class="members-list">
+          
           @for (member of team.members; track member.id) {
             <div class="member-row" (click)="openMemberDetails(member.id, $event)">
               <div class="member-avatar">
@@ -85,6 +95,7 @@
                 <div class="member-role">{{ member.role }}</div>
               </div>
               <div class="member-email">{{ member.email }}</div>
+              
               <button class="icon-btn-small">
                 <span>›</span>
               </button>
