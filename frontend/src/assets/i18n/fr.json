@@ -56,7 +56,8 @@
     "CONFIRM_PWD": "Confirmation du mot de pass",
     "FORGOTTEN_PASSWORD": "Mot de passe oublié",
     "PHONE_NUMBER": "Numéro de téléphone",
-    "PWD_REQUIREMENT": "Pré-requis du mot de passe"
+    "PWD_REQUIREMENT": "Pré-requis du mot de passe",
+    "GO_HOME" : "Retour à l'accueil"
   },
   "HOME": {
     "REGISTER": "S’inscrire",
