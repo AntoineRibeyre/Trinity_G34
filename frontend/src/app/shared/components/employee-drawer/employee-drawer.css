@@ -61,6 +61,39 @@
   border-radius: 16px 0 0 0; /* Arrondi angle supérieur gauche */
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #888;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  color: #333;
+  background-color: #e0e0e0;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  color: #9e9e9e;
+}
+
 .drawer-header h2 {
   margin: 0;
   font-size: 24px;
@@ -295,3 +328,5 @@ label{
     width: 100%;
   }
 }
+
+

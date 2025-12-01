@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../models/user.model';
+import { UserService } from '../../../services/user.service';
 
 interface MenuItem {
   label: string;
@@ -18,8 +20,9 @@ interface MenuItem {
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.css'
 })
-export class SideNav {
+export class SideNav implements OnInit{
   currentRoute: string = '';
+  currentUser: User | null = null;
 
   menuItems: MenuItem[] = [
     {
@@ -46,12 +49,6 @@ export class SideNav {
       section: 'top'
     },
     {
-      label: 'Admin',
-      icon: 'assets/icons/nav-admin.svg',
-      route: 'admin/users',
-      section: 'top'
-    },
-    {
       label: 'Paramètres',
       icon: 'assets/icons/nav-parameter.svg',
       route: 'settings',
@@ -65,8 +62,21 @@ export class SideNav {
     }
   ];
 
-  constructor(private router: Router, private authService: AuthService) {
+
+
+  constructor(private router: Router, private authService: AuthService, private userService: UserService) {
     this.currentRoute = this.router.url;
+  }
+  async ngOnInit(): Promise<void> {
+    this.currentUser = await this.userService.loadCurrentUserFromServer();
+    if (this.currentUser?.role.toLowerCase() == "admin"){
+      this.menuItems.push({
+      label: 'Admin',
+      icon: 'assets/icons/nav-admin.svg',
+      route: 'admin/users',
+      section: 'top'
+    })
+    }
   }
 
   get topItems(): MenuItem[] {

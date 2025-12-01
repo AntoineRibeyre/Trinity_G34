@@ -126,6 +126,12 @@
         "TITLE": "Add employee to the team",
         "NAME-TITLE": "Last and first name of the employee",
         "NAME-PLACEHOLDER": "Name..."
+      },
+      "REMOVE-MEMBERS": {
+        "TITLE": "Remove employees from the team",
+        "NAME-TITLE": "Last and first name of the employee",
+        "NAME-PLACEHOLDER": "Name...",
+        "RETIRER": "Remove"
       }
     }
   },
@@ -160,6 +166,48 @@
         "STATISTICS": "Team stats",
         "MEMBERS": "Team members"
       }
+    }
+  },
+  "team": {
+    "titre": "My Team",
+    "chargementdesdonnees": "Loading data...",
+    "impossibledecharger": "Unable to load team data",
+    "reessayer": "Retry",
+    "erreursurvenue": "An error occurred",
+
+    "statistiques": {
+      "moyennehebdomadaire": "Average Weekly Working Time",
+      "moyennemensuelle": "Average Monthly Working Time",
+      "moyennearrivee": "Average Weekly Arrival Time",
+      "moyennedepart": "Average Weekly Departure Time"
+    },
+
+    "informations": {
+      "titre": "Team Information",
+      "membres": "Members",
+      "manager": "Manager"
+    },
+
+    "tableau": {
+      "titre": "Team Members",
+      "nom": "Name",
+      "role": "Role",
+      "statut": "Status",
+      "heuresaujourdhui": "Hours Today",
+      "aucunmembre": "No members in the team yet."
+    },
+
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employee",
+      "admin": "Administrator"
+    },
+
+    "statuts": {
+      "present": "Present",
+      "absent": "Absent",
+      "termine": "Finished",
+      "inconnu": "Unknown"
     }
   }
 }

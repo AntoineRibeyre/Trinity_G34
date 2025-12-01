@@ -2,7 +2,12 @@
   <div class="drawer-content" (click)="$event.stopPropagation()">
     <div class="drawer-header">
       <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
-      <button class="close-btn" (click)="close()">✕</button>
+      <div class="header-actions">
+        <button class="icon-btn" (click)="export()" title="Modifier">
+          <img src="assets/icons/export.svg" alt="Export" class="icon" />
+        </button>
+        <button class="close-btn" (click)="close()">✕</button>
+      </div>
     </div>
 
     <div class="drawer-body" *ngIf="employee">
@@ -127,6 +132,10 @@
           </app-basic-text-button>
         </div>
       }
+      <div class="scheduler-container">
+        <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
+        <app-scheduler [targetUserId]="employee.id"></app-scheduler>
+      </div>
     </div>
   </div>
 </div>

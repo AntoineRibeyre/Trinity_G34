@@ -43,6 +43,10 @@ class Query(graphene.ObjectType):
         graphtype.CalendarType,
         user_id=graphene.Int()
     )
+    all_calendars_by_user = graphene.List(
+        graphtype.CalendarType,
+        user_id=graphene.Int(required=True)
+    )
     current_user = graphene.Field(UserType)
     current_month_work = graphene.List(
         graphtype.DailyWorkType,
@@ -75,6 +79,15 @@ class Query(graphene.ObjectType):
         """This method shows all teams details in the database"""
         result = QueryResolver.resolve_admin_view(admin_id)
         return result
+
+    def resolve_all_calendars_by_user(self, info, user_id):
+        """Récupère toutes les entrées Calendar d'un utilisateur, triées par date de début"""
+        try:
+            user = User.objects.get(id=user_id)
+            calendars = CalendarFactory.get_calendars_by_user(user)
+            return calendars.order_by('begin')
+        except User.DoesNotExist:
+            return []
 
     def resolve_current_user(self, info):
         user = info.context.user
@@ -258,6 +271,76 @@ class CreateTeam(graphene.Mutation):
         print(f"{manager}")
         team.members.add(*manager)
         return CreateTeam(team=team)
+    
+class DeleteTeam(graphene.Mutation):
+    class Arguments:
+        team_id = graphene.Int(required=True)
+
+    ok = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, team_id):
+        try:
+            team = Team.objects.get(id=team_id)
+            team_name = team.name
+            
+            # Retirer tous les membres de l'équipe
+            team.members.clear()
+            
+            # Supprimer l'équipe
+            team.delete()
+            
+            return DeleteTeam(
+                ok=True, 
+                message=f"Équipe '{team_name}' supprimée avec succès."
+            )
+        except Team.DoesNotExist:
+            return DeleteTeam(
+                ok=False, 
+                message="Équipe introuvable."
+            )
+        except Exception as e:
+            return DeleteTeam(
+                ok=False, 
+                message=f"Erreur : {str(e)}"
+            )
+        
+class TeamInput(graphene.InputObjectType):
+    id = graphene.Int(required=True)
+    name = graphene.String(required=False)
+    description = graphene.String(required=False)
+    field = graphene.String(required=False)
+    manager_id = graphene.Int(required=False)        
+
+class UpdateTeam(graphene.Mutation) :
+    class Arguments:
+        team_to_update = TeamInput(required=True)
+    
+    message = graphene.String()
+
+    def mutate(self, info, team_to_update):
+        try:
+            team = Team.objects.get(id=team_to_update.id)
+            if team_to_update.name is not None:
+                team.name = team_to_update.name
+            if team_to_update.description is not None:
+                team.description = team_to_update.description
+            if team_to_update.field is not None:
+                team.field = team_to_update.field
+            team.save()
+            return UpdateTeam(
+                message="Mise à jour effectuée avec succès",
+            )
+        except Team.DoesNotExist:
+            return UpdateTeam(
+                message="Équipe introuvable",
+            )
+        except Exception as e:
+            return UpdateTeam(
+                message=f"Erreur : {str(e)}",
+            )
+        
+
 
 class AddEmployeeToTeam(graphene.Mutation):
     class Arguments:
@@ -297,6 +380,48 @@ class AddEmployeeToTeam(graphene.Mutation):
             )
         except Exception as e:
             return AddEmployeeToTeam(
+                message=f"Erreur : {str(e)}",
+                team=None
+            )
+        
+class DeleteMember(graphene.Mutation):
+    class Arguments:
+        teamId = graphene.Int(required=True)
+        employeeIds = graphene.List(graphene.Int, required=True)
+
+    message = graphene.String()
+    team = graphene.Field(TeamType)  # Ajoutez ceci pour retourner l'équipe mise à jour
+
+    def mutate(self, info, teamId, employeeIds):
+        try:
+            # Récupérer l'équipe
+            team = Team.objects.get(id=teamId)
+
+            # Récupérer tous les employés
+            employees = User.objects.filter(id__in=employeeIds)
+
+            # Vérifier que tous les employés existent
+            if employees.count() != len(employeeIds):
+                return DeleteMember(
+                    message="Certains employés n'existent pas",
+                    team=None
+                )
+
+            # Retirer les employés de l'équipe
+            team.members.remove(*employees)
+
+            return DeleteMember(
+                message=f"{employees.count()} employé(s) retirés de la team avec succès",
+                team=team
+            )
+
+        except Team.DoesNotExist:
+            return DeleteMember(
+                message="Équipe introuvable",
+                team=None
+            )
+        except Exception as e:
+            return DeleteMember(
                 message=f"Erreur : {str(e)}",
                 team=None
             )
@@ -343,6 +468,9 @@ class Mutation(graphene.ObjectType):
     refresh_token = graphql_jwt.Refresh.Field()  # Refresh of the token
     create_user = CreateUser.Field()
     create_team = CreateTeam.Field()
+    update_team = UpdateTeam.Field()
+    delete_team = DeleteTeam.Field()
+    delete_member = DeleteMember.Field()
     register_arrival = RegisterArrival.Field()
     add_employee_to_team = AddEmployeeToTeam.Field()
     register_end = RegisterEnd.Field()
