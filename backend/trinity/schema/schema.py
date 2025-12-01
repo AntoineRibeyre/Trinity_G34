@@ -43,6 +43,10 @@ class Query(graphene.ObjectType):
         graphtype.CalendarType,
         user_id=graphene.Int()
     )
+    all_calendars_by_user = graphene.List(
+        graphtype.CalendarType,
+        user_id=graphene.Int(required=True)
+    )
     current_user = graphene.Field(UserType)
     current_month_work = graphene.List(
         graphtype.DailyWorkType,
@@ -75,6 +79,15 @@ class Query(graphene.ObjectType):
         """This method shows all teams details in the database"""
         result = QueryResolver.resolve_admin_view(admin_id)
         return result
+
+    def resolve_all_calendars_by_user(self, info, user_id):
+        """Récupère toutes les entrées Calendar d'un utilisateur, triées par date de début"""
+        try:
+            user = User.objects.get(id=user_id)
+            calendars = CalendarFactory.get_calendars_by_user(user)
+            return calendars.order_by('begin')
+        except User.DoesNotExist:
+            return []
 
     def resolve_current_user(self, info):
         user = info.context.user

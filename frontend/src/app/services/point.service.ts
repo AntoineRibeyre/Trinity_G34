@@ -50,6 +50,27 @@ export const GET_CURRENT_MONTH_WORK = gql`
   }
 `;
 
+export const GET_ALL_CALENDARS_BY_USER = gql`
+  query GetAllCalendarsByUser($userId: Int!) {
+    allCalendarsByUser(userId: $userId) {
+      id
+      begin
+      end
+      dayType
+      dayOver
+      duration
+      durationFormatted
+      employee {
+        id
+        username
+        firstName
+        lastName
+        email
+      }
+    }
+  }
+`;
+
 const REGISTER_ARRIVAL = gql`
   mutation RegisterArrival($userId: Int!) {
     registerArrival(userId: $userId) {
@@ -111,6 +132,22 @@ export class PointService {
         return result.data.currentMonthWork || [];
       })
     )
+  }
+
+  getAllCalendarsByUser(userId: Number): Observable<any[]> {
+    return this.apollo.query({
+      query: GET_ALL_CALENDARS_BY_USER,
+      variables: { userId },
+      fetchPolicy: 'network-only'
+    }).pipe(
+      map((result: any) => {
+        return result.data.allCalendarsByUser || [];
+      }),
+      catchError(error => {
+        console.error('Erreur lors de la récupération des calendriers:', error);
+        return of([]);
+      })
+    );
   }
 
   calculerDureeTotaleJournee(calendars: any[]): Observable<string> {

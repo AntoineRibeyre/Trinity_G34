@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import { Filter, FilterService } from '../../../../services/filter.service';
 import { TeamService } from '../../../../services/team.service';
 import { Subscription } from 'rxjs';
@@ -24,7 +24,9 @@ import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/empl
   ],
   styleUrls: ['./team-list.css']
 })
-export class TeamList implements OnInit, OnDestroy {
+export class TeamList implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('teamsContainer') teamsContainer!: ElementRef<HTMLDivElement>;
+
   teams: Team[] = [];
   filteredTeams: Team[] = [];
   selectedFilter: Filter | null = null;
@@ -75,6 +77,23 @@ export class TeamList implements OnInit, OnDestroy {
 
     // Récupération des utilisateurs pour l'ajout dans une team
     this.loadUsers();
+  }
+
+  ngAfterViewInit() {
+    this.setupHorizontalScroll();
+  }
+
+  private setupHorizontalScroll(): void {
+    const container = this.teamsContainer.nativeElement;
+
+    container.addEventListener('wheel', (event: WheelEvent) => {
+      const canScrollHorizontally = container.scrollWidth > container.clientWidth;
+
+      if (canScrollHorizontally) {
+        event.preventDefault();
+        container.scrollLeft += event.deltaY;
+      }
+    }, { passive: false }); // Important : passive: false pour permettre preventDefault()
   }
 
   async loadUsers() {
