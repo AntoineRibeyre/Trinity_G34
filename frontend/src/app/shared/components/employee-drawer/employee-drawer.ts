@@ -1,3 +1,4 @@
+import { Scheduler } from '../../../features/main-layout/scheduler/scheduler';
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {FormsModule} from '@angular/forms';
@@ -10,15 +11,18 @@ import {ExcelExportService} from '../../../services/excel-export.service';
 import {User} from '../../../models/user.model';
 import {firstValueFrom} from 'rxjs';
 
+
 @Component({
   selector: 'app-employee-drawer',
+  standalone: true,
   templateUrl: './employee-drawer.html',
   styleUrls: ['./employee-drawer.css'],
   imports: [
     FormsModule,
     NgIf,
     BasicTextButton,
-    TranslatePipe
+    TranslatePipe,
+    Scheduler
   ],
   animations: [
     trigger('slideIn', [
@@ -40,6 +44,7 @@ export class EmployeeDrawer {
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<any>();
 
+
   private currentMonthWork: any
   private userId: number | undefined;
 
@@ -49,6 +54,7 @@ export class EmployeeDrawer {
   ) {
 
   }
+
 
   close(): void {
     this.onClose.emit();

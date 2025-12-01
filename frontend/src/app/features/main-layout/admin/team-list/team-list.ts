@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Directive, ElementRef, HostListener, AfterViewInit} from '@angular/core';
 import { Filter, FilterService } from '../../../../services/filter.service';
 import { TeamService } from '../../../../services/team.service';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { User } from '../../../../models/user.model';
 import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
+
 
 @Component({
   selector: 'app-team-list',
@@ -247,13 +248,26 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
     this.selectedTeam = undefined;
   }
 
-  onMemberClick(memberId: string): void {
-    this.selectedEmployee = this.allUsers.find((user) => user.id === memberId);
+  onMemberClick(memberId: number): void {
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
     this.isEmployeeDrawerOpen = true;
     console.log(this.selectedEmployee);
   }
 
   closeEmployeeDrawer() {
     this.isEmployeeDrawerOpen = false;
+  }
+}
+
+@Directive({
+  selector: "[appHorizontalScroll]",
+})
+export class HorizontalScrollDirective {
+  constructor(private element: ElementRef) {}
+
+  @HostListener("wheel", ["$event"])
+  public onScroll(event: WheelEvent) {
+    console.log("marche")
+    this.element.nativeElement.scrollLeft += event.deltaY;
   }
 }

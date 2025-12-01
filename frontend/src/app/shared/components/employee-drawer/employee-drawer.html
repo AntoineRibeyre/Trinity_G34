@@ -132,6 +132,10 @@
           </app-basic-text-button>
         </div>
       }
+      <div class="scheduler-container">
+        <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
+        <app-scheduler [targetUserId]="employee.id"></app-scheduler>
+      </div>
     </div>
   </div>
 </div>

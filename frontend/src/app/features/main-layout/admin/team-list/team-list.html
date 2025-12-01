@@ -1,10 +1,11 @@
-<div class="teams-container">
+<div class="teams-container" >
   <div class="team-card-add" (click)="$event.stopPropagation();createTeamDialog()">
     <div class="card team-title">Créer une équipe</div>
     <div class="card create-button">
       <button>+</button>
     </div>
   </div>
+
   <div class="teams" #teamsContainer>
     @for (team of filteredTeams; track team.id) {
       <div class="team-card" (click)="displayTeamData(team.id)">

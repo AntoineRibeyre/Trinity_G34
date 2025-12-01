@@ -71,6 +71,20 @@ interface CreateTeamResponse {
   };
 }
 
+interface UpdateTeamResponse {
+  message: string;
+
+
+}
+
+const DELETE_TEAM = gql`
+  mutation DeleteTeam($teamId : Int!){
+    deleteTeam(teamId: $teamId){
+      ok,
+      message
+    }
+  }`
+
 const GET_ALL_TEAMS = gql`
   query GetAllTeams{
     allTeams{
@@ -189,6 +203,14 @@ const ADD_EMPLOYEES = gql`
   }
 `;
 
+const UPDATE_TEAM = gql`
+mutation UpdateTeam($teamToUpdate: TeamInput!) {
+    updateTeam(teamToUpdate: $teamToUpdate) {
+      message
+    }
+  }
+`
+
 @Injectable({
   providedIn: 'root'
 })
@@ -202,10 +224,10 @@ export class TeamService {
       query: GET_ALL_TEAMS,
       fetchPolicy: 'network-only' // force une requête réseau à chaque appel
     })
-      .valueChanges
-      .pipe(
-        map(result => result.data.allTeams)
-      );
+    .valueChanges
+    .pipe(
+      map(result => result.data.allTeams)
+    );
   }
 
   /**
@@ -221,9 +243,9 @@ export class TeamService {
       mutation: CREATE_TEAM,
       variables: { name, field, description, managerID }
     })
-      .pipe(
-        map(result => result.data!.createTeam.team)
-      );
+    .pipe(
+      map(result => result.data!.createTeam.team)
+    );
   }
 
   addEmployees(teamId: number, employeeIds: number[]): Observable<any> {
@@ -255,6 +277,44 @@ export class TeamService {
       })
     );
   }
+
+  deleteTeam(teamId: number):Observable<any> {
+    return this.apollo.mutate({
+      mutation: DELETE_TEAM,
+      variables: {
+        teamId: teamId
+      }
+    });
+  }
+
+  updateTeam( teamToUpdate: {
+    id: number;
+    name?: string;
+    description?: string;
+    field?: string;
+    managerId?: number;
+  }): Observable<UpdateTeamResponse> {
+    console.log('ID:', teamToUpdate.id);
+    console.log('Name:', teamToUpdate.name);
+    console.log('Description:', teamToUpdate.description);
+    console.log('Field:', teamToUpdate.field);
+    console.log('ManagerId:', teamToUpdate.managerId);
+    return this.apollo.mutate<UpdateTeamResponse>({
+      mutation: UPDATE_TEAM,
+      variables: {
+        teamToUpdate: teamToUpdate
+      },
+      //Rafraîchir automatiquement la liste des équipes après la mise à jour
+      refetchQueries: [{
+        query: GET_ALL_TEAMS
+      }]
+    })
+    .pipe(
+      map(result => result.data!)
+    );
+  }
+
+
 
   /**
    * Récupère uniquement les détails de l'équipe
