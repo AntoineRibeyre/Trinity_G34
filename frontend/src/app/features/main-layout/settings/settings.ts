@@ -109,6 +109,8 @@ export class Settings implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.availableLanguages = this.languageService.getAvailableLanguages();
 
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+
     this.languageSubscription = this.languageService.currentLanguage$.subscribe(
       (lang) => (this.currentLanguage = lang)
     );
@@ -136,6 +138,8 @@ export class Settings implements OnInit, OnDestroy {
         : (event.target as HTMLSelectElement).value;
 
     this.languageService.setLanguage(lang);
+
+    this.currentLanguage = lang;
   }
 
   /* -------------------- SUBMIT -------------------- */
