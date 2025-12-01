@@ -33,6 +33,12 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
   return valid ? null : { passwordStrength: true };
 }
 
+// ✅ Interface pour les requirements
+interface PasswordRequirement {
+  key: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-setting-edit-password',
   standalone: true,
@@ -45,6 +51,15 @@ export class SettingEditPassword {
   form: FormGroup;
   hidePassword = true;
   hideConfirm = true;
+  showPasswordRequirements = false; // ✅ Pour afficher/masquer les requirements
+
+  // ✅ Liste des requirements avec leurs clés de traduction
+  passwordRequirements: PasswordRequirement[] = [
+    { key: 'minLength', label: 'SETTINGS.REQUIRE_MIN_LENGTH' },
+    { key: 'uppercase', label: 'SETTINGS.REQUIRE_UPPERCASE' },
+    { key: 'lowercase', label: 'SETTINGS.REQUIRE_LOWERCASE' },
+    { key: 'digit', label: 'SETTINGS.REQUIRE_DIGIT' }
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -67,21 +82,38 @@ export class SettingEditPassword {
     );
   }
 
-  // Vérifie si un prérequis est rempli
-  checkRequirement(requirement: string): boolean {
+  /**
+   * ✅ Vérifie si un requirement est respecté (pour le HTML avec *ngFor)
+   */
+  isRequirementMet(requirement: string): boolean {
     const pwd = this.form.get('password')?.value || '';
 
     switch (requirement) {
-      case 'minLength': return pwd.length >= 6;
-      case 'uppercase': return /[A-Z]/.test(pwd);
-      case 'lowercase': return /[a-z]/.test(pwd);
-      case 'digit': return /[0-9]/.test(pwd);
-      default: return false;
+      case 'minLength':
+        return pwd.length >= 6;
+      case 'uppercase':
+        return /[A-Z]/.test(pwd);
+      case 'lowercase':
+        return /[a-z]/.test(pwd);
+      case 'digit':
+        return /[0-9]/.test(pwd);
+      default:
+        return false;
     }
   }
 
-  // Bouton "Confirmer"
-  confirm() {
+  /**
+   * Ancienne méthode conservée pour compatibilité
+   * (peut être supprimée si vous n'utilisez que isRequirementMet)
+   */
+  checkRequirement(requirement: string): boolean {
+    return this.isRequirementMet(requirement);
+  }
+
+  /**
+   * Bouton "Confirmer"
+   */
+  confirm(): void {
     if (this.form.valid) {
       this.data.onConfirm(this.dialogRef, this.form.get('password')?.value);
     } else {
@@ -89,7 +121,10 @@ export class SettingEditPassword {
     }
   }
 
-  cancel() {
+  /**
+   * Bouton "Annuler"
+   */
+  cancel(): void {
     this.data.onCancel(this.dialogRef);
   }
 }
