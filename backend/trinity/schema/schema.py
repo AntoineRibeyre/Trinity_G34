@@ -229,6 +229,7 @@ class UserInput(graphene.InputObjectType):
     last_name = graphene.String(required=False)
     email = graphene.String(required=False)
     password = graphene.String(required=False)
+    telephone = graphene.String(required=False)
 
 class UpdateUser(graphene.Mutation):
     class Arguments:
