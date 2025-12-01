@@ -16,6 +16,7 @@ import { User } from '../../../models/user.model';
 import { BasicTextButton } from '../../../shared/components/basic-text-button/basic-text-button';
 import { MatDialog } from '@angular/material/dialog';
 import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
+import {AvatarComponent} from '../../../shared/components/avatar/avatar';
 
 /* -------------------- VALIDATEURS -------------------- */
 
@@ -46,7 +47,7 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, BasicTextButton],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, BasicTextButton, AvatarComponent],
   templateUrl: './settings.html',
   styleUrls: ['./settings.css'],
 })
@@ -56,6 +57,7 @@ export class Settings implements OnInit, OnDestroy {
   availableLanguages: Array<{ code: string; label: string }> = [];
   isLoading = false;
   currentUser: User | null = null;
+
 
   private languageSubscription?: Subscription;
 

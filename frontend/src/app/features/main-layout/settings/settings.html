@@ -2,7 +2,9 @@
   <div class="settings-content">
     <!-- Profile Section -->
     <div class="profile-section">
-      <div class="profile-avatar"></div>
+      <div class="profile-avatar">
+        {{ (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '') }}
+      </div>
     </div>
 
     <!-- Settings Form -->
