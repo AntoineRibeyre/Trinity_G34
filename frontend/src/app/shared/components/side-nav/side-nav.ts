@@ -43,12 +43,6 @@ export class SideNav implements OnInit{
       section: 'top'
     },
     {
-      label: 'Équipe',
-      icon: 'assets/icons/nav-team.svg',
-      route: 'team',
-      section: 'top'
-    },
-    {
       label: 'Paramètres',
       icon: 'assets/icons/nav-parameter.svg',
       route: 'settings',
@@ -74,6 +68,14 @@ export class SideNav implements OnInit{
       label: 'Admin',
       icon: 'assets/icons/nav-admin.svg',
       route: 'admin/users',
+      section: 'top'
+    })
+    }
+    if (this.currentUser?.role.toLowerCase() == "manager"){
+      this.menuItems.push({
+      label: 'Équipe',
+      icon: 'assets/icons/nav-team.svg',
+      route: 'team',
       section: 'top'
     })
     }
