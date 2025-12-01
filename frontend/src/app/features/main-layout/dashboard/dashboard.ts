@@ -14,6 +14,7 @@ import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dr
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {CreateTeamDialog} from '../../../shared/components/create-team-dialog/create-team-dialog';
 import {PendingDay, TodayCalendar} from '../../../services/service-interfaces';
+import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -89,13 +90,14 @@ export class Dashboard implements OnInit, OnDestroy {
     private pointService: PointService,
     private userService: UserService,
     private dialog : MatDialog,
+    private teamService: TeamService
   ) {}
 
   async ngOnInit() {
     this.currentUser = await this.userService.loadCurrentUserFromServer();
     if (this.currentUser){
       this.userId = Number(this.currentUser.id);
-      this.username = this.currentUser.username
+      this.username = this.currentUser.username;
     }
 
     this.updateTime();
@@ -196,7 +198,6 @@ export class Dashboard implements OnInit, OnDestroy {
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
-        console.log(result);
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
     });

@@ -39,13 +39,13 @@
     "FORGOTTEN_PASSWORD": "Mot de passe oublié"
   },
   "ERRORS": {
-      "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
-      "INVALID_CREDENTIALS": "Email ou mot de passe incorrect",
-      "USER_NOT_FOUND": "Utilisateur introuvable",
-      "ACCOUNT_LOCKED": "Compte verrouillé",
-      "EMAIL_NOT_VERIFIED": "Email non vérifié",
-      "NETWORK_ERROR": "Erreur de connexion au serveur"
-    },
+    "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
+    "INVALID_CREDENTIALS": "Email ou mot de passe incorrect",
+    "USER_NOT_FOUND": "Utilisateur introuvable",
+    "ACCOUNT_LOCKED": "Compte verrouillé",
+    "EMAIL_NOT_VERIFIED": "Email non vérifié",
+    "NETWORK_ERROR": "Erreur de connexion au serveur"
+  },
   "REGISTER": {
     "REGISTER": "Inscription",
     "FIRST_NAME": "Prénom",
@@ -163,6 +163,48 @@
         "STATISTICS": "Statistique de l’équipe",
         "MEMBERS": "Membres de l'équipes"
       }
+    }
+  },
+  "team": {
+    "titre": "Mon Équipe",
+    "chargementdesdonnees": "Chargement des données...",
+    "impossibledecharger": "Impossible de charger les données de l'équipe",
+    "reessayer": "Réessayer",
+    "erreursurvenue": "Une erreur est survenue",
+
+    "statistiques": {
+      "moyennehebdomadaire": "Moyenne du temps de travail hebdomadaire",
+      "moyennemensuelle": "Moyenne du temps de travail mensuel",
+      "moyennearrivee": "Moyenne heure d'arrivée hebdomadaire",
+      "moyennedepart": "Moyenne heure de départ hebdomadaire"
+    },
+
+    "informations": {
+      "titre": "Informations de l'équipe",
+      "membres": "Membres",
+      "manager": "Manager"
+    },
+
+    "tableau": {
+      "titre": "Membres de l'équipe",
+      "nom": "Nom",
+      "role": "Rôle",
+      "statut": "Statut",
+      "heuresaujourdhui": "Heures aujourd'hui",
+      "aucunmembre": "Aucun membre dans l'équipe pour le moment."
+    },
+
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employé",
+      "admin": "Administrateur"
+    },
+
+    "statuts": {
+      "present": "Présent",
+      "absent": "Absent",
+      "termine": "Terminé",
+      "inconnu": "Inconnu"
     }
   }
 }
