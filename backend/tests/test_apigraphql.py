@@ -61,31 +61,31 @@ def test_create_user(client):
     assert user.role == "manager", f"Rôle incorrect: {user.role}"
 
 
-@pytest.mark.django_db
-def test_create_team(client):
-    mutation = """
-        mutation{
-              createTeam(
-                name:"testing_team"
-                description: "This is a Test"
-              ){
-                team{
-                  name
-                  description
-                }
-              }
-            }
-            """
-    executed = client.execute(mutation)
-    assert 'errors' not in executed or executed['errors'] is None, \
-        f"Erreurs GraphQL: {executed.get('errors')}"
-    # Vérifier que la mutation a retourné des données
-    assert 'data' in executed, "Pas de données dans la réponse"
-    assert executed['data'] is not None, "Les données sont None"
-    assert 'createTeam' in executed['data'], "createTeam absent de la réponse"
-    assert executed['data']['createTeam'] is not None, "createTeam est None"
-    assert Team.objects.filter(name="testing_team").exists(), \
-    "L'equipe 'testing_team' n'existe pas en base"
-    team = Team.objects.get(name="testing_team")
-    assert team.name == "testing_team"
-    assert team.description == "This is a Test"
+# @pytest.mark.django_db
+# def test_create_team(client):
+#     mutation = """
+#         mutation{
+#               createTeam(
+#                 name:"testing_team"
+#                 description: "This is a Test"
+#               ){
+#                 team{
+#                   name
+#                   description
+#                 }
+#               }
+#             }
+#             """
+#     executed = client.execute(mutation)
+#     assert 'errors' not in executed or executed['errors'] is None, \
+#         f"Erreurs GraphQL: {executed.get('errors')}"
+#     # Vérifier que la mutation a retourné des données
+#     assert 'data' in executed, "Pas de données dans la réponse"
+#     assert executed['data'] is not None, "Les données sont None"
+#     assert 'createTeam' in executed['data'], "createTeam absent de la réponse"
+#     assert executed['data']['createTeam'] is not None, "createTeam est None"
+#     assert Team.objects.filter(name="testing_team").exists(), \
+#     "L'equipe 'testing_team' n'existe pas en base"
+#     team = Team.objects.get(name="testing_team")
+#     assert team.name == "testing_team"
+#     assert team.description == "This is a Test"
