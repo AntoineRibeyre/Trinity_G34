@@ -1,7 +1,8 @@
 # ==========================================
 # Stage 1: Build Angular + Compodoc
 # ==========================================
-FROM node:22-alpine
+FROM node:20-alpine AS builder
+
 
 # Installer bash
 RUN apk add --no-cache bash
