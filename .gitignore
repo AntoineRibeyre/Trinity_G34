@@ -11,7 +11,7 @@
 # Django PowerTools cache (generated)
 **/djangoPowerTools/
 **/.vscode/
-
+.env
 **/.DS_Store/
 **/__pycache__/
 **/fixtures/
