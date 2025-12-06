@@ -236,7 +236,7 @@ jobs:
           DJANGO_DB_NAME=mydatabase
           DJANGO_DB_USER=postgres
           DJANGO_DB_PASSWORD=test_password
-          DJANGO_DB_HOST=loaclhost
+          DJANGO_DB_HOST=localhost
           DJANGO_DB_PORT=5432
           SECRET_KEY=ci-test-secret-key-not-for-production
           DEBUG=True
