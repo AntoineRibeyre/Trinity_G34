@@ -39,7 +39,11 @@
           <div class="table-cell cell-name">{{employee.lastName}}</div>
           <div class="table-cell cell-name">{{employee.firstName}}</div>
           <div class="table-cell cell-email">{{employee.email}}</div>
-          <div class="table-cell cell-team">Team</div>
+          @if (employee.team) {
+            <div class="table-cell cell-team clickable-team" (click)="$event.stopPropagation(); displayTeamData(employee.team.id)" >{{employee.team.name}}</div>
+          } @else {
+            <div class="table-cell cell-team">Sans équipe</div>
+          }
           <div class="buttons-div">
             <button class="icon-btn" (click)="$event.stopPropagation(); displayEmployeeData(employee.id, true)">
               <img src="assets/icons/edit_square.svg" alt="Edit" class="icon" />
@@ -56,10 +60,18 @@
 </div>
 
 <!-- Side Drawer Component -->
+<app-team-drawer
+  [isOpen]="isTeamDrawerOpen"
+  [team]="selectedTeam"
+  (onClose)="closeTeamDrawer()"
+  (onMemberClick)="onMemberClick($event)">
+</app-team-drawer>
+
 <app-employee-drawer
   [isOpen]="isDrawerOpen"
   [employee]="selectedEmployee"
   [isEditable]="editableDrawer"
+  [manager]="managerName"
   (onClose)="closeDrawer()"
   (onSave)="saveEmployeeChanges($event)">
 </app-employee-drawer>
