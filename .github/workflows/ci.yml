@@ -210,7 +210,7 @@ jobs:
 
       - name: Run tests with coverage
         working-directory: ./backend
-        run: pytest --cov=. --cov-report=xml --cov-report=term-missing -v
+        run: pytest --cov=. --cov-report=html --cov-report=term-missing -v
  
         env:
           DJANGO_SETTINGS_MODULE: backend.settings
@@ -235,6 +235,29 @@ jobs:
           pip install coverage
           coverage report --show-missing
         continue-on-error: true
+      - name: Display coverage summary in console
+        working-directory: ./backend
+        if: always()
+        run: |
+          echo "📊 Coverage Summary:"
+          coverage report --show-missing
+        continue-on-error: true
+
+      - name: Upload coverage HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: backend/htmlcov/
+        if: always()
+
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: orgoro/coverage@v3.1
+        with:
+          coverageFile: backend/coverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
 
 
   # JOB 5: COVERAGE REPORT
