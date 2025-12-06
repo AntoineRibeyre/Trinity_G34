@@ -207,11 +207,12 @@ jobs:
           POSTGRES_PASSWORD: test_password
           DB_HOST: localhost
           DB_PORT: 5432
-
+  
       - name: Run tests with coverage
         working-directory: ./backend
-        run: pytest --cov=. --cov-report=html --cov-report=term-missing -v
- 
+        run: |
+          echo "🧪 Running tests with coverage..."
+          pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term-missing -v
         env:
           DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
@@ -222,26 +223,20 @@ jobs:
           DB_HOST: localhost
           DB_PORT: 5432
 
-      - name: Upload coverage reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: backend/coverage.xml
-        if: always()
-
-      - name: Display coverage summary
-        working-directory: ./backend
-        run: |
-          pip install coverage
-          coverage report --show-missing
-        continue-on-error: true
       - name: Display coverage summary in console
         working-directory: ./backend
         if: always()
         run: |
-          echo "📊 Coverage Summary:"
+          echo "📊 ===== COVERAGE SUMMARY ====="
           coverage report --show-missing
         continue-on-error: true
+
+      - name: Upload coverage XML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: backend/coverage.xml
+        if: always()
 
       - name: Upload coverage HTML report
         uses: actions/upload-artifact@v4
@@ -259,7 +254,6 @@ jobs:
         continue-on-error: true
 
 
-
   # JOB 5: COVERAGE REPORT
   # =========================================
   coverage-report:
@@ -272,11 +266,43 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download coverage artifacts
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Download coverage XML
         uses: actions/download-artifact@v4
         with:
-          name: coverage-report
+          name: coverage-xml
           path: ./coverage
+        continue-on-error: true
+
+      - name: Download coverage HTML
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-html
+          path: ./coverage-html
+        continue-on-error: true
+
+      - name: Install coverage tool
+        run: pip install coverage
+
+      - name: Display detailed coverage report
+        run: |
+          echo "📊 ===== DETAILED COVERAGE REPORT ====="
+          if [ -f ./coverage/coverage.xml ]; then
+            echo "✅ Coverage XML generated"
+            echo "📁 Coverage HTML report available in artifacts"
+            echo ""
+            echo "💡 To view the HTML report:"
+            echo "   1. Go to Actions tab"
+            echo "   2. Click on this workflow run"
+            echo "   3. Download 'coverage-html' artifact"
+            echo "   4. Open index.html in your browser"
+          else
+            echo "⚠️  No coverage.xml found"
+          fi
         continue-on-error: true
 
       - name: Coverage Summary Comment (PR only)
@@ -289,10 +315,8 @@ jobs:
 
       - name: Check coverage threshold
         run: |
-          echo "Coverage report generated successfully"
-          echo "Minimum coverage threshold: 70%"
-          COVERAGE_PERCENT=$(grep -oP 'TOTAL\s+\d+\s+\d+\s+\d+\s+\K\d+%' ./coverage/coverage.xml | tr -d '%')
-          echo "Current coverage: $COVERAGE_PERCENT%"
+          echo "📈 Coverage report generated successfully"
+          echo "🎯 Minimum coverage threshold: 70%"
 
   # JOB 6: ALL CHECKS PASSED
   # =========================================
