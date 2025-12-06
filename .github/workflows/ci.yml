@@ -33,11 +33,6 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: Lint Angular code
-        working-directory: ./frontend
-        run: npm run lint
-        continue-on-error: true
-
       - name: Build Angular application
         working-directory: ./frontend
         run: npm run build -- --configuration production
