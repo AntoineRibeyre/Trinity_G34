@@ -142,7 +142,10 @@ jobs:
             sleep 2
           done
 
-      - name: Run migrations
+      - name: Make migrations
+        working-directory: ./backend
+        run: python manage.py makemigrations --noinput
+      - name: Apply migrations
         working-directory: ./backend
         run: python manage.py migrate --noinput
         env:
