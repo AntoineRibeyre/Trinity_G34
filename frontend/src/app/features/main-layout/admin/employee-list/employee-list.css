@@ -163,6 +163,18 @@
   color: #444;
 }
 
+.clickable-team {
+  color: black; /* bleu clair */
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.clickable-team:hover {
+  text-decoration: underline;
+  font-weight: bolder;
+}
+
 /* Actions */
 .cell-actions {
   flex: 0 0 80px;
@@ -355,4 +367,6 @@
   .info-grid {
     grid-template-columns: 1fr;
   }
+
+  
 }

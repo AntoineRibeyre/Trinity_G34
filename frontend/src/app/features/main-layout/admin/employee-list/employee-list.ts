@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from '../../../../services/user.service';
@@ -12,27 +12,36 @@ import {BasicTextField} from '../../../../shared/components/basic-text-field/bas
 import {TranslatePipe} from '@ngx-translate/core';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
 import {ExcelExportService} from '../../../../services/excel-export.service';
+import { Team } from '../../../../models/team.model';
+import { TeamService } from '../../../../services/team.service';
+import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
 
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule, FormsModule, BasicTextField, TranslatePipe, EmployeeDrawer],
+  imports: [CommonModule, FormsModule, BasicTextField, TranslatePipe, EmployeeDrawer, TeamDrawer],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })
-export class EmployeeList implements OnDestroy {
+export class EmployeeList implements OnDestroy, OnInit {
   @Output() search = new EventEmitter<string>();
   @Output() openOptions = new EventEmitter<void>();
 
   public allUsers: User[] = [];
   public filteredUsers: User[] = [];
 
+  teams: Team[] = [];
+
   selectedEmployee: User | undefined = undefined;
   isDrawerOpen: boolean = false;
   editableDrawer: boolean = false;
   query: string = '';
 
+  selectedTeam: Team | undefined = undefined;
+  isTeamDrawerOpen: boolean = false;
   placeHolderText: string = "No data";
+  managerName: string = '';
 
+  private teamSub?: Subscription;
 
   dropdownOptions: DropdownOption[] = [
     { label: 'Ryan Wittert', value: 1 },
@@ -47,7 +56,8 @@ export class EmployeeList implements OnDestroy {
   constructor(
     private userService: UserService,
     private dialog : MatDialog,
-    private exportService: ExcelExportService
+    private exportService: ExcelExportService,
+    private teamService: TeamService
   ) {
     this.sub = this.q$.pipe(
       debounceTime(300),
@@ -57,6 +67,14 @@ export class EmployeeList implements OnDestroy {
       this.search.emit(q);
     });
     this.loadUsers();
+  }
+  ngOnInit(): void {
+    this.teamSub = this.teamService.getAllTeams().subscribe({
+      next: (teams) => {
+        this.teams = teams;
+      },
+      error: (err) => console.error('Erreur lors du chargement des équipes:', err)
+    });
   }
 
   async loadUsers() {
@@ -109,8 +127,18 @@ export class EmployeeList implements OnDestroy {
 
   displayEmployeeData(employeeId: string, editable: boolean): void {
     this.selectedEmployee = this.filteredUsers.find(emp => emp.id === employeeId);
+    const manager = this.selectedEmployee?.team?.members?.find(emp => emp.role.toLowerCase() == "manager") || '';
+    console.log("selected employee: " + this.selectedEmployee?.lastName)
+    console.log("manager: " + manager)
+    console.log("team members: " + this.selectedEmployee?.team?.members?.length)
+    if (manager) {
+      this.managerName = manager.firstName + ' ' + manager.lastName;
+    }
+    console.log("manager name: " + this.managerName)
     this.editableDrawer = editable;
     this.isDrawerOpen = true;
+    console.log("tessssssssst")
+    console.log(this.selectedEmployee)
   }
 
   closeDrawer(): void {
@@ -130,6 +158,11 @@ export class EmployeeList implements OnDestroy {
     }
 
     this.closeDrawer();
+  }
+
+  displayTeamData(teamId: string): void {
+    this.selectedTeam = this.teams.find(team => team.id === teamId);
+    this.isTeamDrawerOpen = true;
   }
 
   openDialog(id: string): void {
@@ -171,5 +204,16 @@ export class EmployeeList implements OnDestroy {
       'Liste détaillée'
     );
 
+  }
+
+  closeTeamDrawer(): void {
+    this.isTeamDrawerOpen = false;
+    this.selectedTeam = undefined;
+  }
+
+  onMemberClick(memberId: number): void {
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
+    this.isDrawerOpen = true;
+    console.log(this.selectedEmployee);
   }
 }
