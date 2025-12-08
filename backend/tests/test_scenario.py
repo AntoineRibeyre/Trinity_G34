@@ -5,7 +5,7 @@ import pytest
 
 from graphene.test import Client
 from backend.schema import schema
-from trinity.models import Team, User
+from trinity.models import User
 from . import querylist
 from .test_data_db.testdbhandler import TestDBHandler
 

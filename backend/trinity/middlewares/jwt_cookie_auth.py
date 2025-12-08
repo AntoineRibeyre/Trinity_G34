@@ -1,13 +1,16 @@
 from django.utils.deprecation import MiddlewareMixin
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import AnonymousUser
 import jwt
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()
+
+
 class JWTAuthenticationMiddleware(MiddlewareMixin):
-    """Middleware pour authentifier l'utilisateur via le JWT dans les cookies"""
-    
+    """Middleware pour authentifier l'utilisateur via le JWT dans les
+    cookies"""
     def process_request(self, request):
         token = request.COOKIES.get("access_token")
 
@@ -29,7 +32,6 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
             else:
                 print("Pas de user_id dans le payload")
                 request.user = AnonymousUser()
-                
         except jwt.ExpiredSignatureError:
             print("Token expiré")
             request.user = AnonymousUser()
@@ -43,13 +45,10 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 
 class JWTCookieMiddleware(MiddlewareMixin):
     """Middleware pour ajouter le JWT en cookie après la mutation tokenAuth"""
-    
     def process_response(self, request, response):
-        
         # Vérifier si la mutation a demandé de set le cookie
         if hasattr(request, '_jwt_token_set_cookie') and request._jwt_token_set_cookie:
             token = getattr(request, '_jwt_token', None)
-            
             if token:
                 response.set_cookie(
                     key='access_token',
@@ -66,5 +65,4 @@ class JWTCookieMiddleware(MiddlewareMixin):
         else:
             pass
             # print("Pas de demande de set cookie")
-        
         return response
