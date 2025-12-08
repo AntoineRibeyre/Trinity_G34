@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { TeamService, ManagerViewResponse } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
+import { EmployeeDrawer } from '../../../shared/components/employee-drawer/employee-drawer';
+import { User } from '../../../models/user.model';
+import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {EditTeamManager} from '../../../shared/components/edit-team-manager/edit-team-manager';
 
 interface TeamMember {
   userDetails: {
@@ -28,7 +33,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, EmployeeDrawer],
   templateUrl: './team.html',
   styleUrl: './team.css'
 })
@@ -43,6 +48,11 @@ export class Team implements OnInit {
   avgArrivalTime: string = '--:--';
   avgDepartureTime: string = '--:--';
 
+  // Employee drawer
+  selectedEmployee: User | undefined = undefined;
+  isEmployeeDrawerOpen: boolean = false;
+  allUsers: User[] = [];
+
   constructor(
     private teamService: TeamService,
     private userService: UserService
@@ -50,6 +60,15 @@ export class Team implements OnInit {
 
   async ngOnInit() {
     await this.loadTeamData();
+    await this.loadUsers();
+  }
+
+  async loadUsers() {
+    try {
+      this.allUsers = await this.userService.getAllUsers();
+    } catch (error) {
+      console.error('Erreur lors du chargement des utilisateurs:', error);
+    }
   }
 
   async loadTeamData() {
@@ -98,10 +117,10 @@ export class Team implements OnInit {
 
     // Calculer moyenne hebdomadaire (7 derniers jours)
     this.avgWeeklyHours = this.calculateAvgHours(allMembers, 7);
-    
+
     // Calculer moyenne mensuelle (30 derniers jours)
     this.avgMonthlyHours = this.calculateAvgHours(allMembers, 30);
-    
+
     // Calculer heures moyennes d'arrivée et départ
     this.calculateAvgTimes(allMembers);
   }
@@ -226,5 +245,16 @@ export class Team implements OnInit {
       'admin': 'team.roles.admin'
     };
     return roleMap[role?.toLowerCase() || 'employee'] || 'team.roles.employee';
+  }
+
+  openMemberDetails(memberId: number, event: Event): void {
+    event.stopPropagation();
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
+    this.isEmployeeDrawerOpen = true;
+  }
+
+  closeEmployeeDrawer(): void {
+    this.isEmployeeDrawerOpen = false;
+    this.selectedEmployee = undefined;
   }
 }

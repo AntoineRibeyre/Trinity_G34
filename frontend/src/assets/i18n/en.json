@@ -129,6 +129,7 @@
       },
       "REMOVE-MEMBERS": {
         "TITLE": "Remove employees from the team",
+        "TITLE-MANAGER": "Edit manager from the team",
         "NAME-TITLE": "Last and first name of the employee",
         "NAME-PLACEHOLDER": "Name...",
         "RETIRER": "Remove"
