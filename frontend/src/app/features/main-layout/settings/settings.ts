@@ -1,9 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/lang.service';
 import { Subscription } from 'rxjs';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../models/user.model';
+import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {SettingEditPassword} from '../../../shared/components/setting-edit-password/setting-edit-password';
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +16,8 @@ import { Subscription } from 'rxjs';
   imports: [
     CommonModule,
     TranslateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BasicTextButton
   ],
   templateUrl: './settings.html',
   styleUrls: ['./settings.css']
@@ -20,21 +26,27 @@ export class Settings implements OnInit, OnDestroy {
   settingsForm: FormGroup;
   currentLanguage = 'en';
   availableLanguages: Array<{ code: string; label: string }> = [];
+  isLoading = false;
+  currentUser: User | null = null;
 
   private languageSubscription?: Subscription;
 
   constructor(
     private fb: FormBuilder,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private userService: UserService,
+    private dialog : MatDialog,
+    private translateService: TranslateService,
   ) {
     this.settingsForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      password: [''], // Password optionnel - seulement si l'utilisateur veut le changer
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // Récupérer les langues disponibles
     this.availableLanguages = this.languageService.getAvailableLanguages();
 
@@ -43,8 +55,17 @@ export class Settings implements OnInit, OnDestroy {
       this.currentLanguage = lang;
     });
 
-    //Charger les données du user
-    //this.loadUserData();
+    // Charger les données du user
+    this.currentUser = await this.userService.loadCurrentUserFromServer();
+    if (this.currentUser) {
+      // Remplir le formulaire avec les données de l'utilisateur
+      this.settingsForm.patchValue({
+        firstName: this.currentUser.firstName || '',
+        lastName: this.currentUser.lastName || '',
+        email: this.currentUser.email || '',
+        // Ne jamais pré-remplir le mot de passe
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -53,20 +74,6 @@ export class Settings implements OnInit, OnDestroy {
       this.languageSubscription.unsubscribe();
     }
   }
-
-  /**
-   * Charge les données utilisateur
-   */
-  // private loadUserData(): void {
-  //   //
-  //   const userData = {
-  //     firstName: 'Jean',
-  //     lastName: 'Dupont',
-  //     email: 'jean.dupont@example.com'
-  //   };
-  //
-  //   this.settingsForm.patchValue(userData);
-  // }
 
   /**
    * Change la langue via le service
@@ -80,23 +87,54 @@ export class Settings implements OnInit, OnDestroy {
       lang = (event.target as HTMLSelectElement).value;
     }
 
-    // Utiliser le service pour changer la langue
-    // La langue sera automatiquement sauvegardée dans le localStorage
     this.languageService.setLanguage(lang);
   }
 
   /**
-   * Soumet le formulaire
+   * Soumet le formulaire et met à jour l'utilisateur dans la BDD
    */
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.settingsForm.valid) {
-      console.log('Formulaire soumis:', this.settingsForm.value);
-      //Ajout de route pour save les choix
+      this.isLoading = true;
 
-      // Exemple de feedback utilisateur
-      alert('Paramètres sauvegardés avec succès !');
+      try {
+        const formData = { ...this.settingsForm.value };
+
+        // Si le mot de passe est vide, ne pas l'envoyer
+        // (l'utilisateur garde son ancien mot de passe)
+        if (!formData.password || formData.password.trim() === '') {
+          delete formData.password;
+        }
+
+        // Appel à la mutation GraphQL via le service
+        const updatedUser = await this.userService.updateUser(formData);
+
+        if (updatedUser) {
+          console.log('Utilisateur mis à jour avec succès:', updatedUser);
+
+          // Mettre à jour currentUser local
+          this.currentUser = updatedUser;
+
+          // Notification de succès
+          alert('Paramètres sauvegardés avec succès !');
+
+          // Vider le champ mot de passe après la sauvegarde
+          this.settingsForm.patchValue({ password: '' });
+
+          // Marquer le formulaire comme pristine (non modifié)
+          this.settingsForm.markAsPristine();
+        }
+
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour:', error);
+        alert("Une erreur est survenue lors de la sauvegarde des paramètres.");
+      } finally {
+        this.isLoading = false;
+      }
     } else {
+      // Marquer tous les champs comme touched pour afficher les erreurs
       this.settingsForm.markAllAsTouched();
+      console.warn('Formulaire invalide');
     }
   }
 
@@ -106,5 +144,21 @@ export class Settings implements OnInit, OnDestroy {
   isInvalid(controlName: string): boolean {
     const control = this.settingsForm.get(controlName);
     return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  openEditPassword(): void {
+    this.dialog.open(SettingEditPassword, {
+      data: {
+        title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
+        confirm: this.translateService.instant('BASE.EDIT'),
+        cancel: this.translateService.instant('BASE.CANCEL'),
+        onConfirm: (dialogRef: MatDialogRef<SettingEditPassword>,
+                    newPassword: string,
+                    ) => {},
+        onCancel: (dialogRef: MatDialogRef<SettingEditPassword>) => {
+          dialogRef.close();
+        }
+      }
+    })
   }
 }

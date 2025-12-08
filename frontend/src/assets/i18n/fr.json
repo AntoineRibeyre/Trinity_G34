@@ -2,7 +2,8 @@
   "BASE": {
     "CANCEL": "Annuler",
     "CREATE": "Créer",
-    "SUPPRIMER": "Supprimer"
+    "SUPPRIMER": "Supprimer",
+    "EDIT": "Modifier"
   },
   "SETTINGS": {
     "FIRST_NAME": "Prénom",
@@ -18,7 +19,16 @@
     "UPCOMING_LEAVES": "Vos prochains congés",
     "NO_UPCOMING_LEAVES": "Aucun congé prévu",
     "SAVE_SUCCESS": "Modifications enregistrées avec succès",
-    "SAVE_ERROR": "Erreur lors de l'enregistrement"
+    "SAVE_ERROR": "Erreur lors de l'enregistrement",
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_PLACEHOLDER": "Laissez vide pour ne pas changer",
+    "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
+    "SAVING": "Sauvegarde en cours",
+    "DIALOG": {
+      "TITLE": "Modifier votre mot de passe",
+      "PASSWORD": "Votre mot de passe",
+      "CONFIRM": "Confirmer votre mot de passe"
+    }
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
@@ -28,6 +38,14 @@
     "REGISTER": "S'inscrire",
     "FORGOTTEN_PASSWORD": "Mot de passe oublié"
   },
+  "ERRORS": {
+    "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
+    "INVALID_CREDENTIALS": "Email ou mot de passe incorrect",
+    "USER_NOT_FOUND": "Utilisateur introuvable",
+    "ACCOUNT_LOCKED": "Compte verrouillé",
+    "EMAIL_NOT_VERIFIED": "Email non vérifié",
+    "NETWORK_ERROR": "Erreur de connexion au serveur"
+  },
   "REGISTER": {
     "REGISTER": "Inscription",
     "FIRST_NAME": "Prénom",
@@ -35,7 +53,10 @@
     "EMAIL": "Email",
     "CARD_NUMBER": "Numéro de carte",
     "PASSWORD": "Mot de passe",
-    "FORGOTTEN_PASSWORD": "Mot de passe oublié"
+    "CONFIRM_PWD": "Confirmation du mot de pass",
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié",
+    "PHONE_NUMBER": "Numéro de téléphone",
+    "PWD_REQUIREMENT": "Pré-requis du mot de passe"
   },
   "HOME": {
     "REGISTER": "S’inscrire",
@@ -100,8 +121,97 @@
         "FIELD-TITLE": "Type d’équipe",
         "FIELD-PLACEHOLDER": "Type...",
         "DESCRIPTION-TITLE": "Description de l’équipe",
-        "DESCRIPTION-PLACEHOLDER": "Description..."
+        "DESCRIPTION-PLACEHOLDER": "Description...",
+        "MANAGER": "Manager de l'équipe",
+        "MANAGER-PLACEHOLDER": "Manager..."
+      },
+      "ADD-EMPLOYE": {
+        "TITLE": "Ajouter un employé à l'équipe",
+        "NAME-TITLE": "Nom et prénom de l'employé",
+        "NAME-PLACEHOLDER": "Nom et prénom..."
+      },
+      "REMOVE-MEMBERS": {
+        "TITLE-MEMBERS": "Retirer des employés de l'équipe",
+        "TITLE-MANAGER": "Modifier le manager de l'équipe",
+        "NAME-TITLE": "Nom et prénom de l'employé",
+        "NAME-PLACEHOLDER": "Nom et prénom...",
+        "RETIRER": "Retirer"
       }
+    }
+  },
+  "ADMIN": {
+    "ALL": {
+      "NAME": "Nom",
+      "FIRSTNAME": "Prénom",
+      "EMAIL": "Email",
+      "TEAM": "Équipe",
+      "PERSONAL-DRAWER": {
+        "PERSONAL": "Personnel",
+        "BIRTH-DATE": "Date de naissance:",
+        "EMAIL": "Email:",
+        "PHONE": "Téléphone:",
+        "SECU": "Social Security numbers:",
+        "PROFESSIONAL": "Professionnel",
+        "JOB": "Poste:",
+        "CONTRACT": "Contrat:",
+        "TEAM": "Équipe:",
+        "MANAGER": "Manager",
+        "WORKING-TIME": "Temps de travail & salaire",
+        "TIME": "Temps de travail:",
+        "EFFECTIF-TIME": "Temps de travail effectif:",
+        "HOLIDAYS": "Solde de congés:",
+        "ANNUAL-SALARY": "Salaire annuel:",
+        "ARRIVAL": "Date d'arrivée:"
+      }
+    },
+    "TEAMS": {
+      "DRAWER": {
+        "DESCRIPTION-TITLE": "Description de l’équipe",
+        "STATISTICS": "Statistique de l’équipe",
+        "MEMBERS": "Membres de l'équipes"
+      }
+    }
+  },
+  "team": {
+    "titre": "Mon Équipe",
+    "chargementdesdonnees": "Chargement des données...",
+    "impossibledecharger": "Impossible de charger les données de l'équipe",
+    "reessayer": "Réessayer",
+    "erreursurvenue": "Une erreur est survenue",
+
+    "statistiques": {
+      "moyennehebdomadaire": "Moyenne du temps de travail hebdomadaire",
+      "moyennemensuelle": "Moyenne du temps de travail mensuel",
+      "moyennearrivee": "Moyenne heure d'arrivée hebdomadaire",
+      "moyennedepart": "Moyenne heure de départ hebdomadaire"
+    },
+
+    "informations": {
+      "titre": "Informations de l'équipe",
+      "membres": "Membres",
+      "manager": "Manager"
+    },
+
+    "tableau": {
+      "titre": "Membres de l'équipe",
+      "nom": "Nom",
+      "role": "Rôle",
+      "statut": "Statut",
+      "heuresaujourdhui": "Heures aujourd'hui",
+      "aucunmembre": "Aucun membre dans l'équipe pour le moment."
+    },
+
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employé",
+      "admin": "Administrateur"
+    },
+
+    "statuts": {
+      "present": "Présent",
+      "absent": "Absent",
+      "termine": "Terminé",
+      "inconnu": "Inconnu"
     }
   }
 }

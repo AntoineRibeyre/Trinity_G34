@@ -1,0 +1,141 @@
+<div class="drawer-overlay" *ngIf="isOpen" (click)="close()">
+  <div class="drawer-content" (click)="$event.stopPropagation()">
+    <div class="drawer-header">
+      <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
+      <div class="header-actions">
+        <button class="icon-btn" (click)="export()" title="Modifier">
+          <img src="assets/icons/export.svg" alt="Export" class="icon" />
+        </button>
+        <button class="close-btn" (click)="close()">✕</button>
+      </div>
+    </div>
+
+    <div class="drawer-body" *ngIf="employee">
+      <!-- Sections Personnel et Professionnel côte à côte -->
+      <div class="sections-row">
+        <!-- Section personnelle -->
+        <div class="info-section">
+          <h3>{{ "ADMIN.ALL.PERSONAL-DRAWER.PERSONAL" | translate }}</h3>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.BIRTH-DATE" | translate }}</label>
+            <span>{{ employee.birthDate }}</span>
+          </div>
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.EMAIL" | translate }}</label>
+            <span>{{ employee.email }}</span>
+          </div>
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.PHONE" | translate }}</label>
+            <span>{{ employee.telephone }}</span>
+          </div>
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.SECU" | translate }}</label>
+            <span>{{ employee.socialSecurityNumber }}</span>
+          </div>
+        </div>
+
+        <!-- Section professionnelle -->
+        <div class="info-section">
+          <h3>{{ "ADMIN.ALL.PERSONAL-DRAWER.PROFESSIONAL" | translate }}</h3>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.JOB" | translate }}</label>
+            @if (!isEditable) {
+              <span>{{ employee.role }}</span>
+            } @else {
+              <input [(ngModel)]="employee.role" class="edit-input" />
+            }
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.CONTRACT" | translate }}</label>
+            @if (!isEditable) {
+              <span>{{ employee.contractType }}</span>
+            } @else {
+              <input [(ngModel)]="employee.contractType" class="edit-input" />
+            }
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.TEAM" | translate }}</label>
+            <span>{{ employee.team }}</span>
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.MANAGER" | translate }}</label>
+            <span>{{ employee.manager }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section temps de travail et salaire en dessous -->
+      <div class="info-section">
+        <h3>{{ "ADMIN.ALL.PERSONAL-DRAWER.WORKING-TIME" | translate }}</h3>
+        <div class="info-grid">
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.TIME" | translate }}</label>
+            @if (!isEditable) {
+              <span>{{ employee.workingHours }}</span>
+            } @else {
+              <input [(ngModel)]="employee.workingHours" class="edit-input" />
+            }
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.EFFECTIF-TIME" | translate }}</label>
+            <span>{{ employee.effectiveHours }}</span>
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.HOLIDAYS" | translate }}</label>
+            <span>{{ employee.leaveBalance }}</span>
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.ANNUAL-SALARY" | translate }}</label>
+            @if (!isEditable) {
+              <span>{{ employee.annualSalary }}</span>
+            } @else {
+              <input type="number" [(ngModel)]="employee.annualSalary" class="edit-input" />
+            }
+          </div>
+
+          <div class="info-item">
+            <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.ARRIVAL" | translate }}</label>
+            @if (!isEditable) {
+              <span>{{ employee.startDate }}</span>
+            } @else {
+              <input type="date" [(ngModel)]="employee.startDate" class="edit-input" />
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      @if (isEditable) {
+        <div class="drawer-actions">
+          <app-basic-text-button
+            width="20vw"
+            text="Annuler"
+            color="#999999"
+            (onClick)="close()"
+          >
+          </app-basic-text-button>
+          <app-basic-text-button
+            width="20vw"
+            text="Sauvegarder"
+            color="#336CAA"
+            (onClick)="saveChanges()"
+          >
+          </app-basic-text-button>
+        </div>
+      }
+      <div class="scheduler-container">
+        <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
+        <app-scheduler [targetUserId]="employee.id"></app-scheduler>
+      </div>
+    </div>
+  </div>
+</div>

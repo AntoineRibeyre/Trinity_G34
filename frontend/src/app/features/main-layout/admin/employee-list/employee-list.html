@@ -1,0 +1,65 @@
+<div class="general">
+  <div class="search-bar">
+    <div class="search-input-wrapper" role="search" aria-label="Rechercher">
+      <app-basic-text-field
+        placeholder="Rechercher"
+        width="500px"
+        [rows]="1"
+        (onTextChange)="onQueryChange($event)"
+        [showClearButton]="true"
+        style="padding-top:5px;">
+      </app-basic-text-field>
+
+      <button
+        *ngIf="query"
+        type="button"
+        (click)="clear()"
+        aria-label="Effacer la recherche"
+        title="Effacer"
+      >
+        ✕
+      </button>
+    </div>
+    <button class="icon-btn" (click)="export()" title="Modifier">
+      Export
+    </button>
+  </div>
+
+  <div class="user-table">
+    <div class="table-header">
+      <div>{{ "ADMIN.ALL.NAME" | translate }}</div>
+      <div>{{ "ADMIN.ALL.FIRSTNAME" | translate }}</div>
+      <div>{{ "ADMIN.ALL.EMAIL" | translate }}</div>
+      <div>{{ "ADMIN.ALL.TEAM" | translate }}</div>
+      <div></div>
+    </div>
+    <div class="table-body">
+      @for (employee of filteredUsers; track employee.id ) {
+        <div class="table-row" (click)="displayEmployeeData(employee.id, false)">
+          <div class="table-cell cell-name">{{employee.lastName}}</div>
+          <div class="table-cell cell-name">{{employee.firstName}}</div>
+          <div class="table-cell cell-email">{{employee.email}}</div>
+          <div class="table-cell cell-team">Team</div>
+          <div class="buttons-div">
+            <button class="icon-btn" (click)="$event.stopPropagation(); displayEmployeeData(employee.id, true)">
+              <img src="assets/icons/edit_square.svg" alt="Edit" class="icon" />
+            </button>
+
+            <button class="icon-btn" (click)="$event.stopPropagation(); openDialog(employee.id)">
+              <img src="assets/icons/delete_bin.svg" alt="Delete" class="icon" />
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Side Drawer Component -->
+<app-employee-drawer
+  [isOpen]="isDrawerOpen"
+  [employee]="selectedEmployee"
+  [isEditable]="editableDrawer"
+  (onClose)="closeDrawer()"
+  (onSave)="saveEmployeeChanges($event)">
+</app-employee-drawer>

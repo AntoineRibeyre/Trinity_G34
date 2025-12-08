@@ -51,6 +51,27 @@
         </div>
       </div>
 
+<!--      <div class="form-group">-->
+<!--        <label class="form-label" for="password">{{ 'SETTINGS.PASSWORD' | translate }}</label>-->
+<!--        <input-->
+<!--        type="password"-->
+<!--        id="password"-->
+<!--        formControlName="password"-->
+<!--        class="form-input"-->
+<!--        [placeholder]="'SETTINGS.PASSWORD_PLACEHOLDER' | translate">-->
+<!--        <small class="form-hint">{{ 'SETTINGS.PASSWORD_HINT' | translate }}</small>-->
+<!--      </div>-->
+
+      <div class="form-group">
+        <app-basic-text-button
+          text="Changer le mot de passe"
+          color="#999999"
+          width="100%"
+          (onClick)="openEditPassword()"
+        >
+        </app-basic-text-button>
+      </div>
+
       <div class="form-group">
         <label class="form-label" for="language">{{ 'SETTINGS.LANGUAGE' | translate }}</label>
         <select
@@ -64,9 +85,13 @@
         </select>
       </div>
 
-      <button type="submit" class="btn-save" [disabled]="settingsForm.invalid">
-        {{ 'SETTINGS.SAVE' | translate }}
-      </button>
+      <button
+        type="submit"
+        class="btn-save"
+        [disabled]="settingsForm.invalid || isLoading">
+      <span *ngIf="!isLoading">{{ 'SETTINGS.SAVE' | translate }}</span>
+      <span *ngIf="isLoading">{{ 'SETTINGS.SAVING' | translate }}</span>
+    </button>
     </form>
   </div>
 </div>

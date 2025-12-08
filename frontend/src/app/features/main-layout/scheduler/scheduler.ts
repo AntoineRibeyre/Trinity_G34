@@ -1,24 +1,24 @@
 // scheduler.component.ts
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { 
-  ScheduleModule, 
-  View, 
+import { Component, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ScheduleModule,
+  View,
   EventSettingsModel,
-  ScheduleComponent 
+  ScheduleComponent
 } from '@syncfusion/ej2-angular-schedule';
-import { 
-  DayService, 
-  WeekService, 
-  WorkWeekService, 
-  MonthService, 
-  AgendaService 
+import {
+  DayService,
+  WeekService,
+  WorkWeekService,
+  MonthService,
+  AgendaService
 } from '@syncfusion/ej2-angular-schedule';
 import { registerLicense } from '@syncfusion/ej2-base';
 import { EventService } from '../../../services/event.service';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 
-registerLicense('Ngo9BigBOggjHTQxAR8/V1JFaF1cX2hIf0x3TXxbf1x1ZFBMYlRbRHVPMyBoS35Rc0RjWHZedXBWRWJVUUVzVEFc');
+registerLicense('Ngo9BigBOggjHTQxAR8/V1JFaF1cXGFCf1FpRmJGfV5ycUVDal9ZTndcUiweQnxTdEBiW39fcHFRRWRZWE1wWEleYg==');
 
 interface SchedulerEvent {
   Id: number;
@@ -38,11 +38,12 @@ interface SchedulerEvent {
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService],
 })
 export class Scheduler implements OnInit {
+  @Input() targetUserId?: number;
 
   //-------------------------------ATTRIBUTS--------------------------------------------------
 
   @ViewChild('scheduleObj') public scheduleObj!: ScheduleComponent;
-  
+
   userId: number | null = null;
   username: string | null = null;
   public selectedDate: Date = new Date();
@@ -65,7 +66,7 @@ export class Scheduler implements OnInit {
 
   // Option pour afficher tous les événements ou seulement ceux de l'utilisateur
   public showOnlyMyEvents: boolean = true;
-  
+
   private eventService = inject(EventService);
   private userService = inject(UserService);
 
@@ -77,24 +78,52 @@ export class Scheduler implements OnInit {
 
   async ngOnInit() {
     // Charger l'utilisateur courant
-    this.currentUser = await this.userService.loadCurrentUserFromServer();
-    if (this.currentUser) {
-      this.userId = Number(this.currentUser.id);
-      this.username = this.currentUser.username;
-    }
-    
+    this.initializeUser();
+
     // Charger tous les utilisateurs (pour sélection des participants)
     await this.loadUsers();
+
+    // Charger les événements
+    await this.loadEvents();
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    // ✅ Se déclenche quand targetUserId change
+    if (changes['targetUserId'] && !changes['targetUserId'].firstChange) {
+      await this.initializeUser();
+    }
+  }
+
+  async initializeUser() {
+    if (this.targetUserId) {
+      // ✅ Utiliser l'ID fourni en input
+      this.userId = this.targetUserId;
+      const user = this.allUsers.find(u => Number(u.id) === this.targetUserId);
+      if (user) {
+        this.username = user.username;
+      }
+    } else {
+      // ✅ Sinon charger l'utilisateur courant
+      this.currentUser = await this.userService.loadCurrentUserFromServer();
+      if (this.currentUser) {
+        this.userId = Number(this.currentUser.id);
+        this.username = this.currentUser.username;
+      }
+    }
     
     // Charger les événements
     await this.loadEvents();
+  }
+
+  async setUserID(userID: number){
+    this.userId = userID;
   }
 
 
 
   async loadUsers() {
     try {
-      this.allUsers = await this.eventService.getAllUsers();
+      this.allUsers = await this.userService.getAllUsers();
       console.log('Utilisateurs chargés:', this.allUsers);
     } catch (error) {
       console.error('Erreur lors du chargement des utilisateurs:', error);
@@ -106,8 +135,7 @@ export class Scheduler implements OnInit {
   async loadEvents() {
     try {
       const events = await this.eventService.getAllEvents();
-      
-      // Transformer les données du backend au format Syncfusion
+
       let transformedEvents = events.map(event => ({
         Id: event.id,
         Subject: event.subject,
@@ -115,26 +143,23 @@ export class Scheduler implements OnInit {
         EndTime: new Date(event.endTime),
         IsAllDay: event.isAllDay,
         Attendees: event.attendees || [],
-        // Garder les ID en tant que string pour être cohérent avec le modèle User
         AttendeeIds: event.attendees?.map(a => a.id) || []
       }));
-      
-      // Filtrer par utilisateur si l'option est activée
+
+      // ✅ Filtrer par l'userId actuel (qu'il soit passé en input ou chargé)
       if (this.showOnlyMyEvents && this.userId) {
         const userIdStr = this.userId.toString();
-        transformedEvents = transformedEvents.filter(event => 
+        transformedEvents = transformedEvents.filter(event =>
           event.AttendeeIds?.includes(userIdStr)
         );
       }
-      
+
       this.data = transformedEvents;
-      
-      // Mettre à jour les eventSettings
       this.eventSettings = {
         dataSource: this.data
       };
-      
-      console.log('Événements chargés:', this.data);
+
+      console.log('Événements chargés pour userId:', this.userId, this.data);
     } catch (error) {
       console.error('Erreur lors du chargement des événements:', error);
     }
@@ -166,12 +191,12 @@ export class Scheduler implements OnInit {
       for (const event of args.addedRecords) {
         try {
           // Par défaut, ajouter l'utilisateur courant comme participant
-          const attendeeIds = event.AttendeeIds 
+          const attendeeIds = event.AttendeeIds
             ? event.AttendeeIds.map((id: string) => parseInt(id))
             : (this.userId ? [this.userId] : []);
-          
+
           const result = await this.eventService.createEvent(event, attendeeIds);
-          
+
           if (result && result.success) {
             console.log('Événement créé avec succès:', result.event);
             event.Id = result.event.id;
@@ -188,23 +213,23 @@ export class Scheduler implements OnInit {
         }
       }
     }
-  
+
     // ========== MODIFICATION D'ÉVÉNEMENT ==========
     if (args.requestType === 'eventChanged' && args.changedRecords) {
       for (const event of args.changedRecords) {
         try {
           const eventId = typeof event.Id === 'string' ? parseInt(event.Id) : event.Id;
           // Récupérer les IDs des participants (string[] -> number[])
-          const attendeeIds = event.AttendeeIds 
+          const attendeeIds = event.AttendeeIds
             ? event.AttendeeIds.map((id: string) => parseInt(id))
             : [];
-          
+
           const result = await this.eventService.updateEvent(
-            eventId, 
-            event, 
+            eventId,
+            event,
             attendeeIds
           );
-          
+
           if (result && result.success) {
             console.log('Événement modifié avec succès:', result.event);
             await this.loadEvents();
@@ -220,14 +245,14 @@ export class Scheduler implements OnInit {
         }
       }
     }
-    
+
     // ========== SUPPRESSION D'ÉVÉNEMENT ==========
     if (args.requestType === 'eventRemoved' && args.deletedRecords) {
       for (const event of args.deletedRecords) {
         try {
           const eventId = typeof event.Id === 'string' ? parseInt(event.Id) : event.Id;
           const result = await this.eventService.deleteEvent(eventId);
-          
+
           if (result && result.success) {
             console.log('Événement supprimé avec succès');
             await this.loadEvents();

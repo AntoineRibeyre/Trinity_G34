@@ -1,0 +1,358 @@
+/* === GÉNÉRAL === */
+.general {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  height: calc(100vh - 60px);
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* === BARRE DE RECHERCHE === */
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 12px;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0; /* Empêche la barre de se rétrécir */
+}
+
+.search-input-wrapper {
+  position: relative;
+  /*width: 50%;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*background: #f6f7f9;*/
+  /*border-radius: 12px;*/
+  /*padding: 6px 8px;*/
+  /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+}
+
+/*.search-input {*/
+/*  width: 100%;*/
+/*  border: none;*/
+/*  outline: none;*/
+/*  font-size: 14px;*/
+/*  flex: 1;*/
+/*  background: transparent;*/
+/*  padding: 6px 4px;*/
+/*  transition: border-color 0.2s ease;*/
+/*}*/
+
+/*.search-input:focus {*/
+/*  border-color: #0078ff;*/
+/*}*/
+
+.icon-btn.clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #888;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.icon-btn.clear:hover {
+  opacity: 1;
+}
+
+.icon-btn:hover {
+  color: #333;
+  background-color: #e0e0e0;
+}
+
+/* === TABLEAU === */
+.user-table {
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  background-color: #fff;
+  border-radius: 12px;
+  flex: 1; /* Prend tout l'espace restant */
+  overflow: hidden; /* Important pour gérer le scroll */
+  min-height: 0; /* Permet au flex item de se rétrécir correctement */
+}
+
+/* En-tête */
+.table-header {
+  display: flex;
+  background-color: #f7f7f7;
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+  padding: 10px 16px;
+  flex-shrink: 0; /* L'en-tête ne se réduit pas */
+  border-bottom: 2px solid #ddd;
+}
+
+.table-header div {
+  flex: 1;
+  text-align: left;
+}
+
+/* Corps du tableau */
+.table-body {
+  flex: 1; /* Prend tout l'espace restant */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Style de la scrollbar (optionnel) */
+.table-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Lignes */
+.table-row {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 12px 16px;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #999999;
+}
+
+.table-row:hover {
+  background-color: #f9f9f9;
+}
+
+.table-row div {
+  flex: 1;
+}
+
+/* Cellules */
+.table-cell {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.cell-name {
+  font-weight: 500;
+}
+
+.cell-email {
+  color: #666;
+}
+
+.cell-team {
+  color: #444;
+}
+
+/* Actions */
+.cell-actions {
+  flex: 0 0 80px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.buttons-div {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+/* Boutons d'action */
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #888;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #333;
+  background-color: #f0f0f0;
+}
+
+/* === MODALE === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #9e9e9e;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background-color: #f5f5f5;
+  color: #616161;
+}
+
+/* Corps */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.info-section {
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.info-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item label {
+  font-weight: 500;
+  color: #616161;
+}
+
+.info-item span {
+  color: #000;
+  text-align: right;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-grid .info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.info-grid .info-item span {
+  text-align: left;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .general {
+    padding: 0.5rem;
+  }
+
+  .search-input-wrapper {
+    width: 100%;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
