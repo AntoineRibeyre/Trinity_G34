@@ -12,6 +12,8 @@ python manage.py makemigrations
 # Appliquer les migrations
 python manage.py migrate
 
-# Lancer le serveur Django
+# Créer les utilisateurs de test
+#python manage.py create_test_users
 
+# Lancer le serveur Django
 python manage.py runserver 0.0.0.0:8000
