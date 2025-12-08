@@ -25,7 +25,7 @@
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
     "SAVING": "Sauvegarde en cours",
     "PHONE" : "Numéro de téléphone",
-    "REQUIRE_MIN_LENGTH": "Six charactères minimum",
+    "REQUIRE_MIN_LENGTH": "Six caractères minimum",
     "REQUIRE_UPPERCASE": "Au moins une majuscule",
     "REQUIRE_LOWERCASE": "Au moins une minuscule",
     "REQUIRE_DIGIT": "Au moins un chiffre",
