@@ -53,3 +53,8 @@ docker exec -it angular_frontend bash
 # La doc angular est générée automatiquement (voir l'url http://localhost:4200/docs/)
 
 # ATTENTION A BIEN UTILISER LES DOCKERFILE ET LE DOCKER-COMPOSE AU LIEU DES DOCKERFILE.DEV ET DOCKER-COMPOSE.DEV
+
+
+# Charger les données du dump
+- se rendre dans le conteneur du backend
+- exécuter la commande python manage.py loaddata trinity/dump/data.json
