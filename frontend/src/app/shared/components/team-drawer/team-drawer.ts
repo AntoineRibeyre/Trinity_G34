@@ -38,7 +38,7 @@ import {EditTeamManager} from '../edit-team-manager/edit-team-manager';
     ])
   ]
 })
-export class TeamDrawer implements OnChanges {
+export class TeamDrawer implements OnChanges, OnInit {
 
   @Input() isOpen: boolean = false;
   @Input() team: Team | undefined = undefined;
@@ -48,7 +48,12 @@ export class TeamDrawer implements OnChanges {
   @Output() onTeamDeleted = new EventEmitter<number>();
   @Output() onTeamUpdated = new EventEmitter<Team>();
 
-  constructor(private teamService: TeamService,private dialog : MatDialog, private translateService: TranslateService, private userService: UserService) {}
+  constructor(
+    private teamService: TeamService,
+    private dialog : MatDialog,
+    private translateService: TranslateService,
+    private userService: UserService) {}
+
   dropdownOptionsUsers: DropdownOption[] = []
   isEditable: boolean = false;
   teamManager: User | undefined;
@@ -56,6 +61,10 @@ export class TeamDrawer implements OnChanges {
   // Créer une copie mutable pour l'édition
   editableTeam: Team | undefined;
   private originalTeam: Team | undefined;
+
+  ngOnInit(): void {
+
+  }
 
   // Supprimer ngOnInit et garder uniquement ngOnChanges
   ngOnChanges(changes: SimpleChanges): void {
@@ -299,14 +308,22 @@ export class TeamDrawer implements OnChanges {
     this.onMemberClick.emit(Number(memberId));
   }
 
-  openManagerDialog(): void {
+  async openManagerDialog(): Promise<void> {
+    const allUsers = await this.userService.getAllUsers();
+    const managers = allUsers.filter((user: User) => user.role === "manager" && user.team == undefined);
+
     this.dialog.open(EditTeamManager, {
       data: {
         title: "Modifier le manager de l'équipe",
         message: "Choisissez le nouveau manager de l'équipe.",
         cancel: "Annuler",
-        confirm: "Supprimer",
-        onConfirm: (dialogRef: MatDialogRef<EditTeamManager>) => {
+        confirm: "Modifier",
+        managers: managers,
+        onConfirm: (dialogRef: MatDialogRef<EditTeamManager>, newManager: string | undefined) => {
+          if (newManager) {
+            //TODO
+            // Edit manager
+          }
           dialogRef.close();
         },
         onCancel: (dialogRef: MatDialogRef<EditTeamManager>) => {
