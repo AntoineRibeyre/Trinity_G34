@@ -8,6 +8,12 @@
     {{ data.message }}
   </div>
 
+  <app-basic-dropdown
+    [options]="managersList"
+    (onSelectionChange)="onChangeManager($event)"
+  >
+  </app-basic-dropdown>
+
   <div class="buttons">
     <app-basic-text-button
       text="{{ data.cancel }}"
@@ -17,8 +23,9 @@
 
     <app-basic-text-button
       text="{{ data.confirm }}"
-      color="#AA3333"
-      (onClick)="data.onConfirm(dialog)">
+      color="#336CAA"
+      [disabled]="isManager"
+      (onClick)="data.onConfirm(dialog, managerSelected)">
     </app-basic-text-button>
   </div>
 
