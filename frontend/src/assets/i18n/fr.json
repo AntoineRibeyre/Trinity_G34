@@ -24,6 +24,17 @@
     "PASSWORD_PLACEHOLDER": "Laissez vide pour ne pas changer",
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
     "SAVING": "Sauvegarde en cours",
+    "PHONE" : "Numéro de téléphone",
+    "REQUIRE_MIN_LENGTH": "Six charactères minimum",
+    "REQUIRE_UPPERCASE": "Au moins une majuscule",
+    "REQUIRE_LOWERCASE": "Au moins une minuscule",
+    "REQUIRE_DIGIT": "Au moins un chiffre",
+    "NEW_PASSWORD": "Nouveau mot de passe",
+    "PLACEHOLDER_PASSWORD": "Nouveau mot de passe",
+    "PASSWORD_INVALID": "Mot de passe invalide",
+    "CONFIRM_PASSWORD": "Confirmez votre mot de passe",
+    "PLACEHOLDER_CONFIRM": "Confirmez votre mot de passe",
+    "PASSWORD_MISMATCH": "Mot de passes différents",
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",
       "PASSWORD": "Votre mot de passe",
@@ -56,7 +67,8 @@
     "CONFIRM_PWD": "Confirmation du mot de pass",
     "FORGOTTEN_PASSWORD": "Mot de passe oublié",
     "PHONE_NUMBER": "Numéro de téléphone",
-    "PWD_REQUIREMENT": "Pré-requis du mot de passe"
+    "PWD_REQUIREMENT": "Pré-requis du mot de passe",
+    "GO_HOME" : "Retour à l'accueil"
   },
   "HOME": {
     "REGISTER": "S’inscrire",

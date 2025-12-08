@@ -25,12 +25,19 @@
 }
 
 .profile-avatar {
-  width: 120px;
-  height: 120px;
-  background-color: #E0E0E0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #4A90E2; /* couleur par défaut */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 600;
+  font-size: 32px;
+  text-transform: uppercase;
+  margin: 0 auto 20px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .profile-avatar:hover {

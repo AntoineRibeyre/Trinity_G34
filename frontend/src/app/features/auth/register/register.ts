@@ -136,7 +136,10 @@ export class Register implements OnInit {
       this.errorMessage = 'Les mots de passe ne correspondent pas.';
     } else {
       this.errorMessage = 'Veuillez remplir tous les champs correctement.';
-    }  }
+    }
+  }
 }
-
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
 }

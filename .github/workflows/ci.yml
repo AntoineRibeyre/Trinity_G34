@@ -129,11 +129,11 @@ jobs:
       - name: Test Docker Compose startup
         run: |
           docker compose up -d
+          docker compose ps
+          docker compose logs
           echo "⏳ Waiting for services to start..."
           sleep 30
           docker compose ps
-          echo "📋 Service logs:"
-          docker compose logs
           docker compose down -v
 
 
@@ -206,8 +206,12 @@ jobs:
       - name: Run tests with coverage
         working-directory: ./backend
         run: |
-          echo "🧪 Running tests with coverage..."
-          pytest --cov=. --cov-report=xml --cov-report=html --cov-report=term-missing -v
+          pytest --cov=trinity --cov=backend \
+          --cov-report=xml \
+          --cov-report=html \
+          --cov-report=term-missing \
+          --ignore=tests/ \
+          -v tests/
         env:
           DJANGO_SETTINGS_MODULE: backend.settings
           SECRET_KEY: ${{ secrets.SECRET_KEY || 'ci-test-secret-key-not-for-production' }}
@@ -218,13 +222,6 @@ jobs:
           DB_HOST: localhost
           DB_PORT: 5432
 
-      - name: Display coverage summary in console
-        working-directory: ./backend
-        if: always()
-        run: |
-          echo "📊 ===== COVERAGE SUMMARY ====="
-          coverage report --show-missing
-        continue-on-error: true
 
       - name: Upload coverage XML report
         uses: actions/upload-artifact@v4
@@ -271,14 +268,14 @@ jobs:
         with:
           name: coverage-xml
           path: ./coverage
-        continue-on-error: true
+        continue-on-error: False
 
       - name: Download coverage HTML
         uses: actions/download-artifact@v4
         with:
           name: coverage-html
           path: ./coverage-html
-        continue-on-error: true
+        continue-on-error: False
 
       - name: Install coverage tool
         run: pip install coverage
