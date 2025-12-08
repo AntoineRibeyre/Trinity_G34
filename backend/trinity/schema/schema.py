@@ -221,29 +221,98 @@ class UserInput(graphene.InputObjectType):
     email = graphene.String(required=False)
     password = graphene.String(required=False)
     telephone = graphene.String(required=False)
+    role = graphene.String(required=False)
+    teamId = graphene.Int(required=False)
+    socialNumber = graphene.BigInt(required=False)
+    contract = graphene.String(required=False)
+    arrivalDate = graphene.String(required=False)
+    annualSalary = graphene.Int(required=False)
+    birthDate = graphene.String(required=False)
+    workingHours = graphene.Int(required=False)
+    leaves = graphene.Int(required=False)
+    isActive = graphene.Boolean(required=False)
 
 class UpdateUser(graphene.Mutation):
     class Arguments:
         user_data = UserInput(required=True)  # ✅ Changé de "info" à "user_data"
+        userId = graphene.Int(required=False)
 
     user = graphene.Field(UserType)
 
-    def mutate(self, info, user_data):  # ✅ Plus de conflit
-        user = info.context.user
-        if not user.is_authenticated:
+    def mutate(self, info, user_data, userId=None):  # ✅ Plus de conflit
+        caller = info.context.user
+        if not caller.is_authenticated:
             raise Exception("Authentification requise")
 
-        if user_data.first_name:
-            user.first_name = user_data.first_name
-        if user_data.last_name:
-            user.last_name = user_data.last_name
-        if user_data.email:
-            user.email = user_data.email
-        if user_data.password:
-            user.password = make_password(user_data.password)
+        # Determine the target user: caller by default, or userId if provided and caller has rights
+        target_user = caller
+        if userId is not None:
+            # Allow only staff/superuser or role 'admin' to update other users
+            is_admin = getattr(caller, 'is_staff', False) or getattr(caller, 'is_superuser', False) or getattr(caller, 'role', '') == 'admin'
+            if not is_admin:
+                raise Exception("Droits insuffisants pour modifier un autre utilisateur")
+            try:
+                target_user = User.objects.get(id=userId)
+            except User.DoesNotExist:
+                raise Exception("Utilisateur cible introuvable")
 
-        user.save()
-        return UpdateUser(user=user)
+        # Update simple string/int/boolean fields if provided (map camelCase input to model fields)
+        if getattr(user_data, 'username', None) is not None:
+            target_user.username = user_data.username
+        if getattr(user_data, 'firstName', None) is not None:
+            target_user.first_name = user_data.firstName
+        if getattr(user_data, 'lastName', None) is not None:
+            target_user.last_name = user_data.lastName
+        if getattr(user_data, 'email', None) is not None:
+            target_user.email = user_data.email
+        if getattr(user_data, 'telephone', None) is not None:
+            target_user.telephone = user_data.telephone
+        if getattr(user_data, 'role', None) is not None:
+            target_user.role = user_data.role
+        if getattr(user_data, 'socialNumber', None) is not None:
+            target_user.social_number = user_data.socialNumber
+        if getattr(user_data, 'contract', None) is not None:
+            target_user.contract = user_data.contract
+        if getattr(user_data, 'annualSalary', None) is not None:
+            target_user.annual_salary = user_data.annualSalary
+        if getattr(user_data, 'workingHours', None) is not None:
+            target_user.working_hours = user_data.workingHours
+        if getattr(user_data, 'leaves', None) is not None:
+            target_user.leaves = user_data.leaves
+        if getattr(user_data, 'isActive', None) is not None:
+            target_user.is_active = user_data.isActive
+
+        # Handle password separately (hash it)
+        if getattr(user_data, 'password', None):
+            target_user.password = make_password(user_data.password)
+
+        # Handle team relation if teamId provided
+        team_id = getattr(user_data, 'teamId', None)
+        if team_id is not None:
+            try:
+                team = Team.objects.get(id=team_id)
+                target_user.team = team
+            except Team.DoesNotExist:
+                target_user.team = None
+
+        # Parse dates if provided (expecting ISO format YYYY-MM-DD)
+        arrival_date = getattr(user_data, 'arrivalDate', None)
+        if arrival_date is not None:
+            try:
+                target_user.arrival_date = datetime.date.fromisoformat(arrival_date)
+            except Exception:
+                # ignore or leave unchanged on parse error
+                pass
+
+        birth_date = getattr(user_data, 'birthDate', None)
+        if birth_date is not None:
+            try:
+                target_user.birth_date = datetime.date.fromisoformat(birth_date)
+            except Exception:
+                pass
+
+        target_user.save()
+        return UpdateUser(user=target_user)
 
 class CreateTeam(graphene.Mutation):
     """This class is a GraphQL mutation that creates a new team and pushes it

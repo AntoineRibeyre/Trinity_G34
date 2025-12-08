@@ -1,5 +1,5 @@
 import { Scheduler } from '../../../features/main-layout/scheduler/scheduler';
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, OnChanges, Output, SimpleChanges} from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
@@ -36,23 +36,45 @@ import {firstValueFrom} from 'rxjs';
     ])
   ]
 })
-export class EmployeeDrawer {
+export class EmployeeDrawer implements OnChanges {
   @Input() isOpen: boolean = false;
   @Input() employee: any = null;
   @Input() isEditable: boolean = false;
+  @Input() manager: string = '';
 
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<any>();
+  @Output() onError = new EventEmitter<string>();
 
 
   private currentMonthWork: any
   private userId: number | undefined;
+  saving: boolean = false;
+  
 
   constructor(
     private pointService: PointService,
-    private excelExportService: ExcelExportService
+    private excelExportService: ExcelExportService,
+    private userService: UserService
   ) {
 
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // When switching to editable mode, ensure nested objects exist to avoid template errors
+    if (changes['isEditable'] && this.isEditable && this.employee) {
+      if (!this.employee.team) {
+        this.employee.team = { name: '' } as any;
+      }
+      // ensure other nested fields exist if needed in future
+    }
+    // If employee input changed, ensure team exists
+    if (changes['employee'] && this.employee) {
+      if (this.isEditable && !this.employee.team) {
+        this.employee.team = { name: '' } as any;
+      }
+    }
   }
 
 
@@ -136,7 +158,28 @@ export class EmployeeDrawer {
     }
   }
 
-  saveChanges(): void {
-    this.onSave.emit(this.employee);
+  async saveChanges(): Promise<void> {
+    if (!this.employee) return;
+    this.saving = true;
+    try {
+      // Call userService.updateUser with the full employee object
+      // pass employee id so backend updates the selected user (if caller has rights)
+      const updated = await this.userService.updateUser(this.employee, this.employee.id);
+
+      // Emit updated user (fall back to local employee if backend returns null)
+      this.onSave.emit(updated ?? this.employee);
+      if (updated) this.employee = updated;
+      this.close();
+    } catch (err) {
+      console.error('Erreur lors de la sauvegarde de l\'utilisateur :', err);
+      // Friendly message for common backend unique constraint on email
+      // try {
+      //   const message = err && (err.message || (err.graphQLErrors && err.graphQLErrors[0] && err.graphQLErrors[0].message));
+      //   if (message && String(message).includes('duplicate key value')) {
+      //     alert('Erreur : cet email est déjà utilisé par un autre utilisateur.');
+      //   } else {
+      //     alert('Erreur lors de la sauvegarde de l\'utilisateur. Voir la console pour plus de détails.');
+      //   }
+    }
   }
-}
+}      
