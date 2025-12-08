@@ -3,25 +3,16 @@ from zoneinfo import ZoneInfo
 
 import graphene
 import graphql_jwt
-from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.middleware import get_user
 
-from .graphtypes import CalendarType, TeamType, UserType, DailyWorkType, EventType, CreateEvent, UpdateEvent, DeleteEvent, \
+from .graphtypes import TeamType, UserType, DailyWorkType, CreateEvent, UpdateEvent, DeleteEvent, \
     AddAttendeeToEvent, RemoveAttendeeFromEvent
 from ..models import Calendar, Event, Team, User
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
 from . import graphtypes as graphtype
-from .graphtypes import DailyWorkType, CreateEvent, UpdateEvent, DeleteEvent, \
-    AddAttendeeToEvent, RemoveAttendeeFromEvent
-from .graphtypes import UserType
 from .queryresolver import QueryResolver
-from ..logic.calendarfactory import CalendarFactory
-from ..logic.teamfactory import TeamFactory
-from ..logic.userfactory import UserFactory
-from ..models import Calendar, Event
 from ..mutations.mutation_logout import LogoutMutation
 from ..mutations.mutation_token import CustomObtainJSONWebToken
 
