@@ -13,6 +13,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../services/user.service';
 import { AddTeamEmploye } from '../add-team-employe/add-team-employe';
 import { DropdownOption } from '../basic-dropdown/basic-dropdown';
+import {EditTeamManager} from '../edit-team-manager/edit-team-manager';
 
 @Component({
   selector: 'app-team-drawer',
@@ -38,7 +39,7 @@ import { DropdownOption } from '../basic-dropdown/basic-dropdown';
   ]
 })
 export class TeamDrawer implements OnChanges {
-  
+
   @Input() isOpen: boolean = false;
   @Input() team: Team | undefined = undefined;
 
@@ -51,7 +52,7 @@ export class TeamDrawer implements OnChanges {
   dropdownOptionsUsers: DropdownOption[] = []
   isEditable: boolean = false;
   teamManager: User | undefined;
-  
+
   // Créer une copie mutable pour l'édition
   editableTeam: Team | undefined;
   private originalTeam: Team | undefined;
@@ -59,13 +60,13 @@ export class TeamDrawer implements OnChanges {
   // Supprimer ngOnInit et garder uniquement ngOnChanges
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ngOnChanges appelé', changes);
-    
+
     // Initialiser dès que team change ou au premier chargement
     if (changes['team']) {
       console.log('Team changé:', changes['team'].currentValue);
       this.initializeTeam();
     }
-    
+
     // Réinitialiser aussi quand le drawer s'ouvre
     if (changes['isOpen'] && changes['isOpen'].currentValue === true) {
       console.log('Drawer ouvert, réinitialisation');
@@ -75,16 +76,16 @@ export class TeamDrawer implements OnChanges {
 
   private initializeTeam(): void {
     console.log('initializeTeam appelé avec team:', this.team);
-    
+
     if (this.team) {
       try {
         // Créer une copie profonde pour l'édition
         this.editableTeam = JSON.parse(JSON.stringify(this.team));
         this.originalTeam = JSON.parse(JSON.stringify(this.team));
-        
+
         console.log('editableTeam créé:', this.editableTeam);
         console.log('originalTeam créé:', this.originalTeam);
-        
+
         this.updateTeamManager();
       } catch (error) {
         console.error('Erreur lors de la copie de team:', error);
@@ -105,12 +106,12 @@ export class TeamDrawer implements OnChanges {
 
   onChangeName(name: string): void {
     console.log('onChangeName appelé avec:', name);
-    
+
     if (!this.editableTeam) {
       console.error('Impossible de mettre à jour : équipe non définie');
       return;
     }
-    
+
     // Modifier la copie mutable
     this.editableTeam.name = name;
     console.log('Nom mis à jour:', this.editableTeam.name);
@@ -118,12 +119,12 @@ export class TeamDrawer implements OnChanges {
 
   onChangeDescription(description: string): void {
     console.log('onChangeDescription appelé avec:', description);
-    
+
     if (!this.editableTeam) {
       console.error('Impossible de mettre à jour : équipe non définie');
       return;
     }
-    
+
     // Modifier la copie mutable
     this.editableTeam.description = description;
     console.log('Description mise à jour:', this.editableTeam.description);
@@ -187,12 +188,12 @@ export class TeamDrawer implements OnChanges {
     this.teamService.updateTeam( updatedData).subscribe({
       next: (response) => {
         console.log('Équipe mise à jour:', response.message);
-        
+
         // Mettre à jour les valeurs
         if (this.editableTeam) {
           this.originalTeam = JSON.parse(JSON.stringify(this.editableTeam));
         }
-        
+
       },
       error: (err) => {
         console.error('Erreur lors de la mise à jour:', err);
@@ -238,14 +239,14 @@ export class TeamDrawer implements OnChanges {
       panelClass: 'custom-dialog-container'
     })
 
-    
+
   }
 
-  
+
 
   async openDialog(): Promise<void> {
     const allUsers = await this.userService.getAllUsers();
-   
+
     // 🔹 On garde uniquement ceux qui n'ont pas d'équipe
     const usersWithoutTeam = allUsers.filter((user: User) => user.team?.id == this.team?.id);
     const employees = usersWithoutTeam.filter((user: User)=> user.role == "employe");
@@ -296,5 +297,23 @@ export class TeamDrawer implements OnChanges {
   openMemberDetails(memberId: String, event: Event): void {
     event.stopPropagation();
     this.onMemberClick.emit(Number(memberId));
+  }
+
+  openManagerDialog(): void {
+    this.dialog.open(EditTeamManager, {
+      data: {
+        title: "Modifier le manager de l'équipe",
+        message: "Choisissez le nouveau manager de l'équipe.",
+        cancel: "Annuler",
+        confirm: "Supprimer",
+        onConfirm: (dialogRef: MatDialogRef<EditTeamManager>) => {
+          dialogRef.close();
+        },
+        onCancel: (dialogRef: MatDialogRef<EditTeamManager>) => {
+          dialogRef.close();
+        },
+      },
+      panelClass: 'custom-dialog-container'
+    })
   }
 }

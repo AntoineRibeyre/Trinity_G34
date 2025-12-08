@@ -69,22 +69,13 @@
           </div>
         </div>
       </div>
-      
-      <div class="info-section">
-        <button class="btn" (click)="$event.stopPropagation(); openDialog()">
-            {{ "TEAM.DIALOG.REMOVE-MEMBERS.TITLE" | translate }}
-          </button>
-      </div>
-      
-          
 
       <!-- Section Liste des membres -->
       <div class="info-section">
         <h3>{{ "ADMIN.TEAMS.DRAWER.MEMBERS" | translate }} ({{ team.members?.length || 0 }}) </h3>
-        
 
         <div class="members-list">
-          
+
           @for (member of team.members; track member.id) {
             <div class="member-row" (click)="openMemberDetails(member.id, $event)">
               <div class="member-avatar">
@@ -95,7 +86,7 @@
                 <div class="member-role">{{ member.role }}</div>
               </div>
               <div class="member-email">{{ member.email }}</div>
-              
+
               <button class="icon-btn-small">
                 <span>›</span>
               </button>
@@ -106,6 +97,16 @@
             </div>
           }
         </div>
+      </div>
+
+      <div class="info-section buttons">
+        <button class="btn manager" (click)="$event.stopPropagation(); openManagerDialog()">
+          {{ "TEAM.DIALOG.REMOVE-MEMBERS.TITLE-MANAGER" | translate }}
+        </button>
+
+        <button class="btn employe" (click)="$event.stopPropagation(); openDialog()">
+          {{ "TEAM.DIALOG.REMOVE-MEMBERS.TITLE-MEMBERS" | translate }}
+        </button>
       </div>
 
       <!-- Boutons d'action -->

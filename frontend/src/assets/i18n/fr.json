@@ -131,7 +131,8 @@
         "NAME-PLACEHOLDER": "Nom et prénom..."
       },
       "REMOVE-MEMBERS": {
-        "TITLE": "Retirer des employés de l'équipe",
+        "TITLE-MEMBERS": "Retirer des employés de l'équipe",
+        "TITLE-MANAGER": "Modifier le manager de l'équipe",
         "NAME-TITLE": "Nom et prénom de l'employé",
         "NAME-PLACEHOLDER": "Nom et prénom...",
         "RETIRER": "Retirer"

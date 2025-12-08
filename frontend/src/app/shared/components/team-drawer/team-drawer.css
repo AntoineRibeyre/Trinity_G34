@@ -276,6 +276,12 @@
 }
 
 /* === SECTION MEMBRES === */
+.title-members {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .members-list {
   display: flex;
   flex-direction: column;
@@ -448,8 +454,13 @@
 }
 
 /* === BOUTON REMOVE MEMBERS === */
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .btn {
-  width: 100%;
+  /*width: 100%;*/
   padding: 12px 20px;
   border: none;
   border-radius: 8px;
@@ -458,6 +469,15 @@
   font-family: 'Inter', sans-serif;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.manager {
+  background-color: #d32f2f;
+  color: white;
+  box-shadow: 0 2px 4px rgba(211, 47, 47, 0.2);
+}
+
+.employe {
   background-color: #d32f2f;
   color: white;
   box-shadow: 0 2px 4px rgba(211, 47, 47, 0.2);
