@@ -24,7 +24,22 @@
     "PASSWORD_PLACEHOLDER": "Leave empty to keep unchanged",
     "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
     "SAVING": "Saving in progress...",
-    "PHONE" : "Phone number"
+    "PHONE" : "Phone number",
+    "REQUIRE_MIN_LENGTH": "Six characters minimum",
+    "REQUIRE_UPPERCASE": "At least one uppercase letter",
+    "REQUIRE_LOWERCASE": "At least one lowercase letter",
+    "REQUIRE_DIGIT": "At least one number",
+    "NEW_PASSWORD": "New password",
+    "PLACEHOLDER_PASSWORD": "New password",
+    "PASSWORD_INVALID": "Invalid password",
+    "CONFIRM_PASSWORD": "Confirm your password",
+    "PLACEHOLDER_CONFIRM": "Confirm your password",
+    "PASSWORD_MISMATCH": "Passwords do not match",
+    "DIALOG": {
+      "TITLE": "Edit your password",
+      "PASSWORD": "Your password",
+      "CONFIRM": "Confirm your password"
+    }
   },
   "LOGIN": {
     "CONNEXION": "Connexion",
