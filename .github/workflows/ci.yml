@@ -218,13 +218,6 @@ jobs:
           DB_HOST: localhost
           DB_PORT: 5432
 
-      - name: Display coverage summary in console
-        working-directory: ./backend
-        if: always()
-        run: |
-          echo "📊 ===== COVERAGE SUMMARY ====="
-          coverage report --show-missing
-        continue-on-error: true
 
       - name: Upload coverage XML report
         uses: actions/upload-artifact@v4
@@ -271,14 +264,14 @@ jobs:
         with:
           name: coverage-xml
           path: ./coverage
-        continue-on-error: true
+        continue-on-error: False
 
       - name: Download coverage HTML
         uses: actions/download-artifact@v4
         with:
           name: coverage-html
           path: ./coverage-html
-        continue-on-error: true
+        continue-on-error: False
 
       - name: Install coverage tool
         run: pip install coverage
