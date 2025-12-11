@@ -50,6 +50,7 @@ export class EmployeeDrawer implements OnChanges {
   private currentMonthWork: any
   private userId: number | undefined;
   saving: boolean = false;
+  effectiveHours: string = '0h 0m';  // Changé de private à public
   
 
   constructor(
@@ -69,14 +70,48 @@ export class EmployeeDrawer implements OnChanges {
       }
       // ensure other nested fields exist if needed in future
     }
-    // If employee input changed, ensure team exists
+    // If employee input changed, ensure team exists and load effective hours
     if (changes['employee'] && this.employee) {
       if (this.isEditable && !this.employee.team) {
         this.employee.team = { name: '' } as any;
       }
+      // Charger les heures effectives
+      this.loadEffectiveHours();
     }
   }
 
+  private async loadEffectiveHours(): Promise<void> {
+    if (!this.employee || !this.employee.id) {
+      this.effectiveHours = '0h 0m';
+      return;
+    }
+
+    try {
+      const userId = Number(this.employee.id);
+
+      // Récupérer tous les calendars de l'utilisateur
+      const calendars = await firstValueFrom(
+        this.pointService.getAllCalendarsByUser(userId)
+      );
+
+      // Calculer le total des secondes
+      let totalSeconds = 0;
+
+      calendars.forEach(calendar => {
+        if (calendar.duration) {
+          totalSeconds += calendar.duration; // duration est en secondes (int)
+        }
+      });
+
+      // Convertir en heures et minutes
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      this.effectiveHours = `${hours}h ${minutes}m`;
+    } catch (error) {
+      console.error('Erreur lors du chargement des heures effectives:', error);
+      this.effectiveHours = '0h 0m';
+    }
+  }
 
   close(): void {
     this.onClose.emit();
@@ -182,4 +217,4 @@ export class EmployeeDrawer implements OnChanges {
       //   }
     }
   }
-}      
+}
