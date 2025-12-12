@@ -137,6 +137,13 @@ const GET_ALL_TEAMS = gql`
   }
 `;
 
+const CHANGE_TEAM_MANAGER = gql`
+mutation ChangeTeamManager($teamId: Int!, $newManagerId: Int!) {
+  changeTeamManager(teamId: $teamId, newManagerId: $newManagerId) {
+    message
+  }
+}`
+
 const MANAGER_VIEW_QUERY = gql`
   query ManagerView($managerId: Int!) {
     managerView(managerId: $managerId) {
@@ -433,5 +440,15 @@ export class TeamService {
         return of([]);
       })
     );
+  }
+
+  changeTeamManager(teamId: number, newManagerId: number): Observable<any> {
+    return this.apollo.mutate({
+      mutation: CHANGE_TEAM_MANAGER,
+      variables: {
+        teamId: teamId,
+        newManagerId: newManagerId
+      }
+    });
   }
 }

@@ -377,6 +377,41 @@ class DeleteTeam(graphene.Mutation):
                 message=f"Erreur : {str(e)}"
             )
         
+class ChangeTeamManager(graphene.Mutation):
+    class Arguments:
+        team_id = graphene.Int(required=True)
+        new_manager_id = graphene.Int(required=True)
+
+    message = graphene.String()
+
+    def mutate(self, info, team_id, new_manager_id):
+        try:
+            team = Team.objects.get(id=team_id)
+            new_manager = User.objects.get(id=new_manager_id)
+            # on récupère l'utilisateur présent dans la liste 'members' de l'équipe qui possède le role de manager
+            old_manager = team.members.filter(role='manager').first()
+            if old_manager:
+                team.members.remove(old_manager)
+            # Vérifier si le nouveau manager est déjà membre de l'équipe
+            if not team.members.filter(id=new_manager_id).exists():
+                team.members.add(new_manager)
+
+            return ChangeTeamManager(
+                message="Le manager de l'équipe a été mis à jour avec succès."
+            )
+        except Team.DoesNotExist:
+            return ChangeTeamManager(
+                message="Équipe introuvable."
+            )
+        except User.DoesNotExist:
+            return ChangeTeamManager(
+                message="Utilisateur introuvable."
+            )
+        except Exception as e:
+            return ChangeTeamManager(
+                message=f"Erreur : {str(e)}"
+            )
+        
 class TeamInput(graphene.InputObjectType):
     id = graphene.Int(required=True)
     name = graphene.String(required=False)
@@ -542,6 +577,7 @@ class Mutation(graphene.ObjectType):
     create_team = CreateTeam.Field()
     update_team = UpdateTeam.Field()
     delete_team = DeleteTeam.Field()
+    change_team_manager = ChangeTeamManager.Field()
     delete_member = DeleteMember.Field()
     register_arrival = RegisterArrival.Field()
     add_employee_to_team = AddEmployeeToTeam.Field()
