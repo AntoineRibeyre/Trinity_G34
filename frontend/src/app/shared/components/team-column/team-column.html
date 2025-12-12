@@ -5,11 +5,23 @@
 
   <div class="bloc">
     <div class="month">
-      team_name
+      {{ currentTeam?.name }}
     </div>
 
-    <div class="calendar">
-
+    <div class="employees">
+      @for (employee of employeeList; track employee.id) {
+        <div class="employee-card">
+          <div class="card">
+            <div class="avatar">
+              <div class="status-indicator" [ngClass]="getStatusClass(employee)">
+              </div>
+            </div>
+            <div class="name" [style.font-size]="getNameFontSize(employee)">
+              {{ employee.firstName }} {{ employee.lastName }}
+            </div>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>

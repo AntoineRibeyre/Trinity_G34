@@ -36,7 +36,7 @@ export const routes: Routes = [
           { path: 'teams', component: TeamList, canActivate: [AuthGuard] }
         ]
       }
-      
+
     ]
   },
   {path: '**', redirectTo: '' }

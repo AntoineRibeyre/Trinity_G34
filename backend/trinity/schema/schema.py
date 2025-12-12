@@ -45,6 +45,7 @@ class Query(graphene.ObjectType):
     )
     all_events = graphene.List(graphtype.EventType)
     event = graphene.Field(graphtype.EventType, id=graphene.Int(required=True))
+    team_members = graphene.List(UserType, team_id=graphene.Int(required=True))
 
     def resolve_pending_day(self, info, user_id):
         """Il faut aboslument modifier  ce code car il viole l'architecture
@@ -172,6 +173,16 @@ class Query(graphene.ObjectType):
     def resolve_all_teams(self, info):
         return Team.objects.all()
 
+    def resolve_team_members(self, info, team_id):
+        """Récupère tous les utilisateurs membres d'une équipe"""
+        try:
+            team = Team.objects.get(id=team_id)
+            # Récupère tous les membres de l'équipe via la relation related_name="members"
+            members = team.members.filter(is_active=True)
+            return members
+        except Team.DoesNotExist:
+            return []
+
 
 class CreateUser(graphene.Mutation):
     """This class is a GraphQL mutation that creates a new user and pushes it
@@ -216,9 +227,8 @@ class DeleteUser(graphene.Mutation):
 
 
 class UserInput(graphene.InputObjectType):
-    username = graphene.String(required=False)
-    firstName = graphene.String(required=False)
-    lastName = graphene.String(required=False)
+    first_name = graphene.String(required=False)
+    last_name = graphene.String(required=False)
     email = graphene.String(required=False)
     password = graphene.String(required=False)
     telephone = graphene.String(required=False)
