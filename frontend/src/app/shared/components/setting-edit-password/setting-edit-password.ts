@@ -10,6 +10,8 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import {BasicTextButton} from '../basic-text-button/basic-text-button';
+import {AddTeamEmployee} from '../add-team-employe/add-team-employe';
 
 // Validator : mot de passe = confirmation
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -44,7 +46,7 @@ interface PasswordRequirement {
   standalone: true,
   templateUrl: './setting-edit-password.html',
   styleUrls: ['./setting-edit-password.css'],
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule]
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, BasicTextButton]
 })
 export class SettingEditPassword {
 
@@ -62,15 +64,15 @@ export class SettingEditPassword {
   ];
 
   constructor(
+    public dialog: MatDialogRef<SettingEditPassword>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       title: string;
       confirm: string;
       cancel: string;
-      onConfirm: (dialogRef: MatDialogRef<any>, newPassword: string) => void;
-      onCancel: (dialogRef: MatDialogRef<any>) => void;
+      onConfirm: (dialogRef: MatDialogRef<SettingEditPassword>, newPassword: string) => void;
+      onCancel: (dialogRef: MatDialogRef<SettingEditPassword>) => void;
     },
-    private dialogRef: MatDialogRef<SettingEditPassword>,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group(
@@ -115,7 +117,7 @@ export class SettingEditPassword {
    */
   confirm(): void {
     if (this.form.valid) {
-      this.data.onConfirm(this.dialogRef, this.form.get('password')?.value);
+      this.data.onConfirm(this.dialog, this.form.get('password')?.value);
     } else {
       this.form.markAllAsTouched();
     }
@@ -125,6 +127,6 @@ export class SettingEditPassword {
    * Bouton "Annuler"
    */
   cancel(): void {
-    this.data.onCancel(this.dialogRef);
+    this.data.onCancel(this.dialog);
   }
 }

@@ -169,7 +169,6 @@ export class Settings implements OnInit, OnDestroy {
       }
     } catch (err) {
       console.error(err);
-      alert('Erreur lors de la sauvegarde');
     }
 
     this.isLoading = false;
@@ -183,7 +182,7 @@ export class Settings implements OnInit, OnDestroy {
   /* -------------------- OPEN PASSWORD MODAL -------------------- */
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
-      width: '500px',
+      width: '470px',
       data: {
         title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
         confirm: this.translateService.instant('BASE.EDIT'),
@@ -198,12 +197,13 @@ export class Settings implements OnInit, OnDestroy {
         onConfirm: async (dialogRef: any, newPassword: string) => {
           try {
             await this.userService.updateUser({ password: newPassword });
-            alert(this.translateService.instant('SETTINGS.PASSWORD_UPDATED_SUCCESS'));
             dialogRef.close();
           } catch (err) {
-            alert(this.translateService.instant('SETTINGS.PASSWORD_UPDATE_ERROR'));
           }
         },
+        onCancel: (dialogRef: any) => {
+          dialogRef.close()
+        }
       },
     });
   }

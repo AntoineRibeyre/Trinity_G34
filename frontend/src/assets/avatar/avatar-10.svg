@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 177.66 177.66">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #8fc4ff;
+      }
+
+      .st2 {
+        fill: #c8e1ff;
+      }
+
+      .st3 {
+        fill: #001f42;
+      }
+
+      .st4 {
+        fill: #f3f7ff;
+      }
+
+      .st5 {
+        fill: #64b2ff;
+      }
+    </style>
+  </defs>
+  <rect class="st4" x="0" width="177.66" height="177.66"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+  <g>
+    <path class="st2" d="M148.58,162.55c0,20.14-119.5,20.14-119.5,0s47.15-27.97,59.75-27.97,59.75,7.83,59.75,27.97Z"/>
+    <path class="st1" d="M88.83,144.93h0c-5.85,0-10.59-4.74-10.59-10.59v-24.12h21.17v24.12c0,5.85-4.74,10.59-10.59,10.59Z"/>
+    <path class="st5" d="M99.41,128.15v-9.23h-21.17v9.23c3.27,1.33,6.85,2.06,10.59,2.06s7.31-.73,10.58-2.06Z"/>
+    <rect class="st1" x="60.61" y="39.49" width="56.43" height="84.06" rx="28.21" ry="28.21"/>
+    <g>
+      <circle class="st1" cx="57.77" cy="92.01" r="7.72" transform="translate(-48.14 67.8) rotate(-45)"/>
+      <path class="st3" d="M52.26,92.51c-.28,0-.5-.22-.5-.5,0-3.31,2.7-6.01,6.01-6.01.28,0,.5.22.5.5s-.22.5-.5.5c-2.76,0-5.01,2.25-5.01,5.01,0,.28-.22.5-.5.5Z"/>
+    </g>
+    <g>
+      <circle class="st1" cx="119.89" cy="92.01" r="7.72" transform="translate(-11 167.56) rotate(-67.5)"/>
+      <path class="st3" d="M125.4,92.51c-.28,0-.5-.22-.5-.5,0-2.76-2.25-5.01-5.01-5.01-.28,0-.5-.22-.5-.5s.22-.5.5-.5c3.31,0,6.01,2.7,6.01,6.01,0,.28-.22.5-.5.5Z"/>
+    </g>
+    <path class="st3" d="M123.32,55.19c-.97-6.75-4.99-11.15-11.15-11.15-2.57,0-5.06.86-5.06.86-1.99-12.46-10.01-23.26-23.32-23.26s-20.62,9.36-21.25,21.13h-.02c-19.73,0-12.98,41.15-1.2,41.52v-18.07c0-5.05,3.38-10.26,8.43-10.26,6.67,0,7.39,4.75,9.35,7.61,3.23,4.7,8,8.44,14.11,8.44,5.4,0,10.18-2.68,13.08-6.78,1.84-2.61,2.68-3.37,5.55-3.37s5.2,2.33,5.2,5.2v17.77c6.78,0,7.72-19.63,6.28-29.65Z"/>
+  </g>
+  <circle class="st0" cx="88.83" cy="88.83" r="88.83" transform="translate(-36.79 88.83) rotate(-45)"/>
+</svg>

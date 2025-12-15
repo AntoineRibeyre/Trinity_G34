@@ -1,71 +1,205 @@
-<div class="home-page">
+<div class="landing-page">
+  <!-- Header Navigation -->
+  <header class="header">
+    <div class="header-container">
+      <!-- Left spacer for centering -->
+      <div class="header-left"></div>
 
-  <section class="">
-    <div class="">
-      <h1 class="">Trinity</h1>
-      <p class="">Gérez efficacement le temps de travail de vos équipes</p>
+      <!-- Centered Logo -->
+      <div class="header-center">
+        <img src="assets/icons/PrimeBank.svg" alt="Prime Bank Logo" class="logo">
+      </div>
 
-      <div class="" [@if]="!isAuthenticated">
-        <button class="" (click)="navigateToLogin()">
+      <!-- Right side buttons -->
+      <div class="header-right">
+        <button class="btn btn-outline" (click)="navigateToLogin()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          {{ 'HOME.LOGIN' | translate }}
+        </button>
+        <button class="btn btn-primary" (click)="navigateToRegister()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="8.5" cy="7" r="4"/>
+            <line x1="20" y1="8" x2="20" y2="14"/>
+            <line x1="23" y1="11" x2="17" y2="11"/>
+          </svg>
+          {{ 'HOME.REGISTER' | translate }}
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span>Intranet Prime Bank</span>
+      </div>
+      <h1 class="hero-title">Bienvenue sur le portail<br><span class="highlight">Prime Bank</span></h1>
+      <p class="hero-subtitle">Système de pointage et gestion du temps de travail pour les collaborateurs</p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Collaborateurs</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">24/7</span>
+          <span class="stat-label">Accessibilité</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">Sécurisé</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="hero-decoration">
+      <div class="decoration-circle circle-1"></div>
+      <div class="decoration-circle circle-2"></div>
+      <div class="decoration-circle circle-3"></div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-container">
+      <div class="section-header">
+        <span class="section-tag">Fonctionnalités</span>
+        <h2 class="section-title">Gérez votre temps efficacement</h2>
+        <p class="section-description">Notre système de pointage vous offre tous les outils nécessaires pour une gestion optimale</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Pointage Simplifié</h3>
+          <p class="feature-description">Enregistrez vos heures d'arrivée et de départ en un seul clic, où que vous soyez.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Gestion d'Équipes</h3>
+          <p class="feature-description">Organisez vos collaborateurs par équipes et suivez leur activité en temps réel.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Rapports & KPI</h3>
+          <p class="feature-description">Analysez les indicateurs de performance avec des rapports détaillés et exportables.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Calendrier Intégré</h3>
+          <p class="feature-description">Visualisez vos heures de travail et planifiez vos journées facilement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Banner -->
+  <section class="info-banner">
+    <div class="banner-content">
+      <div class="banner-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="banner-text">
+        <h3>Sécurité Bancaire de Premier Ordre</h3>
+        <p>Vos données sont protégées selon les normes les plus strictes du secteur bancaire</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <h2 class="cta-title">Prêt à commencer ?</h2>
+      <p class="cta-description">Accédez à votre espace personnel et commencez à pointer dès maintenant</p>
+      <div class="cta-buttons">
+        <button class="btn btn-cta-primary" (click)="navigateToRegister()">
+          Créer un compte
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+        <button class="btn btn-cta-secondary" (click)="navigateToLogin()">
           Se connecter
         </button>
-        <button class="" (click)="navigateToRegister()">
-          S'inscrire
-        </button>
       </div>
+    </div>
+  </section>
 
-            <div class="" [@if]="isAuthenticated">
-<!--              <button class="" (click)="clockIn()">-->
-                Pointer mon arrivée/départ
-<!--              </button>-->
-<!--              <button class="" (click)="navigateToDashboard()">-->
-<!--                Accéder au tableau de bord-->
-<!--              </button>-->
-            </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <img src="assets/icons/PrimeBank.svg" alt="Prime Bank" class="footer-logo">
+          <p class="footer-tagline">Votre partenaire financier de confiance</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Ressources</h4>
+            <a href="#">Guide d'utilisation</a>
+            <a href="#">FAQ</a>
+            <a href="#">Support technique</a>
           </div>
-
-  </section>
-
-
-  <section class="">
-    <h2 class="">Fonctionnalités principales</h2>
-
-    <div class=""> <!--- 1 visu--->
-      <div class=""> <!--- 1 cone--->
-          <i class=""></i> <!--- 1 texte--->
+          <div class="footer-column">
+            <h4>Légal</h4>
+            <a href="#">Mentions légales</a>
+            <a href="#">Politique de confidentialité</a>
+            <a href="#">CGU</a>
+          </div>
+          <div class="footer-column">
+            <h4>Contact</h4>
+            <a href="#">support&#64;primebank.com</a>
+            <a href="#">+33 1 23 45 67 89</a>
+          </div>
         </div>
-        <h3 class="">Pointage simplifié</h3>
-        <p>Enregistrez vos heures d'arrivée et de départ en un clic</p>
       </div>
 
-      <div class=""> <!--- 1 visu--->
-        <div class=""> <!--- 1 icone--->
-          <i class=""></i> <!--- 1 texte--->
-        </div>
-        <h3 class="">Gestion d'équipes</h3>
-        <p>Organisez vos collaborateurs en équipes et suivez leur activité</p>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Prime Bank - Tous droits réservés</p>
+        <p class="footer-compliance">Application conforme aux réglementations RGPD et normes bancaires européennes</p>
       </div>
-
-      <div class=""> <!--- 1 visu--->
-        <div class=""> <!--- 1 icone--->
-          <i class=""></i> <!--- 1 texte--->
-        </div>
-        <h3 class="">Rapports KPI</h3>
-        <p>Analysez les indicateurs de performance de votre entreprise</p>
-      </div>
-
-      <div class="">  <!--- 1 visu--->
-        <div class=""> <!--- 1 icone--->
-          <i class=""></i> <!--- 1 texte--->
-        </div>
-        <h3 class="">Tableau de bord</h3>
-        <p>Visualisez vos heures de travail et vos statistiques</p>
-      </div>
-
-  </section>
-
-<!--   Footer-->
-  <footer class="">
-    <p>&copy; 2025 Trinity - Tous droits réservés</p>
+    </div>
   </footer>
 </div>

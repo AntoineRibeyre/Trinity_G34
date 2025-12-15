@@ -6,11 +6,20 @@ import { map, catchError } from 'rxjs/operators';
 import {Team} from '../models/team.model';
 
 // Interfaces pour typer les données
-interface Employee {
+export interface EmployeeCalendar {
+  begin: string;
+  end: string;
+  duration: number;
+  dayType: string;
+  dayOver: boolean;
+}
+
+export interface Employee {
   id: number;
   firstName: string;
   lastName: string;
   role?: string;
+  Calendar?: EmployeeCalendar[];
 }
 
 interface Calendar {
@@ -73,8 +82,10 @@ interface CreateTeamResponse {
 
 interface UpdateTeamResponse {
   message: string;
+}
 
-
+interface GetTeamMembersResponse {
+  teamMembers: Employee[];
 }
 
 const DELETE_MEMBER = gql`
@@ -125,6 +136,13 @@ const GET_ALL_TEAMS = gql`
       }
   }
 `;
+
+const CHANGE_TEAM_MANAGER = gql`
+mutation ChangeTeamManager($teamId: Int!, $newManagerId: Int!) {
+  changeTeamManager(teamId: $teamId, newManagerId: $newManagerId) {
+    message
+  }
+}`
 
 const MANAGER_VIEW_QUERY = gql`
   query ManagerView($managerId: Int!) {
@@ -227,6 +245,34 @@ mutation UpdateTeam($teamToUpdate: TeamInput!) {
     }
   }
 `
+
+const GET_TEAM_MEMBERS = gql`
+  query GetTeamMembers($teamId: Int!) {
+    teamMembers(teamId: $teamId) {
+      id
+      firstName
+      lastName
+      email
+      username
+      telephone
+      role
+      socialNumber
+      contract
+      arrivalDate
+      annualSalary
+      birthDate
+      workingHours
+      leaves
+      Calendar {
+        begin
+        end
+        duration
+        dayType
+        dayOver
+      }
+    }
+  }
+`;
 
 @Injectable({
   providedIn: 'root'
@@ -372,5 +418,37 @@ export class TeamService {
     return this.getManagerView(managerId).pipe(
       map((managerView) => managerView ? managerView.manager : null)
     );
+  }
+
+  /**
+   * Récupère la liste des utilisateurs membres d'une équipe
+   * @param teamId ID de l'équipe
+   * @returns Observable contenant la liste des membres de l'équipe
+   */
+  getTeamMembersByTeamId(teamId: number): Observable<Employee[]> {
+    return this.apollo.query<GetTeamMembersResponse>({
+      query: GET_TEAM_MEMBERS,
+      variables: { teamId },
+      fetchPolicy: 'network-only'
+    }).pipe(
+      map((result) => {
+        console.log('Membres de l\'équipe récupérés:', result.data.teamMembers);
+        return result.data.teamMembers;
+      }),
+      catchError((error) => {
+        console.error('Erreur lors de la récupération des membres:', error);
+        return of([]);
+      })
+    );
+  }
+
+  changeTeamManager(teamId: number, newManagerId: number): Observable<any> {
+    return this.apollo.mutate({
+      mutation: CHANGE_TEAM_MANAGER,
+      variables: {
+        teamId: teamId,
+        newManagerId: newManagerId
+      }
+    });
   }
 }

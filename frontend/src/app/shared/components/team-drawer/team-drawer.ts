@@ -319,10 +319,21 @@ export class TeamDrawer implements OnChanges, OnInit {
         cancel: "Annuler",
         confirm: "Modifier",
         managers: managers,
-        onConfirm: (dialogRef: MatDialogRef<EditTeamManager>, newManager: string | undefined) => {
+        onConfirm: (dialogRef: MatDialogRef<EditTeamManager>, newManager: User | undefined) => {
           if (newManager) {
+            console.log('Nouveau manager sélectionné:', newManager);
             //TODO
-            // Edit manager
+            this.teamService.changeTeamManager(Number(this.team?.id), Number(newManager.id)).subscribe({
+              next: (response: any) => {
+                console.log('✅ Manager changé avec succès', response);
+                window.location.reload();
+                this.updateTeamManager();
+              },
+              error: (err: any) => {
+                console.error('Erreur lors du changement de manager:', err);
+                alert('Erreur lors du changement de manager de l\'équipe');
+              }
+            });
           }
           dialogRef.close();
         },
