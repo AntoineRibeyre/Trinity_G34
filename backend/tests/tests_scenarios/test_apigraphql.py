@@ -53,7 +53,8 @@ def test_create_team(client):
     assert executed['data'] is not None, "Les données sont None"
     assert 'createTeam' in executed['data'], "createTeam absent de la réponse"
     assert executed['data']['createTeam'] is not None, "createTeam est None"
-    assert Team.objects.filter(name="Equipe Alpha").exists(), "L'equipe 'Equipe Alpha' n'existe pas en base"
+    assert Team.objects.filter(name="Equipe Alpha").exists(), \
+    "L'equipe 'Equipe Alpha' n'existe pas en base"
     team = Team.objects.get(name="Equipe Alpha")
     assert team.name == "Equipe Alpha"
     assert team.description == "Équipe de test pour le développement"
