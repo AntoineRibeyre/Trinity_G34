@@ -49,7 +49,7 @@ export class Team implements OnInit {
   avgDepartureTime: string = '--:--';
 
   // Employee drawer
-  selectedEmployee: User | null = null;
+  selectedEmployee: User | undefined = undefined;
   isEmployeeDrawerOpen: boolean = false;
   allUsers: User[] = [];
 
@@ -256,12 +256,12 @@ export class Team implements OnInit {
 
   openMemberDetails(memberId: number, event: Event): void {
     event.stopPropagation();
-    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId)) || null;
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
     this.isEmployeeDrawerOpen = true;
   }
 
   closeEmployeeDrawer(): void {
     this.isEmployeeDrawerOpen = false;
-    this.selectedEmployee = null;
+    this.selectedEmployee = undefined;
   }
 }

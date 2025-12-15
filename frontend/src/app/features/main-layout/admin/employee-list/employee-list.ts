@@ -31,7 +31,7 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   teams: Team[] = [];
 
-  selectedEmployee: User | null = null;
+  selectedEmployee: User | undefined = undefined;
   isDrawerOpen: boolean = false;
   editableDrawer: boolean = false;
   query: string = '';
@@ -126,7 +126,7 @@ export class EmployeeList implements OnDestroy, OnInit {
   }
 
   displayEmployeeData(employeeId: string, editable: boolean): void {
-    this.selectedEmployee = this.filteredUsers.find(emp => emp.id === employeeId) || null;
+    this.selectedEmployee = this.filteredUsers.find(emp => emp.id === employeeId);
     const manager = this.selectedEmployee?.team?.members?.find(emp => emp.role.toLowerCase() == "manager") || '';
     console.log("selected employee: " + this.selectedEmployee?.lastName)
     console.log("manager: " + manager)
@@ -143,7 +143,7 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   closeDrawer(): void {
     this.isDrawerOpen = false;
-    this.selectedEmployee = null;
+    this.selectedEmployee = undefined;
     this.editableDrawer = false;
   }
 
@@ -212,8 +212,7 @@ export class EmployeeList implements OnDestroy, OnInit {
   }
 
   onMemberClick(memberId: number): void {
-    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId)) || null;
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
     this.isDrawerOpen = true;
-    console.log(this.selectedEmployee);
   }
 }
