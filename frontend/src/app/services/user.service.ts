@@ -138,7 +138,6 @@ export class UserService {
           firstName
           lastName
           email
-          username
           telephone
           role
           socialNumber
@@ -169,7 +168,7 @@ export class UserService {
       query CurrentUser {
         currentUser{
             id
-            username
+            userName
             email
             firstName
             lastName
