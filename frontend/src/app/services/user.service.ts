@@ -168,7 +168,7 @@ export class UserService {
       query CurrentUser {
         currentUser{
             id
-            userName
+            username
             email
             firstName
             lastName
