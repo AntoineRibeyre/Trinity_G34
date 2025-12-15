@@ -31,6 +31,9 @@ RUN chmod +x /entrypoint.sh
 COPY . .
 RUN chown -R appuser:appuser /app
 
+# Create log directory for container logs and set permissions
+RUN mkdir -p /var/log/trinity && chown -R appuser:appuser /var/log/trinity
+
 # Changer vers l'utilisateur non-root
 USER appuser
 EXPOSE 8002

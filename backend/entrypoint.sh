@@ -6,6 +6,10 @@ until pg_isready -h db -p 5432 -U "$POSTGRES_USER"; do
 done
 echo "DB ready!"
 
+# Redirect all stdout/stderr to a persistent log file while keeping console output
+# This requires /var/log/trinity to exist (created in Dockerfile) and be mounted from the host
+exec > >(tee -a /var/log/trinity/backend.log) 2>&1
+
 # Créer un fichier de migration
 python manage.py makemigrations
 

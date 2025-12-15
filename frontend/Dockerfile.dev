@@ -5,5 +5,6 @@ RUN npm install -g @angular/cli@20.3
 RUN npm install
 RUN npm install --save-dev body-parser  # ← Ajoutez cette ligne
 COPY . .
+RUN mkdir -p /var/log/trinity
 EXPOSE 4200
-CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--proxy-config", "proxy.conf.js"]
+CMD ["sh", "-c", "ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.js 2>&1 | tee -a /var/log/trinity/frontend.log"]

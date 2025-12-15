@@ -22,6 +22,7 @@ services:
     container_name: django_backend
     volumes:
       - ./backend:/app
+      - ./logs/backend:/var/log/trinity
     ports:
       - "8000:8000"
     env_file:
@@ -41,6 +42,7 @@ services:
       - ./frontend:/app:cached
       - /app/node_modules
       - /app/.angular
+      - ./logs/frontend:/var/log/trinity
     ports:
       - "4200:4200"
     depends_on:

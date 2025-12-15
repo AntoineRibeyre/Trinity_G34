@@ -58,3 +58,14 @@ docker exec -it angular_frontend bash
 # Charger les données du dump
 - se rendre dans le conteneur du backend
 - exécuter la commande python manage.py loaddata trinity/dump/data.json
+
+## Logs
+
+During development the backend and frontend containers write their runtime output to files mounted on the host under `./logs`:
+
+- `./logs/backend/backend.log`  — captured output from `django_backend` (migrations, server, etc.)
+- `./logs/frontend/frontend.log` — captured output from `angular_frontend` (`ng serve`).
+
+These files are created when running `docker compose -f docker-compose.dev.yml up` and are ignored by git.
+
+Note: these logs are not rotated by default and can grow over time; for long-running dev environments consider adding a host `logrotate` job or integrating a log rotation solution into the containers.
