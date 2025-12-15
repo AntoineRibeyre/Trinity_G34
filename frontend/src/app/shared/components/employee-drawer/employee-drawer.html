@@ -1,7 +1,12 @@
 <div class="drawer-overlay" *ngIf="isOpen" (click)="close()">
   <div class="drawer-content" (click)="$event.stopPropagation()">
     <div class="drawer-header">
-      <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
+      @if (!isEditable) {
+        <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
+      } @else {
+        <input type="text" [(ngModel)]="employee.firstName" class="edit-input" /> <input type="text" [(ngModel)]="employee.lastName" class="edit-input" />
+      }
+      
       <div class="header-actions">
         <button class="icon-btn" (click)="export()" title="Modifier">
           <img src="assets/icons/export.svg" alt="Export" class="icon" />

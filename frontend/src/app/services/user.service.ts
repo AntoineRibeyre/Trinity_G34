@@ -138,7 +138,6 @@ export class UserService {
           firstName
           lastName
           email
-          username
           telephone
           role
           socialNumber
