@@ -157,6 +157,11 @@
       "FIRSTNAME": "Prénom",
       "EMAIL": "Email",
       "TEAM": "Équipe",
+      "ALL-EMPLOYEES": "Tous les employés",
+      "SALES": "Commerce",
+      "FINANCE": "Finance",
+      "DESIGN": "Design",
+      "SEARCH-INPUT": "Rechercher un employé...",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personnel",
         "BIRTH-DATE": "Date de naissance:",

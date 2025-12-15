@@ -1,8 +1,8 @@
 <div class="general">
   <div class="search-bar">
-    <div class="search-input-wrapper" role="search" aria-label="Rechercher">
+    <div class="search-input-wrapper" role="search" aria-label="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}">
       <app-basic-text-field
-        placeholder="Rechercher"
+        placeholder="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}"
         width="500px"
         [rows]="1"
         (onTextChange)="onQueryChange($event)"
@@ -27,10 +27,10 @@
 
   <div class="user-table">
     <div class="table-header">
-      <div>{{ "ADMIN.ALL.NAME" | translate }}</div>
-      <div>{{ "ADMIN.ALL.FIRSTNAME" | translate }}</div>
-      <div>{{ "ADMIN.ALL.EMAIL" | translate }}</div>
-      <div>{{ "ADMIN.ALL.TEAM" | translate }}</div>
+      <div>{{ 'ADMIN.ALL.NAME' | translate }}</div>
+      <div>{{ 'ADMIN.ALL.FIRSTNAME' | translate }}</div>
+      <div>{{ 'ADMIN.ALL.EMAIL' | translate }}</div>
+      <div>{{ 'ADMIN.ALL.TEAM' | translate }}</div>
       <div></div>
     </div>
     <div class="table-body">

@@ -26,11 +26,13 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
       { path: 'calendar', component: Scheduler, canActivate: [AuthGuard] },//calendar/congés
-      { path: 'team', component: Team, canActivate: [AuthGuard]},//team (manager only)
+      { path: 'team', component: Team, canActivate: [AuthGuard], data: { roles: ['manager'] } },//team (manager only)
       { path: 'settings', component: Settings, canActivate: [AuthGuard] },
       {
         path: 'admin',
         component: Admin,
+        canActivate: [AuthGuard],
+        data: { roles: ['admin'] },
         children: [
           { path: 'users', component: EmployeeList, canActivate: [AuthGuard] },
           { path: 'teams', component: TeamList, canActivate: [AuthGuard] }

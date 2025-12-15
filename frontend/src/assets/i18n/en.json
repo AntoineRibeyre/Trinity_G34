@@ -157,6 +157,11 @@
       "FIRSTNAME": "Firstname",
       "EMAIL": "Email",
       "TEAM": "Team",
+      "ALL-EMPLOYEES": "All Employees",
+      "SALES": "Sales",
+      "FINANCE": "Finance",
+      "DESIGN": "Design",
+      "SEARCH-INPUT": "Search an employee...",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",
@@ -174,6 +179,7 @@
         "HOLIDAYS": "Vacation balance:",
         "ANNUAL-SALARY": "Annual salary:",
         "ARRIVAL": "Arrival:"
+        
       }
     },
     "TEAMS": {
