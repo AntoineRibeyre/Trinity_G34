@@ -38,7 +38,7 @@ import {firstValueFrom} from 'rxjs';
 })
 export class EmployeeDrawer implements OnChanges {
   @Input() isOpen: boolean = false;
-  @Input() employee: any = null;
+  @Input() employee: User | undefined;
   @Input() isEditable: boolean = false;
   @Input() manager: string = '';
 
@@ -51,16 +51,12 @@ export class EmployeeDrawer implements OnChanges {
   private userId: number | undefined;
   saving: boolean = false;
   effectiveHours: string = '0h 0m';  // Changé de private à public
-  
 
   constructor(
     private pointService: PointService,
     private excelExportService: ExcelExportService,
     private userService: UserService
-  ) {
-
-  }
-
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     // When switching to editable mode, ensure nested objects exist to avoid template errors
@@ -217,4 +213,6 @@ export class EmployeeDrawer implements OnChanges {
       //   }
     }
   }
+
+  protected readonly Number = Number;
 }

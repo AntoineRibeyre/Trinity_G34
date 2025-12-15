@@ -214,6 +214,5 @@ export class EmployeeList implements OnDestroy, OnInit {
   onMemberClick(memberId: number): void {
     this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
     this.isDrawerOpen = true;
-    console.log(this.selectedEmployee);
   }
 }

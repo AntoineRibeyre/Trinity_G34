@@ -234,7 +234,14 @@ export class Team implements OnInit {
 
     if (!today || !today.totalHours) return '0h00';
 
-    const [hours, minutes] = today.totalHours.split(':').map(Number);
+    // Gestion plus robuste
+    const match = today.totalHours.match(/^(\d+):?(\d*)$/);
+
+    if (!match) return '0h00';
+
+    const hours = Number(match[1]) || 0;
+    const minutes = Number(match[2]) || 0;
+
     return `${hours}h${minutes.toString().padStart(2, '0')}`;
   }
 

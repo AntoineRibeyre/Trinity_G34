@@ -17,7 +17,7 @@ export interface DropdownOption {
 export class BasicDropdown {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Sélectionnez une option';
-  @Input() selectedValue: number = 0;
+  @Input() selectedValue?: number; // ou number | null
   @Output() onSelectionChange = new EventEmitter<number>();
 
   handleChange(event: Event): void {
