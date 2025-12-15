@@ -49,7 +49,7 @@ export class Team implements OnInit {
   avgDepartureTime: string = '--:--';
 
   // Employee drawer
-  selectedEmployee: User | undefined = undefined;
+  selectedEmployee: User | null = null;
   isEmployeeDrawerOpen: boolean = false;
   allUsers: User[] = [];
 
@@ -234,7 +234,14 @@ export class Team implements OnInit {
 
     if (!today || !today.totalHours) return '0h00';
 
-    const [hours, minutes] = today.totalHours.split(':').map(Number);
+    // Gestion plus robuste
+    const match = today.totalHours.match(/^(\d+):?(\d*)$/);
+
+    if (!match) return '0h00';
+
+    const hours = Number(match[1]) || 0;
+    const minutes = Number(match[2]) || 0;
+
     return `${hours}h${minutes.toString().padStart(2, '0')}`;
   }
 
@@ -249,12 +256,12 @@ export class Team implements OnInit {
 
   openMemberDetails(memberId: number, event: Event): void {
     event.stopPropagation();
-    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId)) || null;
     this.isEmployeeDrawerOpen = true;
   }
 
   closeEmployeeDrawer(): void {
     this.isEmployeeDrawerOpen = false;
-    this.selectedEmployee = undefined;
+    this.selectedEmployee = null;
   }
 }

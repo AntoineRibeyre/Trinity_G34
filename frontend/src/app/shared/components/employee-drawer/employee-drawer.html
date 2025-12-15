@@ -79,16 +79,16 @@
 
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.TEAM" | translate }}</label>
-            
+
             <span>{{ employee.team?.name }}</span>
-            
+
           </div>
 
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.MANAGER" | translate }}</label>
-            
+
             <span>{{ manager }}</span>
-            
+
           </div>
         </div>
       </div>
@@ -156,10 +156,12 @@
           </app-basic-text-button>
         </div>
       }
-      <div class="scheduler-container">
-        <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
-        <app-scheduler [targetUserId]="employee.id"></app-scheduler>
-      </div>
+      @if (!isEditable) {
+        <div class="scheduler-container">
+          <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
+          <app-scheduler [targetUserId]="Number(employee.id)"></app-scheduler>
+        </div>
+      }
     </div>
   </div>
 </div>
