@@ -40,6 +40,22 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 }
 
+.profile-avatar-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-image {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
 .profile-avatar:hover {
   background-color: #D0D0D0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

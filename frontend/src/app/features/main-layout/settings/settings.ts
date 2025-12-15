@@ -207,4 +207,30 @@ export class Settings implements OnInit, OnDestroy {
       },
     });
   }
+
+  /* -------------------- Gestion avatar par user -------------------- */
+
+  getAvatarPath(): string {
+    if (!this.currentUser) {
+      return 'assets/avatar/avatar-1.svg';
+    }
+
+    // Génère un nombre stable à partir de l'id ou de l'email
+    const seed =
+      this.currentUser.id ||
+      this.currentUser.email ||
+      `${this.currentUser.firstName}${this.currentUser.lastName}`;
+
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // Nombre total d’avatars disponibles
+    const avatarCount = 18;
+
+    const index = Math.abs(hash) % avatarCount + 1;
+
+    return `assets/avatar/avatar-${index}.svg`;
+  }
 }

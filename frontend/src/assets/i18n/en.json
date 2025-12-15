@@ -7,7 +7,9 @@
   },
   "SETTINGS": {
     "FIRST_NAME": "First name",
+    "FIRST_NAME_REQUIRED":"Require first name",
     "LAST_NAME": "Last name",
+    "LAST_NAME_REQUIRED": "Require last name",
     "EMAIL": "Email",
     "SAVE": "Save",
     "LANGUAGE": "Language",
@@ -25,6 +27,7 @@
     "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
     "SAVING": "Saving in progress...",
     "PHONE" : "Phone number",
+    "PHONE_INVALID": "Invalid phone number",
     "REQUIRE_MIN_LENGTH": "Six characters minimum",
     "REQUIRE_UPPERCASE": "At least one uppercase letter",
     "REQUIRE_LOWERCASE": "At least one lowercase letter",
