@@ -9,36 +9,6 @@
 
     <!-- Settings Form -->
     <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" class="settings-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label" for="firstName">{{ 'SETTINGS.FIRST_NAME' | translate }}</label>
-          <input
-            type="text"
-            id="firstName"
-            formControlName="firstName"
-            class="form-input"
-            [ngClass]="{'invalid': isInvalid('firstName')}"
-            [placeholder]="'SETTINGS.FIRST_NAME' | translate">
-          <div *ngIf="isInvalid('firstName')" class="error-message">
-            {{ 'SETTINGS.FIRST_NAME_REQUIRED' | translate }}
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="lastName">{{ 'SETTINGS.LAST_NAME' | translate }}</label>
-          <input
-            type="text"
-            id="lastName"
-            formControlName="lastName"
-            class="form-input"
-            [ngClass]="{'invalid': isInvalid('lastName')}"
-            [placeholder]="'SETTINGS.LAST_NAME' | translate">
-          <div *ngIf="isInvalid('lastName')" class="error-message">
-            {{ 'SETTINGS.LAST_NAME_REQUIRED' | translate }}
-          </div>
-        </div>
-      </div>
-
       <div class="form-group">
         <label class="form-label" for="email">{{ 'SETTINGS.EMAIL' | translate }}</label>
         <input
