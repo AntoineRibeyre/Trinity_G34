@@ -18,6 +18,7 @@ import { BasicTextButton } from '../../../shared/components/basic-text-button/ba
 import { MatDialog } from '@angular/material/dialog';
 import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
+import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
 
 /* -------------------- VALIDATEURS -------------------- */
 
@@ -203,5 +204,9 @@ export class Settings implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  openAvatarDialog(): void {
+    this.dialog.open(AvatarDialog)
   }
 }

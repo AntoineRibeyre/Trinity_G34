@@ -157,7 +157,7 @@
       "FIRSTNAME": "Firstname",
       "EMAIL": "Email",
       "TEAM": "Team",
-      "ALL-EMPLOYEES": "All Employees",
+      "ALL-EMPLOYEES": "All",
       "SALES": "Sales",
       "FINANCE": "Finance",
       "DESIGN": "Design",
@@ -179,7 +179,7 @@
         "HOLIDAYS": "Vacation balance:",
         "ANNUAL-SALARY": "Annual salary:",
         "ARRIVAL": "Arrival:"
-        
+
       }
     },
     "TEAMS": {
