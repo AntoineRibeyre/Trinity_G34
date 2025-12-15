@@ -38,7 +38,7 @@ import {EditTeamManager} from '../edit-team-manager/edit-team-manager';
     ])
   ]
 })
-export class TeamDrawer implements OnChanges, OnInit {
+export class TeamDrawer implements OnChanges {
 
   @Input() isOpen: boolean = false;
   @Input() team: Team | undefined = undefined;
@@ -61,10 +61,6 @@ export class TeamDrawer implements OnChanges, OnInit {
   // Créer une copie mutable pour l'édition
   editableTeam: Team | undefined;
   private originalTeam: Team | undefined;
-
-  ngOnInit(): void {
-
-  }
 
   // Supprimer ngOnInit et garder uniquement ngOnChanges
   ngOnChanges(changes: SimpleChanges): void {

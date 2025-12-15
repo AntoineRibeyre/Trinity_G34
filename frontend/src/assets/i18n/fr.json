@@ -39,6 +39,9 @@
       "TITLE": "Modifier votre mot de passe",
       "PASSWORD": "Votre mot de passe",
       "CONFIRM": "Confirmer votre mot de passe"
+    },
+    "AVATAR": {
+      "TITLE": "Sélectionner votre avatar"
     }
   },
   "LOGIN": {
@@ -157,7 +160,7 @@
       "FIRSTNAME": "Prénom",
       "EMAIL": "Email",
       "TEAM": "Équipe",
-      "ALL-EMPLOYEES": "Tous les employés",
+      "ALL-EMPLOYEES": "Tous",
       "SALES": "Commerce",
       "FINANCE": "Finance",
       "DESIGN": "Design",

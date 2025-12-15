@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { of, throwError, Subject } from 'rxjs';
 import { User } from '../../../models/user.model';
 import { TodayCalendar } from '../../../services/service-interfaces';
+import { TeamService } from '../../../services/team.service';
 
 describe('Dashboard', () => {
   let component: Dashboard;
@@ -15,6 +16,7 @@ describe('Dashboard', () => {
   let userServiceSpy: jasmine.SpyObj<UserService>;
   let dialogSpy: jasmine.SpyObj<MatDialog>;
   let translateServiceSpy: jasmine.SpyObj<TranslateService>;
+  let teamServiceSpy: jasmine.SpyObj<TeamService>;
 
   const mockUser: User = {
     id: '1',
@@ -86,13 +88,29 @@ describe('Dashboard', () => {
     translateServiceSpy = jasmine.createSpyObj('TranslateService', ['instant']);
     translateServiceSpy.instant.and.returnValue('Mocked Translation');
 
+    teamServiceSpy = jasmine.createSpyObj('TeamService', [
+      'getAllTeams',
+      'createTeam',
+      'addEmployees',
+      'getManagerView',
+      'removeMembers',
+      'deleteTeam',
+      'updateTeam',
+      'getTeamDetails',
+      'getTeamMembers',
+      'getManagerData',
+      'getTeamMembersByTeamId',
+      'changeTeamManager'
+    ]);
+
     await TestBed.configureTestingModule({
       imports: [Dashboard],
       providers: [
         { provide: PointService, useValue: pointServiceSpy },
         { provide: UserService, useValue: userServiceSpy },
         { provide: MatDialog, useValue: dialogSpy },
-        { provide: TranslateService, useValue: translateServiceSpy }
+        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: TeamService, useValue: teamServiceSpy }
       ]
     }).compileComponents();
 
@@ -102,10 +120,12 @@ describe('Dashboard', () => {
 
   afterEach(() => {
     // Nettoyer les intervals et subscriptions
-    if (component.intervalId) {
+    if (component && component.intervalId) {
       clearInterval(component.intervalId);
     }
-    component.ngOnDestroy();
+    if (component) {
+      component.ngOnDestroy();
+    }
   });
 
   describe('Initialization', () => {

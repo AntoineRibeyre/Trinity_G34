@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { Router } from '@angular/router';
 import { FilterService } from '../../../../services/filter.service';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
@@ -8,16 +8,13 @@ interface Filter{
   route: string;
 }
 
-
-
 @Component({
   selector: 'app-header-filters',
   templateUrl: './header-filters.html',
   styleUrls: ['./header-filters.css'],
 })
 
-
-export class HeaderFilters implements OnInit{
+export class HeaderFilters implements OnInit, OnDestroy {
   currentRoute: string = '';
   translate: TranslateService = inject(TranslateService);
   tous_filter: Filter = {label:this.translate.instant('ADMIN.ALL.ALL-EMPLOYEES'),route:"admin/users"}
@@ -35,11 +32,7 @@ export class HeaderFilters implements OnInit{
     }
   ngOnInit(): void {
     this.selectedFilter = this.filterService.getSelectedFilter();
-    console.log(this.selectedFilter)
   }
-
-  
-  
 
   selectFilter(filter: Filter) {
     this.selectedFilter = filter;

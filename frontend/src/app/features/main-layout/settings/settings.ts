@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
@@ -17,6 +18,7 @@ import { BasicTextButton } from '../../../shared/components/basic-text-button/ba
 import { MatDialog } from '@angular/material/dialog';
 import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
+import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
 
 /* -------------------- VALIDATEURS -------------------- */
 
@@ -47,17 +49,16 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, BasicTextButton],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, FormsModule, BasicTextButton],
   templateUrl: './settings.html',
   styleUrls: ['./settings.css'],
 })
 export class Settings implements OnInit, OnDestroy {
   settingsForm: FormGroup;
-  currentLanguage = 'en';
+  currentLanguage: string = '';
   availableLanguages: Array<{ code: string; label: string }> = [];
   isLoading = false;
   currentUser: User | null = null;
-
 
   private languageSubscription?: Subscription;
 
@@ -76,6 +77,8 @@ export class Settings implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private translateService: TranslateService
   ) {
+    // Initialiser la langue depuis le service
+    this.currentLanguage = this.languageService.getCurrentLanguage();
     this.settingsForm = this.fb.group(
       {
         firstName: ['', Validators.required],
@@ -112,6 +115,7 @@ export class Settings implements OnInit, OnDestroy {
     this.availableLanguages = this.languageService.getAvailableLanguages();
 
     this.currentLanguage = this.languageService.getCurrentLanguage();
+    console.log(this.currentLanguage);
 
     this.languageSubscription = this.languageService.currentLanguage$.subscribe(
       (lang) => (this.currentLanguage = lang)
@@ -134,14 +138,8 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   /* -------------------- CHANGE LANGUAGE -------------------- */
-  changeLanguage(event: Event | string): void {
-    const lang =
-      typeof event === 'string'
-        ? event
-        : (event.target as HTMLSelectElement).value;
-
+  changeLanguage(lang: string): void {
     this.languageService.setLanguage(lang);
-
     this.currentLanguage = lang;
   }
 
@@ -206,5 +204,9 @@ export class Settings implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  openAvatarDialog(): void {
+    this.dialog.open(AvatarDialog)
   }
 }
