@@ -102,7 +102,7 @@ class TeamFactoryTestCase(TestCase):
         mock_team_viewer2 = Mock(spec=TeamViewer)
         mock_build_user_viewer.return_value = mock_admin_viewer
         mock_get_all_teams.return_value = [self.mock_team, mock_team2]
-        mock_build_team_viewer.side_effect = [mock_team_viewer1, mock_team_viewer2]   
+        mock_build_team_viewer.side_effect = [mock_team_viewer1, mock_team_viewer2]
         result = TeamFactory.build_admin_view(mock_admin)
         mock_build_user_viewer.assert_called_once_with(mock_admin)
         mock_get_all_teams.assert_called_once()
