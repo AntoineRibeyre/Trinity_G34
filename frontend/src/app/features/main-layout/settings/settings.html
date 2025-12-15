@@ -82,8 +82,9 @@
         <select
           id="language"
           class="form-select"
-          [value]="currentLanguage"
-          (change)="changeLanguage($event)">
+          [ngModel]="currentLanguage"
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="changeLanguage($event)">
           <option *ngFor="let lang of availableLanguages" [value]="lang.code">
             {{ lang.label }}
           </option>

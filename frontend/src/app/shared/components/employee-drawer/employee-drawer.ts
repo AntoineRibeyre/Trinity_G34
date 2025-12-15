@@ -10,6 +10,7 @@ import {PointService} from '../../../services/point.service';
 import {ExcelExportService} from '../../../services/excel-export.service';
 import {User} from '../../../models/user.model';
 import {firstValueFrom} from 'rxjs';
+import {BasicTextField} from '../basic-text-field/basic-text-field';
 
 
 @Component({
@@ -22,7 +23,8 @@ import {firstValueFrom} from 'rxjs';
     NgIf,
     BasicTextButton,
     TranslatePipe,
-    Scheduler
+    Scheduler,
+    BasicTextField
   ],
   animations: [
     trigger('slideIn', [
@@ -44,7 +46,7 @@ export class EmployeeDrawer implements OnChanges {
 
   @Output() onClose = new EventEmitter<void>();
   @Output() onSave = new EventEmitter<any>();
-  @Output() onError = new EventEmitter<string>();
+  @Output() Error = new EventEmitter<string>();
 
 
   private currentMonthWork: any

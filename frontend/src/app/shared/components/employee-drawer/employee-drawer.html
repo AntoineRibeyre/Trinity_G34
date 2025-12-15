@@ -5,7 +5,16 @@
         <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
       } @else {
         @if (employee) {
-          <input type="text" [(ngModel)]="employee.firstName" class="edit-input" /> <input type="text" [(ngModel)]="employee.lastName" class="edit-input" />
+          <app-basic-text-field
+            width=80
+            [rows]="1"
+            [(ngModel)]="employee.firstName">
+          </app-basic-text-field>
+          <app-basic-text-field
+            width=80
+            [rows]="1"
+            [(ngModel)]="employee.lastName">
+          </app-basic-text-field>
         }
       }
 
