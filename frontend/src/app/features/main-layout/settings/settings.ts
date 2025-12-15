@@ -47,7 +47,7 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, BasicTextButton, AvatarComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, BasicTextButton],
   templateUrl: './settings.html',
   styleUrls: ['./settings.css'],
 })

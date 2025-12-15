@@ -48,7 +48,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   selectedTeam: Team | undefined = undefined;
   isTeamDrawerOpen: boolean = false;
 
-  selectedEmployee: User | undefined = undefined;
+  selectedEmployee: User | null = null;
   isEmployeeDrawerOpen: boolean = false;
 
   constructor(
@@ -249,9 +249,8 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onMemberClick(memberId: number): void {
-    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
+    this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId)) || null;
     this.isEmployeeDrawerOpen = true;
-    console.log(this.selectedEmployee);
   }
 
   closeEmployeeDrawer() {

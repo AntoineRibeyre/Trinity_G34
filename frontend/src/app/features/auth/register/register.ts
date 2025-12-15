@@ -20,7 +20,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule, NgOptimizedImage],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
