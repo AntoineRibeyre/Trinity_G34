@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/lang.service';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,6 @@ export class LoginComponent {
 
   email: string = '';
   password: string = '';
-  errorMessage: string = '';
   loading: boolean = false;
 
   // Injection de dépendances
@@ -26,6 +26,7 @@ export class LoginComponent {
   public router = inject(Router);
   private translateService = inject(TranslateService);
   private languageService = inject(LanguageService);
+  private snackBarService = inject(SnackBarService);
 
   ngOnInit(): void {
     // Appliquer la langue sauvegardée en localStorage
@@ -37,12 +38,11 @@ export class LoginComponent {
   // Méthode onLogin() appelée par votre formulaire
   async onLogin() {
     if (!this.email || !this.password) {
-      this.errorMessage = this.translateService.instant('ERRORS.FILL_ALL_FIELDS');
+      this.snackBarService.showError(this.translateService.instant('ERRORS.FILL_ALL_FIELDS'));
       return;
     }
 
     this.loading = true;
-    this.errorMessage = '';
 
     try {
       // Appel du service d'authentification
@@ -50,28 +50,37 @@ export class LoginComponent {
 
       console.log('Utilisateur connecté:', user);
 
+      // Afficher un message de succès
+      this.snackBarService.showSuccess(this.translateService.instant('LOGIN.SUCCESS') || 'Connexion réussie !');
+
       // Redirection vers le dashboard
       this.router.navigate(['/dashboard']);
 
     } catch (error: any) {
       console.error('Erreur de connexion:', error);
 
-      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+      let errorMessage = '';
 
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const message = error.graphQLErrors[0].message;
 
         if (message.includes("credentials") || message.includes("Invalid")) {
-          this.errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
+          errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
         } else {
-          this.errorMessage = message;  // message serveur générique
+          errorMessage = message;  // message serveur générique
         }
 
       } else if (error.networkError) {
-        this.errorMessage = this.translateService.instant('ERRORS.NETWORK_ERROR');
+        errorMessage = this.translateService.instant('ERRORS.NETWORK_ERROR');
 
       } else {
-        this.errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
+        errorMessage = this.translateService.instant('ERRORS.INVALID_CREDENTIALS');
       }
+
+      // Afficher l'erreur dans la SnackBar
+      this.snackBarService.showError(errorMessage);
+    } finally {
+      this.loading = false;
     }
   }
 }

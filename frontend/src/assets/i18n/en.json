@@ -47,7 +47,8 @@
     "EMAIL": "Email",
     "LOGIN": "Login",
     "REGISTER": "Register",
-    "FORGOTTEN_PASSWORD": "Forgotten password"
+    "FORGOTTEN_PASSWORD": "Forgotten password",
+    "SUCCESS": "Connection succeeded"
   },
   "ERRORS": {
     "FILL_ALL_FIELDS": "Fill all fields",
