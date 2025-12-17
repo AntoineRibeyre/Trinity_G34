@@ -2,9 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "integration/unit_tests"]
   pull_request:
-    branches: [ "main"]
 
 env:
   NODE_VERSION: '20'
