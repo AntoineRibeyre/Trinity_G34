@@ -1,9 +1,8 @@
 from django.test import TestCase
-from unittest.mock import Mock, patch, MagicMock
-from datetime import datetime
+from unittest.mock import Mock, patch
 from trinity.models import Team, User
 from trinity.logic.teamfactory import TeamFactory, TeamViewer, AdminView
-from trinity.logic.userfactory import UserFactory, UserViewer
+from trinity.logic.userfactory import UserViewer
 
 
 class TeamFactoryTestCase(TestCase):
