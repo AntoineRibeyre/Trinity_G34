@@ -36,12 +36,12 @@ import { PASSWORD_REQUIREMENTS, isRequirementMet } from '../../utils/password.ut
   styleUrl: './add-employee.css'
 })
 export class AddEmployee implements OnInit {
-  registerForm!: FormGroup;
-  isLoading = false;
-  errorMessage = '';
-  showPasswordRequirements = false;
+  employeeForm!: FormGroup;
+  isSubmitting = false;
+  submitErrorMessage = '';
+  displayPasswordRules = false;
 
-  passwordRequirements = PASSWORD_REQUIREMENTS;
+  employeePasswordRules = PASSWORD_REQUIREMENTS;
 
   constructor(
     public dialog: MatDialogRef<AddEmployee>,
@@ -53,7 +53,7 @@ export class AddEmployee implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.registerForm = this.fb.group(
+    this.employeeForm = this.fb.group(
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
@@ -69,46 +69,46 @@ export class AddEmployee implements OnInit {
     this.translateService.use(lang);
   }
 
-  isRequirementMet(requirement: string): boolean {
-    const password = this.registerForm.get('password')?.value;
+  checkPasswordRequirement(requirement: string): boolean {
+    const password = this.employeeForm.get('password')?.value;
     return isRequirementMet(password, requirement);
   }
 
-  get passwordMismatch(): boolean {
+  get hasPasswordMismatch(): boolean {
     return (
-      this.registerForm.hasError('passwordMismatch') &&
-      this.registerForm.get('confirmPassword')?.touched === true
+      this.employeeForm.hasError('passwordMismatch') &&
+      this.employeeForm.get('confirmPassword')?.touched === true
     );
   }
 
-  async onSubmit(): Promise<void> {
-    if (this.registerForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
+  async onAddEmployee(): Promise<void> {
+    if (this.employeeForm.valid) {
+      this.isSubmitting = true;
+      this.submitErrorMessage = '';
 
-      const { firstName, lastName, email, telephone, password } = this.registerForm.value;
+      const { firstName, lastName, email, telephone, password } = this.employeeForm.value;
       const role = 'employe';
       const username = firstName;
 
       try {
         const response = await this.authService.register(username, firstName, lastName, email, telephone, password, role);
-        this.isLoading = false;
+        this.isSubmitting = false;
         console.log('Inscription réussie:', response);
         this.dialog.close();
         window.location.reload();
       } catch (error: any) {
-        this.isLoading = false;
-        this.errorMessage = error.message || "Erreur lors de l'inscription.";
+        this.isSubmitting = false;
+        this.submitErrorMessage = error.message || "Erreur lors de l'inscription.";
         console.error('Erreur inscription:', error);
       }
     } else {
-      Object.keys(this.registerForm.controls).forEach(key => {
-        this.registerForm.get(key)?.markAsTouched();
+      Object.keys(this.employeeForm.controls).forEach(key => {
+        this.employeeForm.get(key)?.markAsTouched();
       });
-      if (this.registerForm.hasError('passwordMismatch')) {
-        this.errorMessage = 'Les mots de passe ne correspondent pas.';
+      if (this.employeeForm.hasError('passwordMismatch')) {
+        this.submitErrorMessage = 'Les mots de passe ne correspondent pas.';
       } else {
-        this.errorMessage = 'Veuillez remplir tous les champs correctement.';
+        this.submitErrorMessage = 'Veuillez remplir tous les champs correctement.';
       }
     }
   }
