@@ -5,18 +5,18 @@ import {BasicTextField} from "../basic-text-field/basic-text-field";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {MatDialogRef} from '@angular/material/dialog';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators
 } from '@angular/forms';
 import {AuthService} from '../../../services/auth.service';
 import {Router} from '@angular/router';
 import {LanguageService} from '../../../services/lang.service';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
+import { passwordMatchValidator, passwordStrengthValidator } from '../../utils/validators';
+import { PASSWORD_REQUIREMENTS, isRequirementMet } from '../../utils/password.utils';
 
 
 @Component({
@@ -41,12 +41,7 @@ export class AddEmployee implements OnInit {
   errorMessage = '';
   showPasswordRequirements = false;
 
-  passwordRequirements = [
-    { label: 'Minimum 6 caractères', key: 'minLength' },
-    { label: 'Au moins une lettre majuscule', key: 'uppercase' },
-    { label: 'Au moins une lettre minuscule', key: 'lowercase' },
-    { label: 'Au moins un chiffre', key: 'digit' },
-  ];
+  passwordRequirements = PASSWORD_REQUIREMENTS;
 
   constructor(
     public dialog: MatDialogRef<AddEmployee>,
@@ -64,62 +59,19 @@ export class AddEmployee implements OnInit {
         lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-        password: ['', [Validators.required, Validators.minLength(6), this.passwordStrengthValidator]],
+        password: ['', [Validators.required, Validators.minLength(6), passwordStrengthValidator]],
         confirmPassword: ['', [Validators.required]]
       },
-      { validators: this.passwordMatchValidator }
+      { validators: passwordMatchValidator }
     );
 
     const lang = this.languageService.getCurrentLanguage();
     this.translateService.use(lang);
   }
 
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-
-    if (!password || !confirmPassword) {
-      return null;
-    }
-
-    return password.value === confirmPassword.value ? null : { passwordMismatch: true };
-  }
-
-  passwordStrengthValidator = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-
-    if (!value) {
-      return null;
-    }
-
-    const hasUppercase = /[A-Z]/.test(value);
-    const hasLowercase = /[a-z]/.test(value);
-    const hasDigit = /[0-9]/.test(value);
-
-    const passwordValid = hasUppercase && hasLowercase && hasDigit;
-
-    return passwordValid ? null : { passwordStrength: true };
-  };
-
   isRequirementMet(requirement: string): boolean {
     const password = this.registerForm.get('password')?.value;
-
-    if (!password) {
-      return false;
-    }
-
-    switch (requirement) {
-      case 'minLength':
-        return password.length >= 6;
-      case 'uppercase':
-        return /[A-Z]/.test(password);
-      case 'lowercase':
-        return /[a-z]/.test(password);
-      case 'digit':
-        return /[0-9]/.test(password);
-      default:
-        return false;
-    }
+    return isRequirementMet(password, requirement);
   }
 
   get passwordMismatch(): boolean {
