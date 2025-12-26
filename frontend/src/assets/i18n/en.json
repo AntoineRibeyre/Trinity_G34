@@ -163,6 +163,7 @@
       "FINANCE": "Finance",
       "DESIGN": "Design",
       "SEARCH-INPUT": "Search an employee...",
+      "ADD_EMPLOYEE": "Add an employee",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",

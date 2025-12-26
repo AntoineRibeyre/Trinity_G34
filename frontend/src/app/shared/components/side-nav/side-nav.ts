@@ -27,7 +27,7 @@ export class SideNav implements OnInit{
   menuItems: MenuItem[] = [
     {
       label: 'Logo',
-      icon: '', // Vide pour le logo
+      icon: 'assets/icons/PrimeBank-logo.svg',
       section: 'top'
     },
     {
