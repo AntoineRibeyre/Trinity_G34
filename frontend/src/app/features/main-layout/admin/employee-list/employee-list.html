@@ -20,9 +20,14 @@
         ✕
       </button>
     </div>
-    <button class="icon-btn" (click)="export()" title="Modifier">
-      Export
-    </button>
+    <div>
+      <button class="icon-btn" (click)="add()" title="Ajouter">
+        {{ 'ADMIN.ALL.ADD_EMPLOYEE' | translate }}
+      </button>
+      <button class="icon-btn" (click)="export()" title="Modifier">
+        Export
+      </button>
+    </div>
   </div>
 
   <div class="user-table">

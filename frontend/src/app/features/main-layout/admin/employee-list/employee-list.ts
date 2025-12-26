@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from '../../../../services/user.service';
@@ -15,6 +15,8 @@ import {ExcelExportService} from '../../../../services/excel-export.service';
 import { Team } from '../../../../models/team.model';
 import { TeamService } from '../../../../services/team.service';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
+import {AddEmployee} from '../../../../shared/components/add-employee/add-employee';
+import { SnackBarService } from '../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -52,6 +54,7 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   private q$ = new Subject<string>();
   private sub: Subscription;
+  private snackBarService = inject(SnackBarService);
 
   constructor(
     private userService: UserService,
@@ -174,10 +177,16 @@ export class EmployeeList implements OnDestroy, OnInit {
         confirm: "Supprimer",
         dropdownOptions: this.dropdownOptions,
         onConfirm: (dialogRef: MatDialogRef<DeleteDialog>) => {
-          this.userService.deleteUser(id)
-          this.loadUsers();
-          window.location.reload();
-          dialogRef.close();
+          this.userService.deleteUser(id).then(() => {
+            this.snackBarService.showSuccess('Employé supprimé avec succès');
+            this.loadUsers();
+            window.location.reload();
+            dialogRef.close();
+          }).catch((err) => {
+            console.error('Erreur lors de la suppression:', err);
+            this.snackBarService.showError('Erreur lors de la suppression de l\'employé');
+            dialogRef.close();
+          });
         },
         onCancel: (dialogRef: MatDialogRef<DeleteDialog>) => {
           dialogRef.close();
@@ -187,23 +196,32 @@ export class EmployeeList implements OnDestroy, OnInit {
     })
   }
 
+  add(): void {
+    this.dialog.open(AddEmployee)
+  }
+
   export(): void {
-    const columns = [
-      { header: 'Nom', key: 'lastName', width: 20 },
-      { header: 'Prénom', key: 'firstName', width: 20 },
-      { header: 'Email', key: 'email', width: 30 },
-      { header: 'Téléphone', key: 'telephone', width: 15 },
-      { header: 'Équipe', key: 'team', width: 20 },
-      { header: 'Poste', key: 'role', width: 25 },
-    ];
+    try {
+      const columns = [
+        { header: 'Nom', key: 'lastName', width: 20 },
+        { header: 'Prénom', key: 'firstName', width: 20 },
+        { header: 'Email', key: 'email', width: 30 },
+        { header: 'Téléphone', key: 'telephone', width: 15 },
+        { header: 'Équipe', key: 'team', width: 20 },
+        { header: 'Poste', key: 'role', width: 25 },
+      ];
 
-    this.exportService.exportWithCustomColumns(
-      this.allUsers,
-      columns,
-      'employes-details',
-      'Liste détaillée'
-    );
-
+      this.exportService.exportWithCustomColumns(
+        this.allUsers,
+        columns,
+        'employes-details',
+        'Liste détaillée'
+      );
+      this.snackBarService.showSuccess('Export Excel généré avec succès');
+    } catch (error) {
+      console.error('Erreur lors de l\'export:', error);
+      this.snackBarService.showError('Erreur lors de l\'export Excel');
+    }
   }
 
   closeTeamDrawer(): void {

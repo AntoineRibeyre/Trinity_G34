@@ -180,7 +180,7 @@ export class Settings implements OnInit, OnDestroy {
   /* -------------------- OPEN PASSWORD MODAL -------------------- */
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
-      width: '470px',
+      // width: '470px',
       data: {
         title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
         confirm: this.translateService.instant('BASE.EDIT'),

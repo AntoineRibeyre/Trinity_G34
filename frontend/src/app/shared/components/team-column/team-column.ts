@@ -70,7 +70,9 @@ export class TeamColumn implements OnInit {
     if (!teamId) return
     this.teamService.getTeamMembersByTeamId(Number(teamId)).subscribe({
       next: (response) => {
-        this.employeeList = response
+        const managers = response.filter(e => e.role === "manager");
+        const autres = response.filter(e => e.role !== "manager");
+        this.employeeList = [...managers, ...autres];
       }
     })
   }
