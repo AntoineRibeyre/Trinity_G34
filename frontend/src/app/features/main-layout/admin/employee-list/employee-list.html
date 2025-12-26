@@ -5,7 +5,7 @@
         placeholder="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}"
         width="500px"
         [rows]="1"
-        (onTextChange)="onQueryChange($event)"
+        (textChange)="onQueryChange($event)"
         [showClearButton]="true"
         style="padding-top:5px;">
       </app-basic-text-field>
@@ -68,8 +68,8 @@
 <app-team-drawer
   [isOpen]="isTeamDrawerOpen"
   [team]="selectedTeam"
-  (onClose)="closeTeamDrawer()"
-  (onMemberClick)="onMemberClick($event)">
+  (closeDrawer)="closeTeamDrawer()"
+  (memberClick)="onMemberClick($event)">
 </app-team-drawer>
 
 <app-employee-drawer
@@ -77,6 +77,6 @@
   [employee]="selectedEmployee"
   [isEditable]="editableDrawer"
   [manager]="managerName"
-  (onClose)="closeDrawer()"
-  (onSave)="saveEmployeeChanges($event)">
+  (closeDrawer)="closeDrawer()"
+  (save)="saveEmployeeChanges($event)">
 </app-employee-drawer>
