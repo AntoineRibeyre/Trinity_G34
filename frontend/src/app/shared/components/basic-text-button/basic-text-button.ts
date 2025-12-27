@@ -11,9 +11,9 @@ export class BasicTextButton {
   @Input() color: string = '#007bff';
   @Input() width: string = '14.5vw';
   @Input() disabled: boolean = false;
-  @Output() click = new EventEmitter<void>();
+  @Output() buttonPressed = new EventEmitter<void>();
 
   handleClick(): void {
-    this.click.emit();
+    this.buttonPressed.emit();
   }
 }

@@ -12,13 +12,15 @@
     <app-basic-text-button
       text="{{ data.cancel }}"
       color="#999999"
-      (click)="data.onCancel(dialog)">
+      (click)="data.onCancel(dialog)"
+      onKeyPress|onKeyDown|onKeyUp>
     </app-basic-text-button>
 
     <app-basic-text-button
       text="{{ data.confirm }}"
       color="#AA3333"
-      (click)="data.onConfirm(dialog)">
+      (click)="data.onConfirm(dialog)"
+      onKeyPress|onKeyDown|onKeyUp>
     </app-basic-text-button>
   </div>
 

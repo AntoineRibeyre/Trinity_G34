@@ -116,13 +116,15 @@
             width="20vw"
             text="Annuler"
             color="#999999"
-            (click)="cancelEdit()">
+            (click)="cancelEdit()"
+            onKeyPress|onKeyDown|onKeyUp>
           </app-basic-text-button>
           <app-basic-text-button
             width="20vw"
             text="Sauvegarder"
             color="#336CAA"
-            (click)="saveChanges()">
+            (click)="saveChanges()"
+            onKeyPress|onKeyDown|onKeyUp>
           </app-basic-text-button>
         </div>
       }

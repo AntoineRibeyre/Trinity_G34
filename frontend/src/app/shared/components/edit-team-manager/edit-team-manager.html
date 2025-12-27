@@ -17,14 +17,16 @@
     <app-basic-text-button
       text="{{ data.cancel }}"
       color="#999999"
-      (click)="data.onCancel(dialog)">
+      (click)="data.onCancel(dialog)"
+      onKeyPress|onKeyDown|onKeyUp>
     </app-basic-text-button>
 
     <app-basic-text-button
       text="{{ data.confirm }}"
       color="#336CAA"
       [disabled]="isManager"
-      (click)="data.onConfirm(dialog, managerSelected)">
+      (click)="data.onConfirm(dialog, managerSelected)"
+      onKeyPress|onKeyDown|onKeyUp>
     </app-basic-text-button>
   </div>
 

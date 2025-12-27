@@ -69,11 +69,11 @@
 
       <div class="form-group">
         <app-basic-text-button
-          text="Changer le mot de passe"
+          text="Changer votre mot de passe"
           color="#999999"
           width="100%"
-          (click)="openEditPassword()"
-        >
+          (buttonPressed)="openEditPassword()"
+          onKeyPress|onKeyDown|onKeyUp>
         </app-basic-text-button>
       </div>
 

@@ -100,7 +100,8 @@
         text="Cancel"
         color="#999999"
         width="12vw"
-        (onClick)="dialog.close()">
+        (click)="dialog.close()"
+        onKeyPress|onKeyDown|onKeyUp>
       </app-basic-text-button>
 
       <app-basic-text-button
@@ -108,7 +109,8 @@
         color="#336CAA"
         width="12vw"
         [disabled]= "!this.employeeForm.valid"
-        (onClick)="onAddEmployee()">
+        (click)="onAddEmployee()"
+        onKeyPress|onKeyDown|onKeyUp>
       </app-basic-text-button>
     </div>
 
