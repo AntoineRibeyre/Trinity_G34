@@ -101,7 +101,7 @@
         color="#999999"
         width="12vw"
         (click)="dialog.close()"
-        onKeyPress|onKeyDown|onKeyUp>
+        (keydown.enter)="dialog.close()">
       </app-basic-text-button>
 
       <app-basic-text-button
@@ -110,7 +110,7 @@
         width="12vw"
         [disabled]= "!this.employeeForm.valid"
         (click)="onAddEmployee()"
-        onKeyPress|onKeyDown|onKeyUp>
+        (keydown.enter)="onAddEmployee()">
       </app-basic-text-button>
     </div>
 

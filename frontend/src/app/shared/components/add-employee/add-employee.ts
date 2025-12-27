@@ -114,4 +114,5 @@ export class AddEmployee implements OnInit {
   }
 
 
+  protected readonly close = close;
 }
