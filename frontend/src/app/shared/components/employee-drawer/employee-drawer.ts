@@ -45,8 +45,8 @@ export class EmployeeDrawer implements OnChanges {
   @Input() isEditable: boolean = false;
   @Input() manager: string = '';
 
-  @Output() onClose = new EventEmitter<void>();
-  @Output() onSave = new EventEmitter<any>();
+  @Output() closeDrawer = new EventEmitter<void>();
+  @Output() save = new EventEmitter<any>();
   @Output() Error = new EventEmitter<string>();
 
 
@@ -115,7 +115,7 @@ export class EmployeeDrawer implements OnChanges {
   }
 
   close(): void {
-    this.onClose.emit();
+    this.closeDrawer.emit();
   }
 
   async export(): Promise<void> {
@@ -205,7 +205,7 @@ export class EmployeeDrawer implements OnChanges {
       const updated = await this.userService.updateUser(this.employee, this.employee.id);
 
       // Emit updated user (fall back to local employee if backend returns null)
-      this.onSave.emit(updated ?? this.employee);
+      this.save.emit(updated ?? this.employee);
       if (updated) this.employee = updated;
       this.snackBarService.showSuccess('Modifications sauvegardées avec succès');
       this.close();

@@ -1,5 +1,5 @@
 // scheduler.component.ts
-import { Component, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {
   ScheduleModule,
   View,
@@ -37,7 +37,7 @@ interface SchedulerEvent {
   styleUrl: './scheduler.css',
   providers: [DayService, WeekService, WorkWeekService, MonthService, AgendaService],
 })
-export class Scheduler implements OnInit {
+export class Scheduler implements OnInit, OnChanges {
   @Input() targetUserId?: number;
 
   //-------------------------------ATTRIBUTS--------------------------------------------------
@@ -110,7 +110,7 @@ export class Scheduler implements OnInit {
         this.username = this.currentUser.username;
       }
     }
-    
+
     // Charger les événements
     await this.loadEvents();
   }

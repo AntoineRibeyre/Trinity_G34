@@ -4,7 +4,7 @@
     {{ 'ADMIN.ALL.ADD_EMPLOYEE' | translate }}
   </div>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+  <form [formGroup]="employeeForm" (ngSubmit)="onAddEmployee()" class="register-form">
     <div>
       <label class="form-label" for="firstName">{{'REGISTER.FIRST_NAME' | translate}}</label>
       <input
@@ -58,20 +58,20 @@
           formControlName="password"
           class="form-input"
           placeholder="Password"
-          (focus)="showPasswordRequirements = true"
-          (blur)="showPasswordRequirements = false"
+        (focus)="displayPasswordRules = true"
+        (blur)="displayPasswordRules = false"
           required>
 
         <!-- Popover des pré-requis -->
-        <div class="password-requirements" *ngIf="showPasswordRequirements">
+        <div class="password-requirements" *ngIf="displayPasswordRules">
           <div class="requirements-title">{{ 'REGISTER.PWD_REQUIREMENT' | translate}} :</div>
           <div class="requirements-list">
             <div
-              *ngFor="let req of passwordRequirements"
+              *ngFor="let req of employeePasswordRules"
               class="requirement-item"
-              [ngClass]="{ 'met': isRequirementMet(req.key), 'not-met': !isRequirementMet(req.key) }">
+              [ngClass]="{ 'met': checkPasswordRequirement(req.key), 'not-met': !checkPasswordRequirement(req.key) }">
           <span class="requirement-icon">
-            {{ isRequirementMet(req.key) ? '✓' : '✗' }}
+            {{ checkPasswordRequirement(req.key) ? '✓' : '✗' }}
           </span>
               <span class="requirement-text">{{ req.label }}</span>
             </div>
@@ -87,10 +87,10 @@
         id="confirmPassword"
         formControlName="confirmPassword"
         class="form-input"
-        [ngClass]="{ 'input-error': passwordMismatch }"
+        [ngClass]="{ 'input-error': hasPasswordMismatch }"
         placeholder="Confirm Password"
         required>
-      <p *ngIf="passwordMismatch" class="error-text">
+      <p *ngIf="hasPasswordMismatch" class="error-text">
         Les mots de passe ne correspondent pas
       </p>
     </div>
@@ -100,19 +100,21 @@
         text="Cancel"
         color="#999999"
         width="12vw"
-        (onClick)="dialog.close()">
+        (click)="dialog.close()"
+        (keydown.enter)="dialog.close()">
       </app-basic-text-button>
 
       <app-basic-text-button
         text="Confirmer"
         color="#336CAA"
         width="12vw"
-        [disabled]= "!this.registerForm.valid"
-        (onClick)="onSubmit()">
+        [disabled]= "!this.employeeForm.valid"
+        (click)="onAddEmployee()"
+        (keydown.enter)="onAddEmployee()">
       </app-basic-text-button>
     </div>
 
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+    <p *ngIf="submitErrorMessage" class="error">{{ submitErrorMessage }}</p>
 
   </form>
 </div>

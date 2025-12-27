@@ -44,10 +44,10 @@ export class TeamDrawer implements OnChanges {
   @Input() isOpen: boolean = false;
   @Input() team: Team | undefined = undefined;
 
-  @Output() onClose = new EventEmitter<void>();
-  @Output() onMemberClick = new EventEmitter<number>();
-  @Output() onTeamDeleted = new EventEmitter<number>();
-  @Output() onTeamUpdated = new EventEmitter<Team>();
+  @Output() closeDrawer = new EventEmitter<void>();
+  @Output() memberClick = new EventEmitter<number>();
+  @Output() teamDeleted = new EventEmitter<number>();
+  @Output() teamUpdated = new EventEmitter<Team>();
 
   private snackBarService = inject(SnackBarService);
 
@@ -140,7 +140,7 @@ export class TeamDrawer implements OnChanges {
 
   close(): void {
     this.isEditable = false;
-    this.onClose.emit();
+    this.closeDrawer.emit();
   }
 
   toggleEdit(): void {
@@ -230,7 +230,7 @@ export class TeamDrawer implements OnChanges {
             next: (response) => {
               console.log('✅ Équipe supprimée avec succès', response);
               this.snackBarService.showSuccess('Équipe supprimée avec succès');
-              this.onTeamDeleted.emit(Number(this.editableTeam!.id));
+              this.teamDeleted.emit(Number(this.editableTeam!.id));
               window.location.reload();
               this.close();
             },
@@ -307,7 +307,7 @@ export class TeamDrawer implements OnChanges {
 
   openMemberDetails(memberId: String, event: Event): void {
     event.stopPropagation();
-    this.onMemberClick.emit(Number(memberId));
+    this.memberClick.emit(Number(memberId));
   }
 
   async openManagerDialog(): Promise<void> {

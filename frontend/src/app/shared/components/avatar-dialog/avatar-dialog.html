@@ -19,13 +19,15 @@
     <app-basic-text-button
       [text]="cancel"
       color="#999999"
-      (onClick)="onCancel()">
+      (buttonPressed)="onCancel()"
+      (keydown.enter)="onCancel()">
     </app-basic-text-button>
 
     <app-basic-text-button
       [text]="confirm"
       color="#336CAA"
-      (onClick)="onConfirm()">
+      (buttonPressed)="onConfirm()"
+      (keydown.enter)="onConfirm()">
     </app-basic-text-button>
   </div>
 

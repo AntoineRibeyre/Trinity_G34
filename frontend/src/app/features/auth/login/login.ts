@@ -1,5 +1,5 @@
 // src/app/features/auth/login/login.ts
-import { Component, inject } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,7 @@ import { SnackBarService } from '../../../services/snackbar.service';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   email: string = '';
   password: string = '';
