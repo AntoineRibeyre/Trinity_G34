@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
-import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
 import {BasicTextField} from '../../../../shared/components/basic-text-field/basic-text-field';
 import {TranslatePipe} from '@ngx-translate/core';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
