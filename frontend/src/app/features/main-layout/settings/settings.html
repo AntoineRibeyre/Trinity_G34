@@ -73,7 +73,7 @@
           color="#999999"
           width="100%"
           (buttonPressed)="openEditPassword()"
-          onKeyPress|onKeyDown|onKeyUp>
+          (keydown.enter)="openEditPassword()">
         </app-basic-text-button>
       </div>
 

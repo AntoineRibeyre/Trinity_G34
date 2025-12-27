@@ -53,7 +53,7 @@
       text="{{ data.cancel }}"
       color="#999999"
       (click)="data.onCancel(dialog)"
-      onKeyPress|onKeyDown|onKeyUp>
+      (keydown.enter)="data.onCancel(dialog)">
     </app-basic-text-button>
 
     <app-basic-text-button
@@ -61,7 +61,7 @@
       color="#336CAA"
       [disabled]= "!isSelected"
       (click)="data.onConfirm(dialog, teamName, teamField, manager, teamDescription)"
-      onKeyPress|onKeyDown|onKeyUp>
+      (keydown.enter)="data.onConfirm(dialog, teamName, teamField, manager, teamDescription)">
     </app-basic-text-button>
   </div>
 
