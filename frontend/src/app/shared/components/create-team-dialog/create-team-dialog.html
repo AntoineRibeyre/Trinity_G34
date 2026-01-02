@@ -12,7 +12,7 @@
     placeholder={{namePlaceholder}}
     width = "300px"
     [rows]="1"
-    (onTextChange)="onChangeName($event)">
+    (textChange)="onChangeName($event)">
   </app-basic-text-field>
 
   <div class="message">
@@ -22,7 +22,7 @@
   <app-basic-dropdown
     [options]="data.dropdownOptions"
     placeholder={{fieldPlaceholder}}
-    (onSelectionChange)="onChangeField($event)">
+    (selectionChange)="onChangeField($event)">
   </app-basic-dropdown>
 
 
@@ -33,7 +33,7 @@
   <app-basic-dropdown
     [options]="data.managerList"
     placeholder={{managerPlaceholder}}
-    (onSelectionChange)="onChangeManager($event)">
+    (selectionChange)="onChangeManager($event)">
   </app-basic-dropdown>
 
   <div class="message">
@@ -45,21 +45,23 @@
     width = "300px"
     [maxLength]="500"
     [rows]="5"
-    (onTextChange)="onChangeDescription($event)">
+    (textChange)="onChangeDescription($event)">
   </app-basic-text-field>
 
   <div class="buttons">
     <app-basic-text-button
       text="{{ data.cancel }}"
       color="#999999"
-      (onClick)="data.onCancel(dialog)">
+      (click)="data.onCancel(dialog)"
+      (keydown.enter)="data.onCancel(dialog)">
     </app-basic-text-button>
 
     <app-basic-text-button
       text="{{ data.confirm }}"
       color="#336CAA"
       [disabled]= "!isSelected"
-      (onClick)="data.onConfirm(dialog, teamName, teamField, manager, teamDescription)">
+      (click)="data.onConfirm(dialog, teamName, teamField, manager, teamDescription)"
+      (keydown.enter)="data.onConfirm(dialog, teamName, teamField, manager, teamDescription)">
     </app-basic-text-button>
   </div>
 

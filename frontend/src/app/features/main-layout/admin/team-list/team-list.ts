@@ -251,7 +251,6 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   onMemberClick(memberId: number): void {
     this.selectedEmployee = this.allUsers.find((user) => user.id === String(memberId));
     this.isEmployeeDrawerOpen = true;
-    console.log(this.selectedEmployee);
   }
 
   closeEmployeeDrawer() {

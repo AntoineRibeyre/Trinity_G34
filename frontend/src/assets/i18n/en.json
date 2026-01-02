@@ -47,7 +47,8 @@
     "EMAIL": "Email",
     "LOGIN": "Login",
     "REGISTER": "Register",
-    "FORGOTTEN_PASSWORD": "Forgotten password"
+    "FORGOTTEN_PASSWORD": "Forgotten password",
+    "SUCCESS": "Connection succeeded"
   },
   "ERRORS": {
     "FILL_ALL_FIELDS": "Fill all fields",
@@ -157,11 +158,12 @@
       "FIRSTNAME": "Firstname",
       "EMAIL": "Email",
       "TEAM": "Team",
-      "ALL-EMPLOYEES": "All Employees",
+      "ALL-EMPLOYEES": "All",
       "SALES": "Sales",
       "FINANCE": "Finance",
       "DESIGN": "Design",
       "SEARCH-INPUT": "Search an employee...",
+      "ADD_EMPLOYEE": "Add an employee",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",
@@ -179,7 +181,7 @@
         "HOLIDAYS": "Vacation balance:",
         "ANNUAL-SALARY": "Annual salary:",
         "ARRIVAL": "Arrival:"
-        
+
       }
     },
     "TEAMS": {

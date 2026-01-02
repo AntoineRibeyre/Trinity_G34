@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
@@ -17,6 +18,7 @@ import { BasicTextButton } from '../../../shared/components/basic-text-button/ba
 import { MatDialog } from '@angular/material/dialog';
 import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
+import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
 
 /* -------------------- VALIDATEURS -------------------- */
 
@@ -47,17 +49,16 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, BasicTextButton, AvatarComponent],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, FormsModule, BasicTextButton],
   templateUrl: './settings.html',
   styleUrls: ['./settings.css'],
 })
 export class Settings implements OnInit, OnDestroy {
   settingsForm: FormGroup;
-  currentLanguage = 'en';
+  currentLanguage: string = '';
   availableLanguages: Array<{ code: string; label: string }> = [];
   isLoading = false;
   currentUser: User | null = null;
-
 
   private languageSubscription?: Subscription;
 
@@ -76,6 +77,8 @@ export class Settings implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private translateService: TranslateService
   ) {
+    // Initialiser la langue depuis le service
+    this.currentLanguage = this.languageService.getCurrentLanguage();
     this.settingsForm = this.fb.group(
       {
         firstName: ['', Validators.required],
@@ -134,14 +137,8 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   /* -------------------- CHANGE LANGUAGE -------------------- */
-  changeLanguage(event: Event | string): void {
-    const lang =
-      typeof event === 'string'
-        ? event
-        : (event.target as HTMLSelectElement).value;
-
+  changeLanguage(lang: string): void {
     this.languageService.setLanguage(lang);
-
     this.currentLanguage = lang;
   }
 
@@ -182,18 +179,10 @@ export class Settings implements OnInit, OnDestroy {
   /* -------------------- OPEN PASSWORD MODAL -------------------- */
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
-      width: '470px',
       data: {
         title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
         confirm: this.translateService.instant('BASE.EDIT'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-
-        // Nouvelle validation + champs masqués + requirements
-        validatePassword: (pwd: string): ValidationErrors | null =>
-          passwordStrengthValidator({ value: pwd } as AbstractControl),
-
-        requirements: this.passwordRequirements,
-
         onConfirm: async (dialogRef: any, newPassword: string) => {
           try {
             await this.userService.updateUser({ password: newPassword });
@@ -206,5 +195,9 @@ export class Settings implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  openAvatarDialog(): void {
+    this.dialog.open(AvatarDialog)
   }
 }
