@@ -44,7 +44,19 @@
         {{ dureeTotaleJournee }}
       </div>
 
-      <div class="point-buttons">
+      <div class="auto-pointage-status">
+        <div class="status-indicator" [class.active]="isUserCurrentlyActive" [class.inactive]="!isUserCurrentlyActive">
+          <span class="status-dot"></span>
+          <span class="status-text">
+            {{ isUserCurrentlyActive ? 'Actif' : 'Inactif' }}
+          </span>
+        </div>
+        <div class="pointage-mode">
+          Pointage automatique {{ isAutoPointageEnabled ? 'activé' : 'désactivé' }}
+        </div>
+      </div>
+
+      <!-- <div class="point-buttons">
         <button
           class="pointer start"
           [class.active]="!isPointeArrivee"
@@ -64,7 +76,7 @@
           <span class="icon">⏸</span>
           <span class="text">End</span>
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 
