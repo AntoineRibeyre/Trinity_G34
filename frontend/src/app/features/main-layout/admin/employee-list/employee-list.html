@@ -45,7 +45,7 @@
           <div class="table-cell cell-name">{{employee.firstName}}</div>
           <div class="table-cell cell-email">{{employee.email}}</div>
           @if (employee.team) {
-            <div class="table-cell cell-team clickable-team" (click)="$event.stopPropagation(); displayTeamData(employee.team.id)" >{{employee.team.name}}</div>
+            <div class="table-cell cell-team clickable-team" (click)="$event.stopPropagation(); displayTeamData(employee.team.id)" (keydown.enter)="displayTeamData(employee.team.id)">{{employee.team.name}}</div>
           } @else {
             <div class="table-cell cell-team">Sans équipe</div>
           }

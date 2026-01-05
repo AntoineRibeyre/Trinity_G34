@@ -16,10 +16,11 @@ import { TeamService } from '../../../../services/team.service';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
 import {AddEmployee} from '../../../../shared/components/add-employee/add-employee';
 import { SnackBarService } from '../../../../services/snackbar.service';
+import {BasicTextButton} from '../../../../shared/components/basic-text-button/basic-text-button';
 
 @Component({
   selector: 'app-employee-list',
-  imports: [CommonModule, FormsModule, BasicTextField, TranslatePipe, EmployeeDrawer, TeamDrawer],
+  imports: [CommonModule, FormsModule, BasicTextField, TranslatePipe, EmployeeDrawer, TeamDrawer, BasicTextButton],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })

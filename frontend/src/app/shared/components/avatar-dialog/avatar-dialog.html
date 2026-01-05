@@ -9,7 +9,8 @@
       <div
         class="avatar-item"
         [class.selected]="selectedAvatarId === avatar.id"
-        (click)="selectAvatar(avatar.id)">
+        (click)="selectAvatar(avatar.id)"
+        (keydown.enter)="selectAvatar(avatar.id)">
         <img [src]="avatar.path" [alt]="'Avatar ' + avatar.id"  />
       </div>
     }
