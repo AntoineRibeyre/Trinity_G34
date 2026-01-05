@@ -2,7 +2,7 @@
   <div class="settings-content">
     <!-- Profile Section -->
     <div class="profile-section">
-      <div class="profile-avatar" (click)="openAvatarDialog()">
+      <div class="profile-avatar" (click)="openAvatarDialog()" (keydown.enter)="openAvatarDialog()">
         {{ (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '') }}
       </div>
     </div>
