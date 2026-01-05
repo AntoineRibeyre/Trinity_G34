@@ -123,6 +123,11 @@ describe('AuthService', () => {
       const email = 'test@example.com';
       const password = 'password123';
 
+      // Clear cookies first - remove all cookies
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+
       loginClientMutateSpy.and.returnValue(Promise.resolve({
         data: {
           tokenAuth: {
@@ -136,7 +141,11 @@ describe('AuthService', () => {
       const result = await service.login(email, password);
 
       expect(result).toEqual(mockCurrentUser);
-      expect(document.cookie).not.toContain('csrftoken=');
+      // When csrfToken is null, it should not set the cookie
+      // Check that csrftoken cookie is not present (either empty or not set)
+      const cookies = document.cookie;
+      const csrfCookie = cookies.split(';').find(c => c.trim().startsWith('csrftoken='));
+      expect(csrfCookie).toBeUndefined();
     });
   });
 
@@ -330,7 +339,11 @@ describe('AuthService', () => {
     });
 
     it('should execute mutation with empty CSRF token when cookie is missing', () => {
-      document.cookie = '';
+      // Clear all cookies first
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
       const mockQuery = { query: 'mutation Test { test }' };
       const mockVariables = { test: 'value' };
       const mockResult = { data: { test: 'result' } };

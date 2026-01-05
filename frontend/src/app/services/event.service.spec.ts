@@ -156,10 +156,18 @@ describe('EventService', () => {
       op.flush({
         data: {
           createEvent: {
-            event: mockEvent,
+            event: { ...mockEvent, subject: 'New Event' },
             success: true,
             message: 'Event created'
           }
+        }
+      });
+
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
         }
       });
 
@@ -192,6 +200,14 @@ describe('EventService', () => {
         }
       });
 
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
+        }
+      });
+
       const result = await resultPromise;
       expect(result?.success).toBe(true);
     });
@@ -216,6 +232,14 @@ describe('EventService', () => {
             success: true,
             message: 'Event created'
           }
+        }
+      });
+
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
         }
       });
 
@@ -269,6 +293,14 @@ describe('EventService', () => {
         }
       });
 
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
+        }
+      });
+
       const result = await resultPromise;
 
       expect(result?.success).toBe(true);
@@ -313,6 +345,14 @@ describe('EventService', () => {
         }
       });
 
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
+        }
+      });
+
       const result = await resultPromise;
 
       expect(result?.success).toBe(true);
@@ -349,6 +389,14 @@ describe('EventService', () => {
           updateEventAttendees: {
             event: mockEvent
           }
+        }
+      });
+
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
         }
       });
 
@@ -391,6 +439,14 @@ describe('EventService', () => {
         }
       });
 
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
+        }
+      });
+
       const result = await resultPromise;
 
       expect(result).toEqual(mockEvent);
@@ -427,6 +483,14 @@ describe('EventService', () => {
           removeAttendee: {
             event: mockEvent
           }
+        }
+      });
+
+      // Handle refetchQueries for GetAllEvents
+      const refetchOp = controller.expectOne('GetAllEvents');
+      refetchOp.flush({
+        data: {
+          allEvents: []
         }
       });
 

@@ -1,12 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import * as XLSX from 'xlsx';
+
+export const XLSX_TOKEN = 'XLSX';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExcelExportService {
+  private xlsx: typeof XLSX;
 
-  constructor() { }
+  constructor(@Inject(XLSX_TOKEN) xlsx?: typeof XLSX) {
+    this.xlsx = xlsx || XLSX;
+  }
 
   /**
    * Exporte des données en fichier Excel
@@ -16,7 +21,7 @@ export class ExcelExportService {
    */
   exportToExcel(data: any[], fileName: string, sheetName: string = 'Sheet1'): void {
     // Crée une nouvelle feuille de calcul à partir des données
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const worksheet: XLSX.WorkSheet = this.xlsx.utils.json_to_sheet(data);
 
     // Ajuste automatiquement la largeur des colonnes
     const columnWidths = this.calculateColumnWidths(data);
@@ -29,7 +34,7 @@ export class ExcelExportService {
     };
 
     // Génère le fichier Excel et le télécharge
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    this.xlsx.writeFile(workbook, `${fileName}.xlsx`);
   }
 
   /**
@@ -44,7 +49,7 @@ export class ExcelExportService {
     const workbook: XLSX.WorkBook = { Sheets: {}, SheetNames: [] };
 
     sheets.forEach(sheet => {
-      const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(sheet.data);
+      const worksheet: XLSX.WorkSheet = this.xlsx.utils.json_to_sheet(sheet.data);
 
       // Ajuste la largeur des colonnes
       const columnWidths = this.calculateColumnWidths(sheet.data);
@@ -54,7 +59,7 @@ export class ExcelExportService {
       workbook.SheetNames.push(sheet.sheetName);
     });
 
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    this.xlsx.writeFile(workbook, `${fileName}.xlsx`);
   }
 
   /**
@@ -79,7 +84,7 @@ export class ExcelExportService {
       return row;
     });
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(transformedData);
+    const worksheet: XLSX.WorkSheet = this.xlsx.utils.json_to_sheet(transformedData);
 
     // Applique les largeurs de colonnes personnalisées
     if (columns.some(col => col.width)) {
@@ -93,7 +98,7 @@ export class ExcelExportService {
       SheetNames: [sheetName]
     };
 
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    this.xlsx.writeFile(workbook, `${fileName}.xlsx`);
   }
 
   /**

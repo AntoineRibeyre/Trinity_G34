@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { ExcelExportService } from './excel-export.service';
+import { ExcelExportService, XLSX_TOKEN } from './excel-export.service';
 import * as XLSX from 'xlsx';
 
 describe('ExcelExportService', () => {
   let service: ExcelExportService;
   let writeFileSpy: jasmine.Spy;
+  let mockXLSX: typeof XLSX;
 
   const mockData = [
     { name: 'John Doe', age: 30, email: 'john@example.com' },
@@ -12,12 +13,21 @@ describe('ExcelExportService', () => {
   ];
 
   beforeEach(() => {
+    // Créer un mock de XLSX avec un spy sur writeFile
+    writeFileSpy = jasmine.createSpy('writeFile').and.stub();
+    mockXLSX = {
+      ...XLSX,
+      writeFile: writeFileSpy
+    } as typeof XLSX;
+
     TestBed.configureTestingModule({
-      providers: [ExcelExportService]
+      providers: [
+        ExcelExportService,
+        { provide: XLSX_TOKEN, useValue: mockXLSX }
+      ]
     });
 
     service = TestBed.inject(ExcelExportService);
-    writeFileSpy = spyOn(XLSX, 'writeFile');
   });
 
   it('should be created', () => {

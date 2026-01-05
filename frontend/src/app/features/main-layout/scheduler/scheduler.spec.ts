@@ -178,7 +178,7 @@ describe('Scheduler', () => {
 
     it('should handle events without attendees', async () => {
       component.userId = 1;
-      component.showOnlyMyEvents = true;
+      component.showOnlyMyEvents = false; // Show all events to see the one without attendees
       const eventsWithoutAttendees = [
         { ...mockEvents[0], attendees: undefined }
       ];
@@ -186,6 +186,7 @@ describe('Scheduler', () => {
 
       await component.loadEvents();
 
+      expect(component.data.length).toBe(1);
       expect(component.data[0].Attendees).toEqual([]);
       expect(component.data[0].AttendeeIds).toEqual([]);
     });
@@ -240,17 +241,21 @@ describe('Scheduler', () => {
 
   describe('ngOnChanges', () => {
     it('should reload user and events when targetUserId changes', async () => {
+      // Setup: load users first
+      await component.loadUsers();
       component.allUsers = mockUsers;
-      userService.loadCurrentUserFromServer.and.returnValue(Promise.resolve(mockUser));
-      eventService.getAllEvents.and.returnValue(Promise.resolve(mockEvents));
-
+      
       const changes = {
         targetUserId: {
-          previousValue: undefined,
+          previousValue: 1,
           currentValue: 2,
           firstChange: false
         }
       };
+
+      // Set targetUserId before calling ngOnChanges
+      component.targetUserId = 2;
+      eventService.getAllEvents.and.returnValue(Promise.resolve(mockEvents));
 
       await component.ngOnChanges(changes as any);
 

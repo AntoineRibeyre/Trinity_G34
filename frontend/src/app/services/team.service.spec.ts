@@ -372,8 +372,13 @@ describe('TeamService', () => {
 
       service.getManagerData(managerId).subscribe(result => {
         expect(result).not.toBeNull();
-        expect(result?.userDetails.id).toBe(1);
-        expect(result?.userDetails.role).toBe('manager');
+        if (result) {
+          expect(result.userDetails.id).toBe(1);
+          expect(result.userDetails.firstName).toBe('Manager');
+          expect(result.userDetails.lastName).toBe('Name');
+          // Note: role n'est pas récupéré dans la requête GraphQL pour le manager
+          // Seulement pour les membres, donc on ne vérifie pas le role ici
+        }
         done();
       });
 

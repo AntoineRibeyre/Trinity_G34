@@ -81,7 +81,9 @@ interface CreateTeamResponse {
 }
 
 interface UpdateTeamResponse {
-  message: string;
+  updateTeam: {
+    message: string;
+  };
 }
 
 interface GetTeamMembersResponse {
@@ -378,7 +380,7 @@ export class TeamService {
       }]
     })
     .pipe(
-      map(result => result.data!)
+      map(result => result.data!.updateTeam as { message: string })
     );
   }
 

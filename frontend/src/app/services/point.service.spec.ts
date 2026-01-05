@@ -205,6 +205,95 @@ describe('PointService', () => {
         });
       });
     });
+
+    describe('getAllCalendarsByUser', () => {
+      it('should fetch all calendars for a user', (done) => {
+        const userId = 1;
+        const mockCalendars = [
+          {
+            id: 1,
+            begin: '2024-01-15T08:00:00Z',
+            end: '2024-01-15T12:00:00Z',
+            dayType: 'work',
+            dayOver: true,
+            duration: 14400,
+            durationFormatted: '04:00:00',
+            employee: {
+              id: 1,
+              username: 'testuser',
+              firstName: 'Test',
+              lastName: 'User',
+              email: 'test@example.com'
+            }
+          },
+          {
+            id: 2,
+            begin: '2024-01-15T13:00:00Z',
+            end: '2024-01-15T17:00:00Z',
+            dayType: 'work',
+            dayOver: true,
+            duration: 14400,
+            durationFormatted: '04:00:00',
+            employee: {
+              id: 1,
+              username: 'testuser',
+              firstName: 'Test',
+              lastName: 'User',
+              email: 'test@example.com'
+            }
+          }
+        ];
+
+        service.getAllCalendarsByUser(userId).subscribe(result => {
+          expect(result.length).toBe(2);
+          expect(result[0].id).toBe(1);
+          expect(result[0].employee.email).toBe('test@example.com');
+          done();
+        });
+
+        const op = controller.expectOne('GetAllCalendarsByUser');
+        expect(op.operation.variables['userId']).toEqual(userId);
+
+        op.flush({
+          data: {
+            allCalendarsByUser: mockCalendars
+          }
+        });
+      });
+
+      it('should return empty array when no calendars exist', (done) => {
+        const userId = 1;
+
+        service.getAllCalendarsByUser(userId).subscribe(result => {
+          expect(result).toEqual([]);
+          done();
+        });
+
+        const op = controller.expectOne('GetAllCalendarsByUser');
+
+        op.flush({
+          data: {
+            allCalendarsByUser: null
+          }
+        });
+      });
+
+      it('should handle errors and return empty array', (done) => {
+        const userId = 1;
+        const consoleErrorSpy = spyOn(console, 'error');
+
+        service.getAllCalendarsByUser(userId).subscribe(result => {
+          expect(result).toEqual([]);
+          expect(consoleErrorSpy).toHaveBeenCalled();
+          done();
+        });
+
+        const op = controller.expectOne('GetAllCalendarsByUser');
+        op.graphqlErrors([
+          new GraphQLError('Error fetching calendars')
+        ]);
+      });
+    });
   });
 
   describe('GraphQL Mutations', () => {

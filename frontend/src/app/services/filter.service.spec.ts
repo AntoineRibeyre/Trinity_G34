@@ -80,29 +80,23 @@ describe('FilterService', () => {
   });
 
   describe('setSelectedFilter', () => {
-    it('should set filter and save to localStorage', (done) => {
+    it('should set filter and save to localStorage', () => {
       let emittedFilter: Filter | null = null;
 
       service.selectedFilter$.subscribe(filter => {
         emittedFilter = filter;
-        if (emittedFilter) {
-          expect(emittedFilter).toEqual(mockFilter);
-          expect(localStorageSetItemSpy).toHaveBeenCalledWith(
-            'selectedFilter',
-            JSON.stringify(mockFilter)
-          );
-          done();
-        }
       });
 
       // setSelectedFilter appelle localStorage.setItem de manière synchrone
       service.setSelectedFilter(mockFilter);
 
-      // Vérifier immédiatement après l'appel
+      // Vérifier immédiatement après l'appel (synchrone)
       expect(localStorageSetItemSpy).toHaveBeenCalledWith(
         'selectedFilter',
         JSON.stringify(mockFilter)
       );
+      expect(emittedFilter).not.toBeNull();
+      expect(emittedFilter as unknown as Filter).toEqual(mockFilter);
     });
 
     it('should update filter when called multiple times', () => {
