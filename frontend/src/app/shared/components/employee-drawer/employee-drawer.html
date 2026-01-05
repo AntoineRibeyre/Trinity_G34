@@ -1,7 +1,23 @@
 <div class="drawer-overlay" *ngIf="isOpen" (click)="close()">
   <div class="drawer-content" (click)="$event.stopPropagation()">
     <div class="drawer-header">
-      <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
+      @if (!isEditable) {
+        <h2>{{ employee?.firstName }} {{ employee?.lastName }}</h2>
+      } @else {
+        @if (employee) {
+          <app-basic-text-field
+            width=80
+            [rows]="1"
+            [(ngModel)]="employee.firstName">
+          </app-basic-text-field>
+          <app-basic-text-field
+            width=80
+            [rows]="1"
+            [(ngModel)]="employee.lastName">
+          </app-basic-text-field>
+        }
+      }
+
       <div class="header-actions">
         <button class="icon-btn" (click)="export()" title="Modifier">
           <img src="assets/icons/export.svg" alt="Export" class="icon" />
@@ -79,16 +95,16 @@
 
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.TEAM" | translate }}</label>
-            
+
             <span>{{ employee.team?.name }}</span>
-            
+
           </div>
 
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.MANAGER" | translate }}</label>
-            
+
             <span>{{ manager }}</span>
-            
+
           </div>
         </div>
       </div>
@@ -144,22 +160,24 @@
             width="20vw"
             text="Annuler"
             color="#999999"
-            (onClick)="close()"
-          >
+            (click)="close()"
+            (keydown.enter)="close()">
           </app-basic-text-button>
           <app-basic-text-button
             width="20vw"
             text="Sauvegarder"
             color="#336CAA"
-            (onClick)="saveChanges()"
-          >
+            (click)="saveChanges()"
+            (keydown.enter)="saveChanges()">
           </app-basic-text-button>
         </div>
       }
-      <div class="scheduler-container">
-        <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
-        <app-scheduler [targetUserId]="employee.id"></app-scheduler>
-      </div>
+      @if (!isEditable) {
+        <div class="scheduler-container">
+          <h3>Planning de {{ employee.firstName }} {{ employee.lastName }}</h3>
+          <app-scheduler [targetUserId]="Number(employee.id)"></app-scheduler>
+        </div>
+      }
     </div>
   </div>
 </div>

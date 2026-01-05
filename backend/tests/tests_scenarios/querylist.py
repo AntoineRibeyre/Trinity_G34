@@ -1,20 +1,47 @@
 from typing import List
 
 
+def create_user_mutation() -> str:
+    mutation = """
+    mutation {
+      createUser(
+        username: "Houssem"
+        firstName: "Houssem"
+        lastName: "Jeguirim"
+        email: "houssem@test.com"
+        telephone: "0606060606"
+        password: "Houssem123."
+        role: "manager"
+      ) {
+        user {
+        id,
+        firstName,
+        lastName,
+        role
+        }
+      }
+    }
+    """
+    return mutation
+
+
 def create_team_mutation() -> str:
     """This mutation creates a team for testing purposes."""
     mutation = """
     mutation {
         createTeam(
-         name: "Equipe Alpha",
-        description: "Équipe de test pour le développement"
+            name: "Equipe Alpha",
+            description: "Équipe de test pour le développement",
+            field: "Development",
+            managerID: 1
         ) {
             team {
-            name
-            description
+                name
+                description
+                field
             }
         }
-        }
+    }
     """
     return mutation
 

@@ -1,0 +1,125 @@
+{
+  "data": {
+    "adminView": {
+      "adminDetails": {
+        "userDetails": {
+          "id": "10",
+          "firstName": "Admin",
+          "lastName": "System",
+          "role": "Admin",
+          "email": "[admin@example.com](mailto:admin@example.com)"
+        }
+      },
+      "teams": [
+        {
+          "teamDetails": {
+            "id": "1",
+            "name": "Team Alpha",
+            "description": "Software development team",
+            "field": null
+          },
+          "manager": {
+            "userDetails": {
+              "id": "1",
+              "firstName": "Alice",
+              "lastName": "Martin",
+              "role": "Manager"
+            }
+          },
+          "members": [
+            {
+              "userDetails": {
+                "id": "2",
+                "firstName": "Bob",
+                "lastName": "Dupont",
+                "role": "Employee",
+                "email": "[bob.dupont@example.com](mailto:bob.dupont@example.com)"
+              }
+            },
+            {
+              "userDetails": {
+                "id": "3",
+                "firstName": "Charlie",
+                "lastName": "Lefevre",
+                "role": "Employee",
+                "email": "[charlie.lefevre@example.com](mailto:charlie.lefevre@example.com)"
+              }
+            }
+          ]
+        },
+        {
+          "teamDetails": {
+            "id": "2",
+            "name": "Team Beta",
+            "description": "Data analysis team",
+            "field": null
+          },
+          "manager": {
+            "userDetails": {
+              "id": "4",
+              "firstName": "David",
+              "lastName": "Renard",
+              "role": "Manager"
+            }
+          },
+          "members": [
+            {
+              "userDetails": {
+                "id": "5",
+                "firstName": "Emma",
+                "lastName": "Laurent",
+                "role": "Employee",
+                "email": "[emma.laurent@example.com](mailto:emma.laurent@example.com)"
+              }
+            },
+            {
+              "userDetails": {
+                "id": "6",
+                "firstName": "Franck",
+                "lastName": "Moreau",
+                "role": "Employee",
+                "email": "[franck.moreau@example.com](mailto:franck.moreau@example.com)"
+              }
+            }
+          ]
+        },
+        {
+          "teamDetails": {
+            "id": "3",
+            "name": "Team Gamma",
+            "description": "Cybersecurity team",
+            "field": null
+          },
+          "manager": {
+            "userDetails": {
+              "id": "7",
+              "firstName": "Gabriel",
+              "lastName": "Lambert",
+              "role": "Manager"
+            }
+          },
+          "members": [
+            {
+              "userDetails": {
+                "id": "8",
+                "firstName": "H\u00e9l\u00e8ne",
+                "lastName": "Petit",
+                "role": "Employee",
+                "email": "[helene.petit@example.com](mailto:helene.petit@example.com)"
+              }
+            },
+            {
+              "userDetails": {
+                "id": "9",
+                "firstName": "Ismael",
+                "lastName": "Girard",
+                "role": "Employee",
+                "email": "[ismael.girard@example.com](mailto:ismael.girard@example.com)"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -125,36 +125,53 @@ export class Team implements OnInit {
     this.calculateAvgTimes(allMembers);
   }
 
-  calculateAvgHours(members: any[], days: number): string {
-    let totalSeconds = 0;
-    let count = 0;
+calculateAvgHours(members: any[], days: number): string {
+  let totalSeconds = 0;
+  let count = 0;
 
-    const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - days);
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - days);
 
-    members.forEach(member => {
-      if (member.planning) {
-        member.planning.forEach((day: any) => {
-          const dayDate = new Date(day.date);
-          if (dayDate >= startDate && dayDate <= today) {
-            // Convertir totalHours (format "HH:MM:SS") en secondes
-            const [hours, minutes, seconds] = day.totalHours.split(':').map(Number);
-            totalSeconds += (hours * 3600) + (minutes * 60) + (seconds || 0);
-            count++;
+  members.forEach(member => {
+    if (member.planning && Array.isArray(member.planning)) {
+      member.planning.forEach((day: any) => {
+        const dayDate = new Date(day.date);
+        if (dayDate >= startDate && dayDate <= today && day.totalHours) {
+          try {
+            // Vérifier que totalHours existe et n'est pas vide
+            const timeString = day.totalHours.toString().trim();
+            if (timeString && timeString !== '') {
+              const parts = timeString.split(':');
+              const hours = parseInt(parts[0]) || 0;
+              const minutes = parseInt(parts[1]) || 0;
+              const seconds = parseInt(parts[2]) || 0;
+              
+              // Vérifier que les valeurs sont valides
+              if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
+                totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
+                count++;
+              }
+            }
+          } catch (error) {
+            console.warn('Erreur lors du parsing de totalHours:', day.totalHours, error);
           }
-        });
-      }
-    });
+        }
+      });
+    }
+  });
 
-    if (count === 0) return '0h00';
-
-    const avgSeconds = totalSeconds / count;
-    const hours = Math.floor(avgSeconds / 3600);
-    const minutes = Math.floor((avgSeconds % 3600) / 60);
-
-    return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  // Retourner 0h00 si aucune donnée
+  if (count === 0 || totalSeconds === 0) {
+    return '0h00';
   }
+
+  const avgSeconds = totalSeconds / count;
+  const hours = Math.floor(avgSeconds / 3600);
+  const minutes = Math.floor((avgSeconds % 3600) / 60);
+
+  return `${hours}h${minutes.toString().padStart(2, '0')}`;
+}
 
   calculateAvgTimes(members: any[]) {
     const arrivalTimes: number[] = [];
@@ -234,7 +251,14 @@ export class Team implements OnInit {
 
     if (!today || !today.totalHours) return '0h00';
 
-    const [hours, minutes] = today.totalHours.split(':').map(Number);
+    // Gestion plus robuste
+    const match = today.totalHours.match(/^(\d+):?(\d*)$/);
+
+    if (!match) return '0h00';
+
+    const hours = Number(match[1]) || 0;
+    const minutes = Number(match[2]) || 0;
+
     return `${hours}h${minutes.toString().padStart(2, '0')}`;
   }
 

@@ -2,12 +2,17 @@
   <div class="settings-content">
     <!-- Profile Section -->
     <div class="profile-section">
+<<<<<<< HEAD
       <div class="profile-avatar-img">
         <img
           [src]="getAvatarPath()"
           alt="User avatar"
           class="avatar-image"
         />
+=======
+      <div class="profile-avatar" (click)="openAvatarDialog()">
+        {{ (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '') }}
+>>>>>>> e14017821ee2a007d17806010229d8a17e62311f
       </div>
     </div>
 
@@ -73,11 +78,11 @@
 
       <div class="form-group">
         <app-basic-text-button
-          text="Changer le mot de passe"
+          text="Changer votre mot de passe"
           color="#999999"
           width="100%"
-          (onClick)="openEditPassword()"
-        >
+          (buttonPressed)="openEditPassword()"
+          (keydown.enter)="openEditPassword()">
         </app-basic-text-button>
       </div>
 
@@ -86,8 +91,9 @@
         <select
           id="language"
           class="form-select"
-          [value]="currentLanguage"
-          (change)="changeLanguage($event)">
+          [ngModel]="currentLanguage"
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="changeLanguage($event)">
           <option *ngFor="let lang of availableLanguages" [value]="lang.code">
             {{ lang.label }}
           </option>

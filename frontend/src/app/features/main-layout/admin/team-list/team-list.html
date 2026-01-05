@@ -57,13 +57,13 @@
 <app-team-drawer
   [isOpen]="isTeamDrawerOpen"
   [team]="selectedTeam"
-  (onClose)="closeTeamDrawer()"
-  (onMemberClick)="onMemberClick($event)">
+  (closeDrawer)="closeTeamDrawer()"
+  (memberClick)="onMemberClick($event)">
 </app-team-drawer>
 
 <app-employee-drawer
   [isOpen]="isEmployeeDrawerOpen"
   [employee]="selectedEmployee"
   [isEditable]="false"
-  (onClose)="closeEmployeeDrawer()">
+  (closeDrawer)="closeEmployeeDrawer()">
 </app-employee-drawer>

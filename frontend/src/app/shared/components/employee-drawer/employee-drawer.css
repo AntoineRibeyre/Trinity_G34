@@ -210,6 +210,7 @@ label{
   font-family: 'Inter', sans-serif;
   background-color: #fff;
   transition: border-color 0.2s ease;
+  margin-right: 2%;
 }
 
 .edit-input:focus {

@@ -17,3 +17,4 @@
 **/fixtures/
 /backend/staticfiles/
 **/.coverage
+/logs/

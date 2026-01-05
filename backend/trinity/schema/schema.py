@@ -227,8 +227,9 @@ class DeleteUser(graphene.Mutation):
 
 
 class UserInput(graphene.InputObjectType):
-    first_name = graphene.String(required=False)
-    last_name = graphene.String(required=False)
+    username = graphene.String(required=False)
+    firstName = graphene.String(required=False)
+    lastName = graphene.String(required=False)
     email = graphene.String(required=False)
     password = graphene.String(required=False)
     telephone = graphene.String(required=False)

@@ -17,13 +17,13 @@ export interface DropdownOption {
 export class BasicDropdown {
   @Input() options: DropdownOption[] = [];
   @Input() placeholder: string = 'Sélectionnez une option';
-  @Input() selectedValue: number = 0;
-  @Output() onSelectionChange = new EventEmitter<number>();
+  @Input() selectedValue?: number; // ou number | null
+  @Output() selectionChange = new EventEmitter<number>();
 
   handleChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const value = Number(selectElement.value);
     this.selectedValue = value;
-    this.onSelectionChange.emit(value);
+    this.selectionChange.emit(value);
   }
 }
