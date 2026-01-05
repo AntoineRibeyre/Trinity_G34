@@ -175,6 +175,13 @@ export class UserService {
             telephone
             role
             isActive
+            socialNumber
+            contract
+            arrivalDate
+            annualSalary
+            birthDate
+            workingHours
+            leaves
             team{
               id
               field

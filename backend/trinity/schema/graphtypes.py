@@ -11,9 +11,15 @@ from ..logic.calendarfactory import DailyPlanning
 
 class UserType(DjangoObjectType):
     """Graphene object connected to the Django User model."""
+    socialNumber = graphene.BigInt()
+    
     class Meta:
         model = User
         fields = "__all__"
+    
+    def resolve_socialNumber(self, info):
+        """Resolve social_number field as socialNumber for GraphQL."""
+        return self.social_number
 
 
 class TeamType(DjangoObjectType):
