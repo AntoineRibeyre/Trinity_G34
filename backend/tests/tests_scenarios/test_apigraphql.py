@@ -45,6 +45,7 @@ def test_create_user(client):
 
 @pytest.mark.django_db
 def test_create_team(client):
+    pytest.fail()
     executed = client.execute(querylist.create_team_mutation())
     assert 'errors' not in executed or executed['errors'] is None, \
         f"Erreurs GraphQL: {executed.get('errors')}"
