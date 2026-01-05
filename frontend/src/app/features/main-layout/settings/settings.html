@@ -3,17 +3,12 @@
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="profile-avatar" (click)="openAvatarDialog()" (keydown.enter)="openAvatarDialog()">
-<<<<<<< HEAD
       <div class="profile-avatar-img">
         <img
           [src]="getAvatarPath()"
           alt="User avatar"
           class="avatar-image"
         />
-=======
-      <div class="profile-avatar" (click)="openAvatarDialog()">
-        {{ (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '') }}
->>>>>>> e14017821ee2a007d17806010229d8a17e62311f
       </div>
     </div>
 
