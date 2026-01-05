@@ -8,7 +8,7 @@
           [(ngModel)]="team!.name"
           width = "100%"
           [rows]="1"
-          (onTextChange)="onChangeName($event)">
+          (textChange)="onChangeName($event)">
         </app-basic-text-field>
       }
       <div class="header-actions">
@@ -38,7 +38,7 @@
               width = "100%"
               [maxLength]="500"
               [rows]="4"
-              (onTextChange)="onChangeDescription($event)">
+              (textChange)="onChangeDescription($event)">
             </app-basic-text-field>
           }
         </div>
@@ -72,9 +72,10 @@
 
       <!-- Section Liste des membres -->
       <div class="info-section">
-        <h3>{{ "ADMIN.TEAMS.DRAWER.MEMBERS" | translate }} ({{ team.members?.length || 0 }})</h3>
+        <h3>{{ "ADMIN.TEAMS.DRAWER.MEMBERS" | translate }} ({{ team.members?.length || 0 }}) </h3>
 
         <div class="members-list">
+
           @for (member of team.members; track member.id) {
             <div class="member-row" (click)="openMemberDetails(member.id, $event)">
               <div class="member-avatar">
@@ -85,6 +86,7 @@
                 <div class="member-role">{{ member.role }}</div>
               </div>
               <div class="member-email">{{ member.email }}</div>
+
               <button class="icon-btn-small">
                 <span>›</span>
               </button>
@@ -97,6 +99,16 @@
         </div>
       </div>
 
+      <div class="info-section buttons">
+        <button class="btn manager" (click)="$event.stopPropagation(); openManagerDialog()">
+          {{ "TEAM.DIALOG.REMOVE-MEMBERS.TITLE-MANAGER" | translate }}
+        </button>
+
+        <button class="btn employe" (click)="$event.stopPropagation(); openDialog()">
+          {{ "TEAM.DIALOG.REMOVE-MEMBERS.TITLE-MEMBERS" | translate }}
+        </button>
+      </div>
+
       <!-- Boutons d'action -->
       @if (isEditable) {
         <div class="drawer-actions">
@@ -104,13 +116,15 @@
             width="20vw"
             text="Annuler"
             color="#999999"
-            (onClick)="cancelEdit()">
+            (click)="cancelEdit()"
+            (keydown.enter)="cancelEdit()">
           </app-basic-text-button>
           <app-basic-text-button
             width="20vw"
             text="Sauvegarder"
             color="#336CAA"
-            (onClick)="saveChanges()">
+            (click)="saveChanges()"
+            (keydown.enter)="saveChanges()">
           </app-basic-text-button>
         </div>
       }

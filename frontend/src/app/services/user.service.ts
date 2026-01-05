@@ -14,6 +14,13 @@ interface GraphQLUser {
   telephone?: string;
   role?: string;
   team?: Team;
+  contract?: string;
+  socialNumber?: number;
+  arrivalDate?: string;
+  birthDate?: string;
+  workingHours?: number;
+  annualSalary?: number;
+  leaves?: number;
 }
 
 interface AllUsersResponse {
@@ -36,7 +43,23 @@ const GET_ALL_USERS = gql`
         field
         name
         description
-    }
+        members {
+          id
+          username
+          email
+          firstName
+          lastName
+          telephone
+          role
+        }
+      }
+      socialNumber
+      contract
+      arrivalDate
+      annualSalary
+      birthDate
+      workingHours
+      leaves
     }
   }
 `;
@@ -60,20 +83,82 @@ interface DeleteUserResponse {
 export class UserService {
   currentUser: User | null = null;
 
+  // Build a payload matching GraphQL `UserInput` from frontend `User` object
+  private buildUserPayload(data: Partial<User> & { password?: string }): any {
+    const payload: any = {};
+
+    const src = data as any;
+    if (src.username !== undefined) payload.username = src.username;
+    if (src.firstName !== undefined) payload.firstName = src.firstName;
+    if (src.lastName !== undefined) payload.lastName = src.lastName;
+    if (src.email !== undefined) payload.email = src.email;
+    if (src.password !== undefined) payload.password = src.password;
+    if (src.telephone !== undefined) payload.telephone = src.telephone;
+    if (src.role !== undefined) payload.role = src.role;
+
+    if (src.socialNumber !== undefined) {
+      const sn = Number(src.socialNumber);
+      if (!Number.isNaN(sn) && Number.isFinite(sn)) payload.socialNumber = Math.trunc(sn);
+    }
+
+    if (src.contract !== undefined) payload.contract = src.contract;
+    if (src.arrivalDate !== undefined) payload.arrivalDate = src.arrivalDate;
+    if (src.annualSalary !== undefined) {
+      const v = Number(src.annualSalary);
+      if (!Number.isNaN(v) && Number.isFinite(v)) payload.annualSalary = Math.trunc(v);
+    }
+    if (src.birthDate !== undefined) payload.birthDate = src.birthDate;
+    if (src.workingHours !== undefined) {
+      const v = Number(src.workingHours);
+      if (!Number.isNaN(v) && Number.isFinite(v)) payload.workingHours = Math.trunc(v);
+    }
+    if (src.leaves !== undefined) {
+      const v = Number(src.leaves);
+      if (!Number.isNaN(v) && Number.isFinite(v)) payload.leaves = Math.trunc(v);
+    }
+    if (src.isActive !== undefined) payload.isActive = src.isActive;
+
+    if (src.team !== undefined && src.team !== null) {
+      const t = src.team as any;
+      if (typeof t === 'number' || typeof t === 'string') payload.teamId = Number(t);
+      else if (t && t.id !== undefined) payload.teamId = Number(t.id);
+    }
+
+    return payload;
+  }
+
   constructor(private apollo: Apollo) {
     this.loadCurrentUserFromServer();
   }
   private readonly UPDATE_USER_MUTATION = gql`
-    mutation UpdateUser($userData: UserInput!) {
-      updateUser(userData: $userData) {
+    mutation UpdateUser($userData: UserInput!, $userId: Int) {
+      updateUser(userData: $userData, userId: $userId) {
         user {
           id
           firstName
           lastName
           email
-          username
           telephone
           role
+          socialNumber
+          contract
+          arrivalDate
+          annualSalary
+          birthDate
+          workingHours
+          leaves
+          team {
+            id
+            field
+            name
+            description
+            members {
+              id
+              firstName
+              lastName
+              role
+            }
+          }
         }
       }
     }
@@ -95,7 +180,16 @@ export class UserService {
               field
               name
               description
-          }
+              members {
+                id
+                username
+                email
+                firstName
+                lastName
+                telephone
+                role
+              }
+            }
         }
       }
     `;
@@ -117,14 +211,17 @@ export class UserService {
     }
   }
 
-  async updateUser(data: Partial<User> & { password?: string }): Promise<User | null> {
+  async updateUser(data: Partial<User> & { password?: string }, userId?: string | number): Promise<User | null> {
     try {
+      const payload = this.buildUserPayload(data);
+
+      const variables: any = { userData: payload };
+      if (userId !== undefined && userId !== null) variables.userId = Number(userId);
+
       const res = await firstValueFrom(
         this.apollo.mutate<{ updateUser: { user: User } }>({
           mutation: this.UPDATE_USER_MUTATION,
-          variables: {
-            userData: data  // ✅ Utilise "userData" au lieu de "info"
-          },
+          variables,
         })
       );
 
@@ -166,6 +263,18 @@ export class UserService {
 
     // Fonction utilitaire pour convertir GraphQLUser en User
     convertUser(graphqlUser: GraphQLUser): User {
+      const teamWithMembers = graphqlUser.team
+        ? {
+            ...graphqlUser.team,
+            members: graphqlUser.team.members
+              ? graphqlUser.team.members.map(m => ({
+                  ...m,
+                  id: m.id.toString(),
+                }))
+              : undefined,
+          }
+        : undefined;
+
       return {
         id: graphqlUser.id.toString(),
         username: graphqlUser.username,
@@ -174,7 +283,14 @@ export class UserService {
         lastName: graphqlUser.lastName || '',
         telephone: graphqlUser.telephone || '',
         role: graphqlUser.role || '',
-        team: graphqlUser.team || undefined
+        team: teamWithMembers as Team | undefined,
+        socialNumber: graphqlUser.socialNumber,
+        contract: graphqlUser.contract,
+        arrivalDate: graphqlUser.arrivalDate,
+        annualSalary: graphqlUser.annualSalary,
+        birthDate: graphqlUser.birthDate,
+        workingHours: graphqlUser.workingHours,
+        leaves: graphqlUser.leaves,
       };
     }
 

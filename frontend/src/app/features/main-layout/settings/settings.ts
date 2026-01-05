@@ -1,164 +1,203 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { LanguageService } from '../../../services/lang.service';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user.model';
-import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {SettingEditPassword} from '../../../shared/components/setting-edit-password/setting-edit-password';
+import { BasicTextButton } from '../../../shared/components/basic-text-button/basic-text-button';
+import { MatDialog } from '@angular/material/dialog';
+import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
+import {AvatarComponent} from '../../../shared/components/avatar/avatar';
+import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
+
+/* -------------------- VALIDATEURS -------------------- */
+
+// Vérifie si password === confirmPassword
+function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+
+  if (!password || !confirmPassword) return null;
+
+  return password === confirmPassword ? null : { passwordMismatch: true };
+}
+
+// Vérifie la force du mot de passe
+function passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (!value) return null;
+
+  const valid =
+    /[A-Z]/.test(value) &&
+    /[a-z]/.test(value) &&
+    /[0-9]/.test(value) &&
+    value.length >= 6;
+
+  return valid ? null : { passwordStrength: true };
+}
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [
-    CommonModule,
-    TranslateModule,
-    ReactiveFormsModule,
-    BasicTextButton
-  ],
+  imports: [CommonModule, TranslateModule, ReactiveFormsModule, FormsModule, BasicTextButton],
   templateUrl: './settings.html',
-  styleUrls: ['./settings.css']
+  styleUrls: ['./settings.css'],
 })
 export class Settings implements OnInit, OnDestroy {
   settingsForm: FormGroup;
-  currentLanguage = 'en';
+  currentLanguage: string = '';
   availableLanguages: Array<{ code: string; label: string }> = [];
   isLoading = false;
   currentUser: User | null = null;
 
   private languageSubscription?: Subscription;
 
+  // Pré-requis pour l'affichage live
+  passwordRequirements = [
+    { label: 'Minimum 6 caractères', key: 'minLength' },
+    { label: 'Au moins une lettre majuscule', key: 'uppercase' },
+    { label: 'Au moins une lettre minuscule', key: 'lowercase' },
+    { label: 'Au moins un chiffre', key: 'digit' },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private languageService: LanguageService,
     private userService: UserService,
-    private dialog : MatDialog,
-    private translateService: TranslateService,
+    private dialog: MatDialog,
+    private translateService: TranslateService
   ) {
-    this.settingsForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: [''], // Password optionnel - seulement si l'utilisateur veut le changer
-    });
+    // Initialiser la langue depuis le service
+    this.currentLanguage = this.languageService.getCurrentLanguage();
+    this.settingsForm = this.fb.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        password: ['', [passwordStrengthValidator]],
+        confirmPassword: [''],
+      },
+      { validators: passwordMatchValidator }
+    );
   }
 
+  /* -------------------- PASSWORD REQUIREMENTS CHECK -------------------- */
+  isRequirementMet(req: string): boolean {
+    const pwd = this.settingsForm.get('password')?.value || '';
+
+    switch (req) {
+      case 'minLength':
+        return pwd.length >= 6;
+      case 'uppercase':
+        return /[A-Z]/.test(pwd);
+      case 'lowercase':
+        return /[a-z]/.test(pwd);
+      case 'digit':
+        return /[0-9]/.test(pwd);
+      default:
+        return false;
+    }
+  }
+
+  /* -------------------- INIT -------------------- */
   async ngOnInit(): Promise<void> {
-    // Récupérer les langues disponibles
     this.availableLanguages = this.languageService.getAvailableLanguages();
 
-    // S'abonner aux changements de langue
-    this.languageSubscription = this.languageService.currentLanguage$.subscribe(lang => {
-      this.currentLanguage = lang;
-    });
+    this.currentLanguage = this.languageService.getCurrentLanguage();
 
-    // Charger les données du user
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
+      (lang) => (this.currentLanguage = lang)
+    );
+
+    // Charger user
     this.currentUser = await this.userService.loadCurrentUserFromServer();
     if (this.currentUser) {
-      // Remplir le formulaire avec les données de l'utilisateur
       this.settingsForm.patchValue({
-        firstName: this.currentUser.firstName || '',
-        lastName: this.currentUser.lastName || '',
-        email: this.currentUser.email || '',
-        // Ne jamais pré-remplir le mot de passe
+        firstName: this.currentUser.firstName,
+        lastName: this.currentUser.lastName,
+        email: this.currentUser.email,
+        telephone: this.currentUser.telephone,
       });
     }
   }
 
   ngOnDestroy(): void {
-    // Nettoyer l'abonnement
-    if (this.languageSubscription) {
-      this.languageSubscription.unsubscribe();
-    }
+    this.languageSubscription?.unsubscribe();
   }
 
-  /**
-   * Change la langue via le service
-   */
-  changeLanguage(event: Event | string): void {
-    let lang: string;
-
-    if (typeof event === 'string') {
-      lang = event;
-    } else {
-      lang = (event.target as HTMLSelectElement).value;
-    }
-
+  /* -------------------- CHANGE LANGUAGE -------------------- */
+  changeLanguage(lang: string): void {
     this.languageService.setLanguage(lang);
+    this.currentLanguage = lang;
   }
 
-  /**
-   * Soumet le formulaire et met à jour l'utilisateur dans la BDD
-   */
+  /* -------------------- SUBMIT -------------------- */
   async onSubmit(): Promise<void> {
-    if (this.settingsForm.valid) {
-      this.isLoading = true;
-
-      try {
-        const formData = { ...this.settingsForm.value };
-
-        // Si le mot de passe est vide, ne pas l'envoyer
-        // (l'utilisateur garde son ancien mot de passe)
-        if (!formData.password || formData.password.trim() === '') {
-          delete formData.password;
-        }
-
-        // Appel à la mutation GraphQL via le service
-        const updatedUser = await this.userService.updateUser(formData);
-
-        if (updatedUser) {
-          console.log('Utilisateur mis à jour avec succès:', updatedUser);
-
-          // Mettre à jour currentUser local
-          this.currentUser = updatedUser;
-
-          // Notification de succès
-          alert('Paramètres sauvegardés avec succès !');
-
-          // Vider le champ mot de passe après la sauvegarde
-          this.settingsForm.patchValue({ password: '' });
-
-          // Marquer le formulaire comme pristine (non modifié)
-          this.settingsForm.markAsPristine();
-        }
-
-      } catch (error) {
-        console.error('Erreur lors de la mise à jour:', error);
-        alert("Une erreur est survenue lors de la sauvegarde des paramètres.");
-      } finally {
-        this.isLoading = false;
-      }
-    } else {
-      // Marquer tous les champs comme touched pour afficher les erreurs
+    if (!this.settingsForm.valid) {
       this.settingsForm.markAllAsTouched();
-      console.warn('Formulaire invalide');
+      return;
     }
+
+    this.isLoading = true;
+
+    try {
+      const formData = { ...this.settingsForm.value };
+
+      // Pas d’envoi du mot de passe si vide
+      if (!formData.password) delete formData.password;
+
+      const updatedUser = await this.userService.updateUser(formData);
+
+      if (updatedUser) {
+        this.currentUser = updatedUser;
+        this.settingsForm.patchValue({ password: '', confirmPassword: '' });
+        this.settingsForm.markAsPristine();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    this.isLoading = false;
   }
 
-  /**
-   * Vérifie si un champ est invalide
-   */
   isInvalid(controlName: string): boolean {
-    const control = this.settingsForm.get(controlName);
-    return !!(control && control.invalid && (control.dirty || control.touched));
+    const c = this.settingsForm.get(controlName);
+    return !!(c && c.invalid && (c.dirty || c.touched));
   }
 
+  /* -------------------- OPEN PASSWORD MODAL -------------------- */
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
       data: {
         title: this.translateService.instant('SETTINGS.DIALOG.TITLE'),
         confirm: this.translateService.instant('BASE.EDIT'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-        onConfirm: (dialogRef: MatDialogRef<SettingEditPassword>,
-                    newPassword: string,
-                    ) => {},
-        onCancel: (dialogRef: MatDialogRef<SettingEditPassword>) => {
-          dialogRef.close();
+        onConfirm: async (dialogRef: any, newPassword: string) => {
+          try {
+            await this.userService.updateUser({ password: newPassword });
+            dialogRef.close();
+          } catch (err) {
+          }
+        },
+        onCancel: (dialogRef: any) => {
+          dialogRef.close()
         }
-      }
-    })
+      },
+    });
+  }
+
+  openAvatarDialog(): void {
+    this.dialog.open(AvatarDialog)
   }
 }

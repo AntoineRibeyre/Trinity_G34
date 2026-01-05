@@ -24,10 +24,24 @@
     "PASSWORD_PLACEHOLDER": "Laissez vide pour ne pas changer",
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
     "SAVING": "Sauvegarde en cours",
+    "PHONE" : "Numéro de téléphone",
+    "REQUIRE_MIN_LENGTH": "Six charactères minimum",
+    "REQUIRE_UPPERCASE": "Au moins une majuscule",
+    "REQUIRE_LOWERCASE": "Au moins une minuscule",
+    "REQUIRE_DIGIT": "Au moins un chiffre",
+    "NEW_PASSWORD": "Nouveau mot de passe",
+    "PLACEHOLDER_PASSWORD": "Nouveau mot de passe",
+    "PASSWORD_INVALID": "Mot de passe invalide",
+    "CONFIRM_PASSWORD": "Confirmez votre mot de passe",
+    "PLACEHOLDER_CONFIRM": "Confirmez votre mot de passe",
+    "PASSWORD_MISMATCH": "Mot de passes différents",
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",
       "PASSWORD": "Votre mot de passe",
       "CONFIRM": "Confirmer votre mot de passe"
+    },
+    "AVATAR": {
+      "TITLE": "Sélectionner votre avatar"
     }
   },
   "LOGIN": {
@@ -36,16 +50,17 @@
     "EMAIL": "Email",
     "LOGIN": "Se connecter",
     "REGISTER": "S'inscrire",
-    "FORGOTTEN_PASSWORD": "Mot de passe oublié"
+    "FORGOTTEN_PASSWORD": "Mot de passe oublié",
+    "SUCCESS": "Connexion réussi"
   },
   "ERRORS": {
-      "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
-      "INVALID_CREDENTIALS": "Email ou mot de passe incorrect",
-      "USER_NOT_FOUND": "Utilisateur introuvable",
-      "ACCOUNT_LOCKED": "Compte verrouillé",
-      "EMAIL_NOT_VERIFIED": "Email non vérifié",
-      "NETWORK_ERROR": "Erreur de connexion au serveur"
-    },
+    "FILL_ALL_FIELDS": "Veuillez remplir tous les champs",
+    "INVALID_CREDENTIALS": "Email ou mot de passe incorrect",
+    "USER_NOT_FOUND": "Utilisateur introuvable",
+    "ACCOUNT_LOCKED": "Compte verrouillé",
+    "EMAIL_NOT_VERIFIED": "Email non vérifié",
+    "NETWORK_ERROR": "Erreur de connexion au serveur"
+  },
   "REGISTER": {
     "REGISTER": "Inscription",
     "FIRST_NAME": "Prénom",
@@ -53,10 +68,11 @@
     "EMAIL": "Email",
     "CARD_NUMBER": "Numéro de carte",
     "PASSWORD": "Mot de passe",
-    "CONFIRM_PWD": "Confirmation du mot de pass",
+    "CONFIRM_PWD": "Confirmation du mot de passe",
     "FORGOTTEN_PASSWORD": "Mot de passe oublié",
     "PHONE_NUMBER": "Numéro de téléphone",
-    "PWD_REQUIREMENT": "Pré-requis du mot de passe"
+    "PWD_REQUIREMENT": "Pré-requis du mot de passe",
+    "GO_HOME" : "Retour à l'accueil"
   },
   "HOME": {
     "REGISTER": "S’inscrire",
@@ -129,6 +145,13 @@
         "TITLE": "Ajouter un employé à l'équipe",
         "NAME-TITLE": "Nom et prénom de l'employé",
         "NAME-PLACEHOLDER": "Nom et prénom..."
+      },
+      "REMOVE-MEMBERS": {
+        "TITLE-MEMBERS": "Retirer des employés de l'équipe",
+        "TITLE-MANAGER": "Modifier le manager de l'équipe",
+        "NAME-TITLE": "Nom et prénom de l'employé",
+        "NAME-PLACEHOLDER": "Nom et prénom...",
+        "RETIRER": "Retirer"
       }
     }
   },
@@ -138,6 +161,12 @@
       "FIRSTNAME": "Prénom",
       "EMAIL": "Email",
       "TEAM": "Équipe",
+      "ALL-EMPLOYEES": "Tous",
+      "SALES": "Commerce",
+      "FINANCE": "Finance",
+      "DESIGN": "Design",
+      "SEARCH-INPUT": "Rechercher un employé...",
+      "ADD_EMPLOYEE": "Ajouter un employé",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personnel",
         "BIRTH-DATE": "Date de naissance:",
@@ -163,6 +192,48 @@
         "STATISTICS": "Statistique de l’équipe",
         "MEMBERS": "Membres de l'équipes"
       }
+    }
+  },
+  "team": {
+    "titre": "Mon Équipe",
+    "chargementdesdonnees": "Chargement des données...",
+    "impossibledecharger": "Impossible de charger les données de l'équipe",
+    "reessayer": "Réessayer",
+    "erreursurvenue": "Une erreur est survenue",
+
+    "statistiques": {
+      "moyennehebdomadaire": "Moyenne du temps de travail hebdomadaire",
+      "moyennemensuelle": "Moyenne du temps de travail mensuel",
+      "moyennearrivee": "Moyenne heure d'arrivée hebdomadaire",
+      "moyennedepart": "Moyenne heure de départ hebdomadaire"
+    },
+
+    "informations": {
+      "titre": "Informations de l'équipe",
+      "membres": "Membres",
+      "manager": "Manager"
+    },
+
+    "tableau": {
+      "titre": "Membres de l'équipe",
+      "nom": "Nom",
+      "role": "Rôle",
+      "statut": "Statut",
+      "heuresaujourdhui": "Heures aujourd'hui",
+      "aucunmembre": "Aucun membre dans l'équipe pour le moment."
+    },
+
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employé",
+      "admin": "Administrateur"
+    },
+
+    "statuts": {
+      "present": "Présent",
+      "absent": "Absent",
+      "termine": "Terminé",
+      "inconnu": "Inconnu"
     }
   }
 }

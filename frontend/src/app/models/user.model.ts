@@ -6,10 +6,17 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  telephone: string;
+  telephone?: string;
   role: string;
   team?: Team;
-  Calandar?: {
+  socialNumber?: number;
+  contract?: string;
+  arrivalDate?: string; 
+  annualSalary?: number;
+  birthDate?: string;
+  workingHours?: number;
+  leaves?: number;
+  calendar?: {
     begin: string;
     end: string;
     duration: string;
@@ -24,8 +31,14 @@ export interface CurrentUserResponse {
     email: string;
     firstName: string;
     lastName: string;
-    telephone: string;
+    telephone?: string;
     role: string;
     team?: Team;
-  } | null;
+    socialNumber?: number;
+    contract?: string;
+    arrivalDate?: string;
+    annualSalary?: number;
+    birthDate?: string;
+    leaves?: number;
+  };
 }

@@ -92,10 +92,13 @@
     </p>
   </div>
 
+  <div>
+    <button class="btn-register" type="submit" [disabled]="isLoading">
+      {{ isLoading ? 'Chargement...' : 'S\'inscrire' }}
+    </button>
 
-  <button class="btn-register" type="submit" [disabled]="isLoading">
-    {{ isLoading ? 'Chargement...' : 'S\'inscrire' }}
-  </button>
+    <button type="button" class="signup-link" (click)="goHome()">{{'REGISTER.GO_HOME' | translate}}</button>
+  </div>
 
   <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 </form>

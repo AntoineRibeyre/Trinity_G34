@@ -16,9 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from graphene_django.views import GraphQLView
-from django.urls import path, include, re_path
+from django.urls import path, re_path
 from trinity.schema.schema import schema
-from django.conf import settings
 from trinity.views.login import LoginGraphQLView
 from django.views.static import serve
 import pathlib

@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class LanguageService {
   private readonly STORAGE_KEY = 'selectedLanguage';
-  private readonly DEFAULT_LANGUAGE = 'en';
+  private readonly DEFAULT_LANGUAGE = 'fr';
   private readonly AVAILABLE_LANGUAGES = ['fr', 'en'];
 
   private currentLanguageSubject = new BehaviorSubject<string>(this.DEFAULT_LANGUAGE);

@@ -37,8 +37,8 @@
 
 .month {
   margin: 5px;
-  height: 100px;
-  min-height: 100px;
+  height: 80px;
+  min-height: 80px;
   background: #F7F8FA;
   font-weight: 500;
   font-size: 1.5rem;
@@ -50,7 +50,7 @@
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.15);
 }
 
-.calendar {
+.employees {
   flex: 1;
   overflow-y: auto;
   padding: 10px 10px;
@@ -60,20 +60,102 @@
   scrollbar-color: #ccc #f0f0f0;
 }
 
-.calendar::-webkit-scrollbar {
+.employees::-webkit-scrollbar {
   width: 8px;
 }
 
-.calendar::-webkit-scrollbar-track {
+.employees::-webkit-scrollbar-track {
   background: #f0f0f0;
   border-radius: 10px;
 }
 
-.calendar::-webkit-scrollbar-thumb {
+.employees::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 10px;
 }
 
-.calendar::-webkit-scrollbar-thumb:hover {
+.employees::-webkit-scrollbar-thumb:hover {
   background: #aaa;
+}
+
+.employee-card {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 0;
+  margin: 0 10%;
+  gap: 10px;
+  border-bottom: 1px solid #999999;
+  width: 80%; /* Définir une largeur pour le conteneur */
+}
+
+.avatar {
+  height: 60px;
+  width: 60px;
+  min-width: 60px; /* Empêcher l'avatar de rétrécir */
+  border-radius: 50%;
+  background: #999999;
+  flex-shrink: 0;
+}
+
+/* Indicateur de présence */
+.status-indicator {
+  position: relative;
+  top: 40px;
+  left: 40px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.status-indicator.present {
+  background: #2ecc71;
+}
+
+.status-indicator.finished {
+  background: #f39c12;
+}
+
+.status-indicator.absent {
+  background: #e74c3c;
+}
+
+.name {
+  font-size: 1.5rem;
+  flex: 1; /* Prendre l'espace restant */
+  overflow: hidden; /* Cacher le débordement */
+  position: relative;
+  min-width: 0; /* Important pour que flex fonctionne correctement */
+}
+
+.name-div {
+  display: inline-block;
+  /*white-space: nowrap; !*  Empêcher le retour à la ligne *!*/
+  padding-right: 20px; /* Espace avant la répétition */
+  animation: scroll-text 15s linear infinite;
+  animation-play-state: paused; /* Pause par défaut */
+}
+
+.name.auto-scroll > div {
+  animation: scroll-text 8s linear infinite;
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-80%);
+  }
 }

@@ -2,7 +2,9 @@
   <div class="settings-content">
     <!-- Profile Section -->
     <div class="profile-section">
-      <div class="profile-avatar"></div>
+      <div class="profile-avatar" (click)="openAvatarDialog()" (keydown.enter)="openAvatarDialog()">
+        {{ (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '') }}
+      </div>
     </div>
 
     <!-- Settings Form -->
@@ -51,24 +53,27 @@
         </div>
       </div>
 
-<!--      <div class="form-group">-->
-<!--        <label class="form-label" for="password">{{ 'SETTINGS.PASSWORD' | translate }}</label>-->
-<!--        <input-->
-<!--        type="password"-->
-<!--        id="password"-->
-<!--        formControlName="password"-->
-<!--        class="form-input"-->
-<!--        [placeholder]="'SETTINGS.PASSWORD_PLACEHOLDER' | translate">-->
-<!--        <small class="form-hint">{{ 'SETTINGS.PASSWORD_HINT' | translate }}</small>-->
-<!--      </div>-->
+      <div class="form-group">
+        <label class="form-label" for="telephone">{{'SETTINGS.PHONE' |translate }}</label>
+        <input
+        type="tel"
+        id="telephone"
+        formControlName="telephone"
+        class="form-input"
+        [ngClass]="{'invalid': isInvalid('telephone')}"
+        [placeholder]="'SETTINGS.PHONE' |translate">
+        <div *ngIf="isInvalid('telephone')" class="error-message">
+          {{'SETTINGS.PHONE_INVALID' | translate}}
+        </div>
+      </div>
 
       <div class="form-group">
         <app-basic-text-button
-          text="Changer le mot de passe"
+          text="Changer votre mot de passe"
           color="#999999"
           width="100%"
-          (onClick)="openEditPassword()"
-        >
+          (buttonPressed)="openEditPassword()"
+          (keydown.enter)="openEditPassword()">
         </app-basic-text-button>
       </div>
 
@@ -77,8 +82,9 @@
         <select
           id="language"
           class="form-select"
-          [value]="currentLanguage"
-          (change)="changeLanguage($event)">
+          [ngModel]="currentLanguage"
+          [ngModelOptions]="{standalone: true}"
+          (ngModelChange)="changeLanguage($event)">
           <option *ngFor="let lang of availableLanguages" [value]="lang.code">
             {{ lang.label }}
           </option>

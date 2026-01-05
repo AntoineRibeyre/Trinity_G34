@@ -1,0 +1,13 @@
+<div *ngIf="config" class="snackbar-container" [class.visible]="isVisible" [class.success]="config.type === 'success'" [class.error]="config.type === 'error'" [class.warning]="config.type === 'warning'" [class.info]="config.type === 'info'">
+  <div class="snackbar-content">
+<!--    <div class="snackbar-icon" [ngClass]="getIconClass()">-->
+<!--      <span *ngIf="config.type === 'success'">✓</span>-->
+<!--      <span *ngIf="config.type === 'error'">✕</span>-->
+<!--      <span *ngIf="config.type === 'warning'">⚠</span>-->
+<!--      <span *ngIf="config.type === 'info'">ℹ</span>-->
+<!--    </div>-->
+    <div class="snackbar-message">{{ config.message }}</div>
+<!--    <button class="snackbar-close" (click)="close()" aria-label="Fermer">×</button>-->
+  </div>
+</div>
+

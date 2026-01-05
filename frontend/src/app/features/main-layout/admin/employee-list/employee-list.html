@@ -1,11 +1,11 @@
 <div class="general">
   <div class="search-bar">
-    <div class="search-input-wrapper" role="search" aria-label="Rechercher">
+    <div class="search-input-wrapper" role="search" aria-label="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}">
       <app-basic-text-field
-        placeholder="Rechercher"
+        placeholder="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}"
         width="500px"
         [rows]="1"
-        (onTextChange)="onQueryChange($event)"
+        (textChange)="onQueryChange($event)"
         [showClearButton]="true"
         style="padding-top:5px;">
       </app-basic-text-field>
@@ -20,14 +20,22 @@
         ✕
       </button>
     </div>
+    <div>
+      <button class="icon-btn" (click)="add()" title="Ajouter">
+        {{ 'ADMIN.ALL.ADD_EMPLOYEE' | translate }}
+      </button>
+      <button class="icon-btn" (click)="export()" title="Modifier">
+        Export
+      </button>
+    </div>
   </div>
 
   <div class="user-table">
     <div class="table-header">
-      <div>{{ "ADMIN.ALL.NAME" | translate }}</div>
-      <div>{{ "ADMIN.ALL.FIRSTNAME" | translate }}</div>
-      <div>{{ "ADMIN.ALL.EMAIL" | translate }}</div>
-      <div>{{ "ADMIN.ALL.TEAM" | translate }}</div>
+      <div>{{ 'ADMIN.ALL.NAME' | translate }}</div>
+      <div>{{ 'ADMIN.ALL.FIRSTNAME' | translate }}</div>
+      <div>{{ 'ADMIN.ALL.EMAIL' | translate }}</div>
+      <div>{{ 'ADMIN.ALL.TEAM' | translate }}</div>
       <div></div>
     </div>
     <div class="table-body">
@@ -36,7 +44,11 @@
           <div class="table-cell cell-name">{{employee.lastName}}</div>
           <div class="table-cell cell-name">{{employee.firstName}}</div>
           <div class="table-cell cell-email">{{employee.email}}</div>
-          <div class="table-cell cell-team">Team</div>
+          @if (employee.team) {
+            <div class="table-cell cell-team clickable-team" (click)="$event.stopPropagation(); displayTeamData(employee.team.id)" (keydown.enter)="displayTeamData(employee.team.id)">{{employee.team.name}}</div>
+          } @else {
+            <div class="table-cell cell-team">Sans équipe</div>
+          }
           <div class="buttons-div">
             <button class="icon-btn" (click)="$event.stopPropagation(); displayEmployeeData(employee.id, true)">
               <img src="assets/icons/edit_square.svg" alt="Edit" class="icon" />
@@ -53,10 +65,18 @@
 </div>
 
 <!-- Side Drawer Component -->
+<app-team-drawer
+  [isOpen]="isTeamDrawerOpen"
+  [team]="selectedTeam"
+  (closeDrawer)="closeTeamDrawer()"
+  (memberClick)="onMemberClick($event)">
+</app-team-drawer>
+
 <app-employee-drawer
   [isOpen]="isDrawerOpen"
   [employee]="selectedEmployee"
   [isEditable]="editableDrawer"
-  (onClose)="closeDrawer()"
-  (onSave)="saveEmployeeChanges($event)">
+  [manager]="managerName"
+  (closeDrawer)="closeDrawer()"
+  (save)="saveEmployeeChanges($event)">
 </app-employee-drawer>

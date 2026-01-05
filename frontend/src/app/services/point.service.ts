@@ -3,7 +3,7 @@ import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
 import {catchError, interval, Observable, of, startWith, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {TodayCalendars} from './service-interfaces';
+import {PendingDay, TodayCalendar, TodayCalendars} from './service-interfaces';
 
 const GET_PENDING_DAY = gql`
   query GetPendingDay($userId: Int!) {
@@ -50,6 +50,27 @@ export const GET_CURRENT_MONTH_WORK = gql`
   }
 `;
 
+export const GET_ALL_CALENDARS_BY_USER = gql`
+  query GetAllCalendarsByUser($userId: Int!) {
+    allCalendarsByUser(userId: $userId) {
+      id
+      begin
+      end
+      dayType
+      dayOver
+      duration
+      durationFormatted
+      employee {
+        id
+        username
+        firstName
+        lastName
+        email
+      }
+    }
+  }
+`;
+
 const REGISTER_ARRIVAL = gql`
   mutation RegisterArrival($userId: Int!) {
     registerArrival(userId: $userId) {
@@ -85,7 +106,7 @@ export class PointService {
     );
   }
 
-  getTodayCalendar(userId: Number): Observable<TodayCalendars[]> {
+  getTodayCalendar(userId: Number): Observable<TodayCalendar[]> {
     return this.apollo.query({
       query: TODAY_CALENDARS_QUERY,
       variables: { userId },
@@ -101,7 +122,7 @@ export class PointService {
     );
   }
 
-  getMonthCalendar(userId: Number): Observable<any> {
+  getMonthCalendar(userId: Number): Observable<TodayCalendars[]> {
     return this.apollo.query({
       query: GET_CURRENT_MONTH_WORK,
       variables: { userId },
@@ -111,6 +132,22 @@ export class PointService {
         return result.data.currentMonthWork || [];
       })
     )
+  }
+
+  getAllCalendarsByUser(userId: Number): Observable<any[]> {
+    return this.apollo.query({
+      query: GET_ALL_CALENDARS_BY_USER,
+      variables: { userId },
+      fetchPolicy: 'network-only'
+    }).pipe(
+      map((result: any) => {
+        return result.data.allCalendarsByUser || [];
+      }),
+      catchError(error => {
+        console.error('Erreur lors de la récupération des calendriers:', error);
+        return of([]);
+      })
+    );
   }
 
   calculerDureeTotaleJournee(calendars: any[]): Observable<string> {

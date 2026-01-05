@@ -1,0 +1,35 @@
+<div class="add-team-dialog">
+
+  <div class="title">
+    {{ "SETTINGS.AVATAR.TITLE" | translate }}
+  </div>
+
+  <div class="avatar-list">
+    @for (avatar of avatarList; track avatar.id) {
+      <div
+        class="avatar-item"
+        [class.selected]="selectedAvatarId === avatar.id"
+        (click)="selectAvatar(avatar.id)"
+        (keydown.enter)="selectAvatar(avatar.id)">
+        <img [src]="avatar.path" [alt]="'Avatar ' + avatar.id"  />
+      </div>
+    }
+  </div>
+
+  <div class="buttons">
+    <app-basic-text-button
+      [text]="cancel"
+      color="#999999"
+      (buttonPressed)="onCancel()"
+      (keydown.enter)="onCancel()">
+    </app-basic-text-button>
+
+    <app-basic-text-button
+      [text]="confirm"
+      color="#336CAA"
+      (buttonPressed)="onConfirm()"
+      (keydown.enter)="onConfirm()">
+    </app-basic-text-button>
+  </div>
+
+</div>

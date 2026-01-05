@@ -90,7 +90,19 @@
             "styles": [
               "src/styles.css",
               "node_modules/@syncfusion/ej2-schedule/styles/material.css"
-            ]
+            ],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "**/*.spec.ts",
+              "**/*.module.ts",
+              "**/main.ts",
+              "**/polyfills.ts",
+              "**/app.config.ts",
+              "**/app.routes.ts",
+              "**/graphql/**",
+              "**/models/**"
+            ],
+            "karmaConfig": "karma.conf.js"
           }
         }
       }

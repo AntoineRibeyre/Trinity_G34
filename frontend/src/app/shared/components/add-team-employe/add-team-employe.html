@@ -8,32 +8,54 @@
     {{ data.message }}
   </div>
 
-  <!-- Liste des employés -->
-  <mat-form-field appearance="fill" >
-    <mat-label>Employés</mat-label>
-    <mat-select [(value)]="selectedEmployeeIds" multiple class="select">
-      @for (option of data.dropdownOptions; track option.value) {
-        <mat-option [value]="option.value">
-          {{ option.label }}
-        </mat-option>
+  <!-- Barre de recherche -->
+  <div class="search-container">
+    <app-basic-text-field
+      placeholder="Rechercher"
+      width="100%"
+      [rows]="1"
+      (textChange)="onSearchChange($event)"
+      [showClearButton]="true">
+    </app-basic-text-field>
+  </div>
+
+  <!-- Liste des employés avec checkboxes -->
+  <div class="employee-list-container">
+    <div class="employee-list">
+      @for (option of filteredOptions; track option.value) {
+        <div class="employee-item">
+          <label class="employee-checkbox-label">
+            <input
+              type="checkbox"
+              [checked]="isEmployeeSelected(option.value)"
+              (change)="onEmployeeToggle(option.value, $event)"
+              class="employee-checkbox">
+            <span class="employee-name">{{ option.label }}</span>
+          </label>
+        </div>
       }
-    </mat-select>
-  </mat-form-field>
-
-
+      @if (filteredOptions.length === 0) {
+        <div class="no-results">
+          Aucun employé trouvé
+        </div>
+      }
+    </div>
+  </div>
 
   <div class="buttons">
     <app-basic-text-button
       [text]="data.cancel"
       color="#999999"
-      (onClick)="data.onCancel(dialog)">
+      (click)="data.onCancel(dialog)"
+      (keydown.enter)="data.onCancel(dialog)">
     </app-basic-text-button>
 
     <app-basic-text-button
       [text]="data.confirm"
       color="#336CAA"
       [disabled]="!isSelected"
-      (onClick)="data.onConfirm(dialog, selectedEmployeeIds)">
+      (click)="data.onConfirm(dialog, selectedEmployeeIds)"
+      (keydown.enter)="data.onConfirm(dialog, selectedEmployeeIds)">
     </app-basic-text-button>
   </div>
 

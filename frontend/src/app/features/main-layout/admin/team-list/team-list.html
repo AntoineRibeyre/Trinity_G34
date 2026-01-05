@@ -1,11 +1,12 @@
-<div class="teams-container">
+<div class="teams-container" >
   <div class="team-card-add" (click)="$event.stopPropagation();createTeamDialog()">
     <div class="card team-title">Créer une équipe</div>
     <div class="card create-button">
       <button>+</button>
     </div>
   </div>
-  <div class="teams">
+
+  <div class="teams" #teamsContainer>
     @for (team of filteredTeams; track team.id) {
       <div class="team-card" (click)="displayTeamData(team.id)">
         <!-- Nom de l'équipe -->
@@ -56,13 +57,13 @@
 <app-team-drawer
   [isOpen]="isTeamDrawerOpen"
   [team]="selectedTeam"
-  (onClose)="closeTeamDrawer()"
-  (onMemberClick)="onMemberClick($event)">
+  (closeDrawer)="closeTeamDrawer()"
+  (memberClick)="onMemberClick($event)">
 </app-team-drawer>
 
 <app-employee-drawer
   [isOpen]="isEmployeeDrawerOpen"
   [employee]="selectedEmployee"
   [isEditable]="false"
-  (onClose)="closeEmployeeDrawer()">
+  (closeDrawer)="closeEmployeeDrawer()">
 </app-employee-drawer>

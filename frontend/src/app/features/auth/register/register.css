@@ -1,11 +1,12 @@
 .general-space {
-  width: calc(100% - 50px);;
+  width: calc(100vw - 50px);;
   height: calc(100vh - 50px); /* Soustraire 2x le padding */
   padding: 25px;
 
   background-color: #F7F8FA;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   gap: 25px;
 
   font-family: 'Inter', sans-serif;
@@ -37,13 +38,13 @@
 
 .register-form {
   flex: 0 0 auto;
-  max-width: 380px;
+  max-width: 400px;
+  max-height: 800px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-left: 2rem;
-  margin-top: 3rem;
+  justify-content: space-between;
+  margin: 0 3rem;
 }
 
 .form-group {
@@ -274,4 +275,24 @@
 
 .requirement-text {
   flex: 1;
+}
+
+.signup-link {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: transparent;
+  color: #9E9E9E;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  order: 5;
+  text-align: center;
+}
+
+.signup-link:hover {
+  color: #51A6A0;
+  text-decoration: underline;
 }

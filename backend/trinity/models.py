@@ -13,12 +13,20 @@ class Team(models.Model):
 
 class User(AbstractUser):
     # Django gère déjà username, password, email, etc.
-    username=models.CharField(blank=True,null=True)
+    username = models.CharField(blank=True, null=True)
     email = models.EmailField(unique=True)
     telephone = models.CharField(max_length=100, blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
     team = models.ForeignKey(Team, null=True, blank=True,
                              on_delete=models.SET_NULL, related_name="members")
+    social_number = models.BigIntegerField(blank=True, null=True)
+    contract = models.CharField(blank=True, null=True)
+    arrival_date = models.DateField(blank=True, null=True)
+    annual_salary = models.IntegerField(blank=True, null=True)
+    birth_date = models.DateField(blank=True, null=True)
+    working_hours = models.IntegerField(blank=True, null=True)
+    leaves = models.IntegerField(blank=True, null=True)
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -39,6 +47,7 @@ class Calendar(models.Model):
 
     def save(self, **kwargs):
         return super().save(**kwargs)
+
 
 class Event(models.Model):
     subject = models.CharField(max_length=200)

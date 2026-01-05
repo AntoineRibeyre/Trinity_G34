@@ -24,6 +24,17 @@
     "PASSWORD_PLACEHOLDER": "Leave empty to keep unchanged",
     "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
     "SAVING": "Saving in progress...",
+    "PHONE" : "Phone number",
+    "REQUIRE_MIN_LENGTH": "Six characters minimum",
+    "REQUIRE_UPPERCASE": "At least one uppercase letter",
+    "REQUIRE_LOWERCASE": "At least one lowercase letter",
+    "REQUIRE_DIGIT": "At least one number",
+    "NEW_PASSWORD": "New password",
+    "PLACEHOLDER_PASSWORD": "New password",
+    "PASSWORD_INVALID": "Invalid password",
+    "CONFIRM_PASSWORD": "Confirm your password",
+    "PLACEHOLDER_CONFIRM": "Confirm your password",
+    "PASSWORD_MISMATCH": "Passwords do not match",
     "DIALOG": {
       "TITLE": "Edit your password",
       "PASSWORD": "Your password",
@@ -36,7 +47,8 @@
     "EMAIL": "Email",
     "LOGIN": "Login",
     "REGISTER": "Register",
-    "FORGOTTEN_PASSWORD": "Forgotten password"
+    "FORGOTTEN_PASSWORD": "Forgotten password",
+    "SUCCESS": "Connection succeeded"
   },
   "ERRORS": {
     "FILL_ALL_FIELDS": "Fill all fields",
@@ -56,7 +68,8 @@
     "CONFIRM_PWD": "Confirm password",
     "FORGOTTEN_PASSWORD": "Forgot your password",
     "PHONE_NUMBER": "Phone number",
-    "PWD_REQUIREMENT": "Password Requirements"
+    "PWD_REQUIREMENT": "Password Requirements",
+    "GO_HOME" : "Back to main page"
   },
   "HOME": {
     "REGISTER": "Register",
@@ -129,6 +142,13 @@
         "TITLE": "Add employee to the team",
         "NAME-TITLE": "Last and first name of the employee",
         "NAME-PLACEHOLDER": "Name..."
+      },
+      "REMOVE-MEMBERS": {
+        "TITLE": "Remove employees from the team",
+        "TITLE-MANAGER": "Edit manager from the team",
+        "NAME-TITLE": "Last and first name of the employee",
+        "NAME-PLACEHOLDER": "Name...",
+        "RETIRER": "Remove"
       }
     }
   },
@@ -138,6 +158,12 @@
       "FIRSTNAME": "Firstname",
       "EMAIL": "Email",
       "TEAM": "Team",
+      "ALL-EMPLOYEES": "All",
+      "SALES": "Sales",
+      "FINANCE": "Finance",
+      "DESIGN": "Design",
+      "SEARCH-INPUT": "Search an employee...",
+      "ADD_EMPLOYEE": "Add an employee",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",
@@ -155,6 +181,7 @@
         "HOLIDAYS": "Vacation balance:",
         "ANNUAL-SALARY": "Annual salary:",
         "ARRIVAL": "Arrival:"
+
       }
     },
     "TEAMS": {
@@ -163,6 +190,48 @@
         "STATISTICS": "Team stats",
         "MEMBERS": "Team members"
       }
+    }
+  },
+  "team": {
+    "titre": "My Team",
+    "chargementdesdonnees": "Loading data...",
+    "impossibledecharger": "Unable to load team data",
+    "reessayer": "Retry",
+    "erreursurvenue": "An error occurred",
+
+    "statistiques": {
+      "moyennehebdomadaire": "Average Weekly Working Time",
+      "moyennemensuelle": "Average Monthly Working Time",
+      "moyennearrivee": "Average Weekly Arrival Time",
+      "moyennedepart": "Average Weekly Departure Time"
+    },
+
+    "informations": {
+      "titre": "Team Information",
+      "membres": "Members",
+      "manager": "Manager"
+    },
+
+    "tableau": {
+      "titre": "Team Members",
+      "nom": "Name",
+      "role": "Role",
+      "statut": "Status",
+      "heuresaujourdhui": "Hours Today",
+      "aucunmembre": "No members in the team yet."
+    },
+
+    "roles": {
+      "manager": "Manager",
+      "employee": "Employee",
+      "admin": "Administrator"
+    },
+
+    "statuts": {
+      "present": "Present",
+      "absent": "Absent",
+      "termine": "Finished",
+      "inconnu": "Unknown"
     }
   }
 }

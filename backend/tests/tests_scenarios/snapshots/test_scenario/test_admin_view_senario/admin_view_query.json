@@ -1,0 +1,14 @@
+{
+  "errors": [
+    {
+      "message": "Cannot query field 'membres' on type 'TeamType'. Did you mean 'members'?",
+      "locations": [
+        {
+          "line": 29,
+          "column": 15
+        }
+      ]
+    }
+  ],
+  "data": null
+}

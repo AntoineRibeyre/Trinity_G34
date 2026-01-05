@@ -1,35 +1,136 @@
 <div class="general-space">
 
-  <div class="top-cards">
-
-    <div class="cards">
-      <p class="card-text">Moyenne du temps de travail hebdomadaire</p>
-    </div>
-    <div class="cards">
-      <p class="card-text">Moyenne du temps de travail mensuel</p>
-
-    </div>
-    <div class="cards">
-      <p class="card-text">Moyen heure d’arriver hebdomadaire</p>
-
-    </div>
-    <div class="cards">
-      <p class="card-text">Moyen heure de départ hebdomadaire</p>
-
-    </div>
-
+  <!-- Loader -->
+  <div *ngIf="loading" class="loader-container">
+    <div class="loader"></div>
+    <p>{{ 'team.chargementdesdonnees' | translate }}</p>
   </div>
 
-  <div class="bottom-cards">
+  <!-- Erreur -->
+  <div *ngIf="error && !loading" class="error-container">
+    <p class="error-message">{{ error | translate }}</p>
+    <button (click)="loadTeamData()" class="retry-button">
+      {{ 'team.reessayer' | translate }}
+    </button>
+  </div>
 
-    <div class="team-info">
+  <!-- Contenu principal -->
+  <div class="main-content" *ngIf="!loading && !error && managerView">
 
+    <!-- Cards du haut -->
+    <div class="top-cards">
+      <div class="cards">
+        <p class="card-label">{{ 'team.statistiques.moyennehebdomadaire' | translate }}</p>
+        <p class="card-value">{{ avgWeeklyHours }}</p>
+      </div>
+
+      <div class="cards">
+        <p class="card-label">{{ 'team.statistiques.moyennemensuelle' | translate }}</p>
+        <p class="card-value">{{ avgMonthlyHours }}</p>
+      </div>
+
+      <div class="cards">
+        <p class="card-label">{{ 'team.statistiques.moyennearrivee' | translate }}</p>
+        <p class="card-value">{{ avgArrivalTime }}</p>
+      </div>
+
+      <div class="cards">
+        <p class="card-label">{{ 'team.statistiques.moyennedepart' | translate }}</p>
+        <p class="card-value">{{ avgDepartureTime }}</p>
+      </div>
     </div>
 
-    <div class="table-card">
+    <!-- Cards du bas -->
+    <div class="bottom-cards">
+
+      <!-- Informations de l'équipe -->
+      <div class="team-info">
+        <h2 class="team-title">{{ managerView.teamDetails.name }}</h2>
+        <p class="team-description">{{ managerView.teamDetails.description }}</p>
+
+        <div class="team-stats">
+          <div class="stat-item">
+            <span class="stat-label">{{ 'team.informations.membres' | translate }}:</span>
+            <span class="stat-value">{{ managerView.members.length + 1 }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">{{ 'team.informations.manager' | translate }}:</span>
+            <span class="stat-value">
+              {{ managerView.manager.userDetails.firstName }}
+              {{ managerView.manager.userDetails.lastName }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des membres -->
+      <div class="table-card">
+        <h3 class="table-title">{{ 'team.tableau.titre' | translate }}</h3>
+
+        <div class="members-list">
+          <!-- Manager -->
+          <div class="member-row" (click)="openMemberDetails(managerView.manager.userDetails.id, $event)">
+            <div class="member-avatar">
+              {{ managerView.manager.userDetails.firstName.charAt(0) }}{{ managerView.manager.userDetails.lastName.charAt(0) }}
+            </div>
+            <div class="member-info">
+              <div class="member-name">
+                <strong>{{ managerView.manager.userDetails.firstName }} {{ managerView.manager.userDetails.lastName }}</strong>
+              </div>
+            </div>
+            <div class="member-details">
+              <span class="role-badge manager">
+                {{ 'team.roles.manager' | translate }}
+              </span>
+              <span class="status-badge" [ngClass]="getStatusClass({userDetails: managerView.manager.userDetails, planning: managerView.manager.planning})">
+                {{ getStatusText({userDetails: managerView.manager.userDetails, planning: managerView.manager.planning}) | translate }}
+              </span>
+              <span class="hours-badge">{{ getTodayHours({userDetails: managerView.manager.userDetails, planning: managerView.manager.planning}) }}</span>
+            </div>
+            <button class="icon-btn-small">
+              <span>›</span>
+            </button>
+          </div>
+
+          <!-- Membres de l'équipe -->
+          <div *ngFor="let member of managerView.members" class="member-row" (click)="openMemberDetails(member.userDetails.id, $event)">
+            <div class="member-avatar">
+              {{ member.userDetails.firstName.charAt(0) }}{{ member.userDetails.lastName.charAt(0) }}
+            </div>
+            <div class="member-info">
+              <div class="member-name">{{ member.userDetails.firstName }} {{ member.userDetails.lastName }}</div>
+            </div>
+            <div class="member-details">
+              <span class="role-badge" [ngClass]="member.userDetails.role?.toLowerCase()">
+                {{ getRoleTranslationKey(member.userDetails.role) | translate }}
+              </span>
+              <span class="status-badge" [ngClass]="getStatusClass(member)">
+                {{ getStatusText(member) | translate }}
+              </span>
+              <span class="hours-badge">{{ getTodayHours(member) }}</span>
+            </div>
+            <button class="icon-btn-small">
+              <span>›</span>
+            </button>
+          </div>
+
+          <!-- Message si aucun membre -->
+          <div *ngIf="!managerView.members || managerView.members.length === 0" class="empty-state">
+            <p>{{ 'team.tableau.aucunmembre' | translate }}</p>
+          </div>
+        </div>
+      </div>
 
     </div>
 
   </div>
 
 </div>
+
+<!-- Employee Drawer -->
+<app-employee-drawer
+  [isOpen]="isEmployeeDrawerOpen"
+  [employee]="selectedEmployee"
+  [isEditable]="false"
+  (onClose)="closeEmployeeDrawer()">
+</app-employee-drawer>

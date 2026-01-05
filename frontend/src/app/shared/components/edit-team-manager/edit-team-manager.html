@@ -1,0 +1,33 @@
+<div class="delete-dialog">
+
+  <div class="title">
+    {{ data.title }}
+  </div>
+
+  <div class="message">
+    {{ data.message }}
+  </div>
+
+  <app-basic-dropdown
+    [options]="managersList"
+    (selectionChange)="onChangeManager($event)">
+  </app-basic-dropdown>
+
+  <div class="buttons">
+    <app-basic-text-button
+      text="{{ data.cancel }}"
+      color="#999999"
+      (click)="data.onCancel(dialog)"
+      (keydown.enter)="data.onCancel(dialog)">
+    </app-basic-text-button>
+
+    <app-basic-text-button
+      text="{{ data.confirm }}"
+      color="#336CAA"
+      [disabled]="isManager"
+      (click)="data.onConfirm(dialog, managerSelected)"
+      (keydown.enter)="onConfirm(dialog, managerSelected)">
+    </app-basic-text-button>
+  </div>
+
+</div>
