@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
@@ -76,7 +76,8 @@ export class Settings implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private userService: UserService,
     private dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
   ) {
     // Initialiser la langue depuis le service
     this.currentLanguage = this.languageService.getCurrentLanguage();
@@ -130,6 +131,11 @@ export class Settings implements OnInit, OnDestroy {
         email: this.currentUser.email,
         telephone: this.currentUser.telephone,
       });
+      
+      // Désactiver les champs non modifiables
+      this.settingsForm.get('firstName')?.disable();
+      this.settingsForm.get('lastName')?.disable();
+      this.settingsForm.get('email')?.disable();
     }
   }
 
@@ -153,9 +159,11 @@ export class Settings implements OnInit, OnDestroy {
     this.isLoading = true;
 
     try {
+      // Utiliser form.value qui exclut automatiquement les champs désactivés
+      // firstName, lastName et email sont désactivés donc ils ne seront pas envoyés
       const formData = { ...this.settingsForm.value };
 
-      // Pas d’envoi du mot de passe si vide
+      // Pas d'envoi du mot de passe si vide
       if (!formData.password) delete formData.password;
 
       const updatedUser = await this.userService.updateUser(formData);
@@ -164,6 +172,11 @@ export class Settings implements OnInit, OnDestroy {
         this.currentUser = updatedUser;
         this.settingsForm.patchValue({ password: '', confirmPassword: '' });
         this.settingsForm.markAsPristine();
+        
+        // Réactiver les champs désactivés après la mise à jour
+        this.settingsForm.get('firstName')?.disable();
+        this.settingsForm.get('lastName')?.disable();
+        this.settingsForm.get('email')?.disable();
       }
     } catch (err) {
       console.error(err);
@@ -199,7 +212,20 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   openAvatarDialog(): void {
-    this.dialog.open(AvatarDialog)
+    const dialogRef = this.dialog.open(AvatarDialog);
+    
+    dialogRef.afterClosed().subscribe((selectedAvatarId: number | undefined) => {
+      if (selectedAvatarId !== undefined && selectedAvatarId !== null) {
+        // Sauvegarder l'avatar sélectionné dans localStorage
+        if (this.currentUser) {
+          const avatarKey = `avatar_${this.currentUser.id}`;
+          localStorage.setItem(avatarKey, selectedAvatarId.toString());
+          // Forcer la mise à jour de l'affichage
+          this.currentUser = { ...this.currentUser };
+          this.cdr.detectChanges();
+        }
+      }
+    });
   }
 
   /* -------------------- Gestion avatar par user -------------------- */
@@ -209,7 +235,18 @@ export class Settings implements OnInit, OnDestroy {
       return 'assets/avatar/avatar-1.svg';
     }
 
-    // Génère un nombre stable à partir de l'id ou de l'email
+    // Vérifier si l'utilisateur a un avatar sauvegardé dans localStorage
+    const avatarKey = `avatar_${this.currentUser.id}`;
+    const savedAvatarId = localStorage.getItem(avatarKey);
+    
+    if (savedAvatarId) {
+      const avatarId = parseInt(savedAvatarId, 10);
+      if (!isNaN(avatarId) && avatarId >= 1 && avatarId <= 18) {
+        return `assets/avatar/avatar-${avatarId}.svg`;
+      }
+    }
+
+    // Sinon, génère un nombre stable à partir de l'id ou de l'email
     const seed =
       this.currentUser.id ||
       this.currentUser.email ||
@@ -220,7 +257,7 @@ export class Settings implements OnInit, OnDestroy {
       hash = seed.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    // Nombre total d’avatars disponibles
+    // Nombre total d'avatars disponibles
     const avatarCount = 18;
 
     const index = Math.abs(hash) % avatarCount + 1;

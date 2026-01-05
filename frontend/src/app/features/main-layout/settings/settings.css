@@ -111,6 +111,20 @@
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
 
+.form-input.readonly,
+.form-input[readonly] {
+  background-color: #F5F5F5;
+  color: #666;
+  cursor: not-allowed;
+  border-color: #E0E0E0;
+}
+
+.form-input.readonly:focus,
+.form-input[readonly]:focus {
+  border-color: #E0E0E0;
+  box-shadow: none;
+}
+
 .error-message {
   font-size: 0.8rem;
   color: #e74c3c;

@@ -22,7 +22,8 @@
             id="firstName"
             formControlName="firstName"
             class="form-input"
-            [ngClass]="{'invalid': isInvalid('firstName')}"
+            [readonly]="true"
+            [ngClass]="{'invalid': isInvalid('firstName'), 'readonly': true}"
             [placeholder]="'SETTINGS.FIRST_NAME' | translate">
           <div *ngIf="isInvalid('firstName')" class="error-message">
             {{ 'SETTINGS.FIRST_NAME_REQUIRED' | translate }}
@@ -36,7 +37,8 @@
             id="lastName"
             formControlName="lastName"
             class="form-input"
-            [ngClass]="{'invalid': isInvalid('lastName')}"
+            [readonly]="true"
+            [ngClass]="{'invalid': isInvalid('lastName'), 'readonly': true}"
             [placeholder]="'SETTINGS.LAST_NAME' | translate">
           <div *ngIf="isInvalid('lastName')" class="error-message">
             {{ 'SETTINGS.LAST_NAME_REQUIRED' | translate }}
@@ -51,7 +53,8 @@
           id="email"
           formControlName="email"
           class="form-input"
-          [ngClass]="{'invalid': isInvalid('email')}"
+          [readonly]="true"
+          [ngClass]="{'invalid': isInvalid('email'), 'readonly': true}"
           [placeholder]="'SETTINGS.EMAIL' | translate">
         <div *ngIf="isInvalid('email')" class="error-message">
           {{ 'SETTINGS.EMAIL_INVALID' | translate }}
