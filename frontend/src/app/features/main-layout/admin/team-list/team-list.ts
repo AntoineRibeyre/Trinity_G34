@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, Directive, ElementRef, HostListener, AfterViewInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Directive, ElementRef, HostListener, AfterViewInit, inject} from '@angular/core';
 import { Filter, FilterService } from '../../../../services/filter.service';
 import { TeamService } from '../../../../services/team.service';
 import { Subscription } from 'rxjs';
@@ -6,7 +6,7 @@ import { Team } from '../../../../models/team.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CreateTeamDialog } from '../../../../shared/components/create-team-dialog/create-team-dialog';
 import { DeleteDialog } from '../../../../shared/components/delete-dialog/delete-dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DropdownOption } from '../../../../shared/components/basic-dropdown/basic-dropdown';
 import { UserService } from '../../../../services/user.service';
 import { AddTeamEmploye } from '../../../../shared/components/add-team-employe/add-team-employe';
@@ -21,13 +21,15 @@ import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/empl
   templateUrl: './team-list.html',
   imports: [
     TeamDrawer,
-    EmployeeDrawer
+    EmployeeDrawer,
+    TranslatePipe
   ],
   styleUrls: ['./team-list.css']
 })
 export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('teamsContainer') teamsContainer!: ElementRef<HTMLDivElement>;
 
+  translate: TranslateService = inject(TranslateService);
   teams: Team[] = [];
   filteredTeams: Team[] = [];
   selectedFilter: Filter | null = null;
@@ -37,9 +39,9 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   private teamSub?: Subscription;
 
   dropdownOptions: DropdownOption[] = [
-    { label: 'Commerce', value: 1 },
-    { label: 'Finance', value: 2 },
-    { label: 'Design', value: 3 }
+    { label: this.translate.instant('ADMIN.ALL.SALES'), value: 1 },
+    { label: this.translate.instant('ADMIN.ALL.FINANCE'), value: 2 },
+    { label: this.translate.instant('ADMIN.ALL.DESIGN'), value: 3 }
   ];
 
   dropdownOptionsUsers: DropdownOption[] = []
@@ -153,7 +155,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
    */
   applyFilter() {
     this.filteredTeams = this.teams.filter(team =>
-      team.field.toLowerCase() === this.selectedFilter!.label.toLowerCase()
+      team.field.toLowerCase() === this.selectedFilter!.value.toLowerCase()
     );
   }
 

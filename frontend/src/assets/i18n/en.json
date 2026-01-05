@@ -167,6 +167,7 @@
       "DESIGN": "Design",
       "SEARCH-INPUT": "Search an employee...",
       "ADD_EMPLOYEE": "Add an employee",
+      "CREATE-TEAM": "Create new team",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",
