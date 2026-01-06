@@ -20,19 +20,16 @@ import { SettingEditPassword } from '../../../shared/components/setting-edit-pas
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
 import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
 
-/* -------------------- VALIDATEURS -------------------- */
+/* ================= VALIDATORS ================= */
 
-// Vérifie si password === confirmPassword
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
   const confirmPassword = control.get('confirmPassword')?.value;
 
   if (!password || !confirmPassword) return null;
-
   return password === confirmPassword ? null : { passwordMismatch: true };
 }
 
-// Vérifie la force du mot de passe
 function passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -49,26 +46,40 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, FormsModule, BasicTextButton],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BasicTextButton
+  ],
   templateUrl: './settings.html',
-  styleUrls: ['./settings.css'],
+  styleUrls: ['./settings.css']
 })
 export class Settings implements OnInit, OnDestroy {
-  settingsForm: FormGroup;
-  currentLanguage: string = '';
-  availableLanguages: Array<{ code: string; label: string }> = [];
-  isLoading = false;
+
+  settingsForm!: FormGroup;
   currentUser: User | null = null;
 
-
+  currentLanguage = '';
+  availableLanguages: Array<{ code: string; label: string }> = [];
   private languageSubscription?: Subscription;
 
-  // Pré-requis pour l'affichage live
-  passwordRequirements = [
-    { label: 'Minimum 6 caractères', key: 'minLength' },
-    { label: 'Au moins une lettre majuscule', key: 'uppercase' },
-    { label: 'Au moins une lettre minuscule', key: 'lowercase' },
-    { label: 'Au moins un chiffre', key: 'digit' },
+  isLoading = false;
+
+  /* ================= SELECT OPTIONS ================= */
+
+  familyStatusOptions = [
+    { value: 'single', label: 'SETTINGS.FAMILY_STATUS.SINGLE' },
+    { value: 'married', label: 'SETTINGS.FAMILY_STATUS.MARRIED' },
+    { value: 'divorced', label: 'SETTINGS.FAMILY_STATUS.DIVORCED' },
+    { value: 'widowed', label: 'SETTINGS.FAMILY_STATUS.WIDOWED' }
+  ];
+
+  titleOptions = [
+    { value: 'mr', label: 'SETTINGS.TITLE.MR' },
+    { value: 'mrs', label: 'SETTINGS.TITLE.MRS' },
+    { value: 'ms', label: 'SETTINGS.TITLE.MS' }
   ];
 
   constructor(
@@ -78,79 +89,25 @@ export class Settings implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
-  ) {
-    // Initialiser la langue depuis le service
-    this.currentLanguage = this.languageService.getCurrentLanguage();
-    this.settingsForm = this.fb.group(
-      {
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-        password: ['', [passwordStrengthValidator]],
-        confirmPassword: [''],
-        contractType: ['', Validators.required],
-        socialSecurityNumber: ['', Validators.required],
-        annualSalary: ['', Validators.required],
-        arrivalDate: ['', Validators.required],
-        leaveBalance: ['', Validators.required]
-      },
-      { validators: passwordMatchValidator }
-    );
-  }
+  ) {}
 
-  /* -------------------- PASSWORD REQUIREMENTS CHECK -------------------- */
-  isRequirementMet(req: string): boolean {
-    const pwd = this.settingsForm.get('password')?.value || '';
+  /* ================= INIT ================= */
 
-    switch (req) {
-      case 'minLength':
-        return pwd.length >= 6;
-      case 'uppercase':
-        return /[A-Z]/.test(pwd);
-      case 'lowercase':
-        return /[a-z]/.test(pwd);
-      case 'digit':
-        return /[0-9]/.test(pwd);
-      default:
-        return false;
-    }
-  }
-
-  /* -------------------- INIT -------------------- */
   async ngOnInit(): Promise<void> {
-    this.availableLanguages = this.languageService.getAvailableLanguages();
+    this.initForm();
 
+    this.availableLanguages = this.languageService.getAvailableLanguages();
     this.currentLanguage = this.languageService.getCurrentLanguage();
 
-    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
-      (lang) => (this.currentLanguage = lang)
-    );
+    this.languageSubscription =
+      this.languageService.currentLanguage$.subscribe(
+        lang => (this.currentLanguage = lang)
+      );
 
-    // Charger user
     this.currentUser = await this.userService.loadCurrentUserFromServer();
-    if (this.currentUser) {
-      this.settingsForm.patchValue({
-        firstName: this.currentUser.firstName,
-        lastName: this.currentUser.lastName,
-        email: this.currentUser.email,
-        telephone: this.currentUser.telephone,
-        contractType: this.currentUser.contract,
-        socialSecurityNumber: this.currentUser.socialNumber,
-        annualSalary: this.currentUser.annualSalary,
-        arrivalDate: this.currentUser.arrivalDate,
-        leaveBalance: this.currentUser.leaves
-      });
 
-      // Désactiver les champs non modifiables
-      this.settingsForm.get('firstName')?.disable();
-      this.settingsForm.get('lastName')?.disable();
-      this.settingsForm.get('email')?.disable();
-      this.settingsForm.get("contractType")?.disable();
-      this.settingsForm.get('socialSecurityNumber')?.disable();
-      this.settingsForm.get('annualSalary')?.disable();
-      this.settingsForm.get('arrivalDate')?.disable();
-      this.settingsForm.get('leaveBalance')?.disable();
+    if (this.currentUser) {
+      this.patchUserData(this.currentUser);
     }
   }
 
@@ -158,15 +115,86 @@ export class Settings implements OnInit, OnDestroy {
     this.languageSubscription?.unsubscribe();
   }
 
-  /* -------------------- CHANGE LANGUAGE -------------------- */
-  changeLanguage(lang: string): void {
-    this.languageService.setLanguage(lang);
-    this.currentLanguage = lang;
+  /* ================= FORM INIT ================= */
+
+  private initForm(): void {
+    this.settingsForm = this.fb.group(
+      {
+        /* READONLY */
+        firstName: [{ value: '', disabled: true }],
+        lastName: [{ value: '', disabled: true }],
+        email: [{ value: '', disabled: true }],
+
+        contractType: [{ value: '', disabled: true }],
+        socialSecurityNumber: [{ value: '', disabled: true }],
+        annualSalary: [{ value: '', disabled: true }],
+        arrivalDate: [{ value: '', disabled: true }],
+        leaveBalance: [{ value: '', disabled: true }],
+
+        /* EDITABLE */
+        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        personalEmail: ['', Validators.email],
+        familyStatus: ['', Validators.required],
+
+        iban: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/)
+          ]
+        ],
+
+        password: ['', passwordStrengthValidator],
+        confirmPassword: [''],
+
+        address: this.fb.group({
+          streetNumber: ['', Validators.required],
+          streetName: ['', Validators.required],
+          city: ['', Validators.required],
+          postalCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]],
+          country: ['', Validators.required]
+        }),
+
+        emergencyContact: this.fb.group({
+          title: ['', Validators.required],
+          firstName: ['', Validators.required],
+          lastName: ['', Validators.required],
+          relation: ['', Validators.required],
+          phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
+        })
+      },
+      { validators: passwordMatchValidator }
+    );
   }
 
-  /* -------------------- SUBMIT -------------------- */
+  /* ================= PATCH USER ================= */
+
+  private patchUserData(user: User): void {
+    this.settingsForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      telephone: user.telephone,
+
+      personalEmail: user.personalEmail,
+      familyStatus: user.familySituation,
+      iban: user.rib,
+
+      contractType: user.contract,
+      socialSecurityNumber: user.socialNumber,
+      annualSalary: user.annualSalary,
+      arrivalDate: user.arrivalDate,
+      leaveBalance: user.leaves,
+
+      address: user.address,
+      emergencyContact: user.emergencyContact
+    });
+  }
+
+  /* ================= SUBMIT ================= */
+
   async onSubmit(): Promise<void> {
-    if (!this.settingsForm.valid) {
+    if (this.settingsForm.invalid) {
       this.settingsForm.markAllAsTouched();
       return;
     }
@@ -174,24 +202,18 @@ export class Settings implements OnInit, OnDestroy {
     this.isLoading = true;
 
     try {
-      // Utiliser form.value qui exclut automatiquement les champs désactivés
-      // firstName, lastName et email sont désactivés donc ils ne seront pas envoyés
-      const formData = { ...this.settingsForm.value };
+      const payload = { ...this.settingsForm.value };
 
-      // Pas d'envoi du mot de passe si vide
-      if (!formData.password) delete formData.password;
+      if (!payload.password) {
+        delete payload.password;
+      }
 
-      const updatedUser = await this.userService.updateUser(formData);
+      const updatedUser = await this.userService.updateUser(payload);
 
       if (updatedUser) {
         this.currentUser = updatedUser;
         this.settingsForm.patchValue({ password: '', confirmPassword: '' });
         this.settingsForm.markAsPristine();
-
-        // Réactiver les champs désactivés après la mise à jour
-        this.settingsForm.get('firstName')?.disable();
-        this.settingsForm.get('lastName')?.disable();
-        this.settingsForm.get('email')?.disable();
       }
     } catch (err) {
       console.error(err);
@@ -200,12 +222,22 @@ export class Settings implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
+  /* ================= HELPERS ================= */
+
   isInvalid(controlName: string): boolean {
-    const c = this.settingsForm.get(controlName);
-    return !!(c && c.invalid && (c.dirty || c.touched));
+    const control = this.settingsForm.get(controlName);
+    return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
-  /* -------------------- OPEN PASSWORD MODAL -------------------- */
+  /* ================= LANGUAGE ================= */
+
+  changeLanguage(lang: string): void {
+    this.languageService.setLanguage(lang);
+    this.currentLanguage = lang;
+  }
+
+  /* ================= PASSWORD DIALOG ================= */
+
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
       data: {
@@ -213,55 +245,44 @@ export class Settings implements OnInit, OnDestroy {
         confirm: this.translateService.instant('BASE.EDIT'),
         cancel: this.translateService.instant('BASE.CANCEL'),
         onConfirm: async (dialogRef: any, newPassword: string) => {
-          try {
-            await this.userService.updateUser({ password: newPassword });
-            dialogRef.close();
-          } catch (err) {
-          }
+          await this.userService.updateUser({ password: newPassword });
+          dialogRef.close();
         },
-        onCancel: (dialogRef: any) => {
-          dialogRef.close()
-        }
-      },
+        onCancel: (dialogRef: any) => dialogRef.close()
+      }
     });
   }
+
+  /* ================= AVATAR ================= */
 
   openAvatarDialog(): void {
     const dialogRef = this.dialog.open(AvatarDialog);
 
     dialogRef.afterClosed().subscribe((selectedAvatarId: number | undefined) => {
-      if (selectedAvatarId !== undefined && selectedAvatarId !== null) {
-        // Sauvegarder l'avatar sélectionné dans localStorage
-        if (this.currentUser) {
-          const avatarKey = `avatar_${this.currentUser.id}`;
-          localStorage.setItem(avatarKey, selectedAvatarId.toString());
-          // Forcer la mise à jour de l'affichage
-          this.currentUser = { ...this.currentUser };
-          this.cdr.detectChanges();
-        }
+      if (selectedAvatarId && this.currentUser) {
+        const key = `avatar_${this.currentUser.id}`;
+        localStorage.setItem(key, selectedAvatarId.toString());
+        this.currentUser = { ...this.currentUser };
+        this.cdr.detectChanges();
       }
     });
   }
-
-  /* -------------------- Gestion avatar par user -------------------- */
 
   getAvatarPath(): string {
     if (!this.currentUser) {
       return 'assets/avatar/avatar-1.svg';
     }
 
-    // Vérifier si l'utilisateur a un avatar sauvegardé dans localStorage
-    const avatarKey = `avatar_${this.currentUser.id}`;
-    const savedAvatarId = localStorage.getItem(avatarKey);
+    const key = `avatar_${this.currentUser.id}`;
+    const saved = localStorage.getItem(key);
 
-    if (savedAvatarId) {
-      const avatarId = parseInt(savedAvatarId, 10);
-      if (!isNaN(avatarId) && avatarId >= 1 && avatarId <= 18) {
-        return `assets/avatar/avatar-${avatarId}.svg`;
+    if (saved) {
+      const id = Number(saved);
+      if (id >= 1 && id <= 18) {
+        return `assets/avatar/avatar-${id}.svg`;
       }
     }
 
-    // Sinon, génère un nombre stable à partir de l'id ou de l'email
     const seed =
       this.currentUser.id ||
       this.currentUser.email ||
@@ -272,11 +293,7 @@ export class Settings implements OnInit, OnDestroy {
       hash = seed.charCodeAt(i) + ((hash << 5) - hash);
     }
 
-    // Nombre total d'avatars disponibles
-    const avatarCount = 18;
-
-    const index = Math.abs(hash) % avatarCount + 1;
-
+    const index = Math.abs(hash) % 18 + 1;
     return `assets/avatar/avatar-${index}.svg`;
   }
 }
