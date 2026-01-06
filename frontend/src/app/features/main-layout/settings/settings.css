@@ -1,21 +1,24 @@
 .settings-container {
-  width: 100%;
-  min-height: 100vh;
+  /*width: 100%;*/
   padding: 2rem;
   background-color: #F7F8FA;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
+  overflow: hidden;
 }
 
 .settings-content {
   width: 100%;
   max-width: 500px;
+  height: calc(100vh - 10rem);
   background-color: white;
-  border-radius: 15px;
   padding: 3rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 15px;
 }
 
 .profile-section {

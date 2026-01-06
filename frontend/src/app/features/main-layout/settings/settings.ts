@@ -73,7 +73,11 @@ export class Settings implements OnInit, OnDestroy {
     { value: 'single', label: 'SETTINGS.FAMILY_STATUS.SINGLE' },
     { value: 'married', label: 'SETTINGS.FAMILY_STATUS.MARRIED' },
     { value: 'divorced', label: 'SETTINGS.FAMILY_STATUS.DIVORCED' },
-    { value: 'widowed', label: 'SETTINGS.FAMILY_STATUS.WIDOWED' }
+    { value: 'widowed', label: 'SETTINGS.FAMILY_STATUS.WIDOW' },
+    {value: 'marital', label: 'SETTINGS.FAMILY_STATUS.MARITAL' },
+    {value: 'unknown', label: 'SETTINGS.FAMILY_STATUS.UNKNOWN' },
+    {value: 'civil partnership', label: 'SETTINGS.FAMILY_STATUS.CIVIL_PARTNERSHIP' },
+    {value: 'separate', label: 'SETTINGS.FAMILY_STATUS.SEPARATE' },
   ];
 
   titleOptions = [
