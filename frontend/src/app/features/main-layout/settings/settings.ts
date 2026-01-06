@@ -89,6 +89,11 @@ export class Settings implements OnInit, OnDestroy {
         telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
         password: ['', [passwordStrengthValidator]],
         confirmPassword: [''],
+        contractType: ['', Validators.required],
+        socialSecurityNumber: ['', Validators.required],
+        annualSalary: ['', Validators.required],
+        arrivalDate: ['', Validators.required],
+        leaveBalance: ['', Validators.required]
       },
       { validators: passwordMatchValidator }
     );
@@ -130,12 +135,22 @@ export class Settings implements OnInit, OnDestroy {
         lastName: this.currentUser.lastName,
         email: this.currentUser.email,
         telephone: this.currentUser.telephone,
+        contractType: this.currentUser.contract,
+        socialSecurityNumber: this.currentUser.socialNumber,
+        annualSalary: this.currentUser.annualSalary,
+        arrivalDate: this.currentUser.arrivalDate,
+        leaveBalance: this.currentUser.leaves
       });
-      
+
       // Désactiver les champs non modifiables
       this.settingsForm.get('firstName')?.disable();
       this.settingsForm.get('lastName')?.disable();
       this.settingsForm.get('email')?.disable();
+      this.settingsForm.get("contractType")?.disable();
+      this.settingsForm.get('socialSecurityNumber')?.disable();
+      this.settingsForm.get('annualSalary')?.disable();
+      this.settingsForm.get('arrivalDate')?.disable();
+      this.settingsForm.get('leaveBalance')?.disable();
     }
   }
 
@@ -172,7 +187,7 @@ export class Settings implements OnInit, OnDestroy {
         this.currentUser = updatedUser;
         this.settingsForm.patchValue({ password: '', confirmPassword: '' });
         this.settingsForm.markAsPristine();
-        
+
         // Réactiver les champs désactivés après la mise à jour
         this.settingsForm.get('firstName')?.disable();
         this.settingsForm.get('lastName')?.disable();
@@ -213,7 +228,7 @@ export class Settings implements OnInit, OnDestroy {
 
   openAvatarDialog(): void {
     const dialogRef = this.dialog.open(AvatarDialog);
-    
+
     dialogRef.afterClosed().subscribe((selectedAvatarId: number | undefined) => {
       if (selectedAvatarId !== undefined && selectedAvatarId !== null) {
         // Sauvegarder l'avatar sélectionné dans localStorage
@@ -238,7 +253,7 @@ export class Settings implements OnInit, OnDestroy {
     // Vérifier si l'utilisateur a un avatar sauvegardé dans localStorage
     const avatarKey = `avatar_${this.currentUser.id}`;
     const savedAvatarId = localStorage.getItem(avatarKey);
-    
+
     if (savedAvatarId) {
       const avatarId = parseInt(savedAvatarId, 10);
       if (!isNaN(avatarId) && avatarId >= 1 && avatarId <= 18) {

@@ -61,6 +61,79 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="contractType">
+            {{ 'SETTINGS.CONTRACT_TYPE' | translate }}
+          </label>
+          <input
+            type="text"
+            id="contractType"
+            formControlName="contractType"
+            class="form-input"
+            [readonly]="true"
+            [ngClass]="{'readonly': true}"
+            [placeholder]="'SETTINGS.CONTRACT_TYPE' | translate">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="socialSecurityNumber">
+            {{ 'SETTINGS.SOCIAL_SECURITY_NUMBER' | translate }}
+          </label>
+          <input
+            type="text"
+            id="socialSecurityNumber"
+            formControlName="socialSecurityNumber"
+            class="form-input"
+            [readonly]="true"
+            [ngClass]="{'readonly': true}"
+            [placeholder]="'SETTINGS.SOCIAL_SECURITY_NUMBER' | translate">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="annualSalary">
+            {{ 'SETTINGS.ANNUAL_SALARY' | translate }}
+          </label>
+          <input
+            type="text"
+            id="annualSalary"
+            formControlName="annualSalary"
+            class="form-input"
+            [readonly]="true"
+            [ngClass]="{'readonly': true}"
+            [placeholder]="'SETTINGS.ANNUAL_SALARY' | translate">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="arrivalDate">
+            {{ 'SETTINGS.ARRIVAL_DATE' | translate }}
+          </label>
+          <input
+            type="date"
+            id="arrivalDate"
+            formControlName="arrivalDate"
+            class="form-input"
+            [readonly]="true"
+            [ngClass]="{'readonly': true}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="leaveBalance">
+          {{ 'SETTINGS.LEAVE_BALANCE' | translate }}
+        </label>
+        <input
+          type="text"
+          id="leaveBalance"
+          formControlName="leaveBalance"
+          class="form-input"
+          [readonly]="true"
+          [ngClass]="{'readonly': true}"
+          [placeholder]="'SETTINGS.LEAVE_BALANCE' | translate">
+      </div>
+
       <div class="form-group">
         <label class="form-label" for="telephone">{{'SETTINGS.PHONE' |translate }}</label>
         <input
