@@ -38,6 +38,28 @@
     "CONFIRM_PASSWORD": "Confirmez votre mot de passe",
     "PLACEHOLDER_CONFIRM": "Confirmez votre mot de passe",
     "PASSWORD_MISMATCH": "Mot de passes différents",
+    "EMAIL_PRO": "Email professionnel",
+    "CONTRACT": "Type de contrat",
+    "SOCIAL_NUMBER": "Numéro de sécurité sociale",
+    "SALARY": "Salaire annuel",
+    "BEGIN_DATE": "Date d'arrivée",
+    "LEAVE": "Solde de congés",
+    "IBAN": "IBAN",
+    "FAMILY_SITUATION": "Situation familiale",
+    "ADRESSE": {
+      "STREET": "Rue",
+      "STREET_NUMBER": "Numéro de rue",
+      "CITY": "Ville",
+      "POSTAL_CODE": "Code postal",
+      "COUNTRY": "Pays"
+    },
+    "EMERGENCY": {
+      "COURTESY": "Civilité",
+      "LAST_NAME": "Nom",
+      "FIRST_NAME": "Prénom",
+      "RELATION": "Lien",
+      "PHONE_NUMBER": "Numéro de téléphone"
+    },
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",
       "PASSWORD": "Votre mot de passe",

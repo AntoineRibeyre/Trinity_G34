@@ -38,6 +38,28 @@
     "CONFIRM_PASSWORD": "Confirm your password",
     "PLACEHOLDER_CONFIRM": "Confirm your password",
     "PASSWORD_MISMATCH": "Passwords do not match",
+    "EMAIL_PRO": "Professional email",
+    "CONTRACT": "Contract type",
+    "SOCIAL_NUMBER": "Social number",
+    "SALARY": "Annual salary",
+    "BEGIN_DATE": "Beginning date",
+    "LEAVE": "Leave balance",
+    "IBAN": "IBAN",
+    "FAMILY_SITUATION": "Family situation",
+    "ADRESSE": {
+      "STREET": "Street",
+      "STREET_NUMBER": "Street number",
+      "CITY": "City",
+      "POSTAL_CODE": "Postal code",
+      "COUNTRY": "Country"
+    },
+    "EMERGENCY": {
+      "COURTESY": "Title",
+      "LAST_NAME": "Last name",
+      "FIRST_NAME": "First name",
+      "RELATION": "Relationship",
+      "PHONE_NUMBER": "Phone number"
+    },
     "DIALOG": {
       "TITLE": "Edit your password",
       "PASSWORD": "Your password",
