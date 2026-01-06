@@ -21,6 +21,20 @@ interface GraphQLUser {
   workingHours?: number;
   annualSalary?: number;
   leaves?: number;
+  address?: {
+    streetNumber?: string;
+    streetName?: string;
+    postalCode?: string;
+    city?: string;
+    country?: string;
+  };
+  emergencyContact?: {
+    title?: string;
+    firstName?: string;
+    lastName?: string;
+    relation?: string;
+    phone?: string;
+  };
 }
 
 interface AllUsersResponse {
@@ -60,6 +74,20 @@ const GET_ALL_USERS = gql`
       birthDate
       workingHours
       leaves
+      address {
+        streetNumber
+        streetName
+        postalCode
+        city
+        country
+      }
+      emergencyContact {
+        title
+        firstName
+        lastName
+        relation
+        phone
+      }
     }
   }
 `;
@@ -123,6 +151,9 @@ export class UserService {
       if (typeof t === 'number' || typeof t === 'string') payload.teamId = Number(t);
       else if (t && t.id !== undefined) payload.teamId = Number(t.id);
     }
+    if (src.address !== undefined) payload.address = src.address;
+
+    if (src.emergencyContact !== undefined) payload.emergencyContact = src.emergencyContact;
 
     return payload;
   }
@@ -158,6 +189,20 @@ export class UserService {
               lastName
               role
             }
+          }
+          address {
+            streetNumber
+            streetName
+            postalCode
+            city
+            country
+          }
+          emergencyContact {
+            title
+            firstName
+            lastName
+            relation
+            phone
           }
         }
       }
@@ -197,6 +242,20 @@ export class UserService {
                 role
               }
             }
+          address {
+            streetNumber
+            streetName
+            postalCode
+            city
+            country
+          }
+          emergencyContact {
+            title
+            firstName
+            lastName
+            relation
+            phone
+          }
         }
       }
     `;
@@ -298,6 +357,21 @@ export class UserService {
         birthDate: graphqlUser.birthDate,
         workingHours: graphqlUser.workingHours,
         leaves: graphqlUser.leaves,
+        address: graphqlUser.address || {
+          streetNumber: '',
+          streetName: '',
+          postalCode: '',
+          city: '',
+          country: '',
+        },
+
+        emergencyContact: graphqlUser.emergencyContact || {
+          title: '',
+          firstName: '',
+          lastName: '',
+          relation: '',
+          phone: '',
+        },
       };
     }
 
