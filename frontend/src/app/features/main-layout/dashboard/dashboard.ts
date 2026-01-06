@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, inject, HostListener} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
 import {DatePipe} from '@angular/common';
@@ -145,13 +145,15 @@ export class Dashboard implements OnInit, OnDestroy {
     if (!this.isAutoPointageEnabled) return;
 
     if (wasActive && !state.isActive) {
-      // L'utilisateur devient inactif après 5 minutes -> pointer sortie
-      console.log('Utilisateur inactif depuis 5 minutes, pointage sortie automatique');
+      // L'utilisateur devient inactif après 60 secondes -> pointer sortie
+      console.log('Utilisateur inactif, pointage sortie automatique');
       this.autoPointerSortie();
     } else if (!wasActive && state.isActive) {
-      // L'utilisateur redevient actif -> pointer arrivée
+      // L'utilisateur redevient actif -> pointer arrivée et relancer le compteur
       console.log('Utilisateur redevenu actif, pointage arrivée automatique');
       this.autoPointerArrivee();
+      // Relancer le calcul du temps de travail même si le navigateur n'a pas le focus
+      this.loadTodayCalendars();
     }
   }
 
@@ -171,6 +173,8 @@ export class Dashboard implements OnInit, OnDestroy {
         } else {
           console.log('Déjà pointé, pas de pointage automatique');
           this.isPointeArrivee = true;
+          // Relancer le calcul du temps même si déjà pointé
+          this.demarrerCalculDureeTotale();
         }
         this.hasAutoPointedOnInit = true;
       },
@@ -293,6 +297,29 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });
+  }
+
+  /**
+   * Rafraîchit le temps de travail quand la page redevient visible
+   * Compense le throttling des timers en arrière-plan
+   */
+  @HostListener('document:visibilitychange')
+  onVisibilityChange(): void {
+    if (!document.hidden) {
+      console.log('[Dashboard] Page visible - rafraîchissement du temps de travail');
+      // Redémarrer le calcul de durée totale pour afficher le temps correct
+      this.demarrerCalculDureeTotale();
+    }
+  }
+
+  /**
+   * Rafraîchit le temps de travail quand la fenêtre reprend le focus
+   */
+  @HostListener('window:focus')
+  onWindowFocus(): void {
+    console.log('[Dashboard] Focus fenêtre - rafraîchissement du temps de travail');
+    // Redémarrer le calcul de durée totale pour afficher le temps correct
+    this.demarrerCalculDureeTotale();
   }
 
   ngOnDestroy() {
