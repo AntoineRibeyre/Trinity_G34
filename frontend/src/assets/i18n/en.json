@@ -10,7 +10,7 @@
     "FIRST_NAME_REQUIRED":"Require first name",
     "LAST_NAME": "Last name",
     "LAST_NAME_REQUIRED": "Require last name",
-    "EMAIL": "Email",
+    "PERSONAL_EMAIL": "Email",
     "SAVE": "Save",
     "LANGUAGE": "Language",
     "YOUR_STATS": "Your stats",
@@ -42,10 +42,21 @@
     "CONTRACT": "Contract type",
     "SOCIAL_NUMBER": "Social number",
     "SALARY": "Annual salary",
-    "BEGIN_DATE": "Beginning date",
+    "ARRIVAL_DATE": "Arrival date",
     "LEAVE": "Leave balance",
     "IBAN": "IBAN",
     "FAMILY_SITUATION": "Family situation",
+    "SELECT": "Choix",
+    "FAMILY_STATUS": {
+      "SINGLE": "Single",
+      "MARRIED": "Married",
+      "DIVORCED": "Divorced",
+      "CIVIL_PARTNERSHIP": "Civil partnership",
+      "WIDOW": "Widow",
+      "SEPARATE": "Separate",
+      "UNKNOWN": "Unknown",
+      "MARITAL": "Marital life"
+    },
     "ADRESSE": {
       "STREET": "Street",
       "STREET_NUMBER": "Street number",
@@ -59,6 +70,11 @@
       "FIRST_NAME": "First name",
       "RELATION": "Relationship",
       "PHONE_NUMBER": "Phone number"
+    },
+    "TITLE": {
+      "MR": "Mister",
+      "MRS": "Missus",
+      "MS": "Miss"
     },
     "DIALOG": {
       "TITLE": "Edit your password",

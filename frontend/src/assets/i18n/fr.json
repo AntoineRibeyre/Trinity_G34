@@ -10,7 +10,7 @@
     "FIRST_NAME_REQUIRED": "Prénom requis",
     "LAST_NAME": "Nom",
     "LAST_NAME_REQUIRED": "Nom requis",
-    "EMAIL": "Email",
+    "PERSONAL_MAIL": "Email",
     "SAVE": "Enregistrer",
     "LANGUAGE": "Langue",
     "YOUR_STATS": "Vos stats",
@@ -42,10 +42,21 @@
     "CONTRACT": "Type de contrat",
     "SOCIAL_NUMBER": "Numéro de sécurité sociale",
     "SALARY": "Salaire annuel",
-    "BEGIN_DATE": "Date d'arrivée",
+    "ARRIVAL_DATE": "Date d'arrivée",
     "LEAVE": "Solde de congés",
     "IBAN": "IBAN",
     "FAMILY_SITUATION": "Situation familiale",
+    "SELECT": "Choix",
+    "FAMILY_STATUS": {
+      "SINGLE": "Célibataire",
+      "MARRIED": "Marié(e)",
+      "DIVORCED": "Divorcé(e)",
+      "CIVIL_PARTNERSHIP": "Pacsé(e)",
+      "WIDOW": "Veuf/Veuve",
+      "SEPARATE": "Séparé(e)",
+      "UNKNOWN": "Inconnue",
+      "MARITAL": "Vie maritale"
+    },
     "ADRESSE": {
       "STREET": "Rue",
       "STREET_NUMBER": "Numéro de rue",
@@ -53,12 +64,18 @@
       "POSTAL_CODE": "Code postal",
       "COUNTRY": "Pays"
     },
+    "EMERGENCY_CONTACT": "Contact en cas d'urgence",
     "EMERGENCY": {
       "COURTESY": "Civilité",
       "LAST_NAME": "Nom",
       "FIRST_NAME": "Prénom",
       "RELATION": "Lien",
       "PHONE_NUMBER": "Numéro de téléphone"
+    },
+    "TITLE": {
+      "MR": "Monsieur",
+      "MRS": "Madame",
+      "MS": "Mademoiselle"
     },
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",
