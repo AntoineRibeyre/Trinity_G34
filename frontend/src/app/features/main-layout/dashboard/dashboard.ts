@@ -1,18 +1,14 @@
 import {Component, OnInit, OnDestroy, inject} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
-import {DatePipe} from '@angular/common';
-import {AuthService} from '../../../services/auth.service';
+import {Router} from '@angular/router';
 import {UserService} from '../../../services/user.service';
 import { User } from '../../../models/user.model';
 import {HistoricalColumn} from '../../../shared/components/historical-column/historical-column';
 import {TeamColumn} from '../../../shared/components/team-column/team-column';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
-import {AddTeamEmploye} from '../../../shared/components/add-team-employe/add-team-employe';
+import {MatDialog} from '@angular/material/dialog';
 import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dropdown';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {CreateTeamDialog} from '../../../shared/components/create-team-dialog/create-team-dialog';
 import {PendingDay, TodayCalendar} from '../../../services/service-interfaces';
 import { TeamService } from '../../../services/team.service';
 
@@ -90,7 +86,8 @@ export class Dashboard implements OnInit, OnDestroy {
     private pointService: PointService,
     private userService: UserService,
     private dialog : MatDialog,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
