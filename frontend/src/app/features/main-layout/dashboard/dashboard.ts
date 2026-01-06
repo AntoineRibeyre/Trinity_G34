@@ -76,6 +76,7 @@ export class Dashboard implements OnInit, OnDestroy {
   todayCalendars: TodayCalendar[] = [];
   isLoading: boolean = false;
   error: any;
+  isTelework: boolean = false; // false = Présentiel, true = Télétravail
   //TEMP
   dropdownOptions: DropdownOption[] = [
     { label: 'Ryan Wittert', value: 1 },
@@ -222,5 +223,39 @@ export class Dashboard implements OnInit, OnDestroy {
     }
 
     this.dureeSubscription?.unsubscribe();
+  }
+
+  getAvatarPath(): string {
+    if (!this.currentUser) {
+      return 'assets/avatar/avatar-1.svg';
+    }
+
+    const key = `avatar_${this.currentUser.id}`;
+    const saved = localStorage.getItem(key);
+
+    if (saved) {
+      const id = Number(saved);
+      if (id >= 1 && id <= 18) {
+        return `assets/avatar/avatar-${id}.svg`;
+      }
+    }
+
+    const seed =
+      this.currentUser.id ||
+      this.currentUser.email ||
+      `${this.currentUser.firstName}${this.currentUser.lastName}`;
+
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const index = Math.abs(hash) % 18 + 1;
+    return `assets/avatar/avatar-${index}.svg`;
+  }
+
+  toggleWorkMode(): void {
+    this.isTelework = !this.isTelework;
+    // TODO: Implémenter la logique de changement de mode de travail
   }
 }

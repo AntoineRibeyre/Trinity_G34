@@ -7,7 +7,9 @@
   },
   "SETTINGS": {
     "FIRST_NAME": "First name",
+    "FIRST_NAME_REQUIRED":"Require first name",
     "LAST_NAME": "Last name",
+    "LAST_NAME_REQUIRED": "Require last name",
     "EMAIL": "Email",
     "SAVE": "Save",
     "LANGUAGE": "Language",
@@ -25,6 +27,7 @@
     "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
     "SAVING": "Saving in progress...",
     "PHONE" : "Phone number",
+    "PHONE_INVALID": "Invalid phone number",
     "REQUIRE_MIN_LENGTH": "Six characters minimum",
     "REQUIRE_UPPERCASE": "At least one uppercase letter",
     "REQUIRE_LOWERCASE": "At least one lowercase letter",
@@ -35,6 +38,28 @@
     "CONFIRM_PASSWORD": "Confirm your password",
     "PLACEHOLDER_CONFIRM": "Confirm your password",
     "PASSWORD_MISMATCH": "Passwords do not match",
+    "EMAIL_PRO": "Professional email",
+    "CONTRACT": "Contract type",
+    "SOCIAL_NUMBER": "Social number",
+    "SALARY": "Annual salary",
+    "BEGIN_DATE": "Beginning date",
+    "LEAVE": "Leave balance",
+    "IBAN": "IBAN",
+    "FAMILY_SITUATION": "Family situation",
+    "ADRESSE": {
+      "STREET": "Street",
+      "STREET_NUMBER": "Street number",
+      "CITY": "City",
+      "POSTAL_CODE": "Postal code",
+      "COUNTRY": "Country"
+    },
+    "EMERGENCY": {
+      "COURTESY": "Title",
+      "LAST_NAME": "Last name",
+      "FIRST_NAME": "First name",
+      "RELATION": "Relationship",
+      "PHONE_NUMBER": "Phone number"
+    },
     "DIALOG": {
       "TITLE": "Edit your password",
       "PASSWORD": "Your password",
@@ -164,6 +189,7 @@
       "DESIGN": "Design",
       "SEARCH-INPUT": "Search an employee...",
       "ADD_EMPLOYEE": "Add an employee",
+      "CREATE-TEAM": "Create new team",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",

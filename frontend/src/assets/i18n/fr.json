@@ -7,7 +7,9 @@
   },
   "SETTINGS": {
     "FIRST_NAME": "Prénom",
+    "FIRST_NAME_REQUIRED": "Prénom requis",
     "LAST_NAME": "Nom",
+    "LAST_NAME_REQUIRED": "Nom requis",
     "EMAIL": "Email",
     "SAVE": "Enregistrer",
     "LANGUAGE": "Langue",
@@ -25,7 +27,8 @@
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
     "SAVING": "Sauvegarde en cours",
     "PHONE" : "Numéro de téléphone",
-    "REQUIRE_MIN_LENGTH": "Six charactères minimum",
+    "PHONE_INVALID": "Numéro de téléphone invalide",
+    "REQUIRE_MIN_LENGTH": "Six caractères minimum",
     "REQUIRE_UPPERCASE": "Au moins une majuscule",
     "REQUIRE_LOWERCASE": "Au moins une minuscule",
     "REQUIRE_DIGIT": "Au moins un chiffre",
@@ -35,6 +38,28 @@
     "CONFIRM_PASSWORD": "Confirmez votre mot de passe",
     "PLACEHOLDER_CONFIRM": "Confirmez votre mot de passe",
     "PASSWORD_MISMATCH": "Mot de passes différents",
+    "EMAIL_PRO": "Email professionnel",
+    "CONTRACT": "Type de contrat",
+    "SOCIAL_NUMBER": "Numéro de sécurité sociale",
+    "SALARY": "Salaire annuel",
+    "BEGIN_DATE": "Date d'arrivée",
+    "LEAVE": "Solde de congés",
+    "IBAN": "IBAN",
+    "FAMILY_SITUATION": "Situation familiale",
+    "ADRESSE": {
+      "STREET": "Rue",
+      "STREET_NUMBER": "Numéro de rue",
+      "CITY": "Ville",
+      "POSTAL_CODE": "Code postal",
+      "COUNTRY": "Pays"
+    },
+    "EMERGENCY": {
+      "COURTESY": "Civilité",
+      "LAST_NAME": "Nom",
+      "FIRST_NAME": "Prénom",
+      "RELATION": "Lien",
+      "PHONE_NUMBER": "Numéro de téléphone"
+    },
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",
       "PASSWORD": "Votre mot de passe",
@@ -167,6 +192,7 @@
       "DESIGN": "Design",
       "SEARCH-INPUT": "Rechercher un employé...",
       "ADD_EMPLOYEE": "Ajouter un employé",
+      "CREATE-TEAM": "Créer une équipe",
       "PERSONAL-DRAWER": {
         "PERSONAL": "Personnel",
         "BIRTH-DATE": "Date de naissance:",

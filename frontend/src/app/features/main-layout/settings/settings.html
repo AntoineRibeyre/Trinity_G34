@@ -3,101 +3,323 @@
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="profile-avatar" (click)="openAvatarDialog()" (keydown.enter)="openAvatarDialog()">
-        {{ (currentUser?.firstName?.[0] || '') + (currentUser?.lastName?.[0] || '') }}
+      <div class="profile-avatar-img">
+        <img
+          [src]="getAvatarPath()"
+          alt="User avatar"
+          class="avatar-image"
+        />
       </div>
     </div>
 
-    <!-- Settings Form -->
-    <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" class="settings-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label" for="firstName">{{ 'SETTINGS.FIRST_NAME' | translate }}</label>
-          <input
-            type="text"
-            id="firstName"
-            formControlName="firstName"
-            class="form-input"
-            [ngClass]="{'invalid': isInvalid('firstName')}"
-            [placeholder]="'SETTINGS.FIRST_NAME' | translate">
-          <div *ngIf="isInvalid('firstName')" class="error-message">
-            {{ 'SETTINGS.FIRST_NAME_REQUIRED' | translate }}
+      <!-- ================= FORM ================= -->
+      <form
+        [formGroup]="settingsForm"
+        (ngSubmit)="onSubmit()"
+        class="settings-form"
+      >
+
+        <!-- ================= BASIC INFO (READONLY) ================= -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="firstName">
+              {{ 'SETTINGS.FIRST_NAME' | translate }}
+            </label>
+            <input
+              id="firstName"
+              class="form-input readonly"
+              formControlName="firstName"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="lastName">
+              {{ 'SETTINGS.LAST_NAME' | translate }}
+            </label>
+            <input
+              id="lastName"
+              class="form-input readonly"
+              formControlName="lastName"
+              readonly
+            />
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="lastName">{{ 'SETTINGS.LAST_NAME' | translate }}</label>
+          <label class="form-label" for="email">
+            {{ 'SETTINGS.EMAIL' | translate }}
+          </label>
           <input
-            type="text"
-            id="lastName"
-            formControlName="lastName"
+            id="email"
+            class="form-input readonly"
+            formControlName="email"
+            readonly
+          />
+        </div>
+
+        <!-- ================= EDITABLE ================= -->
+        <div class="form-group">
+          <label class="form-label" for="telephone">
+            {{ 'SETTINGS.PHONE' | translate }}
+          </label>
+          <input
+            id="telephone"
+            type="tel"
             class="form-input"
-            [ngClass]="{'invalid': isInvalid('lastName')}"
-            [placeholder]="'SETTINGS.LAST_NAME' | translate">
-          <div *ngIf="isInvalid('lastName')" class="error-message">
-            {{ 'SETTINGS.LAST_NAME_REQUIRED' | translate }}
+            formControlName="telephone"
+            [ngClass]="{ invalid: isInvalid('telephone') }"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="personalEmail">
+            {{ 'SETTINGS.PERSONAL_EMAIL' | translate }}
+          </label>
+          <input
+            id="personalEmail"
+            type="email"
+            class="form-input"
+            formControlName="personalEmail"
+            [ngClass]="{ invalid: isInvalid('personalEmail') }"
+          />
+        </div>
+
+        <!-- ================= FAMILY STATUS ================= -->
+        <div class="form-group">
+          <label class="form-label" for="familyStatus">
+            {{ 'SETTINGS.FAMILY_STATUS' | translate }}
+          </label>
+          <select
+            id="familyStatus"
+            class="form-select"
+            formControlName="familyStatus"
+          >
+            <option value="" disabled>
+              {{ 'SETTINGS.SELECT' | translate }}
+            </option>
+            <option
+              *ngFor="let status of familyStatusOptions"
+              [value]="status.value"
+            >
+              {{ status.label | translate }}
+            </option>
+          </select>
+        </div>
+
+        <!-- ================= IBAN ================= -->
+        <div class="form-group">
+          <label class="form-label" for="iban">
+            {{ 'SETTINGS.IBAN' | translate }}
+          </label>
+          <input
+            id="iban"
+            type="text"
+            class="form-input"
+            formControlName="iban"
+            placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"
+            [ngClass]="{ invalid: isInvalid('iban') }"
+          />
+        </div>
+
+        <!-- ================= READONLY RH ================= -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="contractType">
+              {{ 'SETTINGS.CONTRACT_TYPE' | translate }}
+            </label>
+            <input
+              id="contractType"
+              class="form-input readonly"
+              formControlName="contractType"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="socialSecurityNumber">
+              {{ 'SETTINGS.SOCIAL_SECURITY_NUMBER' | translate }}
+            </label>
+            <input
+              id="socialSecurityNumber"
+              class="form-input readonly"
+              formControlName="socialSecurityNumber"
+              readonly
+            />
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label" for="email">{{ 'SETTINGS.EMAIL' | translate }}</label>
-        <input
-          type="email"
-          id="email"
-          formControlName="email"
-          class="form-input"
-          [ngClass]="{'invalid': isInvalid('email')}"
-          [placeholder]="'SETTINGS.EMAIL' | translate">
-        <div *ngIf="isInvalid('email')" class="error-message">
-          {{ 'SETTINGS.EMAIL_INVALID' | translate }}
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="annualSalary">
+              {{ 'SETTINGS.ANNUAL_SALARY' | translate }}
+            </label>
+            <input
+              id="annualSalary"
+              class="form-input readonly"
+              formControlName="annualSalary"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="arrivalDate">
+              {{ 'SETTINGS.ARRIVAL_DATE' | translate }}
+            </label>
+            <input
+              id="arrivalDate"
+              class="form-input readonly"
+              formControlName="arrivalDate"
+              readonly
+            />
+          </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label" for="telephone">{{'SETTINGS.PHONE' |translate }}</label>
-        <input
-        type="tel"
-        id="telephone"
-        formControlName="telephone"
-        class="form-input"
-        [ngClass]="{'invalid': isInvalid('telephone')}"
-        [placeholder]="'SETTINGS.PHONE' |translate">
-        <div *ngIf="isInvalid('telephone')" class="error-message">
-          {{'SETTINGS.PHONE_INVALID' | translate}}
+        <div class="form-group">
+          <label class="form-label" for="leaveBalance">
+            {{ 'SETTINGS.LEAVE_BALANCE' | translate }}
+          </label>
+          <input
+            id="leaveBalance"
+            class="form-input readonly"
+            formControlName="leaveBalance"
+            readonly
+          />
         </div>
-      </div>
 
-      <div class="form-group">
-        <app-basic-text-button
-          text="Changer votre mot de passe"
-          color="#999999"
-          width="100%"
-          (buttonPressed)="openEditPassword()"
-          (keydown.enter)="openEditPassword()">
-        </app-basic-text-button>
-      </div>
+        <!-- ================= ADDRESS ================= -->
+        <div formGroupName="address">
+          <h4 class="section-title">{{ 'SETTINGS.ADDRESS' | translate }}</h4>
 
-      <div class="form-group">
-        <label class="form-label" for="language">{{ 'SETTINGS.LANGUAGE' | translate }}</label>
-        <select
-          id="language"
-          class="form-select"
-          [ngModel]="currentLanguage"
-          [ngModelOptions]="{standalone: true}"
-          (ngModelChange)="changeLanguage($event)">
-          <option *ngFor="let lang of availableLanguages" [value]="lang.code">
-            {{ lang.label }}
-          </option>
-        </select>
-      </div>
+          <div class="form-row">
+            <input
+              id="streetNumber"
+              class="form-input"
+              formControlName="streetNumber"
+              placeholder="N°"
+            />
+            <input
+              id="streetName"
+              class="form-input"
+              formControlName="streetName"
+              placeholder="Rue"
+            />
+          </div>
 
-      <button
-        type="submit"
-        class="btn-save"
-        [disabled]="settingsForm.invalid || isLoading">
-      <span *ngIf="!isLoading">{{ 'SETTINGS.SAVE' | translate }}</span>
-      <span *ngIf="isLoading">{{ 'SETTINGS.SAVING' | translate }}</span>
-    </button>
-    </form>
+          <div class="form-row">
+            <input
+              id="postalCode"
+              class="form-input"
+              formControlName="postalCode"
+              placeholder="Code postal"
+            />
+            <input
+              id="city"
+              class="form-input"
+              formControlName="city"
+              placeholder="Ville"
+            />
+          </div>
+
+          <input
+            id="country"
+            class="form-input"
+            formControlName="country"
+            placeholder="Pays"
+          />
+        </div>
+
+        <!-- ================= EMERGENCY CONTACT ================= -->
+        <div formGroupName="emergencyContact">
+          <h4 class="section-title">{{ 'SETTINGS.EMERGENCY_CONTACT' | translate }}</h4>
+
+          <div class="form-group">
+            <label class="form-label" for="emergencyTitle">
+              {{ 'SETTINGS.TITLE' | translate }}
+            </label>
+            <select
+              id="emergencyTitle"
+              class="form-select"
+              formControlName="title"
+            >
+              <option value="" disabled>
+                {{ 'SETTINGS.SELECT' | translate }}
+              </option>
+              <option *ngFor="let t of titleOptions" [value]="t.value">
+                {{ t.label | translate }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <input
+              id="emergencyFirstName"
+              class="form-input"
+              formControlName="firstName"
+              placeholder="Prénom"
+            />
+            <input
+              id="emergencyLastName"
+              class="form-input"
+              formControlName="lastName"
+              placeholder="Nom"
+            />
+          </div>
+
+          <input
+            id="emergencyRelation"
+            class="form-input"
+            formControlName="relation"
+            placeholder="Relation"
+          />
+
+          <input
+            id="emergencyPhone"
+            class="form-input"
+            formControlName="phone"
+            placeholder="Téléphone"
+          />
+        </div>
+
+        <!-- ================= PASSWORD ================= -->
+        <div class="form-group">
+          <app-basic-text-button
+            text="Changer votre mot de passe"
+            color="#999999"
+            width="100%"
+            (buttonPressed)="openEditPassword()"
+          ></app-basic-text-button>
+        </div>
+
+        <!-- ================= LANGUAGE ================= -->
+        <div class="form-group">
+          <label class="form-label" for="language">
+            {{ 'SETTINGS.LANGUAGE' | translate }}
+          </label>
+          <select
+            id="language"
+            class="form-select"
+            [ngModel]="currentLanguage"
+            [ngModelOptions]="{ standalone: true }"
+            (ngModelChange)="changeLanguage($event)"
+          >
+            <option *ngFor="let lang of availableLanguages" [value]="lang.code">
+              {{ lang.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- ================= SAVE ================= -->
+        <button
+          type="submit"
+          class="btn-save"
+          [disabled]="settingsForm.invalid || isLoading"
+        >
+          <span *ngIf="!isLoading">{{ 'SETTINGS.SAVE' | translate }}</span>
+          <span *ngIf="isLoading">{{ 'SETTINGS.SAVING' | translate }}</span>
+        </button>
+
+      </form>
+    </div>
   </div>
 </div>

@@ -99,4 +99,34 @@ export class TeamColumn implements OnInit {
     const hasOngoing = todayEntries.some(cal => !cal.dayOver);
     return hasOngoing ? 'present' : 'finished';
   }
+
+  getAvatarPath(employee: Employee): string {
+    if (!employee || !employee.id) {
+      return 'assets/avatar/avatar-1.svg';
+    }
+
+    const key = `avatar_${employee.id}`;
+    const saved = localStorage.getItem(key);
+
+    if (saved) {
+      const id = Number(saved);
+      if (id >= 1 && id <= 18) {
+        return `assets/avatar/avatar-${id}.svg`;
+      }
+    }
+
+    // Utiliser l'ID ou le nom pour générer un hash
+    const seed =
+      employee.id?.toString() ||
+      (employee as any).email ||
+      `${employee.firstName}${employee.lastName}`;
+
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const index = Math.abs(hash) % 18 + 1;
+    return `assets/avatar/avatar-${index}.svg`;
+  }
 }

@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 export interface Filter {
   label: string;
   route: string;
+  value: string;
 }
 
 @Injectable({
