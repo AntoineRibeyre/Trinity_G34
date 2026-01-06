@@ -8,6 +8,7 @@ import { User } from '../../../models/user.model';
 import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {EditTeamManager} from '../../../shared/components/edit-team-manager/edit-team-manager';
+import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
 
 interface TeamMember {
   userDetails: {
@@ -33,7 +34,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule, TranslateModule, EmployeeDrawer],
+  imports: [CommonModule, TranslateModule, EmployeeDrawer, BasicTextButton],
   templateUrl: './team.html',
   styleUrl: './team.css'
 })
@@ -146,7 +147,7 @@ calculateAvgHours(members: any[], days: number): string {
               const hours = parseInt(parts[0]) || 0;
               const minutes = parseInt(parts[1]) || 0;
               const seconds = parseInt(parts[2]) || 0;
-              
+
               // Vérifier que les valeurs sont valides
               if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
                 totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
@@ -280,5 +281,9 @@ calculateAvgHours(members: any[], days: number): string {
   closeEmployeeDrawer(): void {
     this.isEmployeeDrawerOpen = false;
     this.selectedEmployee = undefined;
+  }
+
+  export(): void {
+
   }
 }

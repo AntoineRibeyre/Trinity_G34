@@ -222,14 +222,15 @@ label{
 /* === GRID POUR TEMPS DE TRAVAIL === */
 .info-grid {
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  flex-direction: row;
+  width: 100%;
+  gap: 15px;
 }
 
-.info-grid .info-item {
+.grid-down {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  width: 50%;
 }
 
 /* === BOUTONS D'ACTION === */
@@ -329,5 +330,3 @@ label{
     width: 100%;
   }
 }
-
-

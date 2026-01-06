@@ -61,7 +61,19 @@ export class EmployeeDrawer implements OnChanges {
     private pointService: PointService,
     private excelExportService: ExcelExportService,
     private userService: UserService
-  ) {}
+  ) {
+    if (this.employee) {
+      if (!this.employee.address) {
+        this.employee.address = {
+          number: '',
+          street: '',
+          postalCode: '',
+          city: '',
+          state: ''
+        };
+      }
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     // When switching to editable mode, ensure nested objects exist to avoid template errors

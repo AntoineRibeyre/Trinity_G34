@@ -291,6 +291,21 @@ export class UserService {
         birthDate: graphqlUser.birthDate,
         workingHours: graphqlUser.workingHours,
         leaves: graphqlUser.leaves,
+        //TODO
+        address: {
+          number: '',
+          street: '',
+          city: '',
+          postalCode: '',
+          state: ''
+        },
+        emergencyContact: {
+          courtesy: '',
+          firstName: '',
+          lastName: '',
+          relation: '',
+          phoneNumber: ''
+        }
       };
     }
 

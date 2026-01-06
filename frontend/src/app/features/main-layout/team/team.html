@@ -49,16 +49,26 @@
         <p class="team-description">{{ managerView.teamDetails.description }}</p>
 
         <div class="team-stats">
-          <div class="stat-item">
-            <span class="stat-label">{{ 'team.informations.membres' | translate }}:</span>
-            <span class="stat-value">{{ managerView.members.length + 1 }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">{{ 'team.informations.manager' | translate }}:</span>
-            <span class="stat-value">
+          <div>
+            <div class="stat-item">
+              <span class="stat-label">{{ 'team.informations.membres' | translate }}:</span>
+              <span class="stat-value">{{ managerView.members.length + 1 }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">{{ 'team.informations.manager' | translate }}:</span>
+              <span class="stat-value">
               {{ managerView.manager.userDetails.firstName }}
-              {{ managerView.manager.userDetails.lastName }}
+                {{ managerView.manager.userDetails.lastName }}
             </span>
+            </div>
+          </div>
+          <div>
+            <app-basic-text-button
+              text="Export"
+              width="100%"
+              color="#999999"
+              (buttonPressed)="export()"
+              ></app-basic-text-button>
           </div>
         </div>
       </div>
@@ -132,5 +142,5 @@
   [isOpen]="isEmployeeDrawerOpen"
   [employee]="selectedEmployee"
   [isEditable]="false"
-  (onClose)="closeEmployeeDrawer()">
+  (closeDrawer)="closeEmployeeDrawer()">
 </app-employee-drawer>
