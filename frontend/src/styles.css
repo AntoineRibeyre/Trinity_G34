@@ -15,3 +15,9 @@
   border-radius: 40px !important;
   /* ou toute autre valeur : 0, 10px, 50%, etc. */
 }
+
+html, body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+}

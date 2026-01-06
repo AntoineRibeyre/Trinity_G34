@@ -33,16 +33,13 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   teams: Team[] = [];
   filteredTeams: Team[] = [];
   selectedFilter: Filter | null = null;
+  allFilters: Filter[] = [];
   public allUsers: User[] = [];
 
   private filterSub?: Subscription;
   private teamSub?: Subscription;
 
-  dropdownOptions: DropdownOption[] = [
-    { label: this.translate.instant('ADMIN.ALL.SALES'), value: 1 },
-    { label: this.translate.instant('ADMIN.ALL.FINANCE'), value: 2 },
-    { label: this.translate.instant('ADMIN.ALL.DESIGN'), value: 3 }
-  ];
+  dropdownOptions: DropdownOption[] = [];
 
   dropdownOptionsUsers: DropdownOption[] = []
   dropdownOptionsManagers: DropdownOption[] = []
@@ -80,6 +77,16 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
 
     // Récupération des utilisateurs pour l'ajout dans une team
     this.loadUsers();
+
+    this.allFilters = this.filterService.getAllFilters();
+    let count = 1;
+    //Remplissage des options du dropdown de création d'équipe
+    for (let filter of this.allFilters){
+      if (!this.dropdownOptions.find(option => option.value === count) && filter.value != 'tous'){
+        this.dropdownOptions.push({label: filter.label, value: count, field: filter.value});
+      }
+      count++;
+    }
   }
 
   ngAfterViewInit() {
@@ -133,7 +140,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   /**
    * 🔹 Crée une nouvelle équipe
    */
-  createTeam(name:string, field:string | null, description:string, manager: number) {
+  createTeam(name:string, field:string | null | undefined, description:string, manager: number) {
 
     if (!name || !field || !description) {
       console.warn('Création annulée — champs manquants');
@@ -225,10 +232,10 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
           teamDescription: string) => {
             //Récupération du field en fonction de l'id de son dropDownOption
             const selectedField = this.dropdownOptions.find(option => option.value === teamField);
-            const label = selectedField ? selectedField.label.toLowerCase() : null;
+            const field = selectedField ? selectedField.field?.toLowerCase() : null;
             //Récupération du manager en fonction de l'id de son dropDownOption
             const selectedManager = this.dropdownOptionsManagers.find(option => option.value === manager);
-            this.createTeam(teamName, label, teamDescription, manager);
+            this.createTeam(teamName, field, teamDescription, manager);
             window.location.reload();
             dialogRef.close();
         },
