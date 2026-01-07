@@ -30,6 +30,58 @@
     </div>
   </div>
 
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label for="role-filter">Rôle :</label>
+      <select 
+        id="role-filter" 
+        [(ngModel)]="selectedRole" 
+        (change)="onRoleFilterChange(selectedRole)"
+        class="filter-select">
+        <option value="">Tous les rôles</option>
+        @for (role of roles; track role) {
+          <option [value]="role">{{ role }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="team-filter">Équipe :</label>
+      <select 
+        id="team-filter" 
+        [(ngModel)]="selectedTeamFilter" 
+        (change)="onTeamFilterChange(selectedTeamFilter)"
+        class="filter-select">
+        <option value="">Toutes les équipes</option>
+        <option value="no-team">Sans équipe</option>
+        @for (team of teams; track team.id) {
+          <option [value]="team.id">{{ team.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="team-field-filter">Type d'équipe :</label>
+      <select 
+        id="team-field-filter" 
+        [(ngModel)]="selectedTeamField" 
+        (change)="onTeamFieldFilterChange(selectedTeamField)"
+        class="filter-select">
+        <option value="">Tous les types</option>
+        @for (filter of teamFieldFilters; track filter.value) {
+          <option [value]="filter.value">{{ filter.label }}</option>
+        }
+      </select>
+    </div>
+
+    @if (selectedRole || selectedTeamFilter || selectedTeamField) {
+      <button class="clear-filters-btn" (click)="clear()" title="Réinitialiser les filtres">
+        Réinitialiser
+      </button>
+    }
+  </div>
+
   <div class="user-table">
     <div class="table-header">
       <div>{{ 'ADMIN.ALL.NAME' | translate }}</div>

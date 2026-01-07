@@ -17,6 +17,7 @@ import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer'
 import {AddEmployee} from '../../../../shared/components/add-employee/add-employee';
 import { SnackBarService } from '../../../../services/snackbar.service';
 import {BasicTextButton} from '../../../../shared/components/basic-text-button/basic-text-button';
+import { FilterService, Filter } from '../../../../services/filter.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -38,6 +39,14 @@ export class EmployeeList implements OnDestroy, OnInit {
   editableDrawer: boolean = false;
   query: string = '';
 
+  // Filtres
+  selectedRole: string = '';
+  selectedTeamFilter: string = '';
+  selectedTeamField: string = '';
+  roles: string[] = ['admin', 'manager', 'employe'];
+  teamFields: string[] = [];
+  teamFieldFilters: Filter[] = [];
+
   selectedTeam: Team | undefined = undefined;
   isTeamDrawerOpen: boolean = false;
   placeHolderText: string = "No data";
@@ -53,7 +62,8 @@ export class EmployeeList implements OnDestroy, OnInit {
     private userService: UserService,
     private dialog : MatDialog,
     private exportService: ExcelExportService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private filterService: FilterService
   ) {
     this.sub = this.q$.pipe(
       debounceTime(300),
@@ -66,9 +76,22 @@ export class EmployeeList implements OnDestroy, OnInit {
   async ngOnInit(): Promise<void> {
     await this.loadUsers();
 
+    // Récupérer tous les filtres disponibles depuis le FilterService
+    const allFilters = this.filterService.getAllFilters();
+    
+    // Filtrer pour ne garder que les filtres d'équipe (exclure "tous")
+    this.teamFieldFilters = allFilters.filter(f => 
+      f.route === 'admin/teams' && f.value !== 'tous'
+    );
+
     this.teamSub = this.teamService.getAllTeams().subscribe({
       next: (teams) => {
         this.teams = teams;
+        // Extraire les types d'équipe uniques
+        const fields = teams
+          .map(team => team.field)
+          .filter((field, index, self) => field && self.indexOf(field) === index);
+        this.teamFields = fields;
       },
       error: (err) => console.error('Erreur lors du chargement des équipes:', err)
     });
@@ -85,21 +108,29 @@ export class EmployeeList implements OnDestroy, OnInit {
   }
 
   filterUsers(searchTerm: string) {
-    if (!searchTerm || searchTerm === '') {
-      this.filteredUsers = this.allUsers;
-      return;
-    }
-
     const term = searchTerm.toLowerCase();
 
     this.filteredUsers = this.allUsers.filter(employee => {
-      const lastName = employee.lastName?.toLowerCase() || '';
-      const firstName = employee.firstName?.toLowerCase() || '';
-      const email = employee.email?.toLowerCase() || '';
+      // Filtre par terme de recherche
+      const matchesSearch = !term || 
+        employee.lastName?.toLowerCase().includes(term) ||
+        employee.firstName?.toLowerCase().includes(term) ||
+        employee.email?.toLowerCase().includes(term);
 
-      return lastName.includes(term) ||
-             firstName.includes(term) ||
-             email.includes(term);
+      // Filtre par rôle - avec trim et vérification null
+      const matchesRole = !this.selectedRole || 
+        employee.role?.toLowerCase().trim() === this.selectedRole.toLowerCase().trim();
+
+      // Filtre par équipe
+      const matchesTeam = !this.selectedTeamFilter || 
+        (this.selectedTeamFilter === 'no-team' && !employee.team) ||
+        employee.team?.id === this.selectedTeamFilter;
+
+      // Filtre par type d'équipe (field)
+      const matchesTeamField = !this.selectedTeamField ||
+        employee.team?.field === this.selectedTeamField;
+
+      return matchesSearch && matchesRole && matchesTeam && matchesTeamField;
     });
   }
 
@@ -109,9 +140,31 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   clear() {
     this.query = '';
+    this.selectedRole = '';
+    this.selectedTeamFilter = '';
+    this.selectedTeamField = '';
     this.filteredUsers = this.allUsers;
     this.q$.next('');
     this.changeSearch.emit('');
+  }
+
+  onRoleFilterChange(role: string) {
+    this.selectedRole = role;
+    this.applyFilters();
+  }
+
+  onTeamFilterChange(teamId: string) {
+    this.selectedTeamFilter = teamId;
+    this.applyFilters();
+  }
+
+  onTeamFieldFilterChange(field: string) {
+    this.selectedTeamField = field;
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.filterUsers(this.query);
   }
 
   openFilters() {
