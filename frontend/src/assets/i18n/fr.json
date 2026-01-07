@@ -214,6 +214,16 @@
     }
   },
   "ADMIN": {
+    "FILTERS": {
+      "ROLE": "Rôle",
+      "TEAM": "Équipe",
+      "TEAM-TYPE": "Type d'équipe",
+      "ALL-ROLES": "Tous les rôles",
+      "ALL-TEAMS": "Toutes les équipes",
+      "ALL-TEAM-TYPES": "Tous les types",
+      "NO-TEAM": "Sans équipe",
+      "RESET": "Réinitialiser les filtres"
+    },
     "ALL": {
       "NAME": "Nom",
       "FIRSTNAME": "Prénom",
