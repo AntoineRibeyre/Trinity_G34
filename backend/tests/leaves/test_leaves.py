@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from trinity.models import User, Calendar, LeaveBalance
-from trinity.logic.leaves import LeavesManager
+from trinity.logic.leavesmanager import LeavesManager
 
 class LeaveReferencePeriodTest(TestCase):
     """Tests de la période légale des congés (base France)"""
