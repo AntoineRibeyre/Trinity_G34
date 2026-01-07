@@ -74,6 +74,7 @@ export class Dashboard implements OnInit, OnDestroy {
   todayCalendars: TodayCalendar[] = [];
   isLoading: boolean = false;
   error: any;
+  dayType: string = 'office'; // Type de journée pour le pointage de sortie en anglais
   isTelework: boolean = false; // false = Présentiel, true = Télétravail
   //TEMP
   dropdownOptions: DropdownOption[] = [
@@ -146,11 +147,11 @@ export class Dashboard implements OnInit, OnDestroy {
 
     if (wasActive && !state.isActive) {
       // L'utilisateur devient inactif après 60 secondes -> pointer sortie
-      console.log('Utilisateur inactif, pointage sortie automatique');
+      // console.log('Utilisateur inactif, pointage sortie automatique');
       this.autoPointerSortie();
     } else if (!wasActive && state.isActive) {
       // L'utilisateur redevient actif -> pointer arrivée et relancer le compteur
-      console.log('Utilisateur redevenu actif, pointage arrivée automatique');
+      // console.log('Utilisateur redevenu actif, pointage arrivée automatique');
       this.autoPointerArrivee();
       // Relancer le calcul du temps de travail même si le navigateur n'a pas le focus
       this.loadTodayCalendars();
@@ -284,12 +285,13 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
     });
+    this.isUserCurrentlyActive = true; // Considérer actif après arrivée
   }
 
   pointerSortie(): void {
     if (!this.userId) return;
 
-    this.pointService.enregistrerSortie(this.userId).subscribe({
+    this.pointService.enregistrerSortie(this.userId, this.dayType).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
         this.isPointeArrivee = false;
@@ -297,6 +299,7 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });
+    this.isUserCurrentlyActive = false; // Considérer inactif après sortie
   }
 
   /**
@@ -338,6 +341,7 @@ export class Dashboard implements OnInit, OnDestroy {
 
   toggleWorkMode(): void {
     this.isTelework = !this.isTelework;
+    this.dayType = this.isTelework ? 'homeworking' : 'office';
     // TODO: Implémenter la logique de changement de mode de travail
   }
 }

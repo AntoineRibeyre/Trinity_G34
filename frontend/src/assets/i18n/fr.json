@@ -164,6 +164,11 @@
       "FRI": "Ven.",
       "SAT": "Sam.",
       "SUN": "Dim."
+    },
+    "WORK_MODE": {
+      "LABEL": "Mode de travail",
+      "OFFICE": "Présentiel",
+      "HOME": "Télétravail"
     }
   },
   "TEAM": {
@@ -202,6 +207,10 @@
         "CONFIRM": "Exporter",
         "CANCEL": "Annuler"
       }
+    },
+    "NO-TEAM-MESSAGE": "Vous n'êtes le manager d'aucune équipe pour le moment. Veuillez contacter un administrateur pour créer une équipe.",
+    "TABLEAU": {
+      "AUCUN-MEMBRE": "Aucun membre dans l'équipe pour le moment."
     }
   },
   "ADMIN": {
