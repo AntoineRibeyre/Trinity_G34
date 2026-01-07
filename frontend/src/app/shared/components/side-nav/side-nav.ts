@@ -64,12 +64,31 @@ export class SideNav implements OnInit{
   async ngOnInit(): Promise<void> {
     this.currentUser = await this.userService.loadCurrentUserFromServer();
     if (this.currentUser?.role.toLowerCase() == "admin"){
-      this.menuItems.push({
-      label: 'Admin',
-      icon: 'assets/icons/nav-admin.svg',
-      route: 'admin/users',
-      section: 'top'
-    })
+      this.menuItems = [
+      {
+        label: 'Logo',
+        icon: 'assets/icons/PrimeBank-logo.svg',
+        section: 'top'
+      },
+      {
+        label: 'Admin',
+        icon: 'assets/icons/nav-admin.svg',
+        route: 'admin/users',
+        section: 'top'
+      },
+      {
+        label: 'Paramètres',
+        icon: 'assets/icons/nav-parameter.svg',
+        route: 'settings',
+        section: 'bottom'
+      },
+      {
+        label: 'Déconnexion',
+        icon: 'assets/icons/nav-exit.svg',
+        section: 'bottom',
+        action: () => this.logout()
+      }
+    ];
     }
     if (this.currentUser?.role.toLowerCase() == "manager"){
       this.menuItems.push({

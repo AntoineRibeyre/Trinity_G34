@@ -7,6 +7,11 @@
   </div>
 
   <div class="teams" #teamsContainer>
+    @if (filteredTeams.length === 0) {
+      <div class="no-teams-message">
+        {{ 'ADMIN.ALL.NO-TEAMS' | translate }}
+      </div>
+    }
     @for (team of filteredTeams; track team.id) {
       <div class="team-card" (click)="displayTeamData(team.id)">
         <!-- Nom de l'équipe -->

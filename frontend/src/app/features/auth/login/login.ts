@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/lang.service';
 import { SnackBarService } from '../../../services/snackbar.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   loading: boolean = false;
+  currentUser: any = null;
 
   // Injection de dépendances
   private authService = inject(AuthService);
@@ -27,8 +29,10 @@ export class LoginComponent implements OnInit {
   private translateService = inject(TranslateService);
   private languageService = inject(LanguageService);
   private snackBarService = inject(SnackBarService);
+  private userService = inject(UserService);
 
   ngOnInit(): void {
+    this.currentUser = this.userService.loadCurrentUserFromServer();
     // Appliquer la langue sauvegardée en localStorage
     const lang = this.languageService.getCurrentLanguage();
     this.translateService.use(lang);
@@ -54,7 +58,12 @@ export class LoginComponent implements OnInit {
       this.snackBarService.showSuccess(this.translateService.instant('LOGIN.SUCCESS') || 'Connexion réussie !');
 
       // Redirection vers le dashboard
-      this.router.navigate(['/dashboard']);
+      if (user.role === 'admin') {
+        this.router.navigate(['/admin/users']);
+      } else {
+        this.router.navigate(['/dashboard']);
+      }
+     
 
     } catch (error: any) {
       console.error('Erreur de connexion:', error);
