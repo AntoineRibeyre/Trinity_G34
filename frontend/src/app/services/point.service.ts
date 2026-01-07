@@ -81,8 +81,8 @@ const REGISTER_ARRIVAL = gql`
 `;
 
 const REGISTER_END = gql`
-  mutation RegisterEnd($userId: Int!) {
-    registerEnd(userId: $userId) {
+  mutation RegisterEnd($userId: Int!, $dayType: String!) {
+    registerEnd(userId: $userId, dayType: $dayType) {
       datetimeField
       durationField
     }
@@ -202,10 +202,10 @@ export class PointService {
     );
   }
 
-  enregistrerSortie(userId: Number): Observable<any> {
+  enregistrerSortie(userId: Number, dayType: string): Observable<any> {
     return this.apollo.mutate({
       mutation: REGISTER_END,
-      variables: { userId }
+      variables: { userId, dayType }
     }).pipe(
       map((result: any) => result.data.registerEnd)
     );
