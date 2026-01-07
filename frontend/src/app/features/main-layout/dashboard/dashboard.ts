@@ -12,6 +12,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {PendingDay, TodayCalendar} from '../../../services/service-interfaces';
 import { TeamService } from '../../../services/team.service';
 import { ActivityService, ActivityState } from '../../../services/activity.service';
+import { AvatarService } from '../../../services/avatar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -96,7 +97,8 @@ export class Dashboard implements OnInit, OnDestroy {
     private dialog : MatDialog,
     private teamService: TeamService,
     private router: Router,
-    private activityService: ActivityService
+    private activityService: ActivityService,
+    private avatarService: AvatarService
   ) {}
 
   async ngOnInit() {
@@ -331,32 +333,7 @@ export class Dashboard implements OnInit, OnDestroy {
   }
 
   getAvatarPath(): string {
-    if (!this.currentUser) {
-      return 'assets/avatar/avatar-1.svg';
-    }
-
-    const key = `avatar_${this.currentUser.id}`;
-    const saved = localStorage.getItem(key);
-
-    if (saved) {
-      const id = Number(saved);
-      if (id >= 1 && id <= 18) {
-        return `assets/avatar/avatar-${id}.svg`;
-      }
-    }
-
-    const seed =
-      this.currentUser.id ||
-      this.currentUser.email ||
-      `${this.currentUser.firstName}${this.currentUser.lastName}`;
-
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    const index = Math.abs(hash) % 18 + 1;
-    return `assets/avatar/avatar-${index}.svg`;
+    return this.avatarService.getAvatarPath(this.currentUser);
   }
 
   toggleWorkMode(): void {
