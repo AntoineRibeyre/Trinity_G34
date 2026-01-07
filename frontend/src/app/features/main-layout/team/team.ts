@@ -8,6 +8,7 @@ import { User } from '../../../models/user.model';
 import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {EditTeamManager} from '../../../shared/components/edit-team-manager/edit-team-manager';
+import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
 
 interface TeamMember {
   userDetails: {
@@ -33,7 +34,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule, TranslateModule, EmployeeDrawer],
+  imports: [CommonModule, TranslateModule, EmployeeDrawer, BasicTextButton],
   templateUrl: './team.html',
   styleUrl: './team.css'
 })
@@ -82,7 +83,7 @@ export class Team implements OnInit {
         throw new Error('Utilisateur non connecté');
       }
 
-      const managerId = parseInt(currentUser.id);
+      const managerId = Number.parseInt(currentUser.id);
 
       // Charger les données de l'équipe
       this.teamService.getManagerView(managerId).subscribe({
@@ -143,12 +144,12 @@ calculateAvgHours(members: any[], days: number): string {
             const timeString = day.totalHours.toString().trim();
             if (timeString && timeString !== '') {
               const parts = timeString.split(':');
-              const hours = parseInt(parts[0]) || 0;
-              const minutes = parseInt(parts[1]) || 0;
-              const seconds = parseInt(parts[2]) || 0;
-              
+              const hours = Number.parseInt(parts[0]) || 0;
+              const minutes = Number.parseInt(parts[1]) || 0;
+              const seconds = Number.parseInt(parts[2]) || 0;
+
               // Vérifier que les valeurs sont valides
-              if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
+              if (!Number.isNaN(hours) && !Number.isNaN(minutes) && !Number.isNaN(seconds)) {
                 totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
                 count++;
               }
@@ -280,5 +281,9 @@ calculateAvgHours(members: any[], days: number): string {
   closeEmployeeDrawer(): void {
     this.isEmployeeDrawerOpen = false;
     this.selectedEmployee = undefined;
+  }
+
+  export(): void {
+
   }
 }

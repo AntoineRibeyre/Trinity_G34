@@ -49,16 +49,26 @@
         <p class="team-description">{{ managerView.teamDetails.description }}</p>
 
         <div class="team-stats">
-          <div class="stat-item">
-            <span class="stat-label">{{ 'team.informations.membres' | translate }}:</span>
-            <span class="stat-value">{{ managerView.members.length + 1 }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">{{ 'team.informations.manager' | translate }}:</span>
-            <span class="stat-value">
+          <div>
+            <div class="stat-item">
+              <span class="stat-label">{{ 'team.informations.membres' | translate }}:</span>
+              <span class="stat-value">{{ managerView.members.length + 1 }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">{{ 'team.informations.manager' | translate }}:</span>
+              <span class="stat-value">
               {{ managerView.manager.userDetails.firstName }}
-              {{ managerView.manager.userDetails.lastName }}
+                {{ managerView.manager.userDetails.lastName }}
             </span>
+            </div>
+          </div>
+          <div>
+            <app-basic-text-button
+              text="Export"
+              width="100%"
+              color="#999999"
+              (buttonPressed)="export()"
+              ></app-basic-text-button>
           </div>
         </div>
       </div>
@@ -69,7 +79,7 @@
 
         <div class="members-list">
           <!-- Manager -->
-          <div class="member-row" (click)="openMemberDetails(managerView.manager.userDetails.id, $event)">
+          <div class="member-row" (click)="openMemberDetails(managerView.manager.userDetails.id, $event)" (keydown.enter)="openMemberDetails(managerView.manager.userDetails.id, $event)">
             <div class="member-avatar">
               {{ managerView.manager.userDetails.firstName.charAt(0) }}{{ managerView.manager.userDetails.lastName.charAt(0) }}
             </div>
@@ -93,7 +103,7 @@
           </div>
 
           <!-- Membres de l'équipe -->
-          <div *ngFor="let member of managerView.members" class="member-row" (click)="openMemberDetails(member.userDetails.id, $event)">
+          <div *ngFor="let member of managerView.members" class="member-row" (click)="openMemberDetails(member.userDetails.id, $event)" (keydown.enter)="openMemberDetails(member.userDetails.id, $event)">
             <div class="member-avatar">
               {{ member.userDetails.firstName.charAt(0) }}{{ member.userDetails.lastName.charAt(0) }}
             </div>
@@ -132,5 +142,5 @@
   [isOpen]="isEmployeeDrawerOpen"
   [employee]="selectedEmployee"
   [isEditable]="false"
-  (onClose)="closeEmployeeDrawer()">
+  (closeDrawer)="closeEmployeeDrawer()">
 </app-employee-drawer>
