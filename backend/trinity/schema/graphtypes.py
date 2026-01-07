@@ -7,6 +7,7 @@ from ..models import User, Team, Calendar, Event
 from ..logic.userfactory import UserViewer
 from ..logic.teamfactory import TeamViewer, AdminView
 from ..logic.calendarfactory import DailyPlanning
+from trinity.models import LeaveBalance
 
 
 class UserType(DjangoObjectType):
