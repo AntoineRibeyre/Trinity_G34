@@ -24,8 +24,8 @@ export const routes: Routes = [
     component: MainLayout,
     // Pages protégées (authentification requise)
     children: [
-      { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
-      { path: 'calendar', component: Scheduler, canActivate: [AuthGuard] },//calendar/congés
+      { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard],  data: { roles: ['manager','employe'] }  },
+      { path: 'calendar', component: Scheduler, canActivate: [AuthGuard],  data: { roles: ['manager','employe'] } },//calendar/congés
       { path: 'team', component: Team, canActivate: [AuthGuard], data: { roles: ['manager'] } },//team (manager only)
       { path: 'settings', component: Settings, canActivate: [AuthGuard] },
       {

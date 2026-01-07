@@ -436,3 +436,105 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
 }
+
+/* Styles pour l'indicateur de statut d'activité */
+.auto-pointage-status {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.status-indicator.active {
+  background: rgba(39, 174, 96, 0.15);
+  color: #27ae60;
+}
+
+.status-indicator.inactive {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.status-indicator.active .status-dot {
+  background: #27ae60;
+  box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+  animation: pulse-dot 2s infinite;
+}
+
+.status-indicator.inactive .status-dot {
+  background: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
+}
+
+.status-indicator.locked {
+  background: rgba(155, 89, 182, 0.15);
+  color: #9b59b6;
+}
+
+.status-indicator.locked .status-dot {
+  background: #9b59b6;
+  box-shadow: 0 0 8px rgba(155, 89, 182, 0.6);
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(39, 174, 96, 0.8);
+  }
+}
+
+@keyframes blink-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.pointage-mode {
+  font-size: clamp(10px, 1.2vw, 14px);
+  color: #999;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detection-method {
+  font-size: clamp(9px, 1vw, 12px);
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.detection-method.system {
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+}
