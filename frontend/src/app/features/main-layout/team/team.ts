@@ -11,6 +11,8 @@ import {EditTeamManager} from '../../../shared/components/edit-team-manager/edit
 import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
 import {ExportPeriodDialog} from '../../../shared/components/export-period-dialog/export-period-dialog';
 import {ExcelExportService} from '../../../services/excel-export.service';
+import { TimeUtilsService } from '../../../services/time-utils.service';
+import { DateUtilsService } from '../../../services/date-utils.service';
 
 interface TeamMember {
   userDetails: {
@@ -62,7 +64,9 @@ export class Team implements OnInit {
   constructor(
     private teamService: TeamService,
     private userService: UserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private timeUtils: TimeUtilsService,
+    private dateUtils: DateUtilsService
   ) {}
 
   async ngOnInit() {
@@ -145,23 +149,10 @@ calculateAvgHours(members: any[], days: number): string {
       member.planning.forEach((day: any) => {
         const dayDate = new Date(day.date);
         if (dayDate >= startDate && dayDate <= today && day.totalHours) {
-          try {
-            // Vérifier que totalHours existe et n'est pas vide
-            const timeString = day.totalHours.toString().trim();
-            if (timeString && timeString !== '') {
-              const parts = timeString.split(':');
-              const hours = Number.parseInt(parts[0]) || 0;
-              const minutes = Number.parseInt(parts[1]) || 0;
-              const seconds = Number.parseInt(parts[2]) || 0;
-
-              // Vérifier que les valeurs sont valides
-              if (!Number.isNaN(hours) && !Number.isNaN(minutes) && !Number.isNaN(seconds)) {
-                totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
-                count++;
-              }
-            }
-          } catch (error) {
-            console.warn('Erreur lors du parsing de totalHours:', day.totalHours, error);
+          const seconds = this.timeUtils.parseTimeStringToSeconds(day.totalHours);
+          if (seconds !== null) {
+            totalSeconds += seconds;
+            count++;
           }
         }
       });
@@ -174,10 +165,7 @@ calculateAvgHours(members: any[], days: number): string {
   }
 
   const avgSeconds = totalSeconds / count;
-  const hours = Math.floor(avgSeconds / 3600);
-  const minutes = Math.floor((avgSeconds % 3600) / 60);
-
-  return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  return this.timeUtils.formatSecondsToHours(avgSeconds);
 }
 
   calculateAvgTimes(members: any[]) {
@@ -196,11 +184,11 @@ calculateAvgHours(members: any[], days: number): string {
             day.calendar.forEach((cal: any) => {
               if (cal.begin) {
                 const beginTime = new Date(cal.begin);
-                arrivalTimes.push(beginTime.getHours() * 60 + beginTime.getMinutes());
+                arrivalTimes.push(this.timeUtils.dateToMinutes(beginTime));
               }
               if (cal.end) {
                 const endTime = new Date(cal.end);
-                departureTimes.push(endTime.getHours() * 60 + endTime.getMinutes());
+                departureTimes.push(this.timeUtils.dateToMinutes(endTime));
               }
             });
           }
@@ -208,19 +196,8 @@ calculateAvgHours(members: any[], days: number): string {
       }
     });
 
-    if (arrivalTimes.length > 0) {
-      const avgArrival = arrivalTimes.reduce((a, b) => a + b, 0) / arrivalTimes.length;
-      const hours = Math.floor(avgArrival / 60);
-      const minutes = Math.floor(avgArrival % 60);
-      this.avgArrivalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    }
-
-    if (departureTimes.length > 0) {
-      const avgDeparture = departureTimes.reduce((a, b) => a + b, 0) / departureTimes.length;
-      const hours = Math.floor(avgDeparture / 60);
-      const minutes = Math.floor(avgDeparture % 60);
-      this.avgDepartureTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    }
+    this.avgArrivalTime = this.timeUtils.calculateAverageTime(arrivalTimes);
+    this.avgDepartureTime = this.timeUtils.calculateAverageTime(departureTimes);
   }
 
   getStatusClass(member: TeamMember): string {
@@ -357,7 +334,7 @@ calculateAvgHours(members: any[], days: number): string {
 
     // Générer le nom du fichier
     const teamName = this.managerView.teamDetails.name.replace(/[^a-zA-Z0-9]/g, '_');
-    const fileName = `Export_Equipe_${teamName}_${this.formatDateForFileName(startDate)}_${this.formatDateForFileName(endDate)}`;
+    const fileName = `Export_Equipe_${teamName}_${this.dateUtils.formatDateForFileName(startDate)}_${this.dateUtils.formatDateForFileName(endDate)}`;
 
     // Exporter
     this.excelExportService.exportMultipleSheets(sheets, fileName);
@@ -379,21 +356,10 @@ calculateAvgHours(members: any[], days: number): string {
       if (member.planning && Array.isArray(member.planning)) {
         member.planning.forEach((day: any) => {
           if (day.totalHours) {
-            try {
-              const timeString = day.totalHours.toString().trim();
-              if (timeString && timeString !== '') {
-                const parts = timeString.split(':');
-                const hours = Number.parseInt(parts[0]) || 0;
-                const minutes = Number.parseInt(parts[1]) || 0;
-                const seconds = Number.parseInt(parts[2]) || 0;
-
-                if (!Number.isNaN(hours) && !Number.isNaN(minutes) && !Number.isNaN(seconds)) {
-                  totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
-                  totalDays++;
-                }
-              }
-            } catch (error) {
-              console.warn('Erreur lors du parsing:', error);
+            const seconds = this.timeUtils.parseTimeStringToSeconds(day.totalHours);
+            if (seconds !== null) {
+              totalSeconds += seconds;
+              totalDays++;
             }
           }
 
@@ -401,11 +367,11 @@ calculateAvgHours(members: any[], days: number): string {
             day.calendar.forEach((cal: any) => {
               if (cal.begin) {
                 const beginTime = new Date(cal.begin);
-                arrivalTimes.push(beginTime.getHours() * 60 + beginTime.getMinutes());
+                arrivalTimes.push(this.timeUtils.dateToMinutes(beginTime));
               }
               if (cal.end) {
                 const endTime = new Date(cal.end);
-                departureTimes.push(endTime.getHours() * 60 + endTime.getMinutes());
+                departureTimes.push(this.timeUtils.dateToMinutes(endTime));
               }
             });
           }
@@ -414,33 +380,17 @@ calculateAvgHours(members: any[], days: number): string {
     });
 
     // Formater les heures totales
-    const totalHours = Math.floor(totalSeconds / 3600);
-    const totalMinutes = Math.floor((totalSeconds % 3600) / 60);
-    const totalHoursFormatted = `${totalHours}h${totalMinutes.toString().padStart(2, '0')}`;
+    const totalHoursFormatted = this.timeUtils.formatSecondsToHours(totalSeconds);
 
     // Moyenne par jour
     const avgSecondsPerDay = totalDays > 0 ? totalSeconds / totalDays : 0;
-    const avgHoursPerDay = Math.floor(avgSecondsPerDay / 3600);
-    const avgMinutesPerDay = Math.floor((avgSecondsPerDay % 3600) / 60);
-    const avgHoursPerDayFormatted = `${avgHoursPerDay}h${avgMinutesPerDay.toString().padStart(2, '0')}`;
+    const avgHoursPerDayFormatted = this.timeUtils.formatSecondsToHours(avgSecondsPerDay);
 
     // Heure moyenne d'arrivée
-    let avgArrivalFormatted = '--:--';
-    if (arrivalTimes.length > 0) {
-      const avgArrival = arrivalTimes.reduce((a, b) => a + b, 0) / arrivalTimes.length;
-      const hours = Math.floor(avgArrival / 60);
-      const minutes = Math.floor(avgArrival % 60);
-      avgArrivalFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    }
+    const avgArrivalFormatted = this.timeUtils.calculateAverageTime(arrivalTimes);
 
     // Heure moyenne de départ
-    let avgDepartureFormatted = '--:--';
-    if (departureTimes.length > 0) {
-      const avgDeparture = departureTimes.reduce((a, b) => a + b, 0) / departureTimes.length;
-      const hours = Math.floor(avgDeparture / 60);
-      const minutes = Math.floor(avgDeparture % 60);
-      avgDepartureFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    }
+    const avgDepartureFormatted = this.timeUtils.calculateAverageTime(departureTimes);
 
     kpiData.push({
       'Indicateur': 'Nom de l\'équipe',
@@ -448,7 +398,7 @@ calculateAvgHours(members: any[], days: number): string {
     });
     kpiData.push({
       'Indicateur': 'Période',
-      'Valeur': `${this.formatDateForDisplay(startDate)} - ${this.formatDateForDisplay(endDate)}`
+      'Valeur': `${this.dateUtils.formatDateForDisplay(startDate)} - ${this.dateUtils.formatDateForDisplay(endDate)}`
     });
     kpiData.push({
       'Indicateur': 'Nombre de jours',
@@ -494,7 +444,7 @@ calculateAvgHours(members: any[], days: number): string {
       if (member.planning && Array.isArray(member.planning)) {
         member.planning.forEach((day: any) => {
           const dayDate = new Date(day.date);
-          const dateStr = this.formatDateForDisplay(dayDate);
+          const dateStr = this.dateUtils.formatDateForDisplay(dayDate);
 
           let dayHours = '0h00';
           let arrivalTime = '--:--';
@@ -502,22 +452,11 @@ calculateAvgHours(members: any[], days: number): string {
           let dayType = 'Normal';
 
           if (day.totalHours) {
-            try {
-              const timeString = day.totalHours.toString().trim();
-              if (timeString && timeString !== '') {
-                const parts = timeString.split(':');
-                const hours = Number.parseInt(parts[0]) || 0;
-                const minutes = Number.parseInt(parts[1]) || 0;
-                const seconds = Number.parseInt(parts[2]) || 0;
-
-                if (!Number.isNaN(hours) && !Number.isNaN(minutes) && !Number.isNaN(seconds)) {
-                  totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
-                  daysWorked++;
-                  dayHours = `${hours}h${minutes.toString().padStart(2, '0')}`;
-                }
-              }
-            } catch (error) {
-              console.warn('Erreur lors du parsing:', error);
+            const seconds = this.timeUtils.parseTimeStringToSeconds(day.totalHours);
+            if (seconds !== null) {
+              totalSeconds += seconds;
+              daysWorked++;
+              dayHours = this.timeUtils.formatSecondsToHours(seconds);
             }
           }
 
@@ -527,12 +466,12 @@ calculateAvgHours(members: any[], days: number): string {
 
             if (firstEntry.begin) {
               const beginTime = new Date(firstEntry.begin);
-              arrivalTime = `${beginTime.getHours().toString().padStart(2, '0')}:${beginTime.getMinutes().toString().padStart(2, '0')}`;
+              arrivalTime = this.timeUtils.formatDateToTime(beginTime);
             }
 
             if (lastEntry.end) {
               const endTime = new Date(lastEntry.end);
-              departureTime = `${endTime.getHours().toString().padStart(2, '0')}:${endTime.getMinutes().toString().padStart(2, '0')}`;
+              departureTime = this.timeUtils.formatDateToTime(endTime);
             }
 
             if (firstEntry.dayType) {
@@ -551,9 +490,7 @@ calculateAvgHours(members: any[], days: number): string {
       }
 
       // Calculer le total pour cet utilisateur
-      const totalHours = Math.floor(totalSeconds / 3600);
-      const totalMinutes = Math.floor((totalSeconds % 3600) / 60);
-      const totalHoursFormatted = `${totalHours}h${totalMinutes.toString().padStart(2, '0')}`;
+      const totalHoursFormatted = this.timeUtils.formatSecondsToHours(totalSeconds);
 
       // Ajouter une ligne de séparation avec les totaux de l'utilisateur
       userData.push({
@@ -597,17 +534,4 @@ calculateAvgHours(members: any[], days: number): string {
     return userData;
   }
 
-  private formatDateForDisplay(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
-
-  private formatDateForFileName(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}${month}${day}`;
-  }
 }

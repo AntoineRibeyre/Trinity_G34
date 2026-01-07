@@ -5,6 +5,7 @@ import {DIALOG_DATA} from '@angular/cdk/dialog';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import { DateUtilsService } from '../../../services/date-utils.service';
 
 export interface ExportPeriodDialog {
   title: string;
@@ -31,6 +32,7 @@ export interface ExportPeriodDialog {
 })
 export class ExportPeriodDialog {
   translate: TranslateService = inject(TranslateService);
+  private dateUtils: DateUtilsService = inject(DateUtilsService);
   isSelected: boolean = false;
   startDate: string | null = null;
   endDate: string | null = null;
@@ -47,16 +49,9 @@ export class ExportPeriodDialog {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(today.getDate() - 30);
     
-    this.endDate = this.formatDateForInput(today);
-    this.startDate = this.formatDateForInput(thirtyDaysAgo);
+    this.endDate = this.dateUtils.formatDateForInput(today);
+    this.startDate = this.dateUtils.formatDateForInput(thirtyDaysAgo);
     this.isValid();
-  }
-
-  formatDateForInput(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   }
 
   onChangeStartDate(date: string): void {
