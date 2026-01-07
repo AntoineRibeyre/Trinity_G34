@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, inject, HostListener} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {PointService} from '../../../services/point.service';
 import {Router} from '@angular/router';
@@ -11,6 +11,7 @@ import {DropdownOption} from '../../../shared/components/basic-dropdown/basic-dr
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {PendingDay, TodayCalendar} from '../../../services/service-interfaces';
 import { TeamService } from '../../../services/team.service';
+import { ActivityService, ActivityState } from '../../../services/activity.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -81,13 +82,20 @@ export class Dashboard implements OnInit, OnDestroy {
 
   private dureeSubscription?: Subscription;
   private dureeTotaleSubscription?: Subscription;
+  private activitySubscription?: Subscription;
+
+  // État du pointage automatique
+  isAutoPointageEnabled: boolean = true;
+  isUserCurrentlyActive: boolean = true;
+  private hasAutoPointedOnInit: boolean = false;
 
   constructor(
     private pointService: PointService,
     private userService: UserService,
     private dialog : MatDialog,
     private teamService: TeamService,
-    private router: Router
+    private router: Router,
+    private activityService: ActivityService
   ) {}
 
   async ngOnInit() {
@@ -104,6 +112,81 @@ export class Dashboard implements OnInit, OnDestroy {
 
     this.chargerJourneeEnCours();
     this.loadTodayCalendars();
+    
+    // Initialiser le suivi d'activité et le pointage automatique
+    this.initAutoPointage();
+  }
+
+  /**
+   * Initialise le système de pointage automatique basé sur l'activité utilisateur
+   */
+  private initAutoPointage(): void {
+    // Pointer automatiquement à l'arrivée sur le dashboard (connexion)
+    this.autoPointerArrivee();
+
+    // S'abonner aux changements d'état d'activité
+    this.activitySubscription = this.activityService.getActivityState().subscribe(
+      (state: ActivityState) => {
+        this.handleActivityChange(state);
+      }
+    );
+  }
+
+  /**
+   * Gère les changements d'état d'activité de l'utilisateur
+   */
+  private handleActivityChange(state: ActivityState): void {
+    const wasActive = this.isUserCurrentlyActive;
+    this.isUserCurrentlyActive = state.isActive;
+
+    if (!this.isAutoPointageEnabled) return;
+
+    if (wasActive && !state.isActive) {
+      // L'utilisateur devient inactif après 60 secondes -> pointer sortie
+      console.log('Utilisateur inactif, pointage sortie automatique');
+      this.autoPointerSortie();
+    } else if (!wasActive && state.isActive) {
+      // L'utilisateur redevient actif -> pointer arrivée et relancer le compteur
+      console.log('Utilisateur redevenu actif, pointage arrivée automatique');
+      this.autoPointerArrivee();
+      // Relancer le calcul du temps de travail même si le navigateur n'a pas le focus
+      this.loadTodayCalendars();
+    }
+  }
+
+  /**
+   * Pointer arrivée automatiquement si pas déjà pointé
+   */
+  private autoPointerArrivee(): void {
+    if (!this.userId) return;
+    
+    // Vérifier d'abord si on n'est pas déjà pointé
+    this.pointService.getPendingDay(this.userId).subscribe({
+      next: (day) => {
+        if (!day) {
+          // Pas de pointage en cours, on pointe l'arrivée
+          this.pointerArrivee();
+          console.log('Pointage arrivée automatique effectué');
+        } else {
+          console.log('Déjà pointé, pas de pointage automatique');
+          this.isPointeArrivee = true;
+          // Relancer le calcul du temps même si déjà pointé
+          this.demarrerCalculDureeTotale();
+        }
+        this.hasAutoPointedOnInit = true;
+      },
+      error: (err) => console.error('Erreur vérification pointage:', err)
+    });
+  }
+
+  /**
+   * Pointer sortie automatiquement si actuellement pointé
+   */
+  private autoPointerSortie(): void {
+    if (!this.userId || !this.isPointeArrivee) return;
+    
+    this.pointerSortie();
+    console.log('Pointage sortie automatique effectué (inactivité)');
   }
 
   updateTime() {
@@ -213,11 +296,36 @@ export class Dashboard implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Rafraîchit le temps de travail quand la page redevient visible
+   * Compense le throttling des timers en arrière-plan
+   */
+  @HostListener('document:visibilitychange')
+  onVisibilityChange(): void {
+    if (!document.hidden) {
+      console.log('[Dashboard] Page visible - rafraîchissement du temps de travail');
+      // Redémarrer le calcul de durée totale pour afficher le temps correct
+      this.demarrerCalculDureeTotale();
+    }
+  }
+
+  /**
+   * Rafraîchit le temps de travail quand la fenêtre reprend le focus
+   */
+  @HostListener('window:focus')
+  onWindowFocus(): void {
+    console.log('[Dashboard] Focus fenêtre - rafraîchissement du temps de travail');
+    // Redémarrer le calcul de durée totale pour afficher le temps correct
+    this.demarrerCalculDureeTotale();
+  }
+
   ngOnDestroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
 
     this.dureeSubscription?.unsubscribe();
+    this.dureeTotaleSubscription?.unsubscribe();
+    this.activitySubscription?.unsubscribe();
   }
 }
