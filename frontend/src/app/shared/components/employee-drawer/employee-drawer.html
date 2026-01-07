@@ -85,7 +85,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.ADDRESS" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ `${employee.address?.number} ${employee.address?.street}, ${employee.address?.postalCode} ${employee.address?.city} ${employee.address?.state}` }}</span>
+              <span>{{ `${employee.address.number} ${employee.address.street}, ${employee.address.postalCode} ${employee.address.city} ${employee.address.state}` }}</span>
             } @else {
               <input type="text" [(ngModel)]="employee.address.number" class="edit-input" placeholder="{{ 'ADMIN.ALL.PERSONAL-DRAWER.NUMBER' | translate}}"/>
               <input type="text" [(ngModel)]="employee.address.street" class="edit-input" placeholder="{{ 'ADMIN.ALL.PERSONAL-DRAWER.STREET' | translate}}"/>
@@ -145,9 +145,9 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.CONTACT" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ `${employee.emergencyContact?.courtesy} ${employee.emergencyContact?.firstName} ${employee.emergencyContact?.lastName}` }}</span>
-              <span>{{ employee.emergencyContact?.relation }}</span>
-              <span>{{ employee.emergencyContact?.phoneNumber }}</span>
+              <span>{{ `${employee.emergencyContact.courtesy} ${employee.emergencyContact.firstName} ${employee.emergencyContact.lastName}` }}</span>
+              <span>{{ employee.emergencyContact.relation }}</span>
+              <span>{{ employee.emergencyContact.phoneNumber }}</span>
             } @else {
               <select [(ngModel)]="employee.emergencyContact.courtesy" class="edit-input">
                 <option value="M">M.</option>
