@@ -190,6 +190,13 @@
         "NAME-TITLE": "Last and first name of the employee",
         "NAME-PLACEHOLDER": "Name...",
         "RETIRER": "Remove"
+      },
+      "EXPORT-PERIOD": {
+        "TITLE": "Select export period",
+        "START-DATE": "Start date",
+        "END-DATE": "End date",
+        "CONFIRM": "Export",
+        "CANCEL": "Cancel"
       }
     }
   },

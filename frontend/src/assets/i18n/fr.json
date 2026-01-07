@@ -194,6 +194,13 @@
         "NAME-TITLE": "Nom et prénom de l'employé",
         "NAME-PLACEHOLDER": "Nom et prénom...",
         "RETIRER": "Retirer"
+      },
+      "EXPORT-PERIOD": {
+        "TITLE": "Sélectionner la période d'export",
+        "START-DATE": "Date de début",
+        "END-DATE": "Date de fin",
+        "CONFIRM": "Exporter",
+        "CANCEL": "Annuler"
       }
     }
   },

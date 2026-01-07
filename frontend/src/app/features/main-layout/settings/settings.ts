@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
 import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
+import { AvatarService } from '../../../services/avatar.service';
 
 /* ================= VALIDATORS ================= */
 
@@ -92,7 +93,8 @@ export class Settings implements OnInit, OnDestroy {
     private userService: UserService,
     private dialog: MatDialog,
     private translateService: TranslateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private avatarService: AvatarService
   ) {}
 
   /* ================= INIT ================= */
@@ -273,31 +275,6 @@ export class Settings implements OnInit, OnDestroy {
   }
 
   getAvatarPath(): string {
-    if (!this.currentUser) {
-      return 'assets/avatar/avatar-1.svg';
-    }
-
-    const key = `avatar_${this.currentUser.id}`;
-    const saved = localStorage.getItem(key);
-
-    if (saved) {
-      const id = Number(saved);
-      if (id >= 1 && id <= 18) {
-        return `assets/avatar/avatar-${id}.svg`;
-      }
-    }
-
-    const seed =
-      this.currentUser.id ||
-      this.currentUser.email ||
-      `${this.currentUser.firstName}${this.currentUser.lastName}`;
-
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    const index = Math.abs(hash) % 18 + 1;
-    return `assets/avatar/avatar-${index}.svg`;
+    return this.avatarService.getAvatarPath(this.currentUser);
   }
 }
