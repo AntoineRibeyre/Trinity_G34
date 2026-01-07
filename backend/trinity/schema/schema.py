@@ -592,12 +592,14 @@ class RegisterEnd(graphene.Mutation):
     register the departure time."""
     class Arguments:
         user_id = graphene.Int(required=True)
+        day_type = graphene.String(required=True)
 
     datetime_field = graphene.JSONString()
     duration_field = graphene.JSONString()
 
-    def mutate(self, info, user_id):
-        result = CalendarFactory.register_out(user_id)
+    def mutate(self, info, user_id, day_type):
+        result = CalendarFactory.register_out(user_id, day_type)
+        
         return RegisterEnd(
             datetime_field=result.date_time_data,
             duration_field=result.duree_data

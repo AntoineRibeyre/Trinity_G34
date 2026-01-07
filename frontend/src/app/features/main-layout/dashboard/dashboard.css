@@ -95,6 +95,11 @@
   gap: 15px;
 }
 
+.work-mode-switch.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .switch-label {
   font-size: clamp(14px, 1.5vw, 18px);
   color: #999999;

@@ -49,6 +49,7 @@ export interface CurrentUserResponse {
     firstName: string;
     lastName: string;
     telephone?: string;
+    personalEmail?: string;
     role: string;
     team?: Team;
     socialNumber?: number;
@@ -56,6 +57,7 @@ export interface CurrentUserResponse {
     arrivalDate?: string;
     annualSalary?: number;
     birthDate?: string;
+    workingHours?: number;
     leaves?: number;
     rib?: string;
     familySituation?: string;
@@ -73,6 +75,5 @@ export interface CurrentUserResponse {
       relation?: string;
       phoneNumber?: string;
     }
-    personalEmail?: string;
   };
 }

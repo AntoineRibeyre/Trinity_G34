@@ -164,6 +164,11 @@
       "FRI": "Ven.",
       "SAT": "Sam.",
       "SUN": "Dim."
+    },
+    "WORK_MODE": {
+      "LABEL": "Mode de travail",
+      "OFFICE": "Présentiel",
+      "HOME": "Télétravail"
     }
   },
   "TEAM": {
