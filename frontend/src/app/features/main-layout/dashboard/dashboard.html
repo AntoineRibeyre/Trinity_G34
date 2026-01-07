@@ -2,7 +2,32 @@
   <div class="left-column">
 
     <div class="cards profil">
-
+      <div class="profil-content">
+        <div class="avatar-container">
+          <div class="avatar-wrapper">
+            <div class="avatar-img">
+              <img
+                [src]="getAvatarPath()"
+                [alt]="currentUser?.firstName + ' ' + currentUser?.lastName"
+                class="avatar-image"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="profil-info">
+          <div class="greeting">
+            {{ "DASHBOARD.HELLO" | translate}}, <br> <span class="user-name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</span>
+          </div>
+          <div class="work-mode-switch">
+            <span class="switch-label" [class.active]="!isTelework">Présentiel</span>
+            <label class="switch">
+              <input type="checkbox" [checked]="isTelework" (change)="toggleWorkMode()">
+              <span class="slider"></span>
+            </label>
+            <span class="switch-label" [class.active]="isTelework">Télétravail</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="cards date">

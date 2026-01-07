@@ -69,3 +69,4 @@ During development the backend and frontend containers write their runtime outpu
 These files are created when running `docker compose -f docker-compose.dev.yml up` and are ignored by git.
 
 Note: these logs are not rotated by default and can grow over time; for long-running dev environments consider adding a host `logrotate` job or integrating a log rotation solution into the containers.
+
