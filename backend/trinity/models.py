@@ -65,3 +65,56 @@ class Event(models.Model):
         return self.subject
 
     """This class defines the data structure of a calendar"""
+
+
+class LeaveBalance(models.Model):
+    """Historique des acquisitions et utilisations de congés"""
+    TRANSACTION_TYPES = [
+        ('acquisition', 'Acquisition mensuelle'),
+        ('acquisition_prorata', 'Acquisition au prorata'),
+        ('usage', 'Utilisation de congé'),
+        ('adjustment', 'Ajustement manuel'),
+        ('reset', 'Réinitialisation annuelle'),
+    ]
+
+    employee = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="leave_transactions"
+    )
+    transaction_type = models.CharField(max_length=30, choices=TRANSACTION_TYPES)
+    amount = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        help_text="Nombre de jours (positif pour acquisition, négatif pour usage)"
+    )
+    balance_after = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        help_text="Solde après cette transaction"
+    )
+    reference_period = models.CharField(
+        max_length=7,
+        help_text="Période de référence YYYY-MM"
+    )
+    calendar_entry = models.ForeignKey(
+        Calendar,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Lien vers l'entrée Calendar si c'est un congé pris"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['employee', 'reference_period']),
+            models.Index(fields=['transaction_type']),
+        ]
+
+    def __str__(self):
+        return f"{self.employee.email} - {self.transaction_type} - {self.amount} jours"
+
+    """This class defines the data structure of a leave"""

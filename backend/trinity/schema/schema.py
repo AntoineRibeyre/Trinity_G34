@@ -7,7 +7,7 @@ from django.contrib.auth.hashers import make_password
 
 from .graphtypes import TeamType, UserType, DailyWorkType, CreateEvent, UpdateEvent, DeleteEvent, \
     AddAttendeeToEvent, RemoveAttendeeFromEvent
-from ..models import Calendar, Event, Team, User
+from ..models import Calendar, Event, Team, User, LeaveBalance
 from ..logic.userfactory import UserFactory
 from ..logic.teamfactory import TeamFactory
 from ..logic.calendarfactory import CalendarFactory
@@ -46,6 +46,16 @@ class Query(graphene.ObjectType):
     all_events = graphene.List(graphtype.EventType)
     event = graphene.Field(graphtype.EventType, id=graphene.Int(required=True))
     team_members = graphene.List(UserType, team_id=graphene.Int(required=True))
+
+    leave_report = graphene.Field(
+        graphtype.LeaveReportType,
+        user_id=graphene.Int()
+    )
+    leave_history = graphene.List(
+        graphtype.LeaveBalanceType,
+        user_id=graphene.Int(required=True),
+        limit=graphene.Int()
+    )
 
     def resolve_pending_day(self, info, user_id):
         """Il faut aboslument modifier  ce code car il viole l'architecture
@@ -568,6 +578,169 @@ class RegisterEnd(graphene.Mutation):
         )
 
 
+def resolve_leave_report(self, info, user_id=None):
+    """Récupère le rapport de congés d'un employé"""
+    from ..logic.leavesmanager import LeavesManager
+
+    user = info.context.user
+
+    # Si user_id n'est pas fourni, utiliser l'utilisateur connecté
+    if user_id is None:
+        if not user.is_authenticated:
+            raise Exception("Authentification requise")
+        target_user = user
+    else:
+        # Vérifier les permissions (admin/manager peut voir les autres)
+        if not user.is_authenticated:
+            raise Exception("Authentification requise")
+
+        is_admin = user.role in ['admin', 'Admin']
+        is_manager = user.role in ['manager', 'Manager']
+        is_self = user.id == user_id
+
+        if not (is_admin or is_manager or is_self):
+            raise Exception("Permissions insuffisantes")
+
+        try:
+            target_user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            raise Exception("Utilisateur introuvable")
+
+    report = LeavesManager.get_leave_report(target_user)
+
+    return graphtype.LeaveReportType(
+        employee_id=report.employee_id,
+        current_balance=float(report.current_balance),
+        acquired_this_year=float(report.acquired_this_year),
+        used_this_year=float(report.used_this_year),
+        reference_year_start=report.reference_year_start,
+        reference_year_end=report.reference_year_end,
+        next_acquisition_date=report.next_acquisition_date,
+        is_at_max_capacity=report.is_at_max_capacity,
+        transactions=report.transactions
+    )
+
+
+def resolve_leave_history(self, info, user_id, limit=20):
+    """Récupère l'historique des transactions de congés"""
+    user = info.context.user
+
+    if not user.is_authenticated:
+        raise Exception("Authentification requise")
+
+    # Vérifier les permissions
+    is_admin = user.role in ['admin', 'Admin']
+    is_manager = user.role in ['manager', 'Manager']
+    is_self = user.id == user_id
+
+    if not (is_admin or is_manager or is_self):
+        raise Exception("Permissions insuffisantes")
+
+    try:
+        target_user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        raise Exception("Utilisateur introuvable")
+
+    return LeaveBalance.objects.filter(employee=target_user).order_by('-created_at')[:limit]
+
+
+class RequestLeave(graphene.Mutation):
+    """Demande de congé pour une période"""
+
+    class Arguments:
+        user_id = graphene.Int(required=True)
+        start_date = graphene.String(required=True)  # Format: YYYY-MM-DD
+        end_date = graphene.String(required=True)  # Format: YYYY-MM-DD
+
+    success = graphene.Boolean()
+    message = graphene.String()
+    business_days_count = graphene.Int()
+    new_balance = graphene.Float()
+
+    def mutate(self, info, user_id, start_date, end_date):
+        from ..logic.leavesmanager import LeavesManager
+
+        try:
+            user = User.objects.get(id=user_id)
+
+            # Parser les dates
+            start = datetime.date.fromisoformat(start_date)
+            end = datetime.date.fromisoformat(end_date)
+
+            if start > end:
+                raise Exception("La date de début doit être avant la date de fin")
+
+            # Créer la demande de congé
+            calendars, transactions = LeavesManager.create_leave_request(user, start, end)
+
+            # Refresh pour obtenir le nouveau solde
+            user.refresh_from_db()
+
+            return RequestLeave(
+                success=True,
+                message=f"Congé enregistré avec succès ({len(calendars)} jours)",
+                business_days_count=len(calendars),
+                new_balance=float(user.leaves or 0)
+            )
+
+        except User.DoesNotExist:
+            return RequestLeave(
+                success=False,
+                message="Utilisateur introuvable",
+                business_days_count=0,
+                new_balance=0
+            )
+        except Exception as e:
+            return RequestLeave(
+                success=False,
+                message=str(e),
+                business_days_count=0,
+                new_balance=0
+            )
+
+
+class ProcessMonthlyLeaveAcquisition(graphene.Mutation):
+    """Traite l'acquisition mensuelle pour tous les employés (admin uniquement)"""
+
+    class Arguments:
+        acquisition_date = graphene.String()  # Format: YYYY-MM-DD (optionnel)
+
+    success = graphene.Boolean()
+    message = graphene.String()
+    result = graphene.Field(graphtype.MonthlyAcquisitionResultType)
+
+    def mutate(self, info, acquisition_date=None):
+        from ..logic.leavesmanager import LeavesManager
+
+        user = info.context.user
+
+        # Vérifier les permissions (admin uniquement)
+        if not user.is_authenticated or user.role not in ['admin', 'Admin']:
+            raise Exception("Permissions insuffisantes - admin uniquement")
+
+        try:
+            target_date = None
+            if acquisition_date:
+                target_date = datetime.date.fromisoformat(acquisition_date)
+
+            result = LeavesManager.process_monthly_acquisition_for_all_employees(target_date)
+
+            return ProcessMonthlyLeaveAcquisition(
+                success=True,
+                message=f"Traitement terminé: {len(result['success'])} succès, {len(result['errors'])} erreurs",
+                result=graphtype.MonthlyAcquisitionResultType(
+                    success_count=len(result['success']),
+                    error_count=len(result['errors']),
+                    details=result
+                )
+            )
+        except Exception as e:
+            return ProcessMonthlyLeaveAcquisition(
+                success=False,
+                message=str(e),
+                result=None
+            )
+
 class Mutation(graphene.ObjectType):
     """This class is used to list and resolve all possible GraphQL mutations
     ."""
@@ -592,6 +765,8 @@ class Mutation(graphene.ObjectType):
     remove_attendee = RemoveAttendeeFromEvent.Field()
     update_user = UpdateUser.Field()
     delete_user = DeleteUser.Field()
+    request_leave = RequestLeave.Field()
+    process_monthly_leave_acquisition = ProcessMonthlyLeaveAcquisition.Field()
 
 
 # final schema
