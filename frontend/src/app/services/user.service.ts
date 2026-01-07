@@ -78,22 +78,6 @@ const GET_ALL_USERS = gql`
       birthDate
       workingHours
       leaves
-<<<<<<< HEAD
-#      address {
-#        streetNumber
-#        streetName
-#        postalCode
-#        city
-#        country
-#      }
-#      emergencyContact {
-#        title
-#        firstName
-#        lastName
-#        relation
-#        phone
-#      }
-=======
       rib
       familySituation
       address {
@@ -110,7 +94,6 @@ const GET_ALL_USERS = gql`
         relation
         phoneNumber
       }
->>>>>>> feat/pointage
     }
   }
 `;
