@@ -387,7 +387,7 @@ export class ActivityService implements OnDestroy {
    * ou en complément pour une détection plus réactive
    */
   private initActivityListeners(): void {
-    console.log('[ActivityService] Initialisation des écouteurs d\'activité navigateur');
+    // console.log('[ActivityService] Initialisation des écouteurs d\'activité navigateur');
     
     // Exécuter en dehors de la zone Angular pour éviter les détections de changement excessives
     this.ngZone.runOutsideAngular(() => {
