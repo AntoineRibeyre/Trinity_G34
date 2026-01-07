@@ -74,20 +74,20 @@ const GET_ALL_USERS = gql`
       birthDate
       workingHours
       leaves
-      address {
-        streetNumber
-        streetName
-        postalCode
-        city
-        country
-      }
-      emergencyContact {
-        title
-        firstName
-        lastName
-        relation
-        phone
-      }
+#      address {
+#        streetNumber
+#        streetName
+#        postalCode
+#        city
+#        country
+#      }
+#      emergencyContact {
+#        title
+#        firstName
+#        lastName
+#        relation
+#        phone
+#      }
     }
   }
 `;

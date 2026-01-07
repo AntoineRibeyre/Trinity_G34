@@ -1,4 +1,4 @@
-<div class="drawer-overlay" *ngIf="isOpen" (click)="close()">
+<div class="drawer-overlay" *ngIf="isOpen" (click)="close()" (keydown.enter)="close()">
   <div class="drawer-content" (click)="$event.stopPropagation()">
     <div class="drawer-header">
       @if (!isEditable) {

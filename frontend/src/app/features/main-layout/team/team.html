@@ -79,7 +79,7 @@
 
         <div class="members-list">
           <!-- Manager -->
-          <div class="member-row" (click)="openMemberDetails(managerView.manager.userDetails.id, $event)">
+          <div class="member-row" (click)="openMemberDetails(managerView.manager.userDetails.id, $event)" (keydown.enter)="openMemberDetails(managerView.manager.userDetails.id, $event)">
             <div class="member-avatar">
               {{ managerView.manager.userDetails.firstName.charAt(0) }}{{ managerView.manager.userDetails.lastName.charAt(0) }}
             </div>
@@ -103,7 +103,7 @@
           </div>
 
           <!-- Membres de l'équipe -->
-          <div *ngFor="let member of managerView.members" class="member-row" (click)="openMemberDetails(member.userDetails.id, $event)">
+          <div *ngFor="let member of managerView.members" class="member-row" (click)="openMemberDetails(member.userDetails.id, $event)" (keydown.enter)="openMemberDetails(member.userDetails.id, $event)">
             <div class="member-avatar">
               {{ member.userDetails.firstName.charAt(0) }}{{ member.userDetails.lastName.charAt(0) }}
             </div>

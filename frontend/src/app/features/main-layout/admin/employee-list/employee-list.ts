@@ -62,9 +62,10 @@ export class EmployeeList implements OnDestroy, OnInit {
       this.filterUsers(q);
       this.changeSearch.emit(q);
     });
-    this.loadUsers();
   }
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.loadUsers();
+
     this.teamSub = this.teamService.getAllTeams().subscribe({
       next: (teams) => {
         this.teams = teams;
