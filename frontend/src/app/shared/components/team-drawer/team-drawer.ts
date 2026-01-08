@@ -268,7 +268,7 @@ export class TeamDrawer implements OnChanges {
     }));
     this.dialog.open(AddTeamEmploye, {
       data: {
-        title: this.translateService.instant('TEAM.DIALOG.REMOVE-MEMBERS.TITLE'),
+        title: this.translateService.instant('TEAM.DIALOG.REMOVE-MEMBERS.TITLE-MEMBERS'),
         cancel: this.translateService.instant('BASE.CANCEL'),
         confirm: this.translateService.instant('BASE.SUPPRIMER'),
         dropdownOptions: this.dropdownOptionsUsers,

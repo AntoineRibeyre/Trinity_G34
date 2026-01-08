@@ -1,8 +1,7 @@
 :host {
   display: block;
   padding: 10px;
-  width: 30vw;
-  height: 400px;
+  height: 300px;
 }
 
 .export-period-dialog {

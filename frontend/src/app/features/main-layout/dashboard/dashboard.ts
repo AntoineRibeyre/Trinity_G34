@@ -107,6 +107,10 @@ export class Dashboard implements OnInit, OnDestroy {
     if (this.currentUser){
       this.userId = Number(this.currentUser.id);
       this.username = this.currentUser.username;
+      if (this.currentUser.role === 'admin'){
+        this.router.navigate(['/admin/users']);
+        return;
+      }
     }
 
     this.updateTime();
@@ -342,6 +346,5 @@ export class Dashboard implements OnInit, OnDestroy {
   toggleWorkMode(): void {
     this.isTelework = !this.isTelework;
     this.dayType = this.isTelework ? 'homeworking' : 'office';
-    // TODO: Implémenter la logique de changement de mode de travail
   }
 }

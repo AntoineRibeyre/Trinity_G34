@@ -18,6 +18,7 @@ import {AddEmployee} from '../../../../shared/components/add-employee/add-employ
 import { SnackBarService } from '../../../../services/snackbar.service';
 import {BasicTextButton} from '../../../../shared/components/basic-text-button/basic-text-button';
 import { FilterService, Filter } from '../../../../services/filter.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-list',
@@ -31,7 +32,7 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   public allUsers: User[] = [];
   public filteredUsers: User[] = [];
-
+  public router = inject(Router);
   teams: Team[] = [];
 
   selectedEmployee: User | undefined = undefined;
@@ -73,7 +74,16 @@ export class EmployeeList implements OnDestroy, OnInit {
       this.changeSearch.emit(q);
     });
   }
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.initializeComponent();
+  }
+
+  private async initializeComponent(): Promise<void> {
+    const currentUser = await this.userService.loadCurrentUserFromServer();
+    if (!currentUser || currentUser.role !== 'admin') {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
     await this.loadUsers();
 
     // Récupérer tous les filtres disponibles depuis le FilterService

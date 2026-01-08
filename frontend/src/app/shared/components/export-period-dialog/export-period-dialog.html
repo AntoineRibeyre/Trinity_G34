@@ -30,6 +30,7 @@
     <app-basic-text-button
       [text]="data.cancel"
       color="#999999"
+      width="150px"
       (click)="data.onCancel(dialog)"
       (keydown.enter)="data.onCancel(dialog)">
     </app-basic-text-button>
@@ -37,6 +38,7 @@
     <app-basic-text-button
       [text]="data.confirm"
       color="#336CAA"
+      width="150px"
       [disabled]="!isSelected"
       (click)="data.onConfirm(dialog, startDate, endDate)"
       (keydown.enter)="data.onConfirm(dialog, startDate, endDate)">

@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
   private userService = inject(UserService);
 
   ngOnInit(): void {
-    this.currentUser = this.userService.loadCurrentUserFromServer();
     // Appliquer la langue sauvegardée en localStorage
     const lang = this.languageService.getCurrentLanguage();
     this.translateService.use(lang);
@@ -60,8 +59,10 @@ export class LoginComponent implements OnInit {
       // Redirection vers le dashboard
       if (user.role === 'admin') {
         this.router.navigate(['/admin/users']);
+        console.log('Redirection vers /admin/users');
       } else {
         this.router.navigate(['/dashboard']);
+        console.log('Redirection vers /dashboard');
       }
      
 
