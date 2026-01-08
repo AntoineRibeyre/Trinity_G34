@@ -2,7 +2,46 @@
   <div class="left-column">
 
     <div class="cards profil">
-
+      <div class="profil-content">
+        <div class="avatar-container">
+          <div class="avatar-wrapper">
+            <div class="avatar-img">
+              <img
+                [src]="getAvatarPath()"
+                [alt]="currentUser?.firstName + ' ' + currentUser?.lastName"
+                class="avatar-image"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="profil-info">
+          <div class="greeting">
+            {{ "DASHBOARD.HELLO" | translate}}, <br> <span class="user-name">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</span>
+          </div>
+          <!-- Si l'utilisateur est actuellement actif, il ne peut plus cliquer sur le checkbox -->
+          @if (isUserCurrentlyActive) { 
+            <div class="work-mode-switch disabled">
+              <span class="switch-label" [class.active]="!isTelework">{{ "DASHBOARD.WORK_MODE.OFFICE" | translate }}</span>
+              <label class="switch">
+                <input type="checkbox" [checked]="isTelework" disabled>
+                <span class="slider"></span>
+              </label>
+              <span class="switch-label" [class.active]="isTelework">{{ "DASHBOARD.WORK_MODE.HOME" | translate }}</span>
+            </div>
+          }
+          @else {
+            <div class="work-mode-switch">
+              <span class="switch-label" [class.active]="!isTelework">{{ "DASHBOARD.WORK_MODE.OFFICE" | translate }}</span>
+              <label class="switch">
+                <input type="checkbox" [checked]="isTelework" (change)="toggleWorkMode()">
+                <span class="slider"></span>
+              </label>
+              <span class="switch-label" [class.active]="isTelework">{{ "DASHBOARD.WORK_MODE.HOME" | translate }}</span>
+            </div>
+          }
+          
+        </div>
+      </div>
     </div>
 
     <div class="cards date">
@@ -43,6 +82,8 @@
       <div class="time" [class.active]="isPointeArrivee">
         {{ dureeTotaleJournee }}
       </div>
+
+      
 
       <div class="point-buttons">
         <button

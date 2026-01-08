@@ -1,14 +1,19 @@
 <div class="teams-container" >
-  <div class="team-card-add" (click)="$event.stopPropagation();createTeamDialog()">
-    <div class="card team-title">Créer une équipe</div>
+  <div class="team-card-add" (click)="$event.stopPropagation();createTeamDialog()" (keydown.enter)="createTeamDialog()">
+    <div class="card team-title">{{ 'ADMIN.ALL.CREATE-TEAM' | translate }}</div>
     <div class="card create-button">
       <button>+</button>
     </div>
   </div>
 
   <div class="teams" #teamsContainer>
+    @if (filteredTeams.length === 0) {
+      <div class="no-teams-message">
+        {{ 'ADMIN.ALL.NO-TEAMS' | translate }}
+      </div>
+    }
     @for (team of filteredTeams; track team.id) {
-      <div class="team-card" (click)="displayTeamData(team.id)">
+      <div class="team-card" (click)="displayTeamData(team.id)" (keydown.enter)="displayTeamData(team.id)">
         <!-- Nom de l'équipe -->
         <div class="card team-title">{{ team.name }}</div>
 

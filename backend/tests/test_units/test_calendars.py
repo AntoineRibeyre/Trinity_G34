@@ -142,8 +142,10 @@ class CalendarFactoryTestCase(TestCase):
         mock_queryset = Mock()
         mock_queryset.last.return_value = self.mock_calendar
         mock_calendar_filter.return_value = mock_queryset
-        # Exécution
-        result = CalendarFactory.close_calendar(1)
+        
+        # Exécution avec le paramètre day_type
+        result = CalendarFactory.close_calendar(1, "work")
+        
         # Vérifications
         mock_user_get.assert_called_once_with(pk=1)
         self.assertTrue(self.mock_calendar.day_over)
@@ -160,9 +162,10 @@ class CalendarFactoryTestCase(TestCase):
         mock_queryset = Mock()
         mock_queryset.last.return_value = self.mock_calendar
         mock_calendar_filter.return_value = mock_queryset
-        # Vérification
+        
+        # Vérification avec le paramètre day_type
         with self.assertRaises(Exception) as context:
-            CalendarFactory.close_calendar(1)
+            CalendarFactory.close_calendar(1, "work")
         self.assertEqual(str(context.exception), "Day over")
 
     @patch('trinity.logic.calendarfactory.CalendarFactory.create_calendar')
@@ -179,8 +182,11 @@ class CalendarFactoryTestCase(TestCase):
         """Test d'enregistrement de sortie"""
         mock_output = Mock(spec=CalendarQueryOutput)
         mock_close.return_value = mock_output
-        result = CalendarFactory.register_out(1)
-        mock_close.assert_called_once_with(1)
+        
+        # Exécution avec le paramètre day_type
+        result = CalendarFactory.register_out(1, "work")
+        
+        mock_close.assert_called_once_with(1, "work")
         self.assertEqual(result, mock_output)
 
     @patch('trinity.logic.calendarfactory.Calendar.objects.filter')

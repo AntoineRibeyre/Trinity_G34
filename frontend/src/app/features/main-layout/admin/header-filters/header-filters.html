@@ -1,9 +1,11 @@
 
+
 <div class="header-filters">
     @for (filter of filters; track filter) {
         <button
         class="filter-button"
         [class.active]="filter === selectedFilter"
+        [class.no-team]="filter.teamExists === false"
         (click)="selectFilter(filter)"
         >
         {{ filter.label }}

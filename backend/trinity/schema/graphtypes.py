@@ -9,11 +9,67 @@ from ..logic.teamfactory import TeamViewer, AdminView
 from ..logic.calendarfactory import DailyPlanning
 
 
+class AddressType(graphene.ObjectType):
+    number = graphene.String()
+    street = graphene.String()
+    postalCode = graphene.String()
+    city = graphene.String()
+    state = graphene.String()
+
+
+class EmergencyContactType(graphene.ObjectType):
+    courtesy = graphene.String()
+    firstName = graphene.String()
+    lastName = graphene.String()
+    relation = graphene.String()
+    phoneNumber = graphene.String()
+
+
 class UserType(DjangoObjectType):
     """Graphene object connected to the Django User model."""
+    socialNumber = graphene.BigInt()
+    rib = graphene.String()
+    familySituation = graphene.String()
+    personalEmail = graphene.String()
+    address = graphene.Field(AddressType)
+    emergencyContact = graphene.Field(EmergencyContactType)
+
     class Meta:
         model = User
         fields = "__all__"
+
+    def resolve_socialNumber(self, info):
+        """Resolve social_number field as socialNumber for GraphQL."""
+        return self.social_number
+
+    def resolve_rib(self, info):
+        return self.rib
+
+    def resolve_familySituation(self, info):
+        return self.family_situation
+
+    def resolve_personalEmail(self, info):
+        return self.personal_email
+
+    def resolve_address(self, info):
+        data = self.address or {}
+        return AddressType(
+            number=data.get("number"),
+            street=data.get("street"),
+            postalCode=data.get("postalCode"),
+            city=data.get("city"),
+            state=data.get("state"),
+        )
+
+    def resolve_emergencyContact(self, info):
+        data = self.emergency_contact or {}
+        return EmergencyContactType(
+            courtesy=data.get("courtesy"),
+            firstName=data.get("firstName"),
+            lastName=data.get("lastName"),
+            relation=data.get("relation"),
+            phoneNumber=data.get("phoneNumber"),
+        )
 
 
 class TeamType(DjangoObjectType):

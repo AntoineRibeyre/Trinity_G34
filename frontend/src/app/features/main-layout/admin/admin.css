@@ -1,0 +1,48 @@
+.header-filters-container {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Pour que le conteneur prenne toute la largeur de l'écran mais pas plus  */
+  max-width: 93vw;
+  
+ 
+}
+
+.header-filters-container::-webkit-scrollbar {
+  height: 1vh;
+}
+
+.header-filters-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.header-filters-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.header-filters-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Optionnel : masquer aussi la scrollbar du contenu */
+.content-container::-webkit-scrollbar {
+  display: none;
+}
+.content-container {
+  scrollbar-width: none;
+}

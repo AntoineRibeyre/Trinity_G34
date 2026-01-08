@@ -17,7 +17,9 @@ describe('Scheduler', () => {
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    role: 'USER'
+    role: 'USER',
+    address: {},
+    emergencyContact: {}
   };
 
   const mockUsers: User[] = [

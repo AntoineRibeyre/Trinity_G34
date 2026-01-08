@@ -29,8 +29,12 @@ export class AuthGuard implements CanActivate {
       const userRole = (currentUser?.role || '').toLowerCase();
       const allowed = requiredRoles.map(r => r.toLowerCase()).includes(userRole);
       if (!allowed) {
-        // Not authorized for this role – redirect to dashboard
-        this.router.navigate(['/dashboard']);
+        // Not authorized for this role – redirect based on user role
+        if (userRole === 'admin') {
+          this.router.navigate(['/admin/users']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
         return false;
       }
     }

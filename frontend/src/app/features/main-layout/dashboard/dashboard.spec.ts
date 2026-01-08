@@ -25,7 +25,9 @@ describe('Dashboard', () => {
     firstName: 'Test',
     lastName: 'User',
     telephone: '0123456789',
-    role: 'employee'
+    role: 'employee',
+    address: {},
+    emergencyContact: {}
   };
 
   const mockPendingDay = {
@@ -138,6 +140,8 @@ describe('Dashboard', () => {
       pointServiceSpy.getPendingDay.and.returnValue(of(null));
       pointServiceSpy.getTodayCalendar.and.returnValue(of([]));
       pointServiceSpy.calculerDureeTotaleJournee.and.returnValue(of('00:00:00'));
+      pointServiceSpy.enregistrerArrivee.and.returnValue(of({ datetimeField: '2024-01-15T08:00:00Z', durationField: 0 }));
+      pointServiceSpy.calculerDureeEnTempsReel.and.returnValue(of('00:00:00'));
 
       component.ngOnInit();
       tick();
@@ -146,6 +150,7 @@ describe('Dashboard', () => {
       expect(component.currentUser).toEqual(mockUser);
       expect(component.userId).toBe(1);
       expect(component.username).toBe('testuser');
+      flush();
     }));
 
     it('should handle null user on init', fakeAsync(() => {
@@ -153,6 +158,7 @@ describe('Dashboard', () => {
       pointServiceSpy.getPendingDay.and.returnValue(of(null));
       pointServiceSpy.getTodayCalendar.and.returnValue(of([]));
       pointServiceSpy.calculerDureeTotaleJournee.and.returnValue(of('00:00:00'));
+      pointServiceSpy.calculerDureeEnTempsReel.and.returnValue(of('00:00:00'));
 
       component.ngOnInit();
       tick();
@@ -160,6 +166,7 @@ describe('Dashboard', () => {
       expect(component.currentUser).toBeNull();
       expect(component.userId).toBeNull();
       expect(component.username).toBeNull();
+      flush();
     }));
 
     it('should start clock interval on init', fakeAsync(() => {
@@ -167,6 +174,8 @@ describe('Dashboard', () => {
       pointServiceSpy.getPendingDay.and.returnValue(of(null));
       pointServiceSpy.getTodayCalendar.and.returnValue(of([]));
       pointServiceSpy.calculerDureeTotaleJournee.and.returnValue(of('00:00:00'));
+      pointServiceSpy.enregistrerArrivee.and.returnValue(of({ datetimeField: '2024-01-15T08:00:00Z', durationField: 0 }));
+      pointServiceSpy.calculerDureeEnTempsReel.and.returnValue(of('00:00:00'));
 
       const initialTime = component.hour;
 
@@ -203,7 +212,8 @@ describe('Dashboard', () => {
       pointServiceSpy.getPendingDay.and.returnValue(of(null));
       pointServiceSpy.getTodayCalendar.and.returnValue(of(mockTodayCalendars));
       pointServiceSpy.calculerDureeTotaleJournee.and.returnValue(of('04:30:00'));
-      pointServiceSpy.calculerDureeEnTempsReel.and.returnValue(of('00:30:00')); // ← AJOUTÉ
+      pointServiceSpy.calculerDureeEnTempsReel.and.returnValue(of('00:30:00'));
+      pointServiceSpy.enregistrerArrivee.and.returnValue(of({ datetimeField: '2024-01-15T08:00:00Z', durationField: 0 }));
 
       component.ngOnInit();
       tick();
@@ -372,7 +382,7 @@ describe('Dashboard', () => {
 
         component.pointerSortie();
 
-        expect(pointServiceSpy.enregistrerSortie).toHaveBeenCalledWith(1);
+        expect(pointServiceSpy.enregistrerSortie).toHaveBeenCalledWith(1, 'office');
         expect(component.isPointeArrivee).toBeFalse();
         expect(component.dureeActuelle).toBe('00:00');
       });

@@ -24,7 +24,9 @@ describe('EventService', () => {
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    role: 'USER'
+    role: 'USER',
+    address: {},
+    emergencyContact: {}
   };
 
   const mockGraphQLEvent = {

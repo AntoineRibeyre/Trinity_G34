@@ -31,6 +31,8 @@ describe('AuthService', () => {
     firstName: 'test',
     lastName: 'test',
     role: 'employee',
+    address: {},
+    emergencyContact: {}
   };
 
   const mockCurrentUserResponse: CurrentUserResponse = {

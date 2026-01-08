@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
@@ -19,20 +19,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { SettingEditPassword } from '../../../shared/components/setting-edit-password/setting-edit-password';
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
 import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
+import { AvatarService } from '../../../services/avatar.service';
 
-/* -------------------- VALIDATEURS -------------------- */
+/* ================= VALIDATORS ================= */
 
-// Vérifie si password === confirmPassword
 function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password')?.value;
   const confirmPassword = control.get('confirmPassword')?.value;
 
   if (!password || !confirmPassword) return null;
-
   return password === confirmPassword ? null : { passwordMismatch: true };
 }
 
-// Vérifie la force du mot de passe
 function passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
   if (!value) return null;
@@ -49,25 +47,44 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, ReactiveFormsModule, FormsModule, BasicTextButton],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BasicTextButton
+  ],
   templateUrl: './settings.html',
-  styleUrls: ['./settings.css'],
+  styleUrls: ['./settings.css']
 })
 export class Settings implements OnInit, OnDestroy {
-  settingsForm: FormGroup;
-  currentLanguage: string = '';
-  availableLanguages: Array<{ code: string; label: string }> = [];
-  isLoading = false;
+
+  settingsForm!: FormGroup;
   currentUser: User | null = null;
 
+  currentLanguage = '';
+  availableLanguages: Array<{ code: string; label: string }> = [];
   private languageSubscription?: Subscription;
 
-  // Pré-requis pour l'affichage live
-  passwordRequirements = [
-    { label: 'Minimum 6 caractères', key: 'minLength' },
-    { label: 'Au moins une lettre majuscule', key: 'uppercase' },
-    { label: 'Au moins une lettre minuscule', key: 'lowercase' },
-    { label: 'Au moins un chiffre', key: 'digit' },
+  isLoading = false;
+
+  /* ================= SELECT OPTIONS ================= */
+
+  familyStatusOptions = [
+    { value: 'single', label: 'SETTINGS.FAMILY_STATUS.SINGLE' },
+    { value: 'married', label: 'SETTINGS.FAMILY_STATUS.MARRIED' },
+    { value: 'divorced', label: 'SETTINGS.FAMILY_STATUS.DIVORCED' },
+    { value: 'widowed', label: 'SETTINGS.FAMILY_STATUS.WIDOW' },
+    {value: 'marital', label: 'SETTINGS.FAMILY_STATUS.MARITAL' },
+    {value: 'unknown', label: 'SETTINGS.FAMILY_STATUS.UNKNOWN' },
+    {value: 'civil partnership', label: 'SETTINGS.FAMILY_STATUS.CIVIL_PARTNERSHIP' },
+    {value: 'separate', label: 'SETTINGS.FAMILY_STATUS.SEPARATE' },
+  ];
+
+  titleOptions = [
+    { value: 'mr', label: 'SETTINGS.TITLE.MR' },
+    { value: 'mrs', label: 'SETTINGS.TITLE.MRS' },
+    { value: 'ms', label: 'SETTINGS.TITLE.MS' }
   ];
 
   constructor(
@@ -75,60 +92,28 @@ export class Settings implements OnInit, OnDestroy {
     private languageService: LanguageService,
     private userService: UserService,
     private dialog: MatDialog,
-    private translateService: TranslateService
-  ) {
-    // Initialiser la langue depuis le service
-    this.currentLanguage = this.languageService.getCurrentLanguage();
-    this.settingsForm = this.fb.group(
-      {
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-        password: ['', [passwordStrengthValidator]],
-        confirmPassword: [''],
-      },
-      { validators: passwordMatchValidator }
-    );
-  }
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef,
+    private avatarService: AvatarService
+  ) {}
 
-  /* -------------------- PASSWORD REQUIREMENTS CHECK -------------------- */
-  isRequirementMet(req: string): boolean {
-    const pwd = this.settingsForm.get('password')?.value || '';
+  /* ================= INIT ================= */
 
-    switch (req) {
-      case 'minLength':
-        return pwd.length >= 6;
-      case 'uppercase':
-        return /[A-Z]/.test(pwd);
-      case 'lowercase':
-        return /[a-z]/.test(pwd);
-      case 'digit':
-        return /[0-9]/.test(pwd);
-      default:
-        return false;
-    }
-  }
-
-  /* -------------------- INIT -------------------- */
   async ngOnInit(): Promise<void> {
-    this.availableLanguages = this.languageService.getAvailableLanguages();
+    this.initForm();
 
+    this.availableLanguages = this.languageService.getAvailableLanguages();
     this.currentLanguage = this.languageService.getCurrentLanguage();
 
-    this.languageSubscription = this.languageService.currentLanguage$.subscribe(
-      (lang) => (this.currentLanguage = lang)
-    );
+    this.languageSubscription =
+      this.languageService.currentLanguage$.subscribe(
+        lang => (this.currentLanguage = lang)
+      );
 
-    // Charger user
     this.currentUser = await this.userService.loadCurrentUserFromServer();
+
     if (this.currentUser) {
-      this.settingsForm.patchValue({
-        firstName: this.currentUser.firstName,
-        lastName: this.currentUser.lastName,
-        email: this.currentUser.email,
-        telephone: this.currentUser.telephone,
-      });
+      this.patchUserData(this.currentUser);
     }
   }
 
@@ -136,15 +121,86 @@ export class Settings implements OnInit, OnDestroy {
     this.languageSubscription?.unsubscribe();
   }
 
-  /* -------------------- CHANGE LANGUAGE -------------------- */
-  changeLanguage(lang: string): void {
-    this.languageService.setLanguage(lang);
-    this.currentLanguage = lang;
+  /* ================= FORM INIT ================= */
+
+  private initForm(): void {
+    this.settingsForm = this.fb.group(
+      {
+        /* READONLY */
+        firstName: [{ value: '', disabled: true }],
+        lastName: [{ value: '', disabled: true }],
+        email: [{ value: '', disabled: true }],
+
+        contractType: [{ value: '', disabled: true }],
+        socialSecurityNumber: [{ value: '', disabled: true }],
+        annualSalary: [{ value: '', disabled: true }],
+        arrivalDate: [{ value: '', disabled: true }],
+        leaveBalance: [{ value: '', disabled: true }],
+
+        /* EDITABLE */
+        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        personalEmail: ['', Validators.email],
+        familyStatus: ['', Validators.required],
+
+        iban: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/)
+          ]
+        ],
+
+        password: ['', passwordStrengthValidator],
+        confirmPassword: [''],
+
+        address: this.fb.group({
+          streetNumber: ['', Validators.required],
+          streetName: ['', Validators.required],
+          city: ['', Validators.required],
+          postalCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]],
+          country: ['', Validators.required]
+        }),
+
+        emergencyContact: this.fb.group({
+          title: ['', Validators.required],
+          firstName: ['', Validators.required],
+          lastName: ['', Validators.required],
+          relation: ['', Validators.required],
+          phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
+        })
+      },
+      { validators: passwordMatchValidator }
+    );
   }
 
-  /* -------------------- SUBMIT -------------------- */
+  /* ================= PATCH USER ================= */
+
+  private patchUserData(user: User): void {
+    this.settingsForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      telephone: user.telephone,
+
+      personalEmail: user.personalEmail,
+      familyStatus: user.familySituation,
+      iban: user.rib,
+
+      contractType: user.contract,
+      socialSecurityNumber: user.socialNumber,
+      annualSalary: user.annualSalary,
+      arrivalDate: user.arrivalDate,
+      leaveBalance: user.leaves,
+
+      address: user.address,
+      emergencyContact: user.emergencyContact
+    });
+  }
+
+  /* ================= SUBMIT ================= */
+
   async onSubmit(): Promise<void> {
-    if (!this.settingsForm.valid) {
+    if (this.settingsForm.invalid) {
       this.settingsForm.markAllAsTouched();
       return;
     }
@@ -152,12 +208,13 @@ export class Settings implements OnInit, OnDestroy {
     this.isLoading = true;
 
     try {
-      const formData = { ...this.settingsForm.value };
+      const payload = { ...this.settingsForm.value };
 
-      // Pas d’envoi du mot de passe si vide
-      if (!formData.password) delete formData.password;
+      if (!payload.password) {
+        delete payload.password;
+      }
 
-      const updatedUser = await this.userService.updateUser(formData);
+      const updatedUser = await this.userService.updateUser(payload);
 
       if (updatedUser) {
         this.currentUser = updatedUser;
@@ -171,12 +228,22 @@ export class Settings implements OnInit, OnDestroy {
     this.isLoading = false;
   }
 
+  /* ================= HELPERS ================= */
+
   isInvalid(controlName: string): boolean {
-    const c = this.settingsForm.get(controlName);
-    return !!(c && c.invalid && (c.dirty || c.touched));
+    const control = this.settingsForm.get(controlName);
+    return !!(control && control.invalid && (control.touched || control.dirty));
   }
 
-  /* -------------------- OPEN PASSWORD MODAL -------------------- */
+  /* ================= LANGUAGE ================= */
+
+  changeLanguage(lang: string): void {
+    this.languageService.setLanguage(lang);
+    this.currentLanguage = lang;
+  }
+
+  /* ================= PASSWORD DIALOG ================= */
+
   openEditPassword(): void {
     this.dialog.open(SettingEditPassword, {
       data: {
@@ -184,20 +251,30 @@ export class Settings implements OnInit, OnDestroy {
         confirm: this.translateService.instant('BASE.EDIT'),
         cancel: this.translateService.instant('BASE.CANCEL'),
         onConfirm: async (dialogRef: any, newPassword: string) => {
-          try {
-            await this.userService.updateUser({ password: newPassword });
-            dialogRef.close();
-          } catch (err) {
-          }
+          await this.userService.updateUser({ password: newPassword });
+          dialogRef.close();
         },
-        onCancel: (dialogRef: any) => {
-          dialogRef.close()
-        }
-      },
+        onCancel: (dialogRef: any) => dialogRef.close()
+      }
     });
   }
 
+  /* ================= AVATAR ================= */
+
   openAvatarDialog(): void {
-    this.dialog.open(AvatarDialog)
+    const dialogRef = this.dialog.open(AvatarDialog);
+
+    dialogRef.afterClosed().subscribe((selectedAvatarId: number | undefined) => {
+      if (selectedAvatarId && this.currentUser) {
+        const key = `avatar_${this.currentUser.id}`;
+        localStorage.setItem(key, selectedAvatarId.toString());
+        this.currentUser = { ...this.currentUser };
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  getAvatarPath(): string {
+    return this.avatarService.getAvatarPath(this.currentUser);
   }
 }

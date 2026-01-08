@@ -12,6 +12,7 @@ interface GraphQLUser {
   firstName?: string;
   lastName?: string;
   telephone?: string;
+  personalEmail?: string;
   role?: string;
   team?: Team;
   contract?: string;
@@ -21,6 +22,22 @@ interface GraphQLUser {
   workingHours?: number;
   annualSalary?: number;
   leaves?: number;
+  rib?: string;
+  familySituation?: string;
+  address?: {
+    number?: string;
+    street?: string;
+    postalCode?: string;
+    city?: string;
+    state?: string;
+  };
+  emergencyContact?: {
+    courtesy?: string;
+    firstName?: string;
+    lastName?: string;
+    relation?: string;
+    phoneNumber?: string;
+  };
 }
 
 interface AllUsersResponse {
@@ -36,6 +53,7 @@ const GET_ALL_USERS = gql`
       firstName
       lastName
       telephone
+      personalEmail
       role
       isActive
       team{
@@ -60,6 +78,22 @@ const GET_ALL_USERS = gql`
       birthDate
       workingHours
       leaves
+      rib
+      familySituation
+      address {
+        number
+        street
+        postalCode
+        city
+        state
+      }
+      emergencyContact {
+        courtesy
+        firstName
+        lastName
+        relation
+        phoneNumber
+      }
     }
   }
 `;
@@ -116,6 +150,9 @@ export class UserService {
       const v = Number(src.leaves);
       if (!Number.isNaN(v) && Number.isFinite(v)) payload.leaves = Math.trunc(v);
     }
+    if (src.rib !== undefined) payload.rib = src.rib;
+    if (src.familySituation !== undefined) payload.familySituation = src.familySituation;
+    if (src.personalEmail !== undefined) payload.personalEmail = src.personalEmail;
     if (src.isActive !== undefined) payload.isActive = src.isActive;
 
     if (src.team !== undefined && src.team !== null) {
@@ -123,6 +160,9 @@ export class UserService {
       if (typeof t === 'number' || typeof t === 'string') payload.teamId = Number(t);
       else if (t && t.id !== undefined) payload.teamId = Number(t.id);
     }
+    if (src.address !== undefined) payload.address = src.address;
+
+    if (src.emergencyContact !== undefined) payload.emergencyContact = src.emergencyContact;
 
     return payload;
   }
@@ -139,6 +179,7 @@ export class UserService {
           lastName
           email
           telephone
+          personalEmail
           role
           socialNumber
           contract
@@ -147,6 +188,8 @@ export class UserService {
           birthDate
           workingHours
           leaves
+          rib
+          familySituation
           team {
             id
             field
@@ -158,6 +201,20 @@ export class UserService {
               lastName
               role
             }
+          }
+          address {
+            number
+            street
+            postalCode
+            city
+            state
+          }
+          emergencyContact {
+            courtesy
+            firstName
+            lastName
+            relation
+            phoneNumber
           }
         }
       }
@@ -173,8 +230,18 @@ export class UserService {
             firstName
             lastName
             telephone
+            personalEmail
             role
             isActive
+            socialNumber
+            contract
+            arrivalDate
+            annualSalary
+            birthDate
+            workingHours
+            leaves
+            rib
+            familySituation
             team{
               id
               field
@@ -189,6 +256,20 @@ export class UserService {
                 telephone
                 role
               }
+            }
+            address {
+              number
+              street
+              postalCode
+              city
+              state
+            }
+            emergencyContact {
+              courtesy
+              firstName
+              lastName
+              relation
+              phoneNumber
             }
         }
       }
@@ -282,6 +363,7 @@ export class UserService {
         firstName: graphqlUser.firstName || '',
         lastName: graphqlUser.lastName || '',
         telephone: graphqlUser.telephone || '',
+        personalEmail: graphqlUser.personalEmail,
         role: graphqlUser.role || '',
         team: teamWithMembers as Team | undefined,
         socialNumber: graphqlUser.socialNumber,
@@ -291,6 +373,23 @@ export class UserService {
         birthDate: graphqlUser.birthDate,
         workingHours: graphqlUser.workingHours,
         leaves: graphqlUser.leaves,
+        rib: graphqlUser.rib,
+        familySituation: graphqlUser.familySituation,
+        address: graphqlUser.address || {
+          number: '',
+          street: '',
+          postalCode: '',
+          city: '',
+          state: '',
+        },
+
+        emergencyContact: graphqlUser.emergencyContact || {
+          courtesy: '',
+          firstName: '',
+          lastName: '',
+          relation: '',
+          phoneNumber: '',
+        },
       };
     }
 

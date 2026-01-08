@@ -27,6 +27,139 @@
 
 .profil {
   height: 35%;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.profil-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+}
+
+.avatar-container {
+  flex-shrink: 0;
+}
+
+.avatar-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profil-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.greeting {
+  font-size: clamp(20px, 2.5vw, 32px);
+  color: #333;
+  font-weight: 500;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #3E7CB1;
+}
+
+.work-mode-switch {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.work-mode-switch.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.switch-label {
+  font-size: clamp(14px, 1.5vw, 18px);
+  color: #999999;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.switch-label.active {
+  color: #3E7CB1;
+  font-weight: 600;
+}
+
+/* Switch Toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #3E7CB1;
+}
+
+input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+.slider:hover {
+  box-shadow: 0 0 8px rgba(62, 124, 177, 0.3);
 }
 
 .date {
@@ -307,4 +440,106 @@
   width: 30%;
   display: flex;
   flex-direction: column;
+}
+
+/* Styles pour l'indicateur de statut d'activité */
+.auto-pointage-status {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.status-indicator.active {
+  background: rgba(39, 174, 96, 0.15);
+  color: #27ae60;
+}
+
+.status-indicator.inactive {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.status-indicator.active .status-dot {
+  background: #27ae60;
+  box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+  animation: pulse-dot 2s infinite;
+}
+
+.status-indicator.inactive .status-dot {
+  background: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
+}
+
+.status-indicator.locked {
+  background: rgba(155, 89, 182, 0.15);
+  color: #9b59b6;
+}
+
+.status-indicator.locked .status-dot {
+  background: #9b59b6;
+  box-shadow: 0 0 8px rgba(155, 89, 182, 0.6);
+  animation: blink-dot 1s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(39, 174, 96, 0.8);
+  }
+}
+
+@keyframes blink-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.pointage-mode {
+  font-size: clamp(10px, 1.2vw, 14px);
+  color: #999;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detection-method {
+  font-size: clamp(9px, 1vw, 12px);
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.detection-method.system {
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
 }

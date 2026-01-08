@@ -4,6 +4,7 @@ import {NgForOf} from '@angular/common';
 export interface DropdownOption {
   label: string;
   value: number;
+  field?: string;
 }
 
 @Component({
