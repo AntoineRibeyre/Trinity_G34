@@ -126,13 +126,16 @@
 
           <!-- Message si aucun membre -->
           <div *ngIf="!managerView.members || managerView.members.length === 0" class="empty-state">
-            <p>{{ 'team.tableau.aucunmembre' | translate }}</p>
+            <p>{{ 'TEAM.TABLEAU.AUCUN-MEMBRE' | translate }}</p>
           </div>
         </div>
       </div>
 
     </div>
 
+  </div>
+  <div *ngIf="!loading && !error && !managerView" class="no-team-message">
+    <p>{{ 'TEAM.NO-TEAM-MESSAGE' | translate }}</p>
   </div>
 
 </div>
