@@ -210,6 +210,16 @@
     }
   },
   "ADMIN": {
+    "FILTERS": {
+      "ROLE": "Role",
+      "TEAM": "Team",
+      "TEAM-TYPE": "Team type",
+      "ALL-ROLES": "All roles",
+      "ALL-TEAMS": "All teams",
+      "ALL-TEAM-TYPES": "All types",
+      "NO-TEAM": "No team",
+      "RESET": "Reset filters"
+    },
     "ALL": {
       "NAME": "Name",
       "FIRSTNAME": "Firstname",
