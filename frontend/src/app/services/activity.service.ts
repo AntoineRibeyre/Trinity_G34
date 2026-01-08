@@ -374,10 +374,36 @@ export class ActivityService implements OnDestroy {
   resetActivityTimer(): void {
     this.lastActivityTime = new Date();
     
-    if (!this.isActive) {
-      this.isActive = true;
-      console.log('[ActivityService] Utilisateur redevenu actif');
-      this.emitState();
+    // Si l'Idle Detection API est disponible, synchroniser avec l'état système
+    if (this.isIdleDetectionSupported && this.idleDetector) {
+      // Lire l'état actuel de l'API et mettre à jour les variables d'état système
+      this.systemUserState = this.idleDetector.userState;
+      this.screenState = this.idleDetector.screenState;
+      
+      // Si l'utilisateur est actif selon l'API système, utiliser updateActivityFromIdleState()
+      // pour mettre à jour isActive de manière cohérente
+      if (this.screenState === 'unlocked' && this.systemUserState === 'active') {
+        this.updateActivityFromIdleState();
+      } else {
+        // Si l'API dit que l'utilisateur est inactif mais qu'une activité est détectée,
+        // forcer isActive = true car l'API pourrait avoir un délai de détection
+        // Cela garantit que le pointage automatique se relance immédiatement
+        if (!this.isActive) {
+          this.isActive = true;
+          console.log('[ActivityService] Utilisateur redevenu actif (activité détectée, API en retard)');
+          this.emitState();
+        }
+      }
+      
+      // Envoyer l'état au Service Worker pour synchronisation
+      this.sendStateToServiceWorker();
+    } else {
+      // Fallback : comportement original si l'Idle Detection API n'est pas disponible
+      if (!this.isActive) {
+        this.isActive = true;
+        console.log('[ActivityService] Utilisateur redevenu actif');
+        this.emitState();
+      }
     }
   }
 
