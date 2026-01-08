@@ -187,16 +187,23 @@ export class ActivityService implements OnDestroy {
         case 'PONG':
         case 'STATE_RESPONSE':
           // Réponse à un ping - vérifier si l'état a changé
-          const state = data.payload;
-          if (state.isActive !== this.isActive) {
-            console.log('[ActivityService] Synchronisation état depuis Worker:', state);
-            this.systemUserState = state.systemUserState;
-            this.screenState = state.screenState;
-            this.isActive = state.isActive;
-            if (this.isActive) {
-              this.lastActivityTime = new Date();
+          // IMPORTANT : Ne synchroniser que si l'Idle Detection API est utilisée
+          // Sinon, le fallback navigateur gère l'inactivité localement
+          if (this.isIdleDetectionSupported) {
+            const state = data.payload;
+            if (state.isActive !== this.isActive) {
+              console.log('[ActivityService] Synchronisation état depuis Worker:', state);
+              this.systemUserState = state.systemUserState;
+              this.screenState = state.screenState;
+              this.isActive = state.isActive;
+              if (this.isActive) {
+                this.lastActivityTime = new Date();
+              }
+              this.emitState();
             }
-            this.emitState();
+          } else {
+            // Si on utilise le fallback navigateur, ignorer les mises à jour du Worker
+            // console.log('[ActivityService] PONG ignoré (fallback navigateur actif)');
           }
           break;
 
@@ -378,6 +385,8 @@ export class ActivityService implements OnDestroy {
       this.isActive = true;
       console.log('[ActivityService] Utilisateur redevenu actif');
       this.emitState();
+      // Envoyer la mise à jour au Service Worker pour synchroniser l'état
+      this.sendStateToServiceWorker();
     }
   }
 
@@ -485,6 +494,8 @@ export class ActivityService implements OnDestroy {
         this.isActive = false;
         console.log('[ActivityService] Utilisateur inactif (navigateur) après', inactiveSeconds, 'secondes');
         this.emitState();
+        // Envoyer la mise à jour au Service Worker pour synchroniser l'état
+        this.sendStateToServiceWorker();
       }
     }
 
