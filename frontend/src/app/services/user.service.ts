@@ -168,7 +168,8 @@ export class UserService {
   }
 
   constructor(private apollo: Apollo) {
-    this.loadCurrentUserFromServer();
+    // Ne pas appeler loadCurrentUserFromServer ici pour éviter les boucles infinies
+    // Le chargement se fera explicitement quand nécessaire
   }
   private readonly UPDATE_USER_MUTATION = gql`
     mutation UpdateUser($userData: UserInput!, $userId: Int) {

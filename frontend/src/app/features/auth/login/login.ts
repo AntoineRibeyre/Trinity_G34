@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
   private userService = inject(UserService);
 
   ngOnInit(): void {
-    this.currentUser = this.userService.loadCurrentUserFromServer();
     // Appliquer la langue sauvegardée en localStorage
     const lang = this.languageService.getCurrentLanguage();
     this.translateService.use(lang);
@@ -57,12 +56,11 @@ export class LoginComponent implements OnInit {
       // Afficher un message de succès
       this.snackBarService.showSuccess(this.translateService.instant('LOGIN.SUCCESS') || 'Connexion réussie !');
 
-      // Redirection vers le dashboard
-      if (user.role === 'admin') {
-        this.router.navigate(['/admin/users']);
-      } else {
-        this.router.navigate(['/dashboard']);
-      }
+      // Redirection vers la page appropriée selon le rôle
+      // Utiliser replaceUrl pour éviter que l'utilisateur puisse revenir à la page de login
+      const targetUrl = user.role?.toLowerCase() === 'admin' ? '/admin/users' : '/dashboard';
+      console.log('Redirection vers:', targetUrl, 'pour le rôle:', user.role);
+      this.router.navigate([targetUrl], { replaceUrl: true });
      
 
     } catch (error: any) {

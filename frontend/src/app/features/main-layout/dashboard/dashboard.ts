@@ -162,24 +162,30 @@ export class Dashboard implements OnInit, OnDestroy {
    * Pointer arrivée automatiquement si pas déjà pointé
    */
   private autoPointerArrivee(): void {
-    if (!this.userId) return;
+    if (!this.userId) {
+      console.log('[AutoPointage] userId non défini, pointage ignoré');
+      return;
+    }
+    
+    console.log('[AutoPointage] Vérification du pointage pour userId:', this.userId);
     
     // Vérifier d'abord si on n'est pas déjà pointé
     this.pointService.getPendingDay(this.userId).subscribe({
       next: (day) => {
         if (!day) {
           // Pas de pointage en cours, on pointe l'arrivée
+          console.log('[AutoPointage] Aucun pointage en cours, pointage arrivée automatique...');
           this.pointerArrivee();
-          console.log('Pointage arrivée automatique effectué');
+          console.log('[AutoPointage] Pointage arrivée automatique effectué');
         } else {
-          console.log('Déjà pointé, pas de pointage automatique');
+          console.log('[AutoPointage] Déjà pointé, pas de pointage automatique');
           this.isPointeArrivee = true;
           // Relancer le calcul du temps même si déjà pointé
           this.demarrerCalculDureeTotale();
         }
         this.hasAutoPointedOnInit = true;
       },
-      error: (err) => console.error('Erreur vérification pointage:', err)
+      error: (err) => console.error('[AutoPointage] Erreur vérification pointage:', err)
     });
   }
 

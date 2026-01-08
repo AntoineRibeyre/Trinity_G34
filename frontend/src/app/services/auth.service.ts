@@ -1,5 +1,5 @@
 // auth.service.ts
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, forwardRef } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { map, catchError } from 'rxjs/operators';
@@ -8,7 +8,8 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client/core';
 import { from, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import {CurrentUserResponse} from "../models/user.model"
+import {CurrentUserResponse} from "../models/user.model";
+import { UserService } from './user.service';
 
 
 
@@ -51,7 +52,8 @@ export class AuthService {
   constructor(
     private apollo: Apollo, 
     private router: Router, 
-    private http: HttpClient
+    private http: HttpClient,
+    @Inject(forwardRef(() => UserService)) private userService: UserService
   ) {}
 
   /**
@@ -151,6 +153,13 @@ export class AuthService {
       }
     `;
 
+    // Nettoyer immédiatement l'état côté client
+    this.userService.clearCurrentUser();
+    
+    // Vider le cache Apollo pour éviter les données persistantes
+    this.apollo.client.clearStore().catch(err => console.error('Erreur clear Apollo store:', err));
+    this.loginClient.clearStore().catch(err => console.error('Erreur clear login client store:', err));
+
     this.loginClient.mutate({ mutation: LOGOUT_MUTATION })
       .then((response: any) => {
         console.log('Réponse logout:', response);
@@ -159,11 +168,13 @@ export class AuthService {
         document.cookie = 'csrftoken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
 
-        this.router.navigate(['/login']);
+        // Rediriger vers login avec replaceUrl pour éviter le retour arrière
+        this.router.navigate(['/login'], { replaceUrl: true });
       })
       .catch((error: any) => {
         console.error('Erreur logout:', error);
-        this.router.navigate(['/login']);
+        // Rediriger vers login même en cas d'erreur
+        this.router.navigate(['/login'], { replaceUrl: true });
       });
   }
 
