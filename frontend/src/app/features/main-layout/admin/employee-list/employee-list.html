@@ -30,6 +30,58 @@
     </div>
   </div>
 
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label for="role-filter">{{ 'ADMIN.FILTERS.ROLE' | translate }}</label>
+      <select 
+        id="role-filter" 
+        [(ngModel)]="selectedRole" 
+        (change)="onRoleFilterChange(selectedRole)"
+        class="filter-select">
+        <option value="">{{ 'ADMIN.FILTERS.ALL-ROLES' | translate }}</option>
+        @for (role of roles; track role) {
+          <option [value]="role">{{ role }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="team-filter">{{ 'ADMIN.FILTERS.TEAM' | translate }}</label>
+      <select 
+        id="team-filter" 
+        [(ngModel)]="selectedTeamFilter" 
+        (change)="onTeamFilterChange(selectedTeamFilter)"
+        class="filter-select">
+        <option value="">{{ 'ADMIN.FILTERS.ALL-TEAMS' | translate }}</option>
+        <option value="no-team">{{ 'ADMIN.FILTERS.NO-TEAM' | translate }}</option>
+        @for (team of teams; track team.id) {
+          <option [value]="team.id">{{ team.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="team-field-filter">{{ 'ADMIN.FILTERS.TEAM-TYPE' | translate }}</label>
+      <select 
+        id="team-field-filter" 
+        [(ngModel)]="selectedTeamField" 
+        (change)="onTeamFieldFilterChange(selectedTeamField)"
+        class="filter-select">
+        <option value="">{{ 'ADMIN.FILTERS.ALL-TEAM-TYPES' | translate }}</option>
+        @for (filter of teamFieldFilters; track filter.value) {
+          <option [value]="filter.value">{{ filter.label }}</option>
+        }
+      </select>
+    </div>
+
+    @if (selectedRole || selectedTeamFilter || selectedTeamField) {
+      <button class="clear-filters-btn" (click)="clear()" title="Réinitialiser les filtres">
+        {{ 'ADMIN.FILTERS.RESET' | translate }}
+      </button>
+    }
+  </div>
+
   <div class="user-table">
     <div class="table-header">
       <div>{{ 'ADMIN.ALL.NAME' | translate }}</div>

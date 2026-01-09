@@ -13,6 +13,7 @@
 **/.vscode/
 .env
 **/.DS_Store/
+**/.DS_Store
 **/__pycache__/
 **/fixtures/
 /backend/staticfiles/

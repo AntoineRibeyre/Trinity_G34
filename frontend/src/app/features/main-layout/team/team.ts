@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TeamService, ManagerViewResponse } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { EmployeeDrawer } from '../../../shared/components/employee-drawer/employee-drawer';
@@ -8,6 +8,11 @@ import { User } from '../../../models/user.model';
 import {DeleteDialog} from '../../../shared/components/delete-dialog/delete-dialog';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {EditTeamManager} from '../../../shared/components/edit-team-manager/edit-team-manager';
+import {BasicTextButton} from '../../../shared/components/basic-text-button/basic-text-button';
+import {ExportPeriodDialog} from '../../../shared/components/export-period-dialog/export-period-dialog';
+import {ExcelExportService} from '../../../services/excel-export.service';
+import { TimeUtilsService } from '../../../services/time-utils.service';
+import { DateUtilsService } from '../../../services/date-utils.service';
 
 interface TeamMember {
   userDetails: {
@@ -33,7 +38,7 @@ interface TeamMember {
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule, TranslateModule, EmployeeDrawer],
+  imports: [CommonModule, TranslateModule, EmployeeDrawer, BasicTextButton],
   templateUrl: './team.html',
   styleUrl: './team.css'
 })
@@ -55,7 +60,12 @@ export class Team implements OnInit {
 
   constructor(
     private teamService: TeamService,
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
+    private timeUtils: TimeUtilsService,
+    private dateUtils: DateUtilsService,
+    private excelExportService: ExcelExportService,
+    private translate: TranslateService
   ) {}
 
   async ngOnInit() {
@@ -82,7 +92,7 @@ export class Team implements OnInit {
         throw new Error('Utilisateur non connecté');
       }
 
-      const managerId = parseInt(currentUser.id);
+      const managerId = Number.parseInt(currentUser.id);
 
       // Charger les données de l'équipe
       this.teamService.getManagerView(managerId).subscribe({
@@ -138,23 +148,10 @@ calculateAvgHours(members: any[], days: number): string {
       member.planning.forEach((day: any) => {
         const dayDate = new Date(day.date);
         if (dayDate >= startDate && dayDate <= today && day.totalHours) {
-          try {
-            // Vérifier que totalHours existe et n'est pas vide
-            const timeString = day.totalHours.toString().trim();
-            if (timeString && timeString !== '') {
-              const parts = timeString.split(':');
-              const hours = parseInt(parts[0]) || 0;
-              const minutes = parseInt(parts[1]) || 0;
-              const seconds = parseInt(parts[2]) || 0;
-              
-              // Vérifier que les valeurs sont valides
-              if (!isNaN(hours) && !isNaN(minutes) && !isNaN(seconds)) {
-                totalSeconds += (hours * 3600) + (minutes * 60) + seconds;
-                count++;
-              }
-            }
-          } catch (error) {
-            console.warn('Erreur lors du parsing de totalHours:', day.totalHours, error);
+          const seconds = this.timeUtils.parseTimeStringToSeconds(day.totalHours);
+          if (seconds !== null) {
+            totalSeconds += seconds;
+            count++;
           }
         }
       });
@@ -167,10 +164,7 @@ calculateAvgHours(members: any[], days: number): string {
   }
 
   const avgSeconds = totalSeconds / count;
-  const hours = Math.floor(avgSeconds / 3600);
-  const minutes = Math.floor((avgSeconds % 3600) / 60);
-
-  return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  return this.timeUtils.formatSecondsToHours(avgSeconds);
 }
 
   calculateAvgTimes(members: any[]) {
@@ -189,11 +183,11 @@ calculateAvgHours(members: any[], days: number): string {
             day.calendar.forEach((cal: any) => {
               if (cal.begin) {
                 const beginTime = new Date(cal.begin);
-                arrivalTimes.push(beginTime.getHours() * 60 + beginTime.getMinutes());
+                arrivalTimes.push(this.timeUtils.dateToMinutes(beginTime));
               }
               if (cal.end) {
                 const endTime = new Date(cal.end);
-                departureTimes.push(endTime.getHours() * 60 + endTime.getMinutes());
+                departureTimes.push(this.timeUtils.dateToMinutes(endTime));
               }
             });
           }
@@ -201,19 +195,8 @@ calculateAvgHours(members: any[], days: number): string {
       }
     });
 
-    if (arrivalTimes.length > 0) {
-      const avgArrival = arrivalTimes.reduce((a, b) => a + b, 0) / arrivalTimes.length;
-      const hours = Math.floor(avgArrival / 60);
-      const minutes = Math.floor(avgArrival % 60);
-      this.avgArrivalTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    }
-
-    if (departureTimes.length > 0) {
-      const avgDeparture = departureTimes.reduce((a, b) => a + b, 0) / departureTimes.length;
-      const hours = Math.floor(avgDeparture / 60);
-      const minutes = Math.floor(avgDeparture % 60);
-      this.avgDepartureTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    }
+    this.avgArrivalTime = this.timeUtils.calculateAverageTime(arrivalTimes);
+    this.avgDepartureTime = this.timeUtils.calculateAverageTime(departureTimes);
   }
 
   getStatusClass(member: TeamMember): string {
@@ -281,4 +264,273 @@ calculateAvgHours(members: any[], days: number): string {
     this.isEmployeeDrawerOpen = false;
     this.selectedEmployee = undefined;
   }
+
+  export(): void {
+    if (!this.managerView) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ExportPeriodDialog, {
+      width: '500px',
+      data: {
+        title: this.translate.instant('TEAM.DIALOG.EXPORT-PERIOD.TITLE'),
+        confirm: this.translate.instant('TEAM.DIALOG.EXPORT-PERIOD.CONFIRM'),
+        cancel: this.translate.instant('TEAM.DIALOG.EXPORT-PERIOD.CANCEL'),
+        onConfirm: (dialog: MatDialogRef<ExportPeriodDialog>, startDate: string | null, endDate: string | null) => {
+          if (startDate && endDate) {
+            this.performExport(startDate, endDate);
+            dialog.close();
+          }
+        },
+        onCancel: (dialog: MatDialogRef<ExportPeriodDialog>) => {
+          dialog.close();
+        }
+      } as ExportPeriodDialog
+    });
+  }
+
+  private performExport(startDateStr: string, endDateStr: string): void {
+    if (!this.managerView) {
+      return;
+    }
+
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    endDate.setHours(23, 59, 59, 999); // Inclure toute la journée de fin
+
+    // Récupérer tous les membres (manager + membres)
+    const allMembers = [
+      ...this.managerView.members,
+      { userDetails: this.managerView.manager.userDetails, planning: this.managerView.manager.planning }
+    ];
+
+    // Filtrer les données selon la période
+    const filteredMembers = allMembers.map(member => ({
+      ...member,
+      planning: member.planning.filter((day: any) => {
+        const dayDate = new Date(day.date);
+        return dayDate >= startDate && dayDate <= endDate;
+      })
+    }));
+
+    // Calculer les KPI pour la période
+    const kpiData = this.calculateKPIsForPeriod(filteredMembers, startDate, endDate);
+
+    // Préparer les données par utilisateur
+    const userData = this.prepareUserDataForExport(filteredMembers, startDate, endDate);
+
+    // Créer les feuilles Excel
+    const sheets = [
+      {
+        data: kpiData,
+        sheetName: 'KPI Équipe'
+      },
+      {
+        data: userData,
+        sheetName: 'Données par Utilisateur'
+      }
+    ];
+
+    // Générer le nom du fichier
+    const teamName = this.managerView.teamDetails.name.replace(/[^a-zA-Z0-9]/g, '_');
+    const fileName = `Export_Equipe_${teamName}_${this.dateUtils.formatDateForFileName(startDate)}_${this.dateUtils.formatDateForFileName(endDate)}`;
+
+    // Exporter
+    this.excelExportService.exportMultipleSheets(sheets, fileName);
+  }
+
+  private calculateKPIsForPeriod(members: any[], startDate: Date, endDate: Date): any[] {
+    const kpiData: any[] = [];
+
+    // Calculer le nombre total de jours dans la période
+    const daysDiff = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+
+    // Total heures travaillées
+    let totalSeconds = 0;
+    let totalDays = 0;
+    let arrivalTimes: number[] = [];
+    let departureTimes: number[] = [];
+
+    members.forEach(member => {
+      if (member.planning && Array.isArray(member.planning)) {
+        member.planning.forEach((day: any) => {
+          if (day.totalHours) {
+            const seconds = this.timeUtils.parseTimeStringToSeconds(day.totalHours);
+            if (seconds !== null) {
+              totalSeconds += seconds;
+              totalDays++;
+            }
+          }
+
+          if (day.calendar && Array.isArray(day.calendar)) {
+            day.calendar.forEach((cal: any) => {
+              if (cal.begin) {
+                const beginTime = new Date(cal.begin);
+                arrivalTimes.push(this.timeUtils.dateToMinutes(beginTime));
+              }
+              if (cal.end) {
+                const endTime = new Date(cal.end);
+                departureTimes.push(this.timeUtils.dateToMinutes(endTime));
+              }
+            });
+          }
+        });
+      }
+    });
+
+    // Formater les heures totales
+    const totalHoursFormatted = this.timeUtils.formatSecondsToHours(totalSeconds);
+
+    // Moyenne par jour
+    const avgSecondsPerDay = totalDays > 0 ? totalSeconds / totalDays : 0;
+    const avgHoursPerDayFormatted = this.timeUtils.formatSecondsToHours(avgSecondsPerDay);
+
+    // Heure moyenne d'arrivée
+    const avgArrivalFormatted = this.timeUtils.calculateAverageTime(arrivalTimes);
+
+    // Heure moyenne de départ
+    const avgDepartureFormatted = this.timeUtils.calculateAverageTime(departureTimes);
+
+    kpiData.push({
+      'Indicateur': 'Nom de l\'équipe',
+      'Valeur': this.managerView?.teamDetails.name || 'N/A'
+    });
+    kpiData.push({
+      'Indicateur': 'Période',
+      'Valeur': `${this.dateUtils.formatDateForDisplay(startDate)} - ${this.dateUtils.formatDateForDisplay(endDate)}`
+    });
+    kpiData.push({
+      'Indicateur': 'Nombre de jours',
+      'Valeur': daysDiff
+    });
+    kpiData.push({
+      'Indicateur': 'Nombre de membres',
+      'Valeur': members.length
+    });
+    kpiData.push({
+      'Indicateur': 'Total heures travaillées',
+      'Valeur': totalHoursFormatted
+    });
+    kpiData.push({
+      'Indicateur': 'Moyenne heures par jour',
+      'Valeur': avgHoursPerDayFormatted
+    });
+    kpiData.push({
+      'Indicateur': 'Heure moyenne d\'arrivée',
+      'Valeur': avgArrivalFormatted
+    });
+    kpiData.push({
+      'Indicateur': 'Heure moyenne de départ',
+      'Valeur': avgDepartureFormatted
+    });
+
+    return kpiData;
+  }
+
+  private prepareUserDataForExport(members: any[], startDate: Date, endDate: Date): any[] {
+    const userData: any[] = [];
+
+    members.forEach(member => {
+      const userName = `${member.userDetails.firstName} ${member.userDetails.lastName}`;
+      const userId = member.userDetails.id;
+      const role = member.userDetails.role || 'employee';
+
+      // Calculer les statistiques pour cet utilisateur
+      let totalSeconds = 0;
+      let daysWorked = 0;
+      const dailyData: any[] = [];
+
+      if (member.planning && Array.isArray(member.planning)) {
+        member.planning.forEach((day: any) => {
+          const dayDate = new Date(day.date);
+          const dateStr = this.dateUtils.formatDateForDisplay(dayDate);
+
+          let dayHours = '0h00';
+          let arrivalTime = '--:--';
+          let departureTime = '--:--';
+          let dayType = 'Normal';
+
+          if (day.totalHours) {
+            const seconds = this.timeUtils.parseTimeStringToSeconds(day.totalHours);
+            if (seconds !== null) {
+              totalSeconds += seconds;
+              daysWorked++;
+              dayHours = this.timeUtils.formatSecondsToHours(seconds);
+            }
+          }
+
+          if (day.calendar && Array.isArray(day.calendar) && day.calendar.length > 0) {
+            const firstEntry = day.calendar[0];
+            const lastEntry = day.calendar[day.calendar.length - 1];
+
+            if (firstEntry.begin) {
+              const beginTime = new Date(firstEntry.begin);
+              arrivalTime = this.timeUtils.formatDateToTime(beginTime);
+            }
+
+            if (lastEntry.end) {
+              const endTime = new Date(lastEntry.end);
+              departureTime = this.timeUtils.formatDateToTime(endTime);
+            }
+
+            if (firstEntry.dayType) {
+              dayType = firstEntry.dayType;
+            }
+          }
+
+          dailyData.push({
+            'Date': dateStr,
+            'Heures travaillées': dayHours,
+            'Arrivée': arrivalTime,
+            'Départ': departureTime,
+            'Type de jour': dayType
+          });
+        });
+      }
+
+      // Calculer le total pour cet utilisateur
+      const totalHoursFormatted = this.timeUtils.formatSecondsToHours(totalSeconds);
+
+      // Ajouter une ligne de séparation avec les totaux de l'utilisateur
+      userData.push({
+        'Utilisateur': userName,
+        'ID': userId,
+        'Rôle': role,
+        'Date': 'TOTAL',
+        'Heures travaillées': totalHoursFormatted,
+        'Arrivée': '--',
+        'Départ': '--',
+        'Type de jour': `Jours travaillés: ${daysWorked}`
+      });
+
+      // Ajouter les données quotidiennes
+      dailyData.forEach(day => {
+        userData.push({
+          'Utilisateur': userName,
+          'ID': userId,
+          'Rôle': role,
+          'Date': day['Date'],
+          'Heures travaillées': day['Heures travaillées'],
+          'Arrivée': day['Arrivée'],
+          'Départ': day['Départ'],
+          'Type de jour': day['Type de jour']
+        });
+      });
+
+      // Ligne vide pour séparer les utilisateurs
+      userData.push({
+        'Utilisateur': '',
+        'ID': '',
+        'Rôle': '',
+        'Date': '',
+        'Heures travaillées': '',
+        'Arrivée': '',
+        'Départ': '',
+        'Type de jour': ''
+      });
+    });
+
+    return userData;
+  }
+
 }

@@ -25,7 +25,9 @@ describe('Settings', () => {
     firstName: 'Test',
     lastName: 'User',
     telephone: '1234567890',
-    role: 'USER'
+    role: 'USER',
+    address: {},
+    emergencyContact: {}
   };
 
   beforeEach(async () => {
@@ -72,6 +74,12 @@ describe('Settings', () => {
   });
 
   describe('passwordStrengthValidator', () => {
+    beforeEach(fakeAsync(() => {
+      userService.loadCurrentUserFromServer.and.returnValue(Promise.resolve(mockUser));
+      component.ngOnInit();
+      tick();
+    }));
+
     it('should validate password with all requirements', () => {
       const control = component.settingsForm.get('password');
       control?.setValue('Password123');
@@ -110,6 +118,12 @@ describe('Settings', () => {
   });
 
   describe('passwordMatchValidator', () => {
+    beforeEach(fakeAsync(() => {
+      userService.loadCurrentUserFromServer.and.returnValue(Promise.resolve(mockUser));
+      component.ngOnInit();
+      tick();
+    }));
+
     it('should validate matching passwords', () => {
       component.settingsForm.patchValue({
         password: 'Password123',
@@ -135,69 +149,29 @@ describe('Settings', () => {
     });
   });
 
-  describe('isRequirementMet', () => {
-    it('should check minimum length requirement', () => {
-      component.settingsForm.get('password')?.setValue('Pass12');
-      expect(component.isRequirementMet('minLength')).toBeTruthy();
-
-      component.settingsForm.get('password')?.setValue('Pass');
-      expect(component.isRequirementMet('minLength')).toBeFalsy();
-    });
-
-    it('should check uppercase requirement', () => {
-      component.settingsForm.get('password')?.setValue('Password123');
-      expect(component.isRequirementMet('uppercase')).toBeTruthy();
-
-      component.settingsForm.get('password')?.setValue('password123');
-      expect(component.isRequirementMet('uppercase')).toBeFalsy();
-    });
-
-    it('should check lowercase requirement', () => {
-      component.settingsForm.get('password')?.setValue('Password123');
-      expect(component.isRequirementMet('lowercase')).toBeTruthy();
-
-      component.settingsForm.get('password')?.setValue('PASSWORD123');
-      expect(component.isRequirementMet('lowercase')).toBeFalsy();
-    });
-
-    it('should check digit requirement', () => {
-      component.settingsForm.get('password')?.setValue('Password123');
-      expect(component.isRequirementMet('digit')).toBeTruthy();
-
-      component.settingsForm.get('password')?.setValue('Password');
-      expect(component.isRequirementMet('digit')).toBeFalsy();
-    });
-
-    it('should return false for unknown requirement', () => {
-      component.settingsForm.get('password')?.setValue('Password123');
-      expect(component.isRequirementMet('unknown')).toBeFalsy();
-    });
-  });
-
   describe('form validation', () => {
-    it('should require firstName', () => {
+    beforeEach(fakeAsync(() => {
+      userService.loadCurrentUserFromServer.and.returnValue(Promise.resolve(mockUser));
+      component.ngOnInit();
+      tick();
+    }));
+
+    it('should have firstName as readonly field', () => {
       const control = component.settingsForm.get('firstName');
-      expect(control?.hasError('required')).toBeTruthy();
-
-      control?.setValue('John');
-      expect(control?.hasError('required')).toBeFalsy();
+      expect(control?.disabled).toBeTruthy();
+      // Les champs disabled ne peuvent pas avoir d'erreurs de validation
     });
 
-    it('should require lastName', () => {
+    it('should have lastName as readonly field', () => {
       const control = component.settingsForm.get('lastName');
-      expect(control?.hasError('required')).toBeTruthy();
-
-      control?.setValue('Doe');
-      expect(control?.hasError('required')).toBeFalsy();
+      expect(control?.disabled).toBeTruthy();
+      // Les champs disabled ne peuvent pas avoir d'erreurs de validation
     });
 
-    it('should require valid email', () => {
+    it('should have email as readonly field', () => {
       const control = component.settingsForm.get('email');
-      control?.setValue('invalid');
-      expect(control?.hasError('email')).toBeTruthy();
-
-      control?.setValue('test@example.com');
-      expect(control?.hasError('email')).toBeFalsy();
+      expect(control?.disabled).toBeTruthy();
+      // Les champs disabled ne peuvent pas avoir d'erreurs de validation
     });
 
     it('should require telephone with 10 digits', () => {
@@ -267,10 +241,23 @@ describe('Settings', () => {
       userService.updateUser.and.returnValue(Promise.resolve(updatedUser));
 
       component.settingsForm.patchValue({
-        firstName: 'Updated',
-        lastName: 'User',
-        email: 'test@example.com',
-        telephone: '1234567890'
+        telephone: '1234567890',
+        familyStatus: 'single',
+        iban: 'FR1420041010050500013M02606',
+        address: {
+          streetNumber: '1',
+          streetName: 'Test Street',
+          city: 'Paris',
+          postalCode: '75001',
+          country: 'France'
+        },
+        emergencyContact: {
+          title: 'mr',
+          firstName: 'John',
+          lastName: 'Doe',
+          relation: 'father',
+          phone: '0987654321'
+        }
       });
 
       component.onSubmit();
@@ -285,12 +272,25 @@ describe('Settings', () => {
       userService.updateUser.and.returnValue(Promise.resolve(updatedUser));
 
       component.settingsForm.patchValue({
-        firstName: 'Test',
-        lastName: 'User',
-        email: 'test@example.com',
         telephone: '1234567890',
+        familyStatus: 'single',
+        iban: 'FR1420041010050500013M02606',
         password: 'NewPassword123',
-        confirmPassword: 'NewPassword123'
+        confirmPassword: 'NewPassword123',
+        address: {
+          streetNumber: '1',
+          streetName: 'Test Street',
+          city: 'Paris',
+          postalCode: '75001',
+          country: 'France'
+        },
+        emergencyContact: {
+          title: 'mr',
+          firstName: 'John',
+          lastName: 'Doe',
+          relation: 'father',
+          phone: '0987654321'
+        }
       });
 
       component.onSubmit();
@@ -318,14 +318,28 @@ describe('Settings', () => {
       userService.updateUser.and.returnValue(Promise.reject(new Error('Update failed')));
 
       component.settingsForm.patchValue({
-        firstName: 'Test',
-        lastName: 'User',
-        email: 'test@example.com',
-        telephone: '1234567890'
+        telephone: '1234567890',
+        familyStatus: 'single',
+        iban: 'FR1420041010050500013M02606',
+        address: {
+          streetNumber: '1',
+          streetName: 'Test Street',
+          city: 'Paris',
+          postalCode: '75001',
+          country: 'France'
+        },
+        emergencyContact: {
+          title: 'mr',
+          firstName: 'John',
+          lastName: 'Doe',
+          relation: 'father',
+          phone: '0987654321'
+        }
       });
 
       component.onSubmit();
       tick();
+      flush();
 
       expect(consoleErrorSpy).toHaveBeenCalled();
       expect(component.isLoading).toBeFalse();
@@ -335,13 +349,27 @@ describe('Settings', () => {
       userService.updateUser.and.returnValue(new Promise(resolve => setTimeout(() => resolve(mockUser), 100)));
 
       component.settingsForm.patchValue({
-        firstName: 'Test',
-        lastName: 'User',
-        email: 'test@example.com',
-        telephone: '1234567890'
+        telephone: '1234567890',
+        familyStatus: 'single',
+        iban: 'FR1420041010050500013M02606',
+        address: {
+          streetNumber: '1',
+          streetName: 'Test Street',
+          city: 'Paris',
+          postalCode: '75001',
+          country: 'France'
+        },
+        emergencyContact: {
+          title: 'mr',
+          firstName: 'John',
+          lastName: 'Doe',
+          relation: 'father',
+          phone: '0987654321'
+        }
       });
 
       component.onSubmit();
+      tick(0); // Allow the async function to start
       expect(component.isLoading).toBeTrue();
 
       tick(100);

@@ -1,18 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { FilterService, Filter } from './filter.service';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('FilterService', () => {
   let service: FilterService;
   let localStorageSpy: jasmine.Spy<(key: string) => string | null>;
   let localStorageSetItemSpy: jasmine.Spy;
   let localStorageRemoveItemSpy: jasmine.Spy;
+  let translateServiceSpy: jasmine.SpyObj<TranslateService>;
 
   const mockFilter: Filter = {
     label: 'Test Filter',
-    route: 'admin/test'
+    route: 'admin/test',
+    value: 'test'
   };
 
   beforeEach(() => {
+    // Mock TranslateService
+    translateServiceSpy = jasmine.createSpyObj('TranslateService', ['instant']);
+    translateServiceSpy.instant.and.returnValue('Mocked Translation');
+
     // Mock localStorage
     const store: { [key: string]: string } = {};
     localStorageSpy = spyOn(Storage.prototype, 'getItem').and.callFake((key: string) => {
@@ -26,7 +33,10 @@ describe('FilterService', () => {
     });
 
     TestBed.configureTestingModule({
-      providers: [FilterService]
+      providers: [
+        FilterService,
+        { provide: TranslateService, useValue: translateServiceSpy }
+      ]
     });
 
     service = TestBed.inject(FilterService);
@@ -45,7 +55,14 @@ describe('FilterService', () => {
     it('should initialize with null filter when no saved filter exists', () => {
       localStorageSpy.and.returnValue(null);
 
-      const newService = new FilterService();
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          FilterService,
+          { provide: TranslateService, useValue: translateServiceSpy }
+        ]
+      });
+      const newService = TestBed.inject(FilterService);
       let currentFilter: Filter | null = null;
 
       newService.selectedFilter$.subscribe(filter => {
@@ -59,7 +76,14 @@ describe('FilterService', () => {
       const savedFilter = JSON.stringify(mockFilter);
       localStorageSpy.and.returnValue(savedFilter);
 
-      const newService = new FilterService();
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          FilterService,
+          { provide: TranslateService, useValue: translateServiceSpy }
+        ]
+      });
+      const newService = TestBed.inject(FilterService);
       let currentFilter: Filter | null = null;
 
       newService.selectedFilter$.subscribe(filter => {
@@ -73,8 +97,16 @@ describe('FilterService', () => {
     it('should handle invalid JSON in localStorage gracefully', () => {
       localStorageSpy.and.returnValue('invalid json');
 
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          FilterService,
+          { provide: TranslateService, useValue: translateServiceSpy }
+        ]
+      });
+
       expect(() => {
-        new FilterService();
+        TestBed.inject(FilterService);
       }).toThrow();
     });
   });
@@ -100,8 +132,8 @@ describe('FilterService', () => {
     });
 
     it('should update filter when called multiple times', () => {
-      const filter1: Filter = { label: 'Filter 1', route: '/filter1' };
-      const filter2: Filter = { label: 'Filter 2', route: '/filter2' };
+      const filter1: Filter = { label: 'Filter 1', route: '/filter1', value: 'filter1' };
+      const filter2: Filter = { label: 'Filter 2', route: '/filter2', value: 'filter2' };
       const emittedFilters: (Filter | null)[] = [];
 
       service.selectedFilter$.subscribe(filter => {
@@ -194,8 +226,8 @@ describe('FilterService', () => {
     });
 
     it('should emit updated filter values to all subscribers', (done) => {
-      const filter1: Filter = { label: 'Filter 1', route: '/filter1' };
-      const filter2: Filter = { label: 'Filter 2', route: '/filter2' };
+      const filter1: Filter = { label: 'Filter 1', route: '/filter1', value: 'filter1' };
+      const filter2: Filter = { label: 'Filter 2', route: '/filter2', value: 'filter2' };
       let emissionCount = 0;
 
       service.selectedFilter$.subscribe(filter => {
@@ -220,12 +252,26 @@ describe('FilterService', () => {
       const savedFilter = JSON.stringify(mockFilter);
       localStorageSpy.and.returnValue(savedFilter);
 
-      const service1 = new FilterService();
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          FilterService,
+          { provide: TranslateService, useValue: translateServiceSpy }
+        ]
+      });
+      const service1 = TestBed.inject(FilterService);
       service1.setSelectedFilter(mockFilter);
 
       // Simulate page reload by creating new service instance
       localStorageSpy.and.returnValue(savedFilter);
-      const service2 = new FilterService();
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          FilterService,
+          { provide: TranslateService, useValue: translateServiceSpy }
+        ]
+      });
+      const service2 = TestBed.inject(FilterService);
 
       let filterFromService2: Filter | null = null;
       service2.selectedFilter$.subscribe(filter => {
@@ -240,7 +286,8 @@ describe('FilterService', () => {
     it('should handle filter with special characters', () => {
       const specialFilter: Filter = {
         label: 'Filter & Test "Special"',
-        route: '/test?param=value&other=test'
+        route: '/test?param=value&other=test',
+        value: 'special'
       };
 
       service.setSelectedFilter(specialFilter);

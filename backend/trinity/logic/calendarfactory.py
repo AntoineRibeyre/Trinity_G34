@@ -77,7 +77,7 @@ class CalendarFactory:
         return CalendarQueryOutput(calendrier.begin, None)
 
     @classmethod
-    def close_calendar(cls, user_id: int) -> CalendarQueryOutput:
+    def close_calendar(cls, user_id: int, day_type: str) -> CalendarQueryOutput:
         """This method manipulates the latest calendar element to close it."""
         try:
             user = User.objects.get(pk=user_id)
@@ -91,6 +91,7 @@ class CalendarFactory:
         calendar.day_over = True
         calendar.end = end
         calendar.duration = duration
+        calendar.day_type = day_type
         calendar.save_base()
         return CalendarQueryOutput(end, duration)
 
@@ -101,10 +102,10 @@ class CalendarFactory:
         return CalendarFactory.create_calendar(user_id)
 
     @classmethod
-    def register_out(cls, user_id: int) -> CalendarQueryOutput:
+    def register_out(cls, user_id: int, day_type: str) -> CalendarQueryOutput:
         """This method is used by the register_out mutation to record the
         employee's departure time."""
-        return CalendarFactory.close_calendar(user_id)
+        return CalendarFactory.close_calendar(user_id, day_type)
 
     @classmethod
     def get_calendars_by_user(cls, user: User) -> List[Calendar]:

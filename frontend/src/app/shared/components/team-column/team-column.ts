@@ -5,6 +5,7 @@ import {Employee, TeamService} from '../../../services/team.service';
 import {UserService} from '../../../services/user.service';
 import {User} from '../../../models/user.model';
 import {Team} from '../../../models/team.model';
+import { AvatarService } from '../../../services/avatar.service';
 
 @Component({
   selector: 'app-team-column',
@@ -25,7 +26,8 @@ export class TeamColumn implements OnInit {
   constructor(
     public teamService: TeamService,
     public translateService: TranslateService,
-    public userService: UserService
+    public userService: UserService,
+    private avatarService: AvatarService
   ) {}
 
   async ngOnInit() {
@@ -98,5 +100,9 @@ export class TeamColumn implements OnInit {
     // Vérifier s'il y a une entrée en cours (non terminée)
     const hasOngoing = todayEntries.some(cal => !cal.dayOver);
     return hasOngoing ? 'present' : 'finished';
+  }
+
+  getAvatarPath(employee: Employee): string {
+    return this.avatarService.getAvatarPathForEmployee(employee);
   }
 }

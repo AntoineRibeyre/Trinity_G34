@@ -24,7 +24,9 @@ describe('UserService', () => {
     lastName: 'User',
     telephone: '123456789',
     role: 'USER',
-    team: mockTeam
+    team: mockTeam,
+    address: {},
+    emergencyContact: {}
   };
 
   const mockGraphQLUser = {
@@ -67,7 +69,9 @@ describe('UserService', () => {
           lastName: 'User',
           telephone: '123456789',
           role: 'USER',
-          team: mockTeam
+          team: mockTeam,
+          address: {},
+          emergencyContact: {}
         }
       };
 

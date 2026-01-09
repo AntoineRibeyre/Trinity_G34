@@ -21,7 +21,9 @@ describe('AuthGuard', () => {
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    role: 'employee'
+    role: 'employee',
+    address: {},
+    emergencyContact: {}
   };
 
   const mockManager: User = {

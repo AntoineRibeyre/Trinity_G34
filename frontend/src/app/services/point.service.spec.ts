@@ -347,13 +347,14 @@ describe('PointService', () => {
           durationField: 28800
         };
 
-        service.enregistrerSortie(userId).subscribe(result => {
+        service.enregistrerSortie(userId, 'office').subscribe(result => {
           expect(result).toEqual(mockResponse);
           done();
         });
 
         const op = controller.expectOne('RegisterEnd');
         expect(op.operation.variables['userId']).toEqual(userId);
+        expect(op.operation.variables['dayType']).toEqual('office');
 
         op.flush({
           data: {
@@ -365,7 +366,7 @@ describe('PointService', () => {
       it('should handle errors when registering departure', (done) => {
         const userId = 1;
 
-        service.enregistrerSortie(userId).subscribe({
+        service.enregistrerSortie(userId, 'office').subscribe({
           next: () => fail('should have failed'),
           error: (error) => {
             expect(error).toBeDefined();

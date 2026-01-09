@@ -19,7 +19,12 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "activity-worker.js",
+                "input": "src",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/custom-theme.scss",

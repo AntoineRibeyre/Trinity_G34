@@ -1,4 +1,5 @@
 import datetime
+import json
 from zoneinfo import ZoneInfo
 
 import graphene
@@ -231,6 +232,7 @@ class UserInput(graphene.InputObjectType):
     firstName = graphene.String(required=False)
     lastName = graphene.String(required=False)
     email = graphene.String(required=False)
+    personalEmail = graphene.String(required=False)
     password = graphene.String(required=False)
     telephone = graphene.String(required=False)
     role = graphene.String(required=False)
@@ -242,6 +244,10 @@ class UserInput(graphene.InputObjectType):
     birthDate = graphene.String(required=False)
     workingHours = graphene.Int(required=False)
     leaves = graphene.Int(required=False)
+    rib = graphene.String(required=False)
+    familySituation = graphene.String(required=False)
+    address = graphene.JSONString(required=False)
+    emergencyContact = graphene.JSONString(required=False)
     isActive = graphene.Boolean(required=False)
 
 class UpdateUser(graphene.Mutation):
@@ -277,6 +283,8 @@ class UpdateUser(graphene.Mutation):
             target_user.last_name = user_data.lastName
         if getattr(user_data, 'email', None) is not None:
             target_user.email = user_data.email
+        if getattr(user_data, 'personalEmail', None) is not None:
+            target_user.personal_email = user_data.personalEmail
         if getattr(user_data, 'telephone', None) is not None:
             target_user.telephone = user_data.telephone
         if getattr(user_data, 'role', None) is not None:
@@ -291,8 +299,36 @@ class UpdateUser(graphene.Mutation):
             target_user.working_hours = user_data.workingHours
         if getattr(user_data, 'leaves', None) is not None:
             target_user.leaves = user_data.leaves
+        if getattr(user_data, 'rib', None) is not None:
+            target_user.rib = user_data.rib
+        if getattr(user_data, 'familySituation', None) is not None:
+            target_user.family_situation = user_data.familySituation
         if getattr(user_data, 'isActive', None) is not None:
             target_user.is_active = user_data.isActive
+
+        # Adresse (JSON)
+        address_data = getattr(user_data, 'address', None)
+        if address_data is not None:
+            try:
+                if isinstance(address_data, str):
+                    parsed = json.loads(address_data)
+                else:
+                    parsed = address_data
+            except Exception:
+                parsed = None
+            target_user.address = parsed
+
+        # Contact d'urgence (JSON)
+        emergency_data = getattr(user_data, 'emergencyContact', None)
+        if emergency_data is not None:
+            try:
+                if isinstance(emergency_data, str):
+                    parsed = json.loads(emergency_data)
+                else:
+                    parsed = emergency_data
+            except Exception:
+                parsed = None
+            target_user.emergency_contact = parsed
 
         # Handle password separately (hash it)
         if getattr(user_data, 'password', None):
@@ -556,12 +592,14 @@ class RegisterEnd(graphene.Mutation):
     register the departure time."""
     class Arguments:
         user_id = graphene.Int(required=True)
+        day_type = graphene.String(required=True)
 
     datetime_field = graphene.JSONString()
     duration_field = graphene.JSONString()
 
-    def mutate(self, info, user_id):
-        result = CalendarFactory.register_out(user_id)
+    def mutate(self, info, user_id, day_type):
+        result = CalendarFactory.register_out(user_id, day_type)
+        
         return RegisterEnd(
             datetime_field=result.date_time_data,
             duration_field=result.duree_data
