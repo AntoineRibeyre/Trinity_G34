@@ -10,7 +10,7 @@
     "FIRST_NAME_REQUIRED":"Require first name",
     "LAST_NAME": "Last name",
     "LAST_NAME_REQUIRED": "Require last name",
-    "PERSONAL_EMAIL": "Email",
+    "PERSONAL_MAIL": "Email",
     "SAVE": "Save",
     "LANGUAGE": "Language",
     "YOUR_STATS": "Your stats",
@@ -39,6 +39,7 @@
     "PLACEHOLDER_CONFIRM": "Confirm your password",
     "PASSWORD_MISMATCH": "Passwords do not match",
     "EMAIL_PRO": "Professional email",
+    "ADDRESSE": "Address",
     "CONTRACT": "Contract type",
     "SOCIAL_NUMBER": "Social number",
     "SALARY": "Annual salary",
@@ -46,7 +47,7 @@
     "LEAVE": "Leave balance",
     "IBAN": "IBAN",
     "FAMILY_SITUATION": "Family situation",
-    "SELECT": "Choix",
+    "SELECT": "Select",
     "FAMILY_STATUS": {
       "SINGLE": "Single",
       "MARRIED": "Married",
@@ -57,13 +58,14 @@
       "UNKNOWN": "Unknown",
       "MARITAL": "Marital life"
     },
-    "ADRESSE": {
-      "STREET": "Street",
+    "ADDRESS": {
+      "STREET": "Street name",
       "STREET_NUMBER": "Street number",
       "CITY": "City",
       "POSTAL_CODE": "Postal code",
       "COUNTRY": "Country"
     },
+    "EMERGENCY_CONTACT": "Emergency contact",
     "EMERGENCY": {
       "COURTESY": "Title",
       "LAST_NAME": "Last name",
@@ -72,9 +74,9 @@
       "PHONE_NUMBER": "Phone number"
     },
     "TITLE": {
-      "MR": "Mister",
-      "MRS": "Missus",
-      "MS": "Miss"
+      "MR": "Mr",
+      "MRS": "Mrs",
+      "MS": "Ms"
     },
     "DIALOG": {
       "TITLE": "Edit your password",
@@ -218,7 +220,7 @@
       "ALL-TEAMS": "All teams",
       "ALL-TEAM-TYPES": "All types",
       "NO-TEAM": "No team",
-      "RESET": "Reset filters"
+      "RESET": "Reset"
     },
     "ALL": {
       "NAME": "Name",

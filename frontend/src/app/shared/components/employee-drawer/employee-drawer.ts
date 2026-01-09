@@ -61,19 +61,7 @@ export class EmployeeDrawer implements OnChanges {
     private pointService: PointService,
     private excelExportService: ExcelExportService,
     private userService: UserService
-  ) {
-    if (this.employee) {
-      if (!this.employee.address) {
-        this.employee.address = {
-          number: '',
-          street: '',
-          postalCode: '',
-          city: '',
-          state: ''
-        };
-      }
-    }
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     // When switching to editable mode, ensure nested objects exist to avoid template errors
@@ -151,10 +139,19 @@ export class EmployeeDrawer implements OnChanges {
       exportData.push({ Champ: 'INFORMATIONS PERSONNELLES', Valeur: '' });
       exportData.push({ Champ: 'Nom', Valeur: this.employee.lastName || '' });
       exportData.push({ Champ: 'Prénom', Valeur: this.employee.firstName || '' });
+      exportData.push({ Champ: 'Date de naissance', Valeur: this.employee.birthDate || '' });
+      exportData.push({ Champ: 'Situation familiale', Valeur: this.employee.familySituation || '' });
       exportData.push({ Champ: 'Email', Valeur: this.employee.email || '' });
+      exportData.push({ Champ: 'Email personnel', Valeur: this.employee.personalEmail || '' });
       exportData.push({ Champ: 'Téléphone', Valeur: this.employee.telephone || '' });
       exportData.push({ Champ: 'Rôle', Valeur: this.employee.role || '' });
       exportData.push({ Champ: 'Équipe', Valeur: this.employee.team?.name || '' });
+      exportData.push({ Champ: 'Numéros de Sécurité Social', Valeur: this.employee.socialNumber || '' });
+      exportData.push({ Champ: 'Type de contrat', Valeur: this.employee.contract || '' });
+      exportData.push({ Champ: "Date d'arriver", Valeur: this.employee.arrivalDate || '' });
+      exportData.push({ Champ: 'Salaire annuel', Valeur: this.employee.annualSalary || '' });
+      exportData.push({ Champ: 'Adresse', Valeur: `${this.employee.address.number} ${this.employee.address.street}, ${this.employee.address.postalCode} ${this.employee.address.city}, ${this.employee.address.state}` || '' });
+      exportData.push({ Champ: "Contact d'urgence", Valeur: `${this.employee.emergencyContact.courtesy}, ${this.employee.emergencyContact.firstName} ${this.employee.emergencyContact.lastName}; ` || '' });
       exportData.push({ Champ: '', Valeur: '' }); // Ligne vide
 
       // 2. Section entrées Calendar

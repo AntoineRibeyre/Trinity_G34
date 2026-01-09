@@ -31,7 +31,7 @@ async function notifyClients(message) {
     includeUncontrolled: true
   });
 
-  console.log('[ActivityWorker] Notification à', clients.length, 'client(s):', message.type);
+  // console.log('[ActivityWorker] Notification à', clients.length, 'client(s):', message.type);
 
   clients.forEach(client => {
     client.postMessage(message);
@@ -44,7 +44,7 @@ self.addEventListener('message', async (event) => {
 
   switch (type) {
     case 'INIT':
-      console.log('[ActivityWorker] Initialisation');
+      // console.log('[ActivityWorker] Initialisation');
       event.source.postMessage({
         type: 'INIT_RESULT',
         payload: { success: true }
@@ -59,8 +59,8 @@ self.addEventListener('message', async (event) => {
         screenState: payload.screenState,
         timestamp: Date.now()
       };
-      console.log('[ActivityWorker] État mis à jour:', lastKnownState);
-      
+      // console.log('[ActivityWorker] État mis à jour:', lastKnownState);
+
       // Notifier tous les autres clients du changement
       notifyClients({
         type: 'ACTIVITY_CHANGE',
@@ -87,13 +87,13 @@ self.addEventListener('message', async (event) => {
 
 // Installation du Service Worker
 self.addEventListener('install', (event) => {
-  console.log('[ActivityWorker] Installation');
+  // console.log('[ActivityWorker] Installation');
   self.skipWaiting();
 });
 
 // Activation du Service Worker
 self.addEventListener('activate', (event) => {
-  console.log('[ActivityWorker] Activation');
+  // console.log('[ActivityWorker] Activation');
   event.waitUntil(self.clients.claim());
 });
 

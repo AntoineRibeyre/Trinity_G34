@@ -48,7 +48,7 @@
 
         <div class="form-group">
           <label class="form-label" for="email">
-            {{ 'SETTINGS.EMAIL' | translate }}
+            {{ 'SETTINGS.EMAIL_PRO' | translate }}
           </label>
           <input
             id="email"
@@ -74,7 +74,7 @@
 
         <div class="form-group">
           <label class="form-label" for="personalEmail">
-            {{ 'SETTINGS.PERSONAL_EMAIL' | translate }}
+            {{ 'SETTINGS.PERSONAL_MAIL' | translate }}
           </label>
           <input
             id="personalEmail"
@@ -177,7 +177,7 @@
 
         <div class="form-group">
           <label class="form-label" for="leaveBalance">
-            {{ 'SETTINGS.LEAVE_BALANCE' | translate }}
+            {{ 'SETTINGS.LEAVE' | translate }}
           </label>
           <input
             id="leaveBalance"
@@ -189,20 +189,20 @@
 
         <!-- ================= ADDRESS ================= -->
         <div formGroupName="address">
-          <h4 class="section-title">{{ 'SETTINGS.ADDRESS' | translate }}</h4>
+          <h4 class="section-title">{{ 'SETTINGS.ADDRESSE' | translate }}</h4>
 
           <div class="form-row">
             <input
               id="streetNumber"
               class="form-input"
               formControlName="streetNumber"
-              placeholder="N°"
+              [placeholder]= "'SETTINGS.ADDRESS.STREET_NUMBER' | translate"
             />
             <input
               id="streetName"
               class="form-input"
               formControlName="streetName"
-              placeholder="Rue"
+              [placeholder]= "'SETTINGS.ADDRESS.STREET' | translate"
             />
           </div>
 
@@ -211,13 +211,13 @@
               id="postalCode"
               class="form-input"
               formControlName="postalCode"
-              placeholder="Code postal"
+              [placeholder]= "'SETTINGS.ADDRESS.POSTAL_CODE' | translate"
             />
             <input
               id="city"
               class="form-input"
               formControlName="city"
-              placeholder="Ville"
+              [placeholder]= "'SETTINGS.ADDRESS.CITY' | translate"
             />
           </div>
 
@@ -225,7 +225,7 @@
             id="country"
             class="form-input"
             formControlName="country"
-            placeholder="Pays"
+            [placeholder]= "'SETTINGS.ADDRESS.COUNTRY' | translate"
           />
         </div>
 
@@ -234,9 +234,7 @@
           <h4 class="section-title">{{ 'SETTINGS.EMERGENCY_CONTACT' | translate }}</h4>
 
           <div class="form-group">
-            <label class="form-label" for="emergencyTitle">
-              {{ 'SETTINGS.TITLE' | translate }}
-            </label>
+
             <select
               id="emergencyTitle"
               class="form-select"
@@ -256,13 +254,13 @@
               id="emergencyFirstName"
               class="form-input"
               formControlName="firstName"
-              placeholder="Prénom"
+              [placeholder]="'SETTINGS.EMERGENCY.FIRST_NAME' | translate"
             />
             <input
               id="emergencyLastName"
               class="form-input"
               formControlName="lastName"
-              placeholder="Nom"
+              [placeholder]="'SETTINGS.EMERGENCY.LAST_NAME' | translate"
             />
           </div>
 
@@ -270,14 +268,14 @@
             id="emergencyRelation"
             class="form-input"
             formControlName="relation"
-            placeholder="Relation"
+            [placeholder]="'SETTINGS.EMERGENCY.RELATION' | translate"
           />
 
           <input
             id="emergencyPhone"
             class="form-input"
             formControlName="phone"
-            placeholder="Téléphone"
+            [placeholder]="'SETTINGS.EMERGENCY.PHONE_NUMBER' | translate"
           />
         </div>
 
@@ -310,6 +308,12 @@
         </div>
 
         <!-- ================= SAVE ================= -->
+<!--        <app-basic-text-button-->
+<!--        color="#3E7CB1"-->
+<!--        width="100%"-->
+<!--        text="{{ 'SETTINGS.SAVE' | translate }}"-->
+<!--        [disabled]="settingsForm.invalid || isLoading">-->
+<!--        </app-basic-text-button>-->
         <button
           type="submit"
           class="btn-save"

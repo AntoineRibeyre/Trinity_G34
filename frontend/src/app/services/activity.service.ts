@@ -51,14 +51,14 @@ export class ActivityService implements OnDestroy {
   private isActive: boolean = true;
   private checkInterval: any;
   private workerPingInterval: any;
-  
+
   // Idle Detection API
   private idleDetector: IdleDetector | null = null;
   private idleDetectorAbortController: AbortController | null = null;
   private isIdleDetectionSupported: boolean = false;
   private systemUserState: 'active' | 'idle' = 'active';
   private screenState: 'locked' | 'unlocked' = 'unlocked';
-  
+
   // Service Worker
   private serviceWorkerRegistration: ServiceWorkerRegistration | null = null;
   private isServiceWorkerActive: boolean = false;
@@ -75,10 +75,14 @@ export class ActivityService implements OnDestroy {
   ];
 
   constructor(private ngZone: NgZone) {
-    this.initServiceWorker();
-    this.initIdleDetection();
+    this.initialize()
     this.initActivityListeners();
     this.startInactivityCheck();
+  }
+
+  async initialize(): Promise<void> {
+    await this.initServiceWorker();
+    await this.initIdleDetection();
   }
 
   /**
@@ -99,8 +103,8 @@ export class ActivityService implements OnDestroy {
       console.log('[ActivityService] Service Worker enregistré');
 
       // Attendre que le Service Worker soit actif
-      const sw = this.serviceWorkerRegistration.active || 
-                 this.serviceWorkerRegistration.waiting || 
+      const sw = this.serviceWorkerRegistration.active ||
+                 this.serviceWorkerRegistration.waiting ||
                  this.serviceWorkerRegistration.installing;
 
       if (sw) {
@@ -116,10 +120,10 @@ export class ActivityService implements OnDestroy {
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({ type: 'INIT' });
         this.isServiceWorkerActive = true;
-        
+
         // Démarrer le ping périodique pour récupérer l'état même en arrière-plan
         this.startWorkerPing();
-        
+
         console.log('[ActivityService] Service Worker actif pour la détection en arrière-plan');
       }
 
@@ -167,16 +171,16 @@ export class ActivityService implements OnDestroy {
           // Changement d'activité reçu d'un autre onglet via le Service Worker
           const payload = data.payload;
           console.log('[ActivityService] Changement d\'activité reçu du Worker:', payload);
-          
+
           const wasActive = this.isActive;
           this.systemUserState = payload.systemUserState;
           this.screenState = payload.screenState;
           this.isActive = payload.isActive;
-          
+
           if (this.isActive) {
             this.lastActivityTime = new Date();
           }
-          
+
           // Émettre le changement d'état seulement si c'est un vrai changement
           if (wasActive !== this.isActive) {
             console.log('[ActivityService] État changé via Worker:', this.isActive ? 'ACTIF' : 'INACTIF');
@@ -217,7 +221,7 @@ export class ActivityService implements OnDestroy {
       console.log('[ActivityService] Idle Detection gérée par le Service Worker');
       return;
     }
-    
+
     // Vérifier si l'API est disponible
     if (!('IdleDetector' in window)) {
       console.log('[ActivityService] Idle Detection API non disponible - utilisation du fallback navigateur');
@@ -227,7 +231,7 @@ export class ActivityService implements OnDestroy {
     try {
       // Demander la permission d'utiliser l'API
       const permission = await (window as any).IdleDetector.requestPermission();
-      
+
       if (permission !== 'granted') {
         console.log('[ActivityService] Permission Idle Detection refusée - utilisation du fallback navigateur');
         return;
@@ -237,7 +241,7 @@ export class ActivityService implements OnDestroy {
       this.idleDetectorAbortController = new AbortController();
 
       this.idleDetector = new (window as any).IdleDetector();
-      
+
       this.idleDetector!.onchange = () => {
         this.ngZone.run(() => {
           this.handleIdleDetectorChange();
@@ -252,10 +256,10 @@ export class ActivityService implements OnDestroy {
 
       console.log('[ActivityService] Idle Detection API initialisée avec succès');
       console.log('[ActivityService] Détection d\'activité au niveau système activée');
-      
+
       // Mettre à jour l'état initial
       this.handleIdleDetectorChange();
-      
+
     } catch (error) {
       console.error('[ActivityService] Erreur lors de l\'initialisation de l\'Idle Detection API:', error);
       this.isIdleDetectionSupported = false;
@@ -282,7 +286,7 @@ export class ActivityService implements OnDestroy {
     });
 
     this.updateActivityFromIdleState();
-    
+
     // Envoyer l'état au Service Worker pour qu'il puisse le propager
     this.sendStateToServiceWorker();
   }
@@ -320,7 +324,7 @@ export class ActivityService implements OnDestroy {
       // L'utilisateur est actif au niveau système
       // Réinitialiser lastActivityTime continuellement tant qu'il est actif
       this.lastActivityTime = new Date();
-      
+
       if (!wasActive) {
         this.isActive = true;
         console.log('[ActivityService] Utilisateur actif au niveau système');
@@ -373,11 +377,37 @@ export class ActivityService implements OnDestroy {
    */
   resetActivityTimer(): void {
     this.lastActivityTime = new Date();
-    
-    if (!this.isActive) {
-      this.isActive = true;
-      console.log('[ActivityService] Utilisateur redevenu actif');
-      this.emitState();
+
+    // Si l'Idle Detection API est disponible, synchroniser avec l'état système
+    if (this.isIdleDetectionSupported && this.idleDetector) {
+      // Lire l'état actuel de l'API et mettre à jour les variables d'état système
+      this.systemUserState = this.idleDetector.userState;
+      this.screenState = this.idleDetector.screenState;
+
+      // Si l'utilisateur est actif selon l'API système, utiliser updateActivityFromIdleState()
+      // pour mettre à jour isActive de manière cohérente
+      if (this.screenState === 'unlocked' && this.systemUserState === 'active') {
+        this.updateActivityFromIdleState();
+      } else {
+        // Si l'API dit que l'utilisateur est inactif mais qu'une activité est détectée,
+        // forcer isActive = true car l'API pourrait avoir un délai de détection
+        // Cela garantit que le pointage automatique se relance immédiatement
+        if (!this.isActive) {
+          this.isActive = true;
+          console.log('[ActivityService] Utilisateur redevenu actif (activité détectée, API en retard)');
+          this.emitState();
+        }
+      }
+
+      // Envoyer l'état au Service Worker pour synchronisation
+      this.sendStateToServiceWorker();
+    } else {
+      // Fallback : comportement original si l'Idle Detection API n'est pas disponible
+      if (!this.isActive) {
+        this.isActive = true;
+        console.log('[ActivityService] Utilisateur redevenu actif');
+        this.emitState();
+      }
     }
   }
 
@@ -388,15 +418,15 @@ export class ActivityService implements OnDestroy {
    */
   private initActivityListeners(): void {
     // console.log('[ActivityService] Initialisation des écouteurs d\'activité navigateur');
-    
+
     // Exécuter en dehors de la zone Angular pour éviter les détections de changement excessives
     this.ngZone.runOutsideAngular(() => {
-      const activityEvents$ = this.ACTIVITY_EVENTS.map(event => 
+      const activityEvents$ = this.ACTIVITY_EVENTS.map(event =>
         fromEvent(document, event, { passive: true, capture: true })
       );
 
       // Écouter aussi sur window pour capturer plus d'événements
-      const windowEvents$ = this.ACTIVITY_EVENTS.map(event => 
+      const windowEvents$ = this.ACTIVITY_EVENTS.map(event =>
         fromEvent(window, event, { passive: true, capture: true })
       );
 
@@ -490,11 +520,11 @@ export class ActivityService implements OnDestroy {
 
     // Mettre à jour le compteur d'inactivité pour l'état (uniquement si changement)
     const currentState = this.activityState$.getValue();
-    const shouldUpdate = !this.isActive || 
+    const shouldUpdate = !this.isActive ||
                          inactiveSeconds !== currentState.inactiveSeconds ||
                          this.systemUserState !== currentState.systemUserState ||
                          this.screenState !== currentState.screenState;
-    
+
     if (shouldUpdate) {
       this.activityState$.next({
         isActive: this.isActive,
@@ -529,11 +559,11 @@ export class ActivityService implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    
+
     if (this.checkInterval) {
       clearInterval(this.checkInterval);
     }
-    
+
     if (this.workerPingInterval) {
       clearInterval(this.workerPingInterval);
     }

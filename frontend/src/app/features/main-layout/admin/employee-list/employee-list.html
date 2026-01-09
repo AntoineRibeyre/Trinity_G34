@@ -3,7 +3,7 @@
     <div class="search-input-wrapper" role="search" aria-label="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}">
       <app-basic-text-field
         placeholder="{{ 'ADMIN.ALL.SEARCH-INPUT' | translate }}"
-        width="500px"
+        width="300px"
         [rows]="1"
         (textChange)="onQueryChange($event)"
         [showClearButton]="true"
@@ -20,23 +20,11 @@
         ✕
       </button>
     </div>
-    <div>
-      <button class="icon-btn" (click)="add()" title="Ajouter">
-        {{ 'ADMIN.ALL.ADD_EMPLOYEE' | translate }}
-      </button>
-      <button class="icon-btn" (click)="export()" title="Modifier">
-        Export
-      </button>
-    </div>
-  </div>
-
-  <!-- Filtres -->
-  <div class="filters-bar">
     <div class="filter-group">
       <label for="role-filter">{{ 'ADMIN.FILTERS.ROLE' | translate }}</label>
-      <select 
-        id="role-filter" 
-        [(ngModel)]="selectedRole" 
+      <select
+        id="role-filter"
+        [(ngModel)]="selectedRole"
         (change)="onRoleFilterChange(selectedRole)"
         class="filter-select">
         <option value="">{{ 'ADMIN.FILTERS.ALL-ROLES' | translate }}</option>
@@ -48,9 +36,9 @@
 
     <div class="filter-group">
       <label for="team-filter">{{ 'ADMIN.FILTERS.TEAM' | translate }}</label>
-      <select 
-        id="team-filter" 
-        [(ngModel)]="selectedTeamFilter" 
+      <select
+        id="team-filter"
+        [(ngModel)]="selectedTeamFilter"
         (change)="onTeamFilterChange(selectedTeamFilter)"
         class="filter-select">
         <option value="">{{ 'ADMIN.FILTERS.ALL-TEAMS' | translate }}</option>
@@ -63,9 +51,9 @@
 
     <div class="filter-group">
       <label for="team-field-filter">{{ 'ADMIN.FILTERS.TEAM-TYPE' | translate }}</label>
-      <select 
-        id="team-field-filter" 
-        [(ngModel)]="selectedTeamField" 
+      <select
+        id="team-field-filter"
+        [(ngModel)]="selectedTeamField"
         (change)="onTeamFieldFilterChange(selectedTeamField)"
         class="filter-select">
         <option value="">{{ 'ADMIN.FILTERS.ALL-TEAM-TYPES' | translate }}</option>
@@ -77,9 +65,19 @@
 
     @if (selectedRole || selectedTeamFilter || selectedTeamField) {
       <button class="clear-filters-btn" (click)="clear()" title="Réinitialiser les filtres">
-        {{ 'ADMIN.FILTERS.RESET' | translate }}
+        x
       </button>
+    } @else {
+      <div class="anti-filter" >x</div>
     }
+    <div>
+      <button class="icon-btn" (click)="add()" title="Ajouter">
+        {{ 'ADMIN.ALL.ADD_EMPLOYEE' | translate }}
+      </button>
+      <button class="icon-btn" (click)="export()" title="Modifier">
+        Export
+      </button>
+    </div>
   </div>
 
   <div class="user-table">
