@@ -6,6 +6,7 @@
   height: calc(100vh - 60px);
   gap: 1rem;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
 /* === BARRE DE RECHERCHE === */
@@ -118,6 +119,15 @@
   box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.1);
 }
 
+.anti-filter {
+  padding: 6px 16px;
+  color: white;
+  border: none;
+  font-size: 14px;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
 .clear-filters-btn {
   padding: 6px 16px;
   background-color: #f44336;
@@ -127,7 +137,6 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-left: auto;
 }
 
 .clear-filters-btn:hover {
@@ -432,5 +441,5 @@
     grid-template-columns: 1fr;
   }
 
-  
+
 }
