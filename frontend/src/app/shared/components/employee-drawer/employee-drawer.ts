@@ -150,8 +150,8 @@ export class EmployeeDrawer implements OnChanges {
       exportData.push({ Champ: 'Type de contrat', Valeur: this.employee.contract || '' });
       exportData.push({ Champ: "Date d'arriver", Valeur: this.employee.arrivalDate || '' });
       exportData.push({ Champ: 'Salaire annuel', Valeur: this.employee.annualSalary || '' });
-      exportData.push({ Champ: 'Adresse', Valeur: `${this.employee.address.number} ${this.employee.address.street}, ${this.employee.address.postalCode} ${this.employee.address.city}, ${this.employee.address.state}` || '' });
-      exportData.push({ Champ: "Contact d'urgence", Valeur: `${this.employee.emergencyContact.courtesy}, ${this.employee.emergencyContact.firstName} ${this.employee.emergencyContact.lastName}; ` || '' });
+      exportData.push({ Champ: 'Adresse', Valeur: `${this.employee.address.number} ${this.employee.address.street}, ${this.employee.address.postalCode} ${this.employee.address.city}, ${this.employee.address.state}` });
+      exportData.push({ Champ: "Contact d'urgence", Valeur: `${this.employee.emergencyContact.courtesy}, ${this.employee.emergencyContact.firstName} ${this.employee.emergencyContact.lastName}; ` });
       exportData.push({ Champ: '', Valeur: '' }); // Ligne vide
 
       // 2. Section entrées Calendar
