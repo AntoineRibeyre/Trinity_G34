@@ -252,17 +252,23 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   export(): void {
     try {
+      // Transformer les données pour extraire le nom de l'équipe
+      const transformedUsers = this.allUsers.map(user => ({
+        ...user,
+        teamName: user.team?.name || ''
+      }));
+
       const columns = [
         { header: 'Nom', key: 'lastName', width: 20 },
         { header: 'Prénom', key: 'firstName', width: 20 },
         { header: 'Email', key: 'email', width: 30 },
         { header: 'Téléphone', key: 'telephone', width: 15 },
-        { header: 'Équipe', key: 'team', width: 20 },
+        { header: 'Équipe', key: 'teamName', width: 20 },
         { header: 'Poste', key: 'role', width: 25 },
       ];
 
       this.exportService.exportWithCustomColumns(
-        this.allUsers,
+        transformedUsers,
         columns,
         'employes-details',
         'Liste détaillée'
