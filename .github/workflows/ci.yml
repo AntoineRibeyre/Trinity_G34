@@ -311,7 +311,7 @@ jobs:
   
 
 
-  # JOB 6: COVERAGE REPORT (Simplifié)
+  # JOB 5: COVERAGE REPORT
   # =========================================
   coverage-report:
     name: Coverage Report
@@ -320,19 +320,19 @@ jobs:
     if: always()
     
     steps:
-      - name: Download backend coverage
+      - name: Download backend coverage XML
         uses: actions/download-artifact@v4
         with:
-          name: backend-coverage
+          name: coverage-xml
           path: ./backend-coverage
-        continue-on-error: false
+        continue-on-error: true
 
       - name: Download frontend coverage
         uses: actions/download-artifact@v4
         with:
-          name: frontend-coverage
+          name: frontend-coverage-lcov
           path: ./frontend-coverage
-        continue-on-error: false
+        continue-on-error: true
 
       - name: Display Coverage Summary
         run: |
@@ -345,9 +345,13 @@ jobs:
           echo "🐍 BACKEND (Django)"
           echo "-------------------"
           if [ -f ./backend-coverage/coverage.xml ]; then
-            LINE_RATE=$(grep -oP 'line-rate="\K[^"]+' ./backend-coverage/coverage.xml | head -1)
-            PERCENTAGE=$(echo "$LINE_RATE * 100" | bc -l 2>/dev/null || echo "N/A")
-            echo "   Coverage: ${PERCENTAGE}%"
+            LINE_RATE=$(grep -oP 'line-rate="\K[^"]+' ./backend-coverage/coverage.xml | head -1 || echo "0")
+            if [ -n "$LINE_RATE" ] && [ "$LINE_RATE" != "0" ]; then
+              PERCENTAGE=$(awk "BEGIN {printf \"%.2f\", $LINE_RATE * 100}")
+              echo "   Coverage: ${PERCENTAGE}%"
+            else
+              echo "   ⚠️  Could not parse coverage"
+            fi
           else
             echo "   ⚠️  No coverage data"
           fi
@@ -357,10 +361,10 @@ jobs:
           echo "⚛️  FRONTEND (Angular)"
           echo "----------------------"
           if [ -f ./frontend-coverage/lcov.info ]; then
-            LF=$(grep -oP 'LF:\K\d+' ./frontend-coverage/lcov.info | paste -sd+ | bc 2>/dev/null || echo "0")
-            LH=$(grep -oP 'LH:\K\d+' ./frontend-coverage/lcov.info | paste -sd+ | bc 2>/dev/null || echo "0")
-            if [ "$LF" -gt 0 ]; then
-              PERCENTAGE=$(echo "scale=2; $LH * 100 / $LF" | bc)
+            LF=$(grep "^LF:" ./frontend-coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}' || echo "0")
+            LH=$(grep "^LH:" ./frontend-coverage/lcov.info | cut -d: -f2 | awk '{s+=$1} END {print s}' || echo "0")
+            if [ "$LF" -gt 0 ] 2>/dev/null; then
+              PERCENTAGE=$(awk "BEGIN {printf \"%.2f\", $LH * 100 / $LF}")
               echo "   Coverage: ${PERCENTAGE}%"
               echo "   Lines: ${LH}/${LF}"
             else
@@ -373,7 +377,6 @@ jobs:
           echo "========================================"
           echo "📦 HTML reports available in artifacts"
           echo "========================================"
-
 
 
   # JOB 6: ALL CHECKS PASSED
