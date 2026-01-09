@@ -1,7 +1,7 @@
 .general-space {
-  width: calc(100% - 50px);;
-  height: calc(100vh - 50px); /* Soustraire 2x le padding */
-  padding: 25px;
+  width: calc(100%);;
+  height: calc(100vh); /* Soustraire 2x le padding */
+  /*padding: 25px;*/
 
   background-color: #F7F8FA;
   display: flex;
@@ -9,6 +9,12 @@
   gap: 25px;
 
   font-family: 'Inter', sans-serif;
+}
+
+.illustration{
+  width: 100%;
+  height: 100%;
+  background-color: black;
 }
 
 :host {

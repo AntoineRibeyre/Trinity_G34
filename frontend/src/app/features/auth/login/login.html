@@ -1,5 +1,5 @@
 <div class="general-space">
-<form (submit)="onLogin(); $event.preventDefault()" class="login-form">
+  <form (submit)="onLogin(); $event.preventDefault()" class="login-form">
     <h1 class="login-title">{{ 'LOGIN.CONNEXION' | translate }}</h1>
     <!-- Email -->
     <div>
@@ -29,6 +29,9 @@
 
     <!-- Boutons -->
     <button type="submit" class="btn-login">{{'LOGIN.LOGIN' |translate }}</button>
-  <button type="button" class="signup-link" (click)="router.navigate(['/home'])">{{'REGISTER.GO_HOME' | translate}}</button>
-</form>
+    <button type="button" class="signup-link" (click)="router.navigate(['/home'])">{{'REGISTER.GO_HOME' | translate}}</button>
+  </form>
+
+  <div class="illustration">
+  </div>
 </div>
