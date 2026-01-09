@@ -1,0 +1,28 @@
+# Node
+node_modules/
+package-lock.json
+
+# Rust
+src-tauri/target/
+
+# Build output
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tauri
+src-tauri/WixTools/
+src-tauri/icons/create_png.py
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinity Activity Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #0f3460;
+            --accent: #e94560;
+            --accent-hover: #ff6b6b;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --success: #4ade80;
+            --warning: #fbbf24;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .status-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 12px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.inactive {
+            background: var(--warning);
+            box-shadow: 0 0 12px var(--warning);
+        }
+
+        .status-dot.disconnected {
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-weight: 500;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+        }
+
+        .checkbox-group span {
+            font-size: 0.875rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            margin-top: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Trinity Activity Agent</h1>
+            <p>Détection d'activité automatique</p>
+        </div>
+
+        <div class="status-card">
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span class="status-text" id="statusText">Connecté - Actif</span>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="workTime">00:00</div>
+                    <div class="stat-label">Temps travaillé</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="inactiveTime">0s</div>
+                    <div class="stat-label">Inactivité</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <div class="form-group">
+                <label>URL du serveur GraphQL</label>
+                <input type="url" id="serverUrl" placeholder="http://localhost:8000/graphql">
+            </div>
+
+            <div class="form-group">
+                <label>ID Utilisateur</label>
+                <input type="number" id="userId" placeholder="1">
+            </div>
+
+            <div class="form-group">
+                <label>Seuil d'inactivité (secondes)</label>
+                <input type="number" id="inactivityThreshold" placeholder="60" min="10" max="3600">
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-group">
+                    <input type="checkbox" id="autoLaunch">
+                    <span>Lancer au démarrage du système</span>
+                </label>
+            </div>
+
+            <button class="btn btn-primary" id="saveBtn">Enregistrer la configuration</button>
+            <button class="btn btn-secondary" id="hideBtn">Masquer dans la barre système</button>
+        </div>
+
+        <div class="footer">
+            Trinity Activity Agent v1.0.0
+        </div>
+    </div>
+
+    <script>
+        const { invoke } = window.__TAURI__.core;
+        const { getCurrentWindow } = window.__TAURI__.window;
+
+        // Éléments DOM
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const workTime = document.getElementById('workTime');
+        const inactiveTime = document.getElementById('inactiveTime');
+        const serverUrlInput = document.getElementById('serverUrl');
+        const userIdInput = document.getElementById('userId');
+        const thresholdInput = document.getElementById('inactivityThreshold');
+        const autoLaunchCheckbox = document.getElementById('autoLaunch');
+        const saveBtn = document.getElementById('saveBtn');
+        const hideBtn = document.getElementById('hideBtn');
+
+        // Charger la configuration au démarrage
+        async function loadConfig() {
+            try {
+                const config = await invoke('get_config');
+                serverUrlInput.value = config.server_url || 'http://localhost:8000/graphql';
+                userIdInput.value = config.user_id || '';
+                thresholdInput.value = config.inactivity_threshold_secs || 60;
+                autoLaunchCheckbox.checked = config.auto_launch || false;
+            } catch (e) {
+                console.error('Erreur chargement config:', e);
+            }
+        }
+
+        // Sauvegarder la configuration
+        saveBtn.addEventListener('click', async () => {
+            try {
+                await invoke('save_config', {
+                    config: {
+                        server_url: serverUrlInput.value,
+                        user_id: parseInt(userIdInput.value) || null,
+                        inactivity_threshold_secs: parseInt(thresholdInput.value) || 60,
+                        auto_launch: autoLaunchCheckbox.checked
+                    }
+                });
+                saveBtn.textContent = 'Enregistré ✓';
+                setTimeout(() => {
+                    saveBtn.textContent = 'Enregistrer la configuration';
+                }, 2000);
+            } catch (e) {
+                console.error('Erreur sauvegarde config:', e);
+                alert('Erreur lors de la sauvegarde: ' + e);
+            }
+        });
+
+        // Masquer la fenêtre
+        hideBtn.addEventListener('click', async () => {
+            const appWindow = getCurrentWindow();
+            await appWindow.hide();
+        });
+
+        // Mettre à jour le statut périodiquement
+        async function updateStatus() {
+            try {
+                const status = await invoke('get_activity_status');
+                
+                if (status.is_connected) {
+                    if (status.is_active) {
+                        statusDot.className = 'status-dot';
+                        statusText.textContent = 'Connecté - Actif';
+                    } else {
+                        statusDot.className = 'status-dot inactive';
+                        statusText.textContent = 'Connecté - Inactif';
+                    }
+                } else {
+                    statusDot.className = 'status-dot disconnected';
+                    statusText.textContent = 'Déconnecté';
+                }
+
+                workTime.textContent = status.work_time || '00:00';
+                inactiveTime.textContent = status.inactive_seconds + 's';
+            } catch (e) {
+                console.error('Erreur mise à jour statut:', e);
+            }
+        }
+
+        // Initialisation
+        loadConfig();
+        setInterval(updateStatus, 1000);
+        updateStatus();
+    </script>
+</body>
+</html>
