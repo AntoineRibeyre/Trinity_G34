@@ -41,7 +41,23 @@ module.exports = function (config) {
       }
     },
     reporters: ['progress', 'kjhtml', 'coverage'],
-    browsers: ['Chrome'],
+        // ✅ CHANGEZ CETTE LIGNE
+    browsers: ['ChromeHeadlessNoSandbox'],
+
+    // ✅ AJOUTEZ CE BLOC
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--disable-translate',
+          '--disable-extensions',
+          '--disable-dev-shm-usage',
+          '--remote-debugging-port=9222'
+        ]
+      }
+    },
     restartOnFileChange: true
   });
 };

@@ -4,6 +4,9 @@ COPY package*.json ./
 RUN npm install -g @angular/cli@20.3
 RUN npm install
 RUN npm install --save-dev body-parser  # ← Ajoutez cette ligne
+RUN apk add --no-cache chromium
+ENV CHROME_BIN=/usr/bin/chromium-browser
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 COPY . .
 RUN mkdir -p /var/log/trinity
 EXPOSE 4200
