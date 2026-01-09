@@ -187,7 +187,7 @@ def test_admin_complete_scenario(snapshot, client, database_for_test):
     # =============================
     print("\n[STEP 4] Création d'événements...")
     now = datetime.now()
-    start_time = (now + timedelta(days=1)).replace(hour=14, minute=0, second=0, microsecond=0)
+    start_time = (now + timedelta(days=1)).replace(year=2026, month=1, day=1, hour=14, minute=0, second=0, microsecond=0)
     end_time = start_time + timedelta(hours=2)
     
     create_event_mutation = f"""
