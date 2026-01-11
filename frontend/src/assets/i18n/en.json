@@ -3,7 +3,8 @@
     "CANCEL": "Cancel",
     "CREATE": "Create",
     "SUPPRIMER": "Delete",
-    "EDIT": "Edit"
+    "EDIT": "Edit",
+    "ADD": "Add"
   },
   "SETTINGS": {
     "FIRST_NAME": "First name",

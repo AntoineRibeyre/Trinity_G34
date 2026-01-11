@@ -17,6 +17,7 @@ import {LanguageService} from '../../../services/lang.service';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import { passwordMatchValidator, passwordStrengthValidator } from '../../utils/validators';
 import { PASSWORD_REQUIREMENTS, isRequirementMet } from '../../utils/password.utils';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 
 @Component({
@@ -38,7 +39,6 @@ import { PASSWORD_REQUIREMENTS, isRequirementMet } from '../../utils/password.ut
 export class AddEmployee implements OnInit {
   employeeForm!: FormGroup;
   isSubmitting = false;
-  submitErrorMessage = '';
   displayPasswordRules = false;
 
   employeePasswordRules = PASSWORD_REQUIREMENTS;
@@ -50,6 +50,7 @@ export class AddEmployee implements OnInit {
     private router: Router,
     private translateService: TranslateService,
     private languageService: LanguageService,
+    private snackBarService: SnackBarService,
   ) {}
 
   ngOnInit(): void {
@@ -81,10 +82,26 @@ export class AddEmployee implements OnInit {
     );
   }
 
+  private getErrorMessage(error: any): string {
+    const errorMessage = error?.message || error?.toString() || '';
+    
+    // Détecter les erreurs de clé unique (email déjà existant)
+    if (errorMessage.includes('duplicate key') || errorMessage.includes('already exists')) {
+      // Extraire l'email de l'erreur si possible
+      const emailMatch = errorMessage.match(/\(email\)=\(([^)]+)\)/);
+      if (emailMatch && emailMatch[1]) {
+        return `L'adresse email ${emailMatch[1]} est déjà utilisée. Veuillez en choisir une autre.`;
+      }
+      return 'Cette adresse email est déjà utilisée. Veuillez en choisir une autre.';
+    }
+    
+    // Message d'erreur par défaut
+    return "Erreur lors de l'inscription. Veuillez réessayer.";
+  }
+
   async onAddEmployee(): Promise<void> {
     if (this.employeeForm.valid) {
       this.isSubmitting = true;
-      this.submitErrorMessage = '';
 
       const { firstName, lastName, email, telephone, password } = this.employeeForm.value;
       const role = 'employe';
@@ -94,11 +111,13 @@ export class AddEmployee implements OnInit {
         const response = await this.authService.register(username, firstName, lastName, email, telephone, password, role);
         this.isSubmitting = false;
         console.log('Inscription réussie:', response);
+        this.snackBarService.showSuccess('Employé ajouté avec succès !');
         this.dialog.close();
         window.location.reload();
       } catch (error: any) {
         this.isSubmitting = false;
-        this.submitErrorMessage = error.message || "Erreur lors de l'inscription.";
+        const errorMessage = this.getErrorMessage(error);
+        this.snackBarService.showError(errorMessage);
         console.error('Erreur inscription:', error);
       }
     } else {
@@ -106,13 +125,16 @@ export class AddEmployee implements OnInit {
         this.employeeForm.get(key)?.markAsTouched();
       });
       if (this.employeeForm.hasError('passwordMismatch')) {
-        this.submitErrorMessage = 'Les mots de passe ne correspondent pas.';
+        this.snackBarService.showError('Les mots de passe ne correspondent pas.');
       } else {
-        this.submitErrorMessage = 'Veuillez remplir tous les champs correctement.';
+        this.snackBarService.showError('Veuillez remplir tous les champs correctement.');
       }
     }
   }
 
-
   protected readonly close = close;
+
+  test(){
+    console.log(this.employeeForm.valid)
+  }
 }

@@ -172,13 +172,12 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addMemberDialog(teamID: string) {
-    console.log("add employees");
 
     this.dialog.open(AddTeamEmploye, {
       data: {
         title: this.translateService.instant('TEAM.DIALOG.ADD-EMPLOYE.TITLE'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-        confirm: this.translateService.instant('BASE.CREATE'),
+        confirm: this.translateService.instant('BASE.ADD'),
         dropdownOptions: this.dropdownOptionsUsers,
 
         onConfirm: (
