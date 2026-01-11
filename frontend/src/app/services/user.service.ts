@@ -118,51 +118,119 @@ export class UserService {
   currentUser: User | null = null;
 
   // Build a payload matching GraphQL `UserInput` from frontend `User` object
+  // Filters out empty strings and null values, similar to settings.ts transformPayload
   private buildUserPayload(data: Partial<User> & { password?: string }): any {
     const payload: any = {};
 
     const src = data as any;
-    if (src.username !== undefined) payload.username = src.username;
-    if (src.firstName !== undefined) payload.firstName = src.firstName;
-    if (src.lastName !== undefined) payload.lastName = src.lastName;
-    if (src.email !== undefined) payload.email = src.email;
-    if (src.password !== undefined) payload.password = src.password;
-    if (src.telephone !== undefined) payload.telephone = src.telephone;
-    if (src.role !== undefined) payload.role = src.role;
+    
+    // Helper function to check if a value is not empty
+    const isNotEmpty = (value: any): boolean => {
+      return value !== undefined && value !== null && value !== '';
+    };
 
-    if (src.socialNumber !== undefined) {
+    if (isNotEmpty(src.username)) payload.username = src.username;
+    if (isNotEmpty(src.firstName)) payload.firstName = src.firstName;
+    if (isNotEmpty(src.lastName)) payload.lastName = src.lastName;
+    if (isNotEmpty(src.email)) payload.email = src.email;
+    if (isNotEmpty(src.password)) payload.password = src.password;
+    if (isNotEmpty(src.telephone)) payload.telephone = src.telephone;
+    if (isNotEmpty(src.role)) payload.role = src.role;
+
+    if (src.socialNumber !== undefined && src.socialNumber !== null && src.socialNumber !== '') {
       const sn = Number(src.socialNumber);
       if (!Number.isNaN(sn) && Number.isFinite(sn)) payload.socialNumber = Math.trunc(sn);
     }
 
-    if (src.contract !== undefined) payload.contract = src.contract;
-    if (src.arrivalDate !== undefined) payload.arrivalDate = src.arrivalDate;
-    if (src.annualSalary !== undefined) {
+    if (isNotEmpty(src.contract)) payload.contract = src.contract;
+    if (isNotEmpty(src.arrivalDate)) payload.arrivalDate = src.arrivalDate;
+    if (src.annualSalary !== undefined && src.annualSalary !== null && src.annualSalary !== '') {
       const v = Number(src.annualSalary);
       if (!Number.isNaN(v) && Number.isFinite(v)) payload.annualSalary = Math.trunc(v);
     }
-    if (src.birthDate !== undefined) payload.birthDate = src.birthDate;
-    if (src.workingHours !== undefined) {
+    if (isNotEmpty(src.birthDate)) payload.birthDate = src.birthDate;
+    if (src.workingHours !== undefined && src.workingHours !== null && src.workingHours !== '') {
       const v = Number(src.workingHours);
       if (!Number.isNaN(v) && Number.isFinite(v)) payload.workingHours = Math.trunc(v);
     }
-    if (src.leaves !== undefined) {
+    if (src.leaves !== undefined && src.leaves !== null && src.leaves !== '') {
       const v = Number(src.leaves);
       if (!Number.isNaN(v) && Number.isFinite(v)) payload.leaves = Math.trunc(v);
     }
-    if (src.rib !== undefined) payload.rib = src.rib;
-    if (src.familySituation !== undefined) payload.familySituation = src.familySituation;
-    if (src.personalEmail !== undefined) payload.personalEmail = src.personalEmail;
-    if (src.isActive !== undefined) payload.isActive = src.isActive;
+    if (isNotEmpty(src.rib)) payload.rib = src.rib;
+    if (isNotEmpty(src.familySituation)) payload.familySituation = src.familySituation;
+    if (isNotEmpty(src.personalEmail)) payload.personalEmail = src.personalEmail;
+    if (src.isActive !== undefined && src.isActive !== null) payload.isActive = src.isActive;
 
     if (src.team !== undefined && src.team !== null) {
       const t = src.team as any;
       if (typeof t === 'number' || typeof t === 'string') payload.teamId = Number(t);
       else if (t && t.id !== undefined) payload.teamId = Number(t.id);
     }
-    if (src.address !== undefined) payload.address = src.address;
 
-    if (src.emergencyContact !== undefined) payload.emergencyContact = src.emergencyContact;
+    // Handle address: only include if at least one field has a value
+    if (src.address !== undefined && src.address !== null) {
+      const address: any = {};
+      let hasAddressData = false;
+
+      if (isNotEmpty(src.address.number)) {
+        address.number = src.address.number;
+        hasAddressData = true;
+      }
+      if (isNotEmpty(src.address.street)) {
+        address.street = src.address.street;
+        hasAddressData = true;
+      }
+      if (isNotEmpty(src.address.city)) {
+        address.city = src.address.city;
+        hasAddressData = true;
+      }
+      if (isNotEmpty(src.address.postalCode)) {
+        address.postalCode = src.address.postalCode;
+        hasAddressData = true;
+      }
+      if (isNotEmpty(src.address.state)) {
+        address.state = src.address.state;
+        hasAddressData = true;
+      }
+
+      if (hasAddressData) {
+        // Convert address object to JSON string as backend expects JSONString type
+        payload.address = JSON.stringify(address);
+      }
+    }
+
+    // Handle emergencyContact: only include if at least one field has a value
+    if (src.emergencyContact !== undefined && src.emergencyContact !== null) {
+      const emergencyContact: any = {};
+      let hasEmergencyData = false;
+
+      if (isNotEmpty(src.emergencyContact.courtesy)) {
+        emergencyContact.courtesy = src.emergencyContact.courtesy;
+        hasEmergencyData = true;
+      }
+      if (isNotEmpty(src.emergencyContact.firstName)) {
+        emergencyContact.firstName = src.emergencyContact.firstName;
+        hasEmergencyData = true;
+      }
+      if (isNotEmpty(src.emergencyContact.lastName)) {
+        emergencyContact.lastName = src.emergencyContact.lastName;
+        hasEmergencyData = true;
+      }
+      if (isNotEmpty(src.emergencyContact.relation)) {
+        emergencyContact.relation = src.emergencyContact.relation;
+        hasEmergencyData = true;
+      }
+      if (isNotEmpty(src.emergencyContact.phoneNumber)) {
+        emergencyContact.phoneNumber = src.emergencyContact.phoneNumber;
+        hasEmergencyData = true;
+      }
+
+      if (hasEmergencyData) {
+        // Convert emergencyContact object to JSON string as backend expects JSONString type
+        payload.emergencyContact = JSON.stringify(emergencyContact);
+      }
+    }
 
     return payload;
   }

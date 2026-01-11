@@ -14,6 +14,7 @@ import { User } from '../../../../models/user.model';
 import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
+import { SnackBarService } from '../../../../services/snackbar.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('teamsContainer') teamsContainer!: ElementRef<HTMLDivElement>;
 
   translate: TranslateService = inject(TranslateService);
+  private snackBarService = inject(SnackBarService);
   teams: Team[] = [];
   filteredTeams: Team[] = [];
   selectedFilter: Filter | null = null;
@@ -172,13 +174,12 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addMemberDialog(teamID: string) {
-    console.log("add employees");
 
     this.dialog.open(AddTeamEmploye, {
       data: {
         title: this.translateService.instant('TEAM.DIALOG.ADD-EMPLOYE.TITLE'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-        confirm: this.translateService.instant('BASE.CREATE'),
+        confirm: this.translateService.instant('BASE.ADD'),
         dropdownOptions: this.dropdownOptionsUsers,
 
         onConfirm: (
@@ -191,6 +192,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
           this.teamService.addEmployees(Number(teamID), selectedEmployeeIds)
             .subscribe({
               next: (res) => {
+                this.snackBarService.showSuccess('Membres ajoutés à l\'équipe avec succès');
                 window.location.reload();
                 console.log("Mutation success:", res);
                 // Optionnel : rafraîchir la liste des équipes ici si besoin
@@ -199,7 +201,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
               },
               error: (err) => {
                 console.error("Mutation error:", err);
-                // Optionnel : afficher un message d'erreur à l'utilisateur
+                this.snackBarService.showError('Erreur lors de l\'ajout des membres');
               }
             });
         },

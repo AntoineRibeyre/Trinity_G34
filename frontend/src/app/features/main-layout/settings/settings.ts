@@ -20,6 +20,7 @@ import { SettingEditPassword } from '../../../shared/components/setting-edit-pas
 import {AvatarComponent} from '../../../shared/components/avatar/avatar';
 import {AvatarDialog} from '../../../shared/components/avatar-dialog/avatar-dialog';
 import { AvatarService } from '../../../services/avatar.service';
+import { SnackBarService } from '../../../services/snackbar.service';
 
 /* ================= VALIDATORS ================= */
 
@@ -82,9 +83,9 @@ export class Settings implements OnInit, OnDestroy {
   ];
 
   titleOptions = [
-    { value: 'mr', label: 'SETTINGS.TITLE.MR' },
-    { value: 'mrs', label: 'SETTINGS.TITLE.MRS' },
-    { value: 'ms', label: 'SETTINGS.TITLE.MS' }
+    { value: 'M', label: 'SETTINGS.TITLE.MR' },
+    { value: 'Mme', label: 'SETTINGS.TITLE.MRS' },
+    { value: 'Mms', label: 'SETTINGS.TITLE.MS' }
   ];
 
   constructor(
@@ -94,7 +95,8 @@ export class Settings implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
-    private avatarService: AvatarService
+    private avatarService: AvatarService,
+    private snackBarService: SnackBarService
   ) {}
 
   /* ================= INIT ================= */
@@ -138,14 +140,13 @@ export class Settings implements OnInit, OnDestroy {
         leaveBalance: [{ value: '', disabled: true }],
 
         /* EDITABLE */
-        telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+        telephone: ['', [Validators.pattern(/^[0-9]{10}$/)]],
         personalEmail: ['', Validators.email],
-        familyStatus: ['', Validators.required],
+        familyStatus: [''],
 
         iban: [
           '',
           [
-            Validators.required,
             Validators.pattern(/^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/)
           ]
         ],
@@ -154,19 +155,19 @@ export class Settings implements OnInit, OnDestroy {
         confirmPassword: [''],
 
         address: this.fb.group({
-          streetNumber: ['', Validators.required],
-          streetName: ['', Validators.required],
-          city: ['', Validators.required],
-          postalCode: ['', [Validators.required, Validators.pattern(/^[0-9]{5}$/)]],
-          country: ['', Validators.required]
+          streetNumber: [''],
+          streetName: [''],
+          city: [''],
+          postalCode: ['', [Validators.pattern(/^[0-9]{5}$/)]],
+          country: ['']
         }),
 
         emergencyContact: this.fb.group({
-          title: ['', Validators.required],
-          firstName: ['', Validators.required],
-          lastName: ['', Validators.required],
-          relation: ['', Validators.required],
-          phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
+          title: [''],
+          firstName: [''],
+          lastName: [''],
+          relation: [''],
+          phone: ['', [Validators.pattern(/^[0-9]{10}$/)]]
         })
       },
       { validators: passwordMatchValidator }
@@ -176,42 +177,144 @@ export class Settings implements OnInit, OnDestroy {
   /* ================= PATCH USER ================= */
 
   private patchUserData(user: User): void {
+    // Transformer l'adresse du backend vers le formulaire
+    const addressFormData: any = {};
+    if (user.address) {
+      addressFormData.streetNumber = user.address.number || '';
+      addressFormData.streetName = user.address.street || '';
+      addressFormData.city = user.address.city || '';
+      addressFormData.postalCode = user.address.postalCode || '';
+      addressFormData.country = user.address.state || '';
+    }
+
+    // Transformer le contact d'urgence du backend vers le formulaire
+    const emergencyContactFormData: any = {};
+    if (user.emergencyContact) {
+      emergencyContactFormData.title = user.emergencyContact.courtesy || '';
+      emergencyContactFormData.firstName = user.emergencyContact.firstName || '';
+      emergencyContactFormData.lastName = user.emergencyContact.lastName || '';
+      emergencyContactFormData.relation = user.emergencyContact.relation || '';
+      emergencyContactFormData.phone = user.emergencyContact.phoneNumber || '';
+    }
+
     this.settingsForm.patchValue({
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      telephone: user.telephone,
+      telephone: user.telephone || '',
 
-      personalEmail: user.personalEmail,
-      familyStatus: user.familySituation,
-      iban: user.rib,
+      personalEmail: user.personalEmail || '',
+      familyStatus: user.familySituation || '',
+      iban: user.rib || '',
 
-      contractType: user.contract,
-      socialSecurityNumber: user.socialNumber,
-      annualSalary: user.annualSalary,
-      arrivalDate: user.arrivalDate,
-      leaveBalance: user.leaves,
+      contractType: user.contract || '',
+      socialSecurityNumber: user.socialNumber || '',
+      annualSalary: user.annualSalary || '',
+      arrivalDate: user.arrivalDate || '',
+      leaveBalance: user.leaves || '',
 
-      address: user.address,
-      emergencyContact: user.emergencyContact
+      address: addressFormData,
+      emergencyContact: emergencyContactFormData
     });
   }
 
   /* ================= SUBMIT ================= */
 
-  async onSubmit(): Promise<void> {
-    if (this.settingsForm.invalid) {
-      this.settingsForm.markAllAsTouched();
-      return;
+  private transformPayload(formValue: any): any {
+    const payload: any = {};
+
+    // Mapper les champs simples
+    if (formValue.telephone !== undefined && formValue.telephone !== '') {
+      payload.telephone = formValue.telephone;
     }
+    if (formValue.personalEmail !== undefined && formValue.personalEmail !== '') {
+      payload.personalEmail = formValue.personalEmail;
+    }
+    if (formValue.familyStatus !== undefined && formValue.familyStatus !== '') {
+      payload.familySituation = formValue.familyStatus;
+    }
+    if (formValue.iban !== undefined && formValue.iban !== '') {
+      payload.rib = formValue.iban;
+    }
+
+    // Transformer l'adresse
+    if (formValue.address) {
+      const address: any = {};
+      let hasAddressData = false;
+
+      if (formValue.address.streetNumber) {
+        address.number = formValue.address.streetNumber;
+        hasAddressData = true;
+      }
+      if (formValue.address.streetName) {
+        address.street = formValue.address.streetName;
+        hasAddressData = true;
+      }
+      if (formValue.address.city) {
+        address.city = formValue.address.city;
+        hasAddressData = true;
+      }
+      if (formValue.address.postalCode) {
+        address.postalCode = formValue.address.postalCode;
+        hasAddressData = true;
+      }
+      if (formValue.address.country) {
+        address.state = formValue.address.country;
+        hasAddressData = true;
+      }
+
+      if (hasAddressData) {
+        payload.address = address;
+      }
+    }
+
+    // Transformer le contact d'urgence
+    if (formValue.emergencyContact) {
+      const emergencyContact: any = {};
+      let hasEmergencyData = false;
+
+      if (formValue.emergencyContact.title) {
+        emergencyContact.courtesy = formValue.emergencyContact.title;
+        hasEmergencyData = true;
+      }
+      if (formValue.emergencyContact.firstName) {
+        emergencyContact.firstName = formValue.emergencyContact.firstName;
+        hasEmergencyData = true;
+      }
+      if (formValue.emergencyContact.lastName) {
+        emergencyContact.lastName = formValue.emergencyContact.lastName;
+        hasEmergencyData = true;
+      }
+      if (formValue.emergencyContact.relation) {
+        emergencyContact.relation = formValue.emergencyContact.relation;
+        hasEmergencyData = true;
+      }
+      if (formValue.emergencyContact.phone) {
+        emergencyContact.phoneNumber = formValue.emergencyContact.phone;
+        hasEmergencyData = true;
+      }
+
+      if (hasEmergencyData) {
+        payload.emergencyContact = emergencyContact;
+      }
+    }
+
+    return payload;
+  }
+
+  async onSubmit(): Promise<void> {
+    // Ne plus bloquer si le formulaire est invalide, mais marquer les champs touchés pour afficher les erreurs
+    this.settingsForm.markAllAsTouched();
 
     this.isLoading = true;
 
     try {
-      const payload = { ...this.settingsForm.value };
+      const formValue = this.settingsForm.value;
+      const payload = this.transformPayload(formValue);
 
-      if (!payload.password) {
-        delete payload.password;
+      // Ne pas envoyer le password si vide
+      if (formValue.password && formValue.password !== '') {
+        payload.password = formValue.password;
       }
 
       const updatedUser = await this.userService.updateUser(payload);
@@ -220,9 +323,11 @@ export class Settings implements OnInit, OnDestroy {
         this.currentUser = updatedUser;
         this.settingsForm.patchValue({ password: '', confirmPassword: '' });
         this.settingsForm.markAsPristine();
+        this.snackBarService.showSuccess('Modifications sauvegardées avec succès');
       }
     } catch (err) {
       console.error(err);
+      this.snackBarService.showError('Erreur lors de la sauvegarde des modifications');
     }
 
     this.isLoading = false;
