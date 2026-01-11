@@ -6,6 +6,9 @@ from decimal import Decimal
 from trinity.models import User, Calendar, LeaveBalance
 from trinity.logic.leavesmanager import LeavesManager
 
+# Constante pour le mot de passe de test
+TEST_PASSWORD = "test123"
+
 class LeaveReferencePeriodTest(TestCase):
     """Tests de la période légale des congés (base France)"""
 
@@ -32,7 +35,7 @@ class LeaveReferencePeriodTest(TestCase):
             self.user = User.objects.create_user(
                 username="employee",
                 email="employee@test.com",
-                password="test123",
+                password=TEST_PASSWORD,
                 arrival_date=date(2025, 1, 1),
                 leaves=Decimal("0.0")
             )
@@ -76,7 +79,7 @@ class LeaveBalanceCapIntegrationTest(TestCase):
         self.user = User.objects.create_user(
             username="senior",
             email="senior@test.com",
-            password="test123",
+            password=TEST_PASSWORD,
             arrival_date=date(2020, 1, 1),
             leaves=Decimal("29.0")
         )
@@ -99,7 +102,7 @@ class LeaveUsageIntegrationTest(TestCase):
         self.user = User.objects.create_user(
             username="employee2",
             email="employee2@test.com",
-            password="test123",
+            password=TEST_PASSWORD,
             leaves=Decimal("5.0")
         )
 
