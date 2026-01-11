@@ -7,8 +7,6 @@
 // État de l'activité (synchronisé avec le thread principal)
 let lastKnownState = {
   isActive: true,
-  systemUserState: 'active',
-  screenState: 'unlocked',
   timestamp: Date.now()
 };
 
@@ -52,11 +50,9 @@ self.addEventListener('message', async (event) => {
       break;
 
     case 'STATE_UPDATE':
-      // Le thread principal nous envoie l'état de l'Idle Detection API
+      // Le thread principal nous envoie l'état d'activité
       lastKnownState = {
         isActive: payload.isActive,
-        systemUserState: payload.systemUserState,
-        screenState: payload.screenState,
         timestamp: Date.now()
       };
       // console.log('[ActivityWorker] État mis à jour:', lastKnownState);
