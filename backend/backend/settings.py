@@ -118,7 +118,7 @@ GRAPHQL_JWT = {
         'graphql_jwt.mutations.Refresh',
     ],
     'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': timedelta(hours=1),  # 🔥 1 heure
+    'JWT_EXPIRATION_DELTA': timedelta(hours=10),  # 🔥 1 heure
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
     'JWT_PAYLOAD_HANDLER': 'trinity.jwt_utils.jwt_payload',
