@@ -51,14 +51,17 @@
 
 .main-content {
   height: calc(100vh - 40px);
+  max-height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow: hidden;
 }
 
 /* Top cards */
 .top-cards {
-  height: 25%;
+  min-height: 0;
+  flex: 0 1 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 colonnes par défaut */
   gap: 20px;
@@ -89,6 +92,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /*.cards:hover {
@@ -105,6 +110,7 @@
   font-size: 40px;
   font-weight: bold;
   color: #2c3e50;
+  line-height: 1.2;
 }
 
 
@@ -113,7 +119,9 @@
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: 20px;
-  height: calc(75% - 20px);
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
 }
 
 /* Team info */
@@ -124,6 +132,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .team-title {
@@ -133,9 +143,11 @@
 }
 
 .team-description {
+  min-height: 200px;
   color: #7f8c8d;
   margin-bottom: 25px;
   line-height: 1.6;
+  overflow: scroll;
 }
 
 .team-stats {
@@ -170,7 +182,10 @@
   border-radius: 10px;
   padding: 25px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .table-title {
@@ -184,6 +199,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .member-row {
@@ -325,21 +343,188 @@
   font-size: 14px;
 }
 
+.no-team-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 40px);
+  padding: 40px;
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 16px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .bottom-cards {
     grid-template-columns: 1fr;
   }
+
+  .main-content {
+    gap: 15px;
+  }
+
+  .top-cards {
+    gap: 15px;
+  }
+
+  .bottom-cards {
+    gap: 15px;
+  }
+
+  .card-value {
+    font-size: 32px;
+  }
+
+  .card-label {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 768px) {
+  .general-space {
+    padding: 15px;
+  }
+
+  .main-content {
+    height: calc(100vh - 30px);
+    max-height: calc(100vh - 30px);
+    gap: 12px;
+  }
+
   .top-cards {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .bottom-cards {
+    gap: 12px;
+  }
+
+  .cards {
+    padding: 0 15px;
+  }
+
+  .card-value {
+    font-size: 28px;
+  }
+
+  .card-label {
+    font-size: 13px;
+  }
+
+  .team-info {
+    padding: 15px;
+  }
+
+  .team-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .team-description {
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .table-card {
+    padding: 15px;
+  }
+
+  .table-title {
+    font-size: 18px;
+    margin-bottom: 15px;
   }
 
   .member-details {
     flex-direction: column;
     align-items: flex-end;
     gap: 4px;
+  }
+
+  .stat-item {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .general-space {
+    padding: 10px;
+  }
+
+  .main-content {
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    gap: 10px;
+  }
+
+  .top-cards {
+    gap: 10px;
+  }
+
+  .bottom-cards {
+    gap: 10px;
+  }
+
+  .cards {
+    padding: 0 12px;
+  }
+
+  .card-value {
+    font-size: 24px;
+  }
+
+  .card-label {
+    font-size: 12px;
+  }
+
+  .team-info {
+    padding: 12px;
+  }
+
+  .team-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .team-description {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  .table-card {
+    padding: 12px;
+  }
+
+  .table-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  /*.member-row {*/
+  /*  padding: 10px;*/
+  /*}*/
+
+  .member-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+
+  .member-name {
+    font-size: 13px;
+  }
+
+  .role-badge,
+  .status-badge,
+  .hours-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .stat-item {
+    padding: 6px;
+    font-size: 12px;
   }
 }

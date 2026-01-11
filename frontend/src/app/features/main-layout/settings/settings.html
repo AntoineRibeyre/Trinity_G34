@@ -317,7 +317,7 @@
         <button
           type="submit"
           class="btn-save"
-          [disabled]="settingsForm.invalid || isLoading"
+          [disabled]="isLoading"
         >
           <span *ngIf="!isLoading">{{ 'SETTINGS.SAVE' | translate }}</span>
           <span *ngIf="isLoading">{{ 'SETTINGS.SAVING' | translate }}</span>
