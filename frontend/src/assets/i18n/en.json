@@ -58,6 +58,7 @@
       "UNKNOWN": "Unknown",
       "MARITAL": "Marital life"
     },
+    "ADDRESSE": "Address",
     "ADDRESS": {
       "STREET": "Street name",
       "STREET_NUMBER": "Street number",
