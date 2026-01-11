@@ -75,9 +75,9 @@
       "PHONE_NUMBER": "Numéro de téléphone"
     },
     "TITLE": {
-      "MR": "M",
-      "MRS": "Mme",
-      "MS": "Mms"
+      "MR": "M.",
+      "MRS": "Mme.",
+      "MS": "Mms."
     },
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",

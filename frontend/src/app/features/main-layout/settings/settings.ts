@@ -83,9 +83,9 @@ export class Settings implements OnInit, OnDestroy {
   ];
 
   titleOptions = [
-    { value: 'mr', label: 'SETTINGS.TITLE.MR' },
-    { value: 'mrs', label: 'SETTINGS.TITLE.MRS' },
-    { value: 'ms', label: 'SETTINGS.TITLE.MS' }
+    { value: 'M', label: 'SETTINGS.TITLE.MR' },
+    { value: 'Mme', label: 'SETTINGS.TITLE.MRS' },
+    { value: 'Mms', label: 'SETTINGS.TITLE.MS' }
   ];
 
   constructor(

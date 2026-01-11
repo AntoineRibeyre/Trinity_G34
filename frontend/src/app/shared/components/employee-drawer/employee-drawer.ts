@@ -69,12 +69,51 @@ export class EmployeeDrawer implements OnChanges {
       if (!this.employee.team) {
         this.employee.team = { name: '' } as any;
       }
-      // ensure other nested fields exist if needed in future
+      // Ensure address and emergencyContact objects exist
+      if (!this.employee.address) {
+        this.employee.address = {
+          number: '',
+          street: '',
+          postalCode: '',
+          city: '',
+          state: ''
+        };
+      }
+      if (!this.employee.emergencyContact) {
+        this.employee.emergencyContact = {
+          courtesy: '',
+          firstName: '',
+          lastName: '',
+          relation: '',
+          phoneNumber: ''
+        };
+      }
     }
     // If employee input changed, ensure team exists and load effective hours
     if (changes['employee'] && this.employee) {
       if (this.isEditable && !this.employee.team) {
         this.employee.team = { name: '' } as any;
+      }
+      // Ensure address and emergencyContact objects exist when employee changes
+      if (this.isEditable) {
+        if (!this.employee.address) {
+          this.employee.address = {
+            number: '',
+            street: '',
+            postalCode: '',
+            city: '',
+            state: ''
+          };
+        }
+        if (!this.employee.emergencyContact) {
+          this.employee.emergencyContact = {
+            courtesy: '',
+            firstName: '',
+            lastName: '',
+            relation: '',
+            phoneNumber: ''
+          };
+        }
       }
       // Charger les heures effectives
       this.loadEffectiveHours();
