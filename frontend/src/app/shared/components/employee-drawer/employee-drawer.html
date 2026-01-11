@@ -36,7 +36,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.BIRTH-DATE" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.birthDate }}</span>
+              <span>{{ formatValue(employee.birthDate) }}</span>
             } @else {
               <input type="date" [(ngModel)]="employee.birthDate" class="edit-input" />
             }
@@ -44,7 +44,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.EMAIL" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.personalEmail }}</span>
+              <span>{{ formatValue(employee.personalEmail) }}</span>
             } @else {
               <input type="email" [(ngModel)]="employee.personalEmail" class="edit-input" />
             }
@@ -52,7 +52,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.PHONE" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.telephone }}</span>
+              <span>{{ formatValue(employee.telephone) }}</span>
             } @else {
               <input type="tel" [(ngModel)]="employee.telephone" class="edit-input" />
             }
@@ -60,7 +60,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.SECU" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.socialNumber }}</span>
+              <span>{{ formatValue(employee.socialNumber) }}</span>
             } @else {
               <input type="text" [(ngModel)]="employee.socialNumber" class="edit-input" />
             }
@@ -68,7 +68,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.SITUATION" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.familySituation }}</span>
+              <span>{{ formatValue(employee.familySituation) }}</span>
             } @else {
               <select [(ngModel)]="employee.familySituation" class="edit-input">
                 <option value="single">{{ "ADMIN.ALL.PERSONAL-DRAWER.SINGLE" | translate }}</option>
@@ -85,7 +85,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.ADDRESS" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ `${employee.address.number} ${employee.address.street}, ${employee.address.postalCode} ${employee.address.city} ${employee.address.state}` }}</span>
+              <span>{{ formatAddress(employee.address) }}</span>
             } @else {
               <input type="text" [(ngModel)]="employee.address.number" class="edit-input" placeholder="{{ 'ADMIN.ALL.PERSONAL-DRAWER.NUMBER' | translate}}"/>
               <input type="text" [(ngModel)]="employee.address.street" class="edit-input" placeholder="{{ 'ADMIN.ALL.PERSONAL-DRAWER.STREET' | translate}}"/>
@@ -102,7 +102,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.EMAIL" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.email }}</span>
+              <span>{{ formatValue(employee.email) }}</span>
             } @else {
               <input type="email" [(ngModel)]="employee.email" class="edit-input" />
             }
@@ -110,7 +110,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.JOB" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.role }}</span>
+              <span>{{ formatValue(employee.role) }}</span>
             } @else {
               <select [(ngModel)]="employee.role" class="edit-input">
                 <option value="manager">{{ "ADMIN.ALL.PERSONAL-DRAWER.MANAGER" | translate }}</option>
@@ -123,7 +123,7 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.CONTRACT" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ employee.contract }}</span>
+              <span>{{ formatValue(employee.contract) }}</span>
             } @else {
               <input [(ngModel)]="employee.contract" class="edit-input" />
             }
@@ -132,22 +132,22 @@
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.TEAM" | translate }}</label>
 
-            <span>{{ employee.team?.name }}</span>
+            <span>{{ formatValue(employee.team?.name) }}</span>
 
           </div>
 
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.MANAGER" | translate }}</label>
 
-            <span>{{ manager }}</span>
+            <span>{{ formatValue(manager) }}</span>
 
           </div>
           <div class="info-item">
             <label>{{ "ADMIN.ALL.PERSONAL-DRAWER.CONTACT" | translate }}</label>
             @if (!isEditable) {
-              <span>{{ `${employee.emergencyContact.courtesy} ${employee.emergencyContact.firstName} ${employee.emergencyContact.lastName}` }}</span>
-              <span>{{ employee.emergencyContact.relation }}</span>
-              <span>{{ employee.emergencyContact.phoneNumber }}</span>
+              <span>{{ formatEmergencyContact(employee.emergencyContact) }}</span>
+              <span>{{ formatRelation(employee.emergencyContact) }}</span>
+              <span>{{ formatEmergencyPhone(employee.emergencyContact) }}</span>
             } @else {
               <select [(ngModel)]="employee.emergencyContact.courtesy" class="edit-input">
                 <option value="M">M.</option>
@@ -157,7 +157,7 @@
               <input type="text" [(ngModel)]="employee.emergencyContact.firstName" class="edit-input" placeholder="{{ 'ADMIN.ALL.FIRSTNAME' | translate}}" />
               <input type="text" [(ngModel)]="employee.emergencyContact.lastName" class="edit-input" placeholder="{{ 'ADMIN.ALL.NAME' | translate}}"/>
               <input type="text" [(ngModel)]="employee.emergencyContact.relation" class="edit-input" placeholder="{{ 'ADMIN.ALL.PERSONAL-DRAWER.RELATION' | translate}}"/>
-              <input type="text" [(ngModel)]="employee.emergencyContact.phoneNumber" class="edit-input" placeholder="{{ 'ADMIN.ALL.PHONE' | translate}}"/>
+              <input type="text" [(ngModel)]="employee.emergencyContact.phoneNumber" class="edit-input" placeholder="{{ 'ADMIN.ALL.PERSONAL-DRAWER.PHONE' | translate}}"/>
             }
           </div>
         </div>
