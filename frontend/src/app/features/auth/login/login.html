@@ -33,5 +33,61 @@
   </form>
 
   <div class="illustration">
+    <div class="illustration-overlay"></div>
+
+    <!-- Éléments décoratifs -->
+    <div class="illustration-decoration">
+      <div class="decoration-circle circle-1"></div>
+      <div class="decoration-circle circle-2"></div>
+      <div class="decoration-circle circle-3"></div>
+    </div>
+
+    <!-- Contenu principal de l'illustration -->
+    <div class="illustration-content">
+      <!-- Logo Prime Bank -->
+      <div class="illustration-logo">
+        <img src="assets/icons/PrimeBank-white.svg" alt="Prime Bank" class="logo-img">
+      </div>
+
+      <!-- Icône Banque -->
+      <div class="illustration-icon bank-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/>
+          <path d="M12 7V3a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v4"/>
+          <path d="M8 7h8"/>
+          <path d="M8 12h8"/>
+          <path d="M8 17h8"/>
+        </svg>
+      </div>
+
+      <!-- Ligne de connexion animée -->
+      <div class="connection-line">
+        <svg class="connection-svg" viewBox="0 0 200 100" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgba(255, 255, 255, 0.1)" />
+              <stop offset="50%" stop-color="rgba(255, 255, 255, 0.4)" />
+              <stop offset="100%" stop-color="rgba(255, 255, 255, 0.1)" />
+            </linearGradient>
+          </defs>
+          <path class="connection-path" d="M0,50 Q100,20 200,50" fill="none" stroke="url(#lineGradient)" stroke-width="2"/>
+        </svg>
+        <div class="connection-glow"></div>
+      </div>
+
+      <!-- Icône Pointage/Horloge -->
+      <div class="illustration-icon clock-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+
+      <!-- Texte descriptif -->
+      <div class="illustration-text">
+        <h3 class="illustration-title">Sécurité & Performance</h3>
+        <p class="illustration-subtitle">Connectez-vous à votre espace de pointage sécurisé</p>
+      </div>
+    </div>
   </div>
 </div>
