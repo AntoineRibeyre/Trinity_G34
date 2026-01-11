@@ -59,7 +59,7 @@ export class ActivityService implements OnDestroy {
    */
   private async initServiceWorker(): Promise<void> {
     if (!('serviceWorker' in navigator)) {
-      console.log('[ActivityService] Service Worker non supporté');
+      // console.log('[ActivityService] Service Worker non supporté');
       return;
     }
 
@@ -69,7 +69,7 @@ export class ActivityService implements OnDestroy {
         scope: '/'
       });
 
-      console.log('[ActivityService] Service Worker enregistré');
+      // console.log('[ActivityService] Service Worker enregistré');
 
       // Attendre que le Service Worker soit actif
       const sw = this.serviceWorkerRegistration.active || 
@@ -93,11 +93,11 @@ export class ActivityService implements OnDestroy {
         // Démarrer le ping périodique pour récupérer l'état même en arrière-plan
         this.startWorkerPing();
         
-        console.log('[ActivityService] Service Worker actif pour la détection en arrière-plan');
+        // console.log('[ActivityService] Service Worker actif pour la détection en arrière-plan');
       }
 
     } catch (error) {
-      console.error('[ActivityService] Erreur enregistrement Service Worker:', error);
+      // console.error('[ActivityService] Erreur enregistrement Service Worker:', error);
     }
   }
 
@@ -139,7 +139,7 @@ export class ActivityService implements OnDestroy {
         case 'ACTIVITY_CHANGE':
           // Changement d'activité reçu d'un autre onglet via le Service Worker
           const payload = data.payload;
-          console.log('[ActivityService] Changement d\'activité reçu du Worker:', payload);
+          // console.log('[ActivityService] Changement d\'activité reçu du Worker:', payload);
           
           const wasActive = this.isActive;
           this.isActive = payload.isActive;
@@ -150,7 +150,7 @@ export class ActivityService implements OnDestroy {
           
           // Émettre le changement d'état seulement si c'est un vrai changement
           if (wasActive !== this.isActive) {
-            console.log('[ActivityService] État changé via Worker:', this.isActive ? 'ACTIF' : 'INACTIF');
+            // console.log('[ActivityService] État changé via Worker:', this.isActive ? 'ACTIF' : 'INACTIF');
             this.emitState();
           }
           break;
@@ -165,7 +165,7 @@ export class ActivityService implements OnDestroy {
           // ou si on n'a pas détecté d'inactivité localement
           if (!state.isActive && this.isActive) {
             // Le Worker dit inactif et on pensait actif -> accepter
-            console.log('[ActivityService] Synchronisation état depuis Worker (inactif):', state);
+            // console.log('[ActivityService] Synchronisation état depuis Worker (inactif):', state);
             this.isActive = false;
             this.emitState();
           }
@@ -174,7 +174,7 @@ export class ActivityService implements OnDestroy {
           break;
 
         case 'INIT_RESULT':
-          console.log('[ActivityService] Service Worker initialisé:', data.payload.success);
+          // console.log('[ActivityService] Service Worker initialisé:', data.payload.success);
           break;
       }
     });
@@ -212,12 +212,12 @@ export class ActivityService implements OnDestroy {
     
     if (!this.isActive) {
       this.isActive = true;
-      console.log('[ActivityService] Utilisateur redevenu actif - lastActivityTime réinitialisé:', this.lastActivityTime);
+      // console.log('[ActivityService] Utilisateur redevenu actif - lastActivityTime réinitialisé:', this.lastActivityTime);
       this.emitState();
       this.sendStateToServiceWorker();
     } else {
       // Déjà actif, juste réinitialiser le timer silencieusement
-      console.log('[ActivityService] Timer réinitialisé - dernière activité:', this.lastActivityTime);
+      // console.log('[ActivityService] Timer réinitialisé - dernière activité:', this.lastActivityTime);
     }
   }
 
@@ -243,7 +243,7 @@ export class ActivityService implements OnDestroy {
         )
         .subscribe((event) => {
           this.ngZone.run(() => {
-            console.log('[ActivityService] Activité détectée:', (event as Event).type);
+            // console.log('[ActivityService] Activité détectée:', (event as Event).type);
             this.resetActivityTimer();
           });
         });
@@ -254,7 +254,7 @@ export class ActivityService implements OnDestroy {
         .subscribe(() => {
           this.ngZone.run(() => {
             if (!document.hidden) {
-              console.log('[ActivityService] Page redevenue visible');
+              // console.log('[ActivityService] Page redevenue visible');
               this.resetActivityTimer();
             }
           });
@@ -265,7 +265,7 @@ export class ActivityService implements OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.ngZone.run(() => {
-            console.log('[ActivityService] Fenêtre a reçu le focus');
+            // console.log('[ActivityService] Fenêtre a reçu le focus');
             this.resetActivityTimer();
           });
         });
@@ -296,13 +296,13 @@ export class ActivityService implements OnDestroy {
 
     // Log périodique pour debug (toutes les 10 secondes)
     if (inactiveSeconds > 0 && inactiveSeconds % 10 === 0) {
-      console.log('[ActivityService] Check inactivité - secondes écoulées:', inactiveSeconds, '/ isActive:', this.isActive);
+      // console.log('[ActivityService] Check inactivité - secondes écoulées:', inactiveSeconds, '/ isActive:', this.isActive);
     }
 
     // Vérifier le timeout d'inactivité (60 secondes)
     if (inactiveMs >= this.INACTIVITY_TIMEOUT_MS && this.isActive) {
       this.isActive = false;
-      console.log('[ActivityService] Utilisateur inactif après', inactiveSeconds, 'secondes');
+      // console.log('[ActivityService] Utilisateur inactif après', inactiveSeconds, 'secondes');
       this.emitState();
       this.sendStateToServiceWorker();
     }

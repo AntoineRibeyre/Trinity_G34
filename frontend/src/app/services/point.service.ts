@@ -116,7 +116,7 @@ export class PointService {
         return result.data.todayCalendars || [];
       }),
       catchError(error => {
-        console.error('Erreur GraphQL:', error);
+        // console.error('Erreur GraphQL:', error);
         return of([]);
       })
     );
@@ -144,7 +144,7 @@ export class PointService {
         return result.data.allCalendarsByUser || [];
       }),
       catchError(error => {
-        console.error('Erreur lors de la récupération des calendriers:', error);
+        // console.error('Erreur lors de la récupération des calendriers:', error);
         return of([]);
       })
     );

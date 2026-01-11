@@ -78,7 +78,7 @@ export class Team implements OnInit {
     try {
       this.allUsers = await this.userService.getAllUsers();
     } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
+      // console.error('Erreur lors du chargement des utilisateurs:', error);
     }
   }
 
@@ -103,14 +103,14 @@ export class Team implements OnInit {
           this.loading = false;
         },
         error: (err) => {
-          console.error('Erreur lors du chargement des données:', err);
+          // console.error('Erreur lors du chargement des données:', err);
           this.error = 'team.impossibledecharger';
           this.loading = false;
         }
       });
 
     } catch (err) {
-      console.error('Erreur:', err);
+      // console.error('Erreur:', err);
       this.error = 'team.erreursurvenue';
       this.loading = false;
     }

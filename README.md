@@ -6,7 +6,7 @@ docker compose -f docker-compose.dev.yml build --no-cache
 
 Pour la Prod:
 ```bash
- docker compose build --no-cache
+ docker compose -f docker-compose.yml build --no-cache
 ```
  
 # Démarrer les containers :
@@ -17,7 +17,7 @@ docker compose -f docker-compose.dev.yml up
 
 Pour la Prod:
 ```bash
-docker compose up
+docker compose -f docker-compose.yml up
 ```
  
 # Eteindre les containers :

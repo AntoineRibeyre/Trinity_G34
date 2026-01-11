@@ -354,7 +354,7 @@ export class UserService {
       this.currentUser = res.data.currentUser;
       return this.currentUser;
     } catch (error) {
-      console.error("Error loading current user:", error);
+      // console.error("Error loading current user:", error);
       this.currentUser = null;
       return null;
     }
@@ -381,7 +381,7 @@ export class UserService {
       this.currentUser = res.data.updateUser.user;
       return this.currentUser;
     } catch (error) {
-      console.error("Error updating user:", error);
+      // console.error("Error updating user:", error);
       throw error;
     }
   }
@@ -405,7 +405,7 @@ export class UserService {
 
         return users;
       } catch (error) {
-        console.error('Erreur lors de la récupération des utilisateurs:', error);
+        // console.error('Erreur lors de la récupération des utilisateurs:', error);
         throw error;
       }
     }
@@ -473,7 +473,7 @@ export class UserService {
 
         return response.data?.deleteUser?.message || 'Utilisateur désactivé avec succès.';
       } catch (error) {
-        console.error('Erreur lors de la désactivation de l’utilisateur :', error);
+        // console.error('Erreur lors de la désactivation de l\'utilisateur :', error);
         throw error;
       }
     }

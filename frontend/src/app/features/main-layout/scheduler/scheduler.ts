@@ -124,9 +124,9 @@ export class Scheduler implements OnInit, OnChanges {
   async loadUsers() {
     try {
       this.allUsers = await this.userService.getAllUsers();
-      console.log('Utilisateurs chargés:', this.allUsers);
+      // console.log('Utilisateurs chargés:', this.allUsers);
     } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
+      // console.error('Erreur lors du chargement des utilisateurs:', error);
     }
   }
 
@@ -159,9 +159,9 @@ export class Scheduler implements OnInit, OnChanges {
         dataSource: this.data
       };
 
-      console.log('Événements chargés pour userId:', this.userId, this.data);
+      // console.log('Événements chargés pour userId:', this.userId, this.data);
     } catch (error) {
-      console.error('Erreur lors du chargement des événements:', error);
+      // console.error('Erreur lors du chargement des événements:', error);
     }
   }
 
@@ -198,16 +198,16 @@ export class Scheduler implements OnInit, OnChanges {
           const result = await this.eventService.createEvent(event, attendeeIds);
 
           if (result && result.success) {
-            console.log('Événement créé avec succès:', result.event);
+            // console.log('Événement créé avec succès:', result.event);
             event.Id = result.event.id;
             await this.loadEvents();
           } else {
-            console.error('Erreur lors de la création:', result?.message);
+            // console.error('Erreur lors de la création:', result?.message);
             // Annuler l'ajout dans le scheduler si échec
             this.scheduleObj.deleteEvent(event);
           }
         } catch (error) {
-          console.error('Erreur lors de la création:', error);
+          // console.error('Erreur lors de la création:', error);
           // Annuler l'ajout dans le scheduler si échec
           this.scheduleObj.deleteEvent(event);
         }
@@ -231,15 +231,15 @@ export class Scheduler implements OnInit, OnChanges {
           );
 
           if (result && result.success) {
-            console.log('Événement modifié avec succès:', result.event);
+            // console.log('Événement modifié avec succès:', result.event);
             await this.loadEvents();
           } else {
-            console.error('Erreur lors de la modification:', result?.message);
+            // console.error('Erreur lors de la modification:', result?.message);
             // Recharger pour annuler les changements locaux
             await this.loadEvents();
           }
         } catch (error) {
-          console.error('Erreur lors de la modification:', error);
+          // console.error('Erreur lors de la modification:', error);
           // Recharger pour annuler les changements locaux
           await this.loadEvents();
         }
@@ -254,15 +254,15 @@ export class Scheduler implements OnInit, OnChanges {
           const result = await this.eventService.deleteEvent(eventId);
 
           if (result && result.success) {
-            console.log('Événement supprimé avec succès');
+            // console.log('Événement supprimé avec succès');
             await this.loadEvents();
           } else {
-            console.error('Erreur lors de la suppression:', result?.message);
+            // console.error('Erreur lors de la suppression:', result?.message);
             // Recharger pour restaurer l'événement
             await this.loadEvents();
           }
         } catch (error) {
-          console.error('Erreur lors de la suppression:', error);
+          // console.error('Erreur lors de la suppression:', error);
           // Recharger pour restaurer l'événement
           await this.loadEvents();
         }
@@ -275,9 +275,9 @@ export class Scheduler implements OnInit, OnChanges {
     try {
       await this.eventService.addAttendee(eventId, userId);
       await this.loadEvents();
-      console.log('Participant ajouté avec succès');
+      // console.log('Participant ajouté avec succès');
     } catch (error) {
-      console.error('Erreur lors de l\'ajout du participant:', error);
+      // console.error('Erreur lors de l\'ajout du participant:', error);
     }
   }
 
@@ -286,9 +286,9 @@ export class Scheduler implements OnInit, OnChanges {
     try {
       await this.eventService.removeAttendee(eventId, userId);
       await this.loadEvents();
-      console.log('Participant retiré avec succès');
+      // console.log('Participant retiré avec succès');
     } catch (error) {
-      console.error('Erreur lors de la suppression du participant:', error);
+      // console.error('Erreur lors de la suppression du participant:', error);
     }
   }
 

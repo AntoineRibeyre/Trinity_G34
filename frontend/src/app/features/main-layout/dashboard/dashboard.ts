@@ -176,16 +176,16 @@ export class Dashboard implements OnInit, OnDestroy {
         if (!day) {
           // Pas de pointage en cours, on pointe l'arrivée
           this.pointerArrivee();
-          console.log('Pointage arrivée automatique effectué');
+          // console.log('Pointage arrivée automatique effectué');
         } else {
-          console.log('Déjà pointé, pas de pointage automatique');
+          // console.log('Déjà pointé, pas de pointage automatique');
           this.isPointeArrivee = true;
           // Relancer le calcul du temps même si déjà pointé
           this.demarrerCalculDureeTotale();
         }
         this.hasAutoPointedOnInit = true;
       },
-      error: (err) => console.error('Erreur vérification pointage:', err)
+      error: (err) => { /* console.error('Erreur vérification pointage:', err) */ }
     });
   }
 
@@ -196,7 +196,7 @@ export class Dashboard implements OnInit, OnDestroy {
     if (!this.userId || !this.isPointeArrivee) return;
     
     this.pointerSortie();
-    console.log('Pointage sortie automatique effectué (inactivité)');
+    // console.log('Pointage sortie automatique effectué (inactivité)');
   }
 
   updateTime() {
@@ -229,13 +229,13 @@ export class Dashboard implements OnInit, OnDestroy {
           this.isPointeArrivee = false;
         }
       },
-      error: (err) => console.error('Erreur lors du chargement:', err)
+      error: (err) => { /* console.error('Erreur lors du chargement:', err) */ }
     });
   }
 
   loadTodayCalendars(): void {
     if (!this.userId) {
-      console.warn('Pas d\'userId disponible');
+      // console.warn('Pas d\'userId disponible');
       return;
     }
 
@@ -250,7 +250,7 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.error = 'Erreur lors du chargement des données';
-        console.error('Erreur:', error);
+        // console.error('Erreur:', error);
         this.isLoading = false;
       }
     });
@@ -294,10 +294,10 @@ export class Dashboard implements OnInit, OnDestroy {
         if (!this.isAutoPointageEnabled) {
           this.isAutoPointageEnabled = true;
           this.initAutoPointage();
-          console.log('Pointage automatique activé après pointage manuel');
+          // console.log('Pointage automatique activé après pointage manuel');
         }
       },
-      error: (err) => console.error('Erreur pointage arrivée:', err)
+      error: (err) => { /* console.error('Erreur pointage arrivée:', err) */ }
     });
     this.isUserCurrentlyActive = true; // Considérer actif après arrivée
   }
@@ -315,7 +315,7 @@ export class Dashboard implements OnInit, OnDestroy {
         this.isPointeArrivee = false;
         this.dureeActuelle = '00:00:00';
       },
-      error: (err) => console.error('Erreur pointage sortie:', err)
+      error: (err) => { /* console.error('Erreur pointage sortie:', err) */ }
     });
     this.isUserCurrentlyActive = false; // Considérer inactif après sortie
   }
@@ -327,7 +327,7 @@ export class Dashboard implements OnInit, OnDestroy {
   @HostListener('document:visibilitychange')
   onVisibilityChange(): void {
     if (!document.hidden) {
-      console.log('[Dashboard] Page visible - rafraîchissement du temps de travail');
+      // console.log('[Dashboard] Page visible - rafraîchissement du temps de travail');
       // Redémarrer le calcul de durée totale pour afficher le temps correct
       this.demarrerCalculDureeTotale();
     }
@@ -338,7 +338,7 @@ export class Dashboard implements OnInit, OnDestroy {
    */
   @HostListener('window:focus')
   onWindowFocus(): void {
-    console.log('[Dashboard] Focus fenêtre - rafraîchissement du temps de travail');
+    // console.log('[Dashboard] Focus fenêtre - rafraîchissement du temps de travail');
     // Redémarrer le calcul de durée totale pour afficher le temps correct
     this.demarrerCalculDureeTotale();
   }

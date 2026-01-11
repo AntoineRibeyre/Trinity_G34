@@ -326,7 +326,7 @@ export class Settings implements OnInit, OnDestroy {
         this.snackBarService.showSuccess('Modifications sauvegardées avec succès');
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       this.snackBarService.showError('Erreur lors de la sauvegarde des modifications');
     }
 

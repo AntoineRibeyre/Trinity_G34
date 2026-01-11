@@ -300,8 +300,8 @@ export class TeamService {
    * @param description Description de l'équipe
    */
   createTeam(name: string, field: string, description: string, managerID: number): Observable<any> {
-    console.log("manager")
-    console.log(managerID)
+    // console.log("manager")
+    // console.log(managerID)
     return this.apollo.mutate<CreateTeamResponse>({
       mutation: CREATE_TEAM,
       variables: { name, field, description, managerID }
@@ -331,11 +331,11 @@ export class TeamService {
       fetchPolicy: 'network-only'
     }).pipe(
       map((result) => {
-        console.log('Résultat GraphQL brut:', result);
+        // console.log('Résultat GraphQL brut:', result);
         return result.data.managerView;
       }),
       catchError((error) => {
-        console.error('Erreur GraphQL:', error);
+        // console.error('Erreur GraphQL:', error);
         return of(null);
       })
     );
@@ -371,11 +371,11 @@ export class TeamService {
     field?: string;
     managerId?: number;
   }): Observable<UpdateTeamResponse> {
-    console.log('ID:', teamToUpdate.id);
-    console.log('Name:', teamToUpdate.name);
-    console.log('Description:', teamToUpdate.description);
-    console.log('Field:', teamToUpdate.field);
-    console.log('ManagerId:', teamToUpdate.managerId);
+    // console.log('ID:', teamToUpdate.id);
+    // console.log('Name:', teamToUpdate.name);
+    // console.log('Description:', teamToUpdate.description);
+    // console.log('Field:', teamToUpdate.field);
+    // console.log('ManagerId:', teamToUpdate.managerId);
     return this.apollo.mutate<UpdateTeamResponse>({
       mutation: UPDATE_TEAM,
       variables: {
@@ -432,11 +432,11 @@ export class TeamService {
       fetchPolicy: 'network-only'
     }).pipe(
       map((result) => {
-        console.log('Membres de l\'équipe récupérés:', result.data.teamMembers);
+        // console.log('Membres de l\'équipe récupérés:', result.data.teamMembers);
         return result.data.teamMembers;
       }),
       catchError((error) => {
-        console.error('Erreur lors de la récupération des membres:', error);
+        // console.error('Erreur lors de la récupération des membres:', error);
         return of([]);
       })
     );

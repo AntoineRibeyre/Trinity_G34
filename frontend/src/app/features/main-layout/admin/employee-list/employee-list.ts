@@ -111,9 +111,9 @@ export class EmployeeList implements OnDestroy, OnInit {
     try {
       this.allUsers = await this.userService.getAllUsers();
       this.filteredUsers = this.allUsers; // Initialiser la liste filtrée
-      console.log('Utilisateurs chargés:', this.allUsers);
+      // console.log('Utilisateurs chargés:', this.allUsers);
     } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
+      // console.error('Erreur lors du chargement des utilisateurs:', error);
     }
   }
 
@@ -203,7 +203,7 @@ export class EmployeeList implements OnDestroy, OnInit {
 
   saveEmployeeChanges(updatedEmployee: any): void {
     // Ta logique de sauvegarde ici
-    console.log('Sauvegarde:', updatedEmployee);
+    // console.log('Sauvegarde:', updatedEmployee);
 
     // Exemple: mettre à jour dans la liste
     const index = this.filteredUsers.findIndex(emp => emp.id === updatedEmployee.id);
@@ -233,7 +233,7 @@ export class EmployeeList implements OnDestroy, OnInit {
             window.location.reload();
             dialogRef.close();
           }).catch((err) => {
-            console.error('Erreur lors de la suppression:', err);
+            // console.error('Erreur lors de la suppression:', err);
             this.snackBarService.showError('Erreur lors de la suppression de l\'employé');
             dialogRef.close();
           });
@@ -275,7 +275,7 @@ export class EmployeeList implements OnDestroy, OnInit {
       );
       this.snackBarService.showSuccess('Export Excel généré avec succès');
     } catch (error) {
-      console.error('Erreur lors de l\'export:', error);
+      // console.error('Erreur lors de l\'export:', error);
       this.snackBarService.showError('Erreur lors de l\'export Excel');
     }
   }

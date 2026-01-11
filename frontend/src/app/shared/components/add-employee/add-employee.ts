@@ -110,7 +110,7 @@ export class AddEmployee implements OnInit {
       try {
         const response = await this.authService.register(username, firstName, lastName, email, telephone, password, role);
         this.isSubmitting = false;
-        console.log('Inscription réussie:', response);
+        // console.log('Inscription réussie:', response);
         this.snackBarService.showSuccess('Employé ajouté avec succès !');
         this.dialog.close();
         window.location.reload();
@@ -118,7 +118,7 @@ export class AddEmployee implements OnInit {
         this.isSubmitting = false;
         const errorMessage = this.getErrorMessage(error);
         this.snackBarService.showError(errorMessage);
-        console.error('Erreur inscription:', error);
+        // console.error('Erreur inscription:', error);
       }
     } else {
       Object.keys(this.employeeForm.controls).forEach(key => {
@@ -135,6 +135,6 @@ export class AddEmployee implements OnInit {
   protected readonly close = close;
 
   test(){
-    console.log(this.employeeForm.valid)
+    // console.log(this.employeeForm.valid)
   }
 }

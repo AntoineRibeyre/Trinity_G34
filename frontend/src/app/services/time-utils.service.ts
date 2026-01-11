@@ -31,7 +31,7 @@ export class TimeUtilsService {
 
       return (hours * 3600) + (minutes * 60) + seconds;
     } catch (error) {
-      console.warn('Erreur lors du parsing de timeString:', timeString, error);
+      // console.warn('Erreur lors du parsing de timeString:', timeString, error);
       return null;
     }
   }
