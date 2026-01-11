@@ -76,6 +76,7 @@ export class Dashboard implements OnInit, OnDestroy {
   error: any;
   dayType: string = 'office'; // Type de journée pour le pointage de sortie en anglais
   isTelework: boolean = false; // false = Présentiel, true = Télétravail
+
   //TEMP
   dropdownOptions: DropdownOption[] = [
     { label: 'Ryan Wittert', value: 1 },
@@ -86,10 +87,11 @@ export class Dashboard implements OnInit, OnDestroy {
   private dureeSubscription?: Subscription;
   private dureeTotaleSubscription?: Subscription;
   private activitySubscription?: Subscription;
+  
 
-  // État du pointage automatique
-  isAutoPointageEnabled: boolean = true;
-  isUserCurrentlyActive: boolean = true;
+  // État du pointage automatique 
+  isAutoPointageEnabled: boolean = false;
+  isUserCurrentlyActive: boolean = false;
   private hasAutoPointedOnInit: boolean = false;
 
   constructor(
@@ -122,7 +124,7 @@ export class Dashboard implements OnInit, OnDestroy {
     this.loadTodayCalendars();
     
     // Initialiser le suivi d'activité et le pointage automatique
-    this.initAutoPointage();
+    // this.initAutoPointage();
   }
 
   /**
@@ -130,7 +132,7 @@ export class Dashboard implements OnInit, OnDestroy {
    */
   private initAutoPointage(): void {
     // Pointer automatiquement à l'arrivée sur le dashboard (connexion)
-    this.autoPointerArrivee();
+    // this.autoPointerArrivee();
 
     // S'abonner aux changements d'état d'activité
     this.activitySubscription = this.activityService.getActivityState().subscribe(
@@ -283,9 +285,17 @@ export class Dashboard implements OnInit, OnDestroy {
 
   pointerArrivee(): void {
     if (!this.userId) return;
+    
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
+        
+        // Activer le pointage automatique après le premier pointage manuel
+        if (!this.isAutoPointageEnabled) {
+          this.isAutoPointageEnabled = true;
+          this.initAutoPointage();
+          console.log('Pointage automatique activé après pointage manuel');
+        }
       },
       error: (err) => console.error('Erreur pointage arrivée:', err)
     });
@@ -295,11 +305,15 @@ export class Dashboard implements OnInit, OnDestroy {
   pointerSortie(): void {
     if (!this.userId) return;
 
+    // Arrêter les chronomètres en cours
+    this.dureeSubscription?.unsubscribe();
+    this.dureeTotaleSubscription?.unsubscribe();
+
     this.pointService.enregistrerSortie(this.userId, this.dayType).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
         this.isPointeArrivee = false;
-        this.dureeActuelle = '00:00';
+        this.dureeActuelle = '00:00:00';
       },
       error: (err) => console.error('Erreur pointage sortie:', err)
     });
