@@ -7,6 +7,7 @@ from ..models import User, Team, Calendar, Event
 from ..logic.userfactory import UserViewer
 from ..logic.teamfactory import TeamViewer, AdminView
 from ..logic.calendarfactory import DailyPlanning
+from trinity.models import LeaveBalance
 
 
 class AddressType(graphene.ObjectType):
@@ -347,3 +348,28 @@ class ObjectTypeFactory:
         return AdminViewType(admin_details=admin_type,
                              teams=teams_type)
 
+
+class LeaveBalanceType(DjangoObjectType):
+    class Meta:
+        model = LeaveBalance
+        fields = '__all__'
+
+
+class LeaveReportType(graphene.ObjectType):
+    """Type GraphQL pour le rapport de congés"""
+    employee_id = graphene.Int()
+    current_balance = graphene.Float()
+    acquired_this_year = graphene.Float()
+    used_this_year = graphene.Float()
+    reference_year_start = graphene.Date()
+    reference_year_end = graphene.Date()
+    next_acquisition_date = graphene.Date()
+    is_at_max_capacity = graphene.Boolean()
+    transactions = graphene.List(LeaveBalanceType)
+
+
+class MonthlyAcquisitionResultType(graphene.ObjectType):
+    """Résultat de l'acquisition mensuelle"""
+    success_count = graphene.Int()
+    error_count = graphene.Int()
+    details = graphene.JSONString()
