@@ -2,12 +2,13 @@ from django.test import TestCase
 from django.db import IntegrityError, transaction
 from datetime import date, timedelta
 from decimal import Decimal
+import os
 
 from trinity.models import User, Calendar, LeaveBalance
 from trinity.logic.leavesmanager import LeavesManager
 
 # Constante pour le mot de passe de test
-TEST_PASSWORD = "test123"
+TEST_PASSWORD = os.getenv("test123")
 
 class LeaveReferencePeriodTest(TestCase):
     """Tests de la période légale des congés (base France)"""
