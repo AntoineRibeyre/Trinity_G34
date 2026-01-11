@@ -1,3210 +1,510 @@
 [
-  {
-    "model": "trinity.team",
-    "pk": 1,
-    "fields": {
-      "name": "Administration Système",
-      "description": "Équipe d'administration et supervision générale",
-      "field": "Administration"
+    {
+        "model": "trinity.team",
+        "pk": 1,
+        "fields": {
+            "name": "Équipe Commerce 1",
+            "description": "Équipe de commerce spécialisée dans les ventes en ligne",
+            "field": "commerce"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 2,
+        "fields": {
+            "name": "Équipe Design 1",
+            "description": "Équipe de design spécialisée dans les interfaces utilisateur",
+            "field": "design"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 3,
+        "fields": {
+            "name": "Équipe Finance 1",
+            "description": "Équipe de finance spécialisée dans la gestion des budgets",
+            "field": "finance"
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": true,
+            "first_name": "Admin",
+            "last_name": "Admin",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2025-10-22T12:24:16Z",
+            "username": "admin",
+            "email": "admin@example.com",
+            "telephone": null,
+            "role": "admin",
+            "team": null,
+            "social_number": null,
+            "contract": "CDD",
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Commerce 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-22T13:30:52.151Z",
+            "username": "ManagerCommerce1",
+            "email": "manager.commerce1@example.com",
+            "telephone": "0600000001",
+            "role": "manager",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Commerce 1-1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:27:55.301Z",
+            "username": "EmployeCommerce1-1",
+            "email": "employe.commerce1-1@example.com",
+            "telephone": "0600000002",
+            "role": "employe",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Commerce 1-2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:28:21Z",
+            "username": "EmployeCommerce1-2",
+            "email": "employe.commerce1-2@example.com",
+            "telephone": "0600000003",
+            "role": "employe",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Commerce 1-3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:29:09Z",
+            "username": "EmployeCommerce1-3",
+            "email": "employe.commerce1-3@example.com",
+            "telephone": "0600000004",
+            "role": "employe",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 6,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Design 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:29:38Z",
+            "username": "ManagerDesign1",
+            "email": "manager.design1@example.com",
+            "telephone": "0600000005",
+            "role": "manager",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 7,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Design 1-1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:30:30.495Z",
+            "username": "EmployeDesign1-1",
+            "email": "employe.design1-1@example.com",
+            "telephone": "0600000006",
+            "role": "employe",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 8,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Design 1-2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:31:17Z",
+            "username": "EmployeDesign1-2",
+            "email": "employe.design1-2@example.com",
+            "telephone": "0600000007",
+            "role": "employe",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 9,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Design 1-3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:31:48Z",
+            "username": "EmployeDesign1-3",
+            "email": "employe.design1-3@example.com",
+            "telephone": "0600000008",
+            "role": "employe",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 10,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Finance 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:32:26Z",
+            "username": "ManagerFinance1",
+            "email": "manager.finance1@example.com",
+            "telephone": "0600000009",
+            "role": "manager",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 11,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Finance 1-1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:33:24Z",
+            "username": "EmployeFinance1-1",
+            "email": "employe.finance1-1@example.com",
+            "telephone": "0600000010",
+            "role": "employe",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 12,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Finance 1-2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:34:04Z",
+            "username": "EmployeFinance1-2",
+            "email": "employe.finance1-2@example.com",
+            "telephone": "0600000011",
+            "role": "employe",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 13,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Finance 1-3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-24T12:12:48Z",
+            "username": "EmployeFinance1-3",
+            "email": "employe.finance1-3@example.com",
+            "telephone": "0600000012",
+            "role": "employe",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 1,
+        "fields": {
+            "subject": "Réunion d'équipe Commerce 1",
+            "start_time": "2025-11-01T09:00:00Z",
+            "end_time": "2025-11-01T10:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [2, 3, 4, 5]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 2,
+        "fields": {
+            "subject": "Réunion d'équipe Design 1",
+            "start_time": "2025-11-02T09:00:00Z",
+            "end_time": "2025-11-02T10:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 3,
+        "fields": {
+            "subject": "Réunion d'équipe Finance 1",
+            "start_time": "2025-11-03T09:00:00Z",
+            "end_time": "2025-11-03T10:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [10, 11, 12, 13]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 4,
+        "fields": {
+            "subject": "Formation Commerce",
+            "start_time": "2025-11-05T14:00:00Z",
+            "end_time": "2025-11-05T16:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [2, 3, 4, 5]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 5,
+        "fields": {
+            "subject": "Formation Design",
+            "start_time": "2025-11-06T14:00:00Z",
+            "end_time": "2025-11-06T16:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 6,
+        "fields": {
+            "subject": "Formation Finance",
+            "start_time": "2025-11-07T14:00:00Z",
+            "end_time": "2025-11-07T16:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [10, 11, 12, 13]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 7,
+        "fields": {
+            "subject": "Réunion de suivi Commerce",
+            "start_time": "2025-11-10T10:00:00Z",
+            "end_time": "2025-11-10T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [2, 3, 4, 5]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 8,
+        "fields": {
+            "subject": "Réunion de suivi Design",
+            "start_time": "2025-11-11T10:00:00Z",
+            "end_time": "2025-11-11T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 9,
+        "fields": {
+            "subject": "Réunion de suivi Finance",
+            "start_time": "2025-11-12T10:00:00Z",
+            "end_time": "2025-11-12T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [10, 11, 12, 13]
+        }
     }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 2,
-    "fields": {
-      "name": "Gestion des Comptes Clients",
-      "description": "Gestion et suivi des comptes bancaires clients",
-      "field": "Service Client"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 3,
-    "fields": {
-      "name": "Crédits Immobiliers",
-      "description": "Étude et traitement des demandes de crédits immobiliers",
-      "field": "Crédit"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 4,
-    "fields": {
-      "name": "Gestion des Risques",
-      "description": "Analyse et prévention des risques financiers",
-      "field": "Conformité"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 5,
-    "fields": {
-      "name": "Trading et Marchés",
-      "description": "Opérations sur les marchés financiers",
-      "field": "Finance de Marché"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 6,
-    "fields": {
-      "name": "Conformité et Réglementation",
-      "description": "Veille réglementaire et conformité bancaire",
-      "field": "Conformité"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 7,
-    "fields": {
-      "name": "Informatique et Cybersécurité",
-      "description": "Infrastructure IT et sécurité des systèmes",
-      "field": "Technologie"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 8,
-    "fields": {
-      "name": "Ressources Humaines",
-      "description": "Gestion du personnel et développement RH",
-      "field": "RH"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 9,
-    "fields": {
-      "name": "Comptabilité et Finance",
-      "description": "Gestion comptable et finances internes",
-      "field": "Finance"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 10,
-    "fields": {
-      "name": "Banque Privée",
-      "description": "Gestion de patrimoine et clientèle fortunée",
-      "field": "Banque Privée"
-    }
-  },
-  {
-    "model": "trinity.team",
-    "pk": 11,
-    "fields": {
-      "name": "Agence Centrale Paris",
-      "description": "Agence principale et accueil clientèle",
-      "field": "Réseau"
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 1,
-    "fields": {
-      "username": "admin.chief",
-      "email": "admin.chief@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Alexandre",
-      "last_name": "Moreau",
-      "telephone": "+33140123456",
-      "personal_email": "a.moreau@gmail.com",
-      "role": "Administrateur",
-      "is_staff": true,
-      "is_superuser": true,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2015-01-10",
-      "annual_salary": 85000.00,
-      "birth_date": "1980-05-15",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "180055512345601",
-      "rib": "FR7612548029315478963201456",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "45",
-        "street": "Avenue Hoche",
-        "postalCode": "75008",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Sophie",
-        "lastName": "Moreau",
-        "relation": "Épouse",
-        "phoneNumber": "+33140123457"
-      }
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 2,
-    "fields": {
-      "username": "admin.tech",
-      "email": "admin.tech@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Julien",
-      "last_name": "Rousseau",
-      "telephone": "+33140234567",
-      "personal_email": "j.rousseau@gmail.com",
-      "role": "Administrateur",
-      "is_staff": true,
-      "is_superuser": true,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2016-03-20",
-      "annual_salary": 80000.00,
-      "birth_date": "1985-09-22",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "185097512345602",
-      "rib": "FR7612548029315478963201457",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "12",
-        "street": "Rue de Presbourg",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Pierre",
-        "lastName": "Rousseau",
-        "relation": "Père",
-        "phoneNumber": "+33140234568"
-      }
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 3,
-    "fields": {
-      "username": "admin.security",
-      "email": "admin.security@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Caroline",
-      "last_name": "Lefebvre",
-      "telephone": "+33140345678",
-      "personal_email": "c.lefebvre@gmail.com",
-      "role": "Administrateur",
-      "is_staff": true,
-      "is_superuser": true,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-06-15",
-      "annual_salary": 78000.00,
-      "birth_date": "1988-02-10",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "288027512345603",
-      "rib": "FR7612548029315478963201458",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "28",
-        "street": "Boulevard Malesherbes",
-        "postalCode": "75008",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Marc",
-        "lastName": "Durant",
-        "relation": "Conjoint",
-        "phoneNumber": "+33140345679"
-      }
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 4,
-    "fields": {
-      "username": "manager.comptes",
-      "email": "manager.comptes@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Marie",
-      "last_name": "Bertrand",
-      "telephone": "+33141234567",
-      "personal_email": "m.bertrand@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-02-01",
-      "annual_salary": 58000.00,
-      "birth_date": "1987-11-08",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "287117512345604",
-      "rib": "FR7612548029315478963201459",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "67",
-        "street": "Rue de Courcelles",
-        "postalCode": "75017",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Thomas",
-        "lastName": "Bertrand",
-        "relation": "Époux",
-        "phoneNumber": "+33141234568"
-      },
-      "team": 2
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 5,
-    "fields": {
-      "username": "claire.dubois",
-      "email": "claire.dubois@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Claire",
-      "last_name": "Dubois",
-      "telephone": "+33141345678",
-      "personal_email": "c.dubois@gmail.com",
-      "role": "Conseiller Clientèle",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-03-15",
-      "annual_salary": 38000.00,
-      "birth_date": "1992-04-18",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "292047512345605",
-      "rib": "FR7612548029315478963201460",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "23",
-        "street": "Rue de Rome",
-        "postalCode": "75008",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Anne",
-        "lastName": "Dubois",
-        "relation": "Mère",
-        "phoneNumber": "+33141345679"
-      },
-      "team": 2
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 6,
-    "fields": {
-      "username": "paul.lambert",
-      "email": "paul.lambert@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Paul",
-      "last_name": "Lambert",
-      "telephone": "+33141456789",
-      "personal_email": "p.lambert@gmail.com",
-      "role": "Conseiller Clientèle",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-05-20",
-      "annual_salary": 37000.00,
-      "birth_date": "1993-07-25",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "193077512345606",
-      "rib": "FR7612548029315478963201461",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "89",
-        "street": "Avenue de Wagram",
-        "postalCode": "75017",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Jean",
-        "lastName": "Lambert",
-        "relation": "Père",
-        "phoneNumber": "+33141456790"
-      },
-      "team": 2
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 7,
-    "fields": {
-      "username": "sophie.garcia",
-      "email": "sophie.garcia@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Sophie",
-      "last_name": "Garcia",
-      "telephone": "+33141567890",
-      "personal_email": "s.garcia@gmail.com",
-      "role": "Conseiller Clientèle",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2021-01-10",
-      "annual_salary": 36000.00,
-      "birth_date": "1994-10-12",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "294107512345607",
-      "rib": "FR7612548029315478963201462",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "56",
-        "street": "Rue du Faubourg Saint-Honoré",
-        "postalCode": "75008",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Maria",
-        "lastName": "Garcia",
-        "relation": "Mère",
-        "phoneNumber": "+33141567891"
-      },
-      "team": 2
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 8,
-    "fields": {
-      "username": "lucas.martin",
-      "email": "lucas.martin@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Lucas",
-      "last_name": "Martin",
-      "telephone": "+33141678901",
-      "personal_email": "l.martin@gmail.com",
-      "role": "Conseiller Clientèle",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2022-09-01",
-      "annual_salary": 34000.00,
-      "birth_date": "1995-01-30",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "195017512345608",
-      "rib": "FR7612548029315478963201463",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "34",
-        "street": "Boulevard Haussmann",
-        "postalCode": "75009",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Philippe",
-        "lastName": "Martin",
-        "relation": "Père",
-        "phoneNumber": "+33141678902"
-      },
-      "team": 2
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 9,
-    "fields": {
-      "username": "emma.roux",
-      "email": "emma.roux@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Emma",
-      "last_name": "Roux",
-      "telephone": "+33141789012",
-      "personal_email": "e.roux@gmail.com",
-      "role": "Conseiller Clientèle",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2021-11-15",
-      "annual_salary": 35000.00,
-      "birth_date": "1996-06-08",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "296067512345609",
-      "rib": "FR7612548029315478963201464",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "78",
-        "street": "Rue de la Boétie",
-        "postalCode": "75008",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Isabelle",
-        "lastName": "Roux",
-        "relation": "Mère",
-        "phoneNumber": "+33141789013"
-      },
-      "team": 2
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 10,
-    "fields": {
-      "username": "manager.credit",
-      "email": "manager.credit@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "François",
-      "last_name": "Durand",
-      "telephone": "+33142123456",
-      "personal_email": "f.durand@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-04-12",
-      "annual_salary": 62000.00,
-      "birth_date": "1983-08-19",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "183087512345610",
-      "rib": "FR7612548029315478963201465",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "91",
-        "street": "Avenue des Ternes",
-        "postalCode": "75017",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Valérie",
-        "lastName": "Durand",
-        "relation": "Épouse",
-        "phoneNumber": "+33142123457"
-      },
-      "team": 3
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 11,
-    "fields": {
-      "username": "antoine.blanc",
-      "email": "antoine.blanc@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Antoine",
-      "last_name": "Blanc",
-      "telephone": "+33142234567",
-      "personal_email": "a.blanc@gmail.com",
-      "role": "Analyste Crédit",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-06-01",
-      "annual_salary": 45000.00,
-      "birth_date": "1990-03-14",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "190037512345611",
-      "rib": "FR7612548029315478963201466",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "15",
-        "street": "Rue de Longchamp",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Bernard",
-        "lastName": "Blanc",
-        "relation": "Père",
-        "phoneNumber": "+33142234568"
-      },
-      "team": 3
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 12,
-    "fields": {
-      "username": "julie.morel",
-      "email": "julie.morel@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Julie",
-      "last_name": "Morel",
-      "telephone": "+33142345678",
-      "personal_email": "j.morel@gmail.com",
-      "role": "Analyste Crédit",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-02-10",
-      "annual_salary": 43000.00,
-      "birth_date": "1991-09-22",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "291097512345612",
-      "rib": "FR7612548029315478963201467",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "42",
-        "street": "Avenue Mozart",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Olivier",
-        "lastName": "Simon",
-        "relation": "Conjoint",
-        "phoneNumber": "+33142345679"
-      },
-      "team": 3
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 13,
-    "fields": {
-      "username": "maxime.simon",
-      "email": "maxime.simon@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Maxime",
-      "last_name": "Simon",
-      "telephone": "+33142456789",
-      "personal_email": "m.simon@gmail.com",
-      "role": "Analyste Crédit",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-08-15",
-      "annual_salary": 42000.00,
-      "birth_date": "1992-12-05",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "192127512345613",
-      "rib": "FR7612548029315478963201468",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "28",
-        "street": "Rue Spontini",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Catherine",
-        "lastName": "Simon",
-        "relation": "Mère",
-        "phoneNumber": "+33142456790"
-      },
-      "team": 3
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 14,
-    "fields": {
-      "username": "laura.vincent",
-      "email": "laura.vincent@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Laura",
-      "last_name": "Vincent",
-      "telephone": "+33142567890",
-      "personal_email": "l.vincent@gmail.com",
-      "role": "Analyste Crédit",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2021-03-20",
-      "annual_salary": 41000.00,
-      "birth_date": "1993-05-18",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "293057512345614",
-      "rib": "FR7612548029315478963201469",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "65",
-        "street": "Avenue Foch",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Thierry",
-        "lastName": "Vincent",
-        "relation": "Père",
-        "phoneNumber": "+33142567891"
-      },
-      "team": 3
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 15,
-    "fields": {
-      "username": "nicolas.fournier",
-      "email": "nicolas.fournier@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Nicolas",
-      "last_name": "Fournier",
-      "telephone": "+33142678901",
-      "personal_email": "n.fournier@gmail.com",
-      "role": "Analyste Crédit",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2022-11-01",
-      "annual_salary": 39000.00,
-      "birth_date": "1994-08-27",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "194087512345615",
-      "rib": "FR7612548029315478963201470",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "19",
-        "street": "Rue de la Pompe",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Martine",
-        "lastName": "Fournier",
-        "relation": "Mère",
-        "phoneNumber": "+33142678902"
-      },
-      "team": 3
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 16,
-    "fields": {
-      "username": "manager.risques",
-      "email": "manager.risques@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Isabelle",
-      "last_name": "Girard",
-      "telephone": "+33143123456",
-      "personal_email": "i.girard@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2016-09-05",
-      "annual_salary": 68000.00,
-      "birth_date": "1982-04-11",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "282047512345616",
-      "rib": "FR7612548029315478963201471",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "52",
-        "street": "Rue de Passy",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Laurent",
-        "lastName": "Girard",
-        "relation": "Époux",
-        "phoneNumber": "+33143123457"
-      },
-      "team": 4
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 17,
-    "fields": {
-      "username": "pierre.andre",
-      "email": "pierre.andre@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Pierre",
-      "last_name": "André",
-      "telephone": "+33143234567",
-      "personal_email": "p.andre@gmail.com",
-      "role": "Analyste Risques",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-11-20",
-      "annual_salary": 52000.00,
-      "birth_date": "1989-01-25",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "189017512345617",
-      "rib": "FR7612548029315478963201472",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "38",
-        "street": "Avenue Victor Hugo",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Robert",
-        "lastName": "André",
-        "relation": "Père",
-        "phoneNumber": "+33143234568"
-      },
-      "team": 4
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 18,
-    "fields": {
-      "username": "camille.mercier",
-      "email": "camille.mercier@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Camille",
-      "last_name": "Mercier",
-      "telephone": "+33143345678",
-      "personal_email": "c.mercier@gmail.com",
-      "role": "Analyste Risques",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-04-15",
-      "annual_salary": 50000.00,
-      "birth_date": "1990-07-30",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "290077512345618",
-      "rib": "FR7612548029315478963201473",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "74",
-        "street": "Boulevard Suchet",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Sandrine",
-        "lastName": "Mercier",
-        "relation": "Mère",
-        "phoneNumber": "+33143345679"
-      },
-      "team": 4
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 19,
-    "fields": {
-      "username": "thomas.bonnet",
-      "email": "thomas.bonnet@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Thomas",
-      "last_name": "Bonnet",
-      "telephone": "+33143456789",
-      "personal_email": "t.bonnet@gmail.com",
-      "role": "Analyste Risques",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-01-08",
-      "annual_salary": 48000.00,
-      "birth_date": "1991-10-16",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "191107512345619",
-      "rib": "FR7612548029315478963201474",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "11",
-        "street": "Rue Raynouard",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Daniel",
-        "lastName": "Bonnet",
-        "relation": "Père",
-        "phoneNumber": "+33143456790"
-      },
-      "team": 4
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 20,
-    "fields": {
-      "username": "sarah.leroy",
-      "email": "sarah.leroy@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Sarah",
-      "last_name": "Leroy",
-      "telephone": "+33143567890",
-      "personal_email": "s.leroy@gmail.com",
-      "role": "Analyste Risques",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-09-22",
-      "annual_salary": 47000.00,
-      "birth_date": "1992-02-28",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "292027512345620",
-      "rib": "FR7612548029315478963201475",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "93",
-        "street": "Avenue Paul Doumer",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Patricia",
-        "lastName": "Leroy",
-        "relation": "Mère",
-        "phoneNumber": "+33143567891"
-      },
-      "team": 4
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 21,
-    "fields": {
-      "username": "hugo.colin",
-      "email": "hugo.colin@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Hugo",
-      "last_name": "Colin",
-      "telephone": "+33143678901",
-      "personal_email": "h.colin@gmail.com",
-      "role": "Analyste Risques",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2023-02-01",
-      "annual_salary": 44000.00,
-      "birth_date": "1995-11-09",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "195117512345621",
-      "rib": "FR7612548029315478963201476",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "26",
-        "street": "Rue Beethoven",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "François",
-        "lastName": "Colin",
-        "relation": "Père",
-        "phoneNumber": "+33143678902"
-      },
-      "team": 4
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 22,
-    "fields": {
-      "username": "manager.trading",
-      "email": "manager.trading@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Philippe",
-      "last_name": "Marchand",
-      "telephone": "+33144123456",
-      "personal_email": "p.marchand@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2015-06-18",
-      "annual_salary": 95000.00,
-      "birth_date": "1979-12-03",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "179127512345622",
-      "rib": "FR7612548029315478963201477",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "105",
-        "street": "Avenue Henri Martin",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Nathalie",
-        "lastName": "Marchand",
-        "relation": "Épouse",
-        "phoneNumber": "+33144123457"
-      },
-      "team": 5
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 23,
-    "fields": {
-      "username": "cedric.faure",
-      "email": "cedric.faure@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Cédric",
-      "last_name": "Faure",
-      "telephone": "+33144234567",
-      "personal_email": "c.faure@gmail.com",
-      "role": "Trader",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-03-25",
-      "annual_salary": 75000.00,
-      "birth_date": "1986-06-14",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "186067512345623",
-      "rib": "FR7612548029315478963201478",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "83",
-        "street": "Rue de la Tour",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Michel",
-        "lastName": "Faure",
-        "relation": "Père",
-        "phoneNumber": "+33144234568"
-      },
-      "team": 5
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 24,
-    "fields": {
-      "username": "marine.petit",
-      "email": "marine.petit@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Marine",
-      "last_name": "Petit",
-      "telephone": "+33144345678",
-      "personal_email": "m.petit@gmail.com",
-      "role": "Trader",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-08-10",
-      "annual_salary": 72000.00,
-      "birth_date": "1988-09-20",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "288097512345624",
-      "rib": "FR7612548029315478963201479",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "17",
-        "street": "Avenue Bugeaud",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Julien",
-        "lastName": "Renard",
-        "relation": "Conjoint",
-        "phoneNumber": "+33144345679"
-      },
-      "team": 5
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 25,
-    "fields": {
-      "username": "romain.henry",
-      "email": "romain.henry@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Romain",
-      "last_name": "Henry",
-      "telephone": "+33144456789",
-      "personal_email": "r.henry@gmail.com",
-      "role": "Trader",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-01-15",
-      "annual_salary": 70000.00,
-      "birth_date": "1989-11-05",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "189117512345625",
-      "rib": "FR7612548029315478963201480",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "54",
-        "street": "Rue Poussin",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Sylvie",
-        "lastName": "Henry",
-        "relation": "Mère",
-        "phoneNumber": "+33144456790"
-      },
-      "team": 5
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 26,
-    "fields": {
-      "username": "valerie.roussel",
-      "email": "valerie.roussel@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Valérie",
-      "last_name": "Roussel",
-      "telephone": "+33144567890",
-      "personal_email": "v.roussel@gmail.com",
-      "role": "Trader",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-06-01",
-      "annual_salary": 68000.00,
-      "birth_date": "1990-04-22",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "290047512345626",
-      "rib": "FR7612548029315478963201481",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "31",
-        "street": "Avenue Mozart",
-        "postalCode": "75016",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Alain",
-        "lastName": "Roussel",
-        "relation": "Père",
-        "phoneNumber": "+33144567891"
-      },
-      "team": 5
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 27,
-    "fields": {
-      "username": "damien.gauthier",
-      "email": "damien.gauthier@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Damien",
-      "last_name": "Gauthier",
-      "telephone": "+33144678901",
-      "personal_email": "d.gauthier@gmail.com",
-      "role": "Trader",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2022-10-01",
-      "annual_salary": 65000.00,
-      "birth_date": "1993-08-17",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "193087512345627",
-      "rib": "FR7612548029315478963201482",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "72",
-        "street": "Rue Boissière",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Christine",
-        "lastName": "Gauthier",
-        "relation": "Mère",
-        "phoneNumber": "+33144678902"
-      },
-      "team": 5
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 28,
-    "fields": {
-      "username": "manager.conformite",
-      "email": "manager.conformite@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Catherine",
-      "last_name": "Perrin",
-      "telephone": "+33145123456",
-      "personal_email": "c.perrin@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2016-02-20",
-      "annual_salary": 72000.00,
-      "birth_date": "1981-07-08",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "281077512345628",
-      "rib": "FR7612548029315478963201483",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "88",
-        "street": "Avenue Kléber",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Christophe",
-        "lastName": "Perrin",
-        "relation": "Époux",
-        "phoneNumber": "+33145123457"
-      },
-      "team": 6
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 29,
-    "fields": {
-      "username": "benjamin.charles",
-      "email": "benjamin.charles@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Benjamin",
-      "last_name": "Charles",
-      "telephone": "+33145234567",
-      "personal_email": "b.charles@gmail.com",
-      "role": "Responsable Conformité",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-05-12",
-      "annual_salary": 55000.00,
-      "birth_date": "1987-10-19",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "187107512345629",
-      "rib": "FR7612548029315478963201484",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "43",
-        "street": "Rue Lauriston",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Gérard",
-        "lastName": "Charles",
-        "relation": "Père",
-        "phoneNumber": "+33145234568"
-      },
-      "team": 6
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 30,
-    "fields": {
-      "username": "alice.renaud",
-      "email": "alice.renaud@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Alice",
-      "last_name": "Renaud",
-      "telephone": "+33145345678",
-      "personal_email": "a.renaud@gmail.com",
-      "role": "Responsable Conformité",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-09-05",
-      "annual_salary": 53000.00,
-      "birth_date": "1989-03-15",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "289037512345630",
-      "rib": "FR7612548029315478963201485",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "29",
-        "street": "Avenue d'Iéna",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Lucas",
-        "lastName": "Morin",
-        "relation": "Conjoint",
-        "phoneNumber": "+33145345679"
-      },
-      "team": 6
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 31,
-    "fields": {
-      "username": "sebastien.denis",
-      "email": "sebastien.denis@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Sébastien",
-      "last_name": "Denis",
-      "telephone": "+33145456789",
-      "personal_email": "s.denis@gmail.com",
-      "role": "Responsable Conformité",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-03-18",
-      "annual_salary": 52000.00,
-      "birth_date": "1991-06-27",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "191067512345631",
-      "rib": "FR7612548029315478963201486",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "61",
-        "street": "Rue de Bassano",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Monique",
-        "lastName": "Denis",
-        "relation": "Mère",
-        "phoneNumber": "+33145456790"
-      },
-      "team": 6
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 32,
-    "fields": {
-      "username": "melissa.leclerc",
-      "email": "melissa.leclerc@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Mélissa",
-      "last_name": "Leclerc",
-      "telephone": "+33145567890",
-      "personal_email": "m.leclerc@gmail.com",
-      "role": "Responsable Conformité",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2021-07-01",
-      "annual_salary": 50000.00,
-      "birth_date": "1992-12-11",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "292127512345632",
-      "rib": "FR7612548029315478963201487",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "18",
-        "street": "Rue Copernic",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Didier",
-        "lastName": "Leclerc",
-        "relation": "Père",
-        "phoneNumber": "+33145567891"
-      },
-      "team": 6
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 33,
-    "fields": {
-      "username": "kevin.chevalier",
-      "email": "kevin.chevalier@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Kevin",
-      "last_name": "Chevalier",
-      "telephone": "+33145678901",
-      "personal_email": "k.chevalier@gmail.com",
-      "role": "Responsable Conformité",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2023-01-15",
-      "annual_salary": 48000.00,
-      "birth_date": "1994-05-24",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "194057512345633",
-      "rib": "FR7612548029315478963201488",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "95",
-        "street": "Avenue Raymond Poincaré",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Martine",
-        "lastName": "Chevalier",
-        "relation": "Mère",
-        "phoneNumber": "+33145678902"
-      },
-      "team": 6
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 34,
-    "fields": {
-      "username": "manager.it",
-      "email": "manager.it@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Marc",
-      "last_name": "Fontaine",
-      "telephone": "+33146123456",
-      "personal_email": "m.fontaine@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2014-08-01",
-      "annual_salary": 78000.00,
-      "birth_date": "1978-02-14",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "178027512345634",
-      "rib": "FR7612548029315478963201489",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "47",
-        "street": "Rue de Longchamp",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Laurence",
-        "lastName": "Fontaine",
-        "relation": "Épouse",
-        "phoneNumber": "+33146123457"
-      },
-      "team": 7
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 35,
-    "fields": {
-      "username": "gregory.roy",
-      "email": "gregory.roy@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Grégory",
-      "last_name": "Roy",
-      "telephone": "+33146234567",
-      "personal_email": "g.roy@gmail.com",
-      "role": "Ingénieur Système",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-10-15",
-      "annual_salary": 58000.00,
-      "birth_date": "1986-11-30",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "186117512345635",
-      "rib": "FR7612548029315478963201490",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "36",
-        "street": "Rue de la Pompe",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "André",
-        "lastName": "Roy",
-        "relation": "Père",
-        "phoneNumber": "+33146234568"
-      },
-      "team": 7
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 36,
-    "fields": {
-      "username": "audrey.clement",
-      "email": "audrey.clement@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Audrey",
-      "last_name": "Clément",
-      "telephone": "+33146345678",
-      "personal_email": "a.clement@gmail.com",
-      "role": "Ingénieur Cybersécurité",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-12-01",
-      "annual_salary": 62000.00,
-      "birth_date": "1988-04-08",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "288047512345636",
-      "rib": "FR7612548029315478963201491",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "74",
-        "street": "Avenue Georges Mandel",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "David",
-        "lastName": "Blanc",
-        "relation": "Conjoint",
-        "phoneNumber": "+33146345679"
-      },
-      "team": 7
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 37,
-    "fields": {
-      "username": "fabien.muller",
-      "email": "fabien.muller@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Fabien",
-      "last_name": "Muller",
-      "telephone": "+33146456789",
-      "personal_email": "f.muller@gmail.com",
-      "role": "Développeur",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-05-20",
-      "annual_salary": 54000.00,
-      "birth_date": "1990-09-16",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "190097512345637",
-      "rib": "FR7612548029315478963201492",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "22",
-        "street": "Rue Pergolèse",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Brigitte",
-        "lastName": "Muller",
-        "relation": "Mère",
-        "phoneNumber": "+33146456790"
-      },
-      "team": 7
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 38,
-    "fields": {
-      "username": "jessica.lopez",
-      "email": "jessica.lopez@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Jessica",
-      "last_name": "Lopez",
-      "telephone": "+33146567890",
-      "personal_email": "j.lopez@gmail.com",
-      "role": "Développeur",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-11-01",
-      "annual_salary": 52000.00,
-      "birth_date": "1992-01-25",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "292017512345638",
-      "rib": "FR7612548029315478963201493",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "58",
-        "street": "Rue Lauriston",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Carmen",
-        "lastName": "Lopez",
-        "relation": "Mère",
-        "phoneNumber": "+33146567891"
-      },
-      "team": 7
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 39,
-    "fields": {
-      "username": "alexandre.dufour",
-      "email": "alexandre.dufour@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Alexandre",
-      "last_name": "Dufour",
-      "telephone": "+33146678901",
-      "personal_email": "a.dufour@gmail.com",
-      "role": "Développeur",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2022-06-01",
-      "annual_salary": 50000.00,
-      "birth_date": "1995-07-13",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "195077512345639",
-      "rib": "FR7612548029315478963201494",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "81",
-        "street": "Rue de la Faisanderie",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Jacques",
-        "lastName": "Dufour",
-        "relation": "Père",
-        "phoneNumber": "+33146678902"
-      },
-      "team": 7
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 40,
-    "fields": {
-      "username": "manager.rh",
-      "email": "manager.rh@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Isabelle",
-      "last_name": "Garnier",
-      "telephone": "+33147123456",
-      "personal_email": "i.garnier@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2016-09-10",
-      "annual_salary": 65000.00,
-      "birth_date": "1982-05-20",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "282057512345640",
-      "rib": "FR7612548029315478963201495",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "103",
-        "street": "Avenue Victor Hugo",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Patrick",
-        "lastName": "Garnier",
-        "relation": "Époux",
-        "phoneNumber": "+33147123457"
-      },
-      "team": 8
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 41,
-    "fields": {
-      "username": "nathalie.rousseau",
-      "email": "nathalie.rousseau@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Nathalie",
-      "last_name": "Rousseau",
-      "telephone": "+33147234567",
-      "personal_email": "n.rousseau@gmail.com",
-      "role": "Chargé RH",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-04-15",
-      "annual_salary": 42000.00,
-      "birth_date": "1987-08-12",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "287087512345641",
-      "rib": "FR7612548029315478963201496",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "39",
-        "street": "Rue de Chaillot",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Françoise",
-        "lastName": "Rousseau",
-        "relation": "Mère",
-        "phoneNumber": "+33147234568"
-      },
-      "team": 8
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 42,
-    "fields": {
-      "username": "olivier.girard",
-      "email": "olivier.girard@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Olivier",
-      "last_name": "Girard",
-      "telephone": "+33147345678",
-      "personal_email": "o.girard@gmail.com",
-      "role": "Chargé RH",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-07-01",
-      "annual_salary": 40000.00,
-      "birth_date": "1989-11-28",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "189117512345642",
-      "rib": "FR7612548029315478963201497",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "67",
-        "street": "Avenue Paul Doumer",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Émilie",
-        "lastName": "Duval",
-        "relation": "Conjointe",
-        "phoneNumber": "+33147345679"
-      },
-      "team": 8
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 43,
-    "fields": {
-      "username": "veronique.bonnet",
-      "email": "veronique.bonnet@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Véronique",
-      "last_name": "Bonnet",
-      "telephone": "+33147456789",
-      "personal_email": "v.bonnet@gmail.com",
-      "role": "Chargé RH",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-02-20",
-      "annual_salary": 39000.00,
-      "birth_date": "1991-03-07",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "291037512345643",
-      "rib": "FR7612548029315478963201498",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "25",
-        "street": "Rue Benjamin Franklin",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Bruno",
-        "lastName": "Bonnet",
-        "relation": "Père",
-        "phoneNumber": "+33147456790"
-      },
-      "team": 8
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 44,
-    "fields": {
-      "username": "frederic.roux",
-      "email": "frederic.roux@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Frédéric",
-      "last_name": "Roux",
-      "telephone": "+33147567890",
-      "personal_email": "f.roux@gmail.com",
-      "role": "Chargé RH",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2021-05-10",
-      "annual_salary": 38000.00,
-      "birth_date": "1992-09-19",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "192097512345644",
-      "rib": "FR7612548029315478963201499",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "50",
-        "street": "Rue Nicolo",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Annie",
-        "lastName": "Roux",
-        "relation": "Mère",
-        "phoneNumber": "+33147567891"
-      },
-      "team": 8
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 45,
-    "fields": {
-      "username": "stephanie.lambert",
-      "email": "stephanie.lambert@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Stéphanie",
-      "last_name": "Lambert",
-      "telephone": "+33147678901",
-      "personal_email": "s.lambert@gmail.com",
-      "role": "Chargé RH",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2023-03-01",
-      "annual_salary": 36000.00,
-      "birth_date": "1996-02-14",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "296027512345645",
-      "rib": "FR7612548029315478963201500",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "14",
-        "street": "Avenue du Maréchal Maunoury",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Henri",
-        "lastName": "Lambert",
-        "relation": "Père",
-        "phoneNumber": "+33147678902"
-      },
-      "team": 8
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 46,
-    "fields": {
-      "username": "manager.compta",
-      "email": "manager.compta@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Éric",
-      "last_name": "Fernandez",
-      "telephone": "+33148123456",
-      "personal_email": "e.fernandez@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2015-11-20",
-      "annual_salary": 68000.00,
-      "birth_date": "1980-10-05",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "180107512345646",
-      "rib": "FR7612548029315478963201501",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "92",
-        "street": "Boulevard Lannes",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Gabrielle",
-        "lastName": "Fernandez",
-        "relation": "Épouse",
-        "phoneNumber": "+33148123457"
-      },
-      "team": 9
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 47,
-    "fields": {
-      "username": "christophe.renard",
-      "email": "christophe.renard@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Christophe",
-      "last_name": "Renard",
-      "telephone": "+33148234567",
-      "personal_email": "c.renard@gmail.com",
-      "role": "Comptable",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-06-12",
-      "annual_salary": 46000.00,
-      "birth_date": "1985-12-22",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "185127512345647",
-      "rib": "FR7612548029315478963201502",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "44",
-        "street": "Rue Vineuse",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Claude",
-        "lastName": "Renard",
-        "relation": "Père",
-        "phoneNumber": "+33148234568"
-      },
-      "team": 9
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 48,
-    "fields": {
-      "username": "sandrine.blanc",
-      "email": "sandrine.blanc@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Sandrine",
-      "last_name": "Blanc",
-      "telephone": "+33148345678",
-      "personal_email": "s.blanc@gmail.com",
-      "role": "Comptable",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-09-01",
-      "annual_salary": 44000.00,
-      "birth_date": "1988-05-16",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "288057512345648",
-      "rib": "FR7612548029315478963201503",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "78",
-        "street": "Rue Eugène Delacroix",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Antoine",
-        "lastName": "Giraud",
-        "relation": "Conjoint",
-        "phoneNumber": "+33148345679"
-      },
-      "team": 9
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 49,
-    "fields": {
-      "username": "vincent.dupuis",
-      "email": "vincent.dupuis@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Vincent",
-      "last_name": "Dupuis",
-      "telephone": "+33148456789",
-      "personal_email": "v.dupuis@gmail.com",
-      "role": "Comptable",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-12-10",
-      "annual_salary": 43000.00,
-      "birth_date": "1990-08-29",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "190087512345649",
-      "rib": "FR7612548029315478963201504",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "33",
-        "street": "Rue Mesnil",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Corinne",
-        "lastName": "Dupuis",
-        "relation": "Mère",
-        "phoneNumber": "+33148456790"
-      },
-      "team": 9
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 50,
-    "fields": {
-      "username": "karine.martin",
-      "email": "karine.martin@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Karine",
-      "last_name": "Martin",
-      "telephone": "+33148567890",
-      "personal_email": "k.martin@gmail.com",
-      "role": "Comptable",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-10-15",
-      "annual_salary": 42000.00,
-      "birth_date": "1991-01-11",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "291017512345650",
-      "rib": "FR7612548029315478963201505",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "56",
-        "street": "Rue Spontini",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Serge",
-        "lastName": "Martin",
-        "relation": "Père",
-        "phoneNumber": "+33148567891"
-      },
-      "team": 9
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 51,
-    "fields": {
-      "username": "lionel.mercier",
-      "email": "lionel.mercier@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Lionel",
-      "last_name": "Mercier",
-      "telephone": "+33148678901",
-      "personal_email": "l.mercier@gmail.com",
-      "role": "Comptable",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2022-04-01",
-      "annual_salary": 40000.00,
-      "birth_date": "1994-06-03",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "194067512345651",
-      "rib": "FR7612548029315478963201506",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "19",
-        "street": "Rue Cortambert",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Sylvie",
-        "lastName": "Mercier",
-        "relation": "Mère",
-        "phoneNumber": "+33148678902"
-      },
-      "team": 9
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 52,
-    "fields": {
-      "username": "manager.banqueprivee",
-      "email": "manager.banqueprivee@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Laurent",
-      "last_name": "Dubois",
-      "telephone": "+33149123456",
-      "personal_email": "l.dubois@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2013-05-15",
-      "annual_salary": 95000.00,
-      "birth_date": "1976-03-28",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "176037512345652",
-      "rib": "FR7612548029315478963201507",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "120",
-        "street": "Avenue Foch",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Béatrice",
-        "lastName": "Dubois",
-        "relation": "Épouse",
-        "phoneNumber": "+33149123457"
-      },
-      "team": 10
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 53,
-    "fields": {
-      "username": "patricia.morel",
-      "email": "patricia.morel@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Patricia",
-      "last_name": "Morel",
-      "telephone": "+33149234567",
-      "personal_email": "p.morel@gmail.com",
-      "role": "Gestionnaire Patrimoine",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2016-08-20",
-      "annual_salary": 72000.00,
-      "birth_date": "1984-07-09",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "284077512345653",
-      "rib": "FR7612548029315478963201508",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "65",
-        "street": "Avenue Raymond Poincaré",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Michèle",
-        "lastName": "Morel",
-        "relation": "Mère",
-        "phoneNumber": "+33149234568"
-      },
-      "team": 10
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 54,
-    "fields": {
-      "username": "thierry.durand",
-      "email": "thierry.durand@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Thierry",
-      "last_name": "Durand",
-      "telephone": "+33149345678",
-      "personal_email": "t.durand@gmail.com",
-      "role": "Gestionnaire Patrimoine",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-11-10",
-      "annual_salary": 70000.00,
-      "birth_date": "1986-10-14",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "186107512345654",
-      "rib": "FR7612548029315478963201509",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "48",
-        "street": "Rue de Longchamp",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Aurélie",
-        "lastName": "Thomas",
-        "relation": "Conjointe",
-        "phoneNumber": "+33149345679"
-      },
-      "team": 10
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 55,
-    "fields": {
-      "username": "helene.fournier",
-      "email": "helene.fournier@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Hélène",
-      "last_name": "Fournier",
-      "telephone": "+33149456789",
-      "personal_email": "h.fournier@gmail.com",
-      "role": "Gestionnaire Patrimoine",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-03-25",
-      "annual_salary": 68000.00,
-      "birth_date": "1988-02-27",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "288027512345655",
-      "rib": "FR7612548029315478963201510",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "91",
-        "street": "Avenue Victor Hugo",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Georges",
-        "lastName": "Fournier",
-        "relation": "Père",
-        "phoneNumber": "+33149456790"
-      },
-      "team": 10
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 56,
-    "fields": {
-      "username": "gerard.simon",
-      "email": "gerard.simon@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Gérard",
-      "last_name": "Simon",
-      "telephone": "+33149567890",
-      "personal_email": "g.simon@gmail.com",
-      "role": "Gestionnaire Patrimoine",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-09-15",
-      "annual_salary": 66000.00,
-      "birth_date": "1989-12-06",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "189127512345656",
-      "rib": "FR7612548029315478963201511",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "37",
-        "street": "Rue de la Faisanderie",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Josiane",
-        "lastName": "Simon",
-        "relation": "Mère",
-        "phoneNumber": "+33149567891"
-      },
-      "team": 10
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 57,
-    "fields": {
-      "username": "florence.andre",
-      "email": "florence.andre@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Florence",
-      "last_name": "André",
-      "telephone": "+33149678901",
-      "personal_email": "f.andre@gmail.com",
-      "role": "Gestionnaire Patrimoine",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2022-08-01",
-      "annual_salary": 64000.00,
-      "birth_date": "1993-05-21",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "293057512345657",
-      "rib": "FR7612548029315478963201512",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "76",
-        "street": "Rue Lauriston",
-        "postalCode": "75116",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Raymond",
-        "lastName": "André",
-        "relation": "Père",
-        "phoneNumber": "+33149678902"
-      },
-      "team": 10
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 58,
-    "fields": {
-      "username": "manager.agence",
-      "email": "manager.agence@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Daniel",
-      "last_name": "Lefevre",
-      "telephone": "+33150123456",
-      "personal_email": "d.lefevre@gmail.com",
-      "role": "Manager",
-      "is_staff": true,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2014-01-08",
-      "annual_salary": 62000.00,
-      "birth_date": "1979-04-17",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "179047512345658",
-      "rib": "FR7612548029315478963201513",
-      "family_situation": "Marié(e)",
-      "address": {
-        "number": "55",
-        "street": "Rue Guynemer",
-        "postalCode": "75006",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Agnès",
-        "lastName": "Lefevre",
-        "relation": "Épouse",
-        "phoneNumber": "+33150123457"
-      },
-      "team": 11
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 59,
-    "fields": {
-      "username": "sylvie.garcia",
-      "email": "sylvie.garcia@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Sylvie",
-      "last_name": "Garcia",
-      "telephone": "+33150234567",
-      "personal_email": "s.garcia@gmail.com",
-      "role": "Conseiller Agence",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2017-02-14",
-      "annual_salary": 39000.00,
-      "birth_date": "1986-09-03",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "286097512345659",
-      "rib": "FR7612548029315478963201514",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "82",
-        "street": "Rue Bonaparte",
-        "postalCode": "75006",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Rosa",
-        "lastName": "Garcia",
-        "relation": "Mère",
-        "phoneNumber": "+33150234568"
-      },
-      "team": 11
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 60,
-    "fields": {
-      "username": "bruno.lopez",
-      "email": "bruno.lopez@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Bruno",
-      "last_name": "Lopez",
-      "telephone": "+33150345678",
-      "personal_email": "b.lopez@gmail.com",
-      "role": "Conseiller Agence",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2018-07-22",
-      "annual_salary": 38000.00,
-      "birth_date": "1988-11-19",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "188117512345660",
-      "rib": "FR7612548029315478963201515",
-      "family_situation": "Pacsé(e)",
-      "address": {
-        "number": "27",
-        "street": "Rue de Rennes",
-        "postalCode": "75006",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Céline",
-        "lastName": "Petit",
-        "relation": "Conjointe",
-        "phoneNumber": "+33150345679"
-      },
-      "team": 11
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 61,
-    "fields": {
-      "username": "celine.martinez",
-      "email": "celine.martinez@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Céline",
-      "last_name": "Martinez",
-      "telephone": "+33150456789",
-      "personal_email": "c.martinez@gmail.com",
-      "role": "Conseiller Agence",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2019-10-05",
-      "annual_salary": 37000.00,
-      "birth_date": "1991-02-08",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "291027512345661",
-      "rib": "FR7612548029315478963201516",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "41",
-        "street": "Boulevard Saint-Germain",
-        "postalCode": "75005",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "José",
-        "lastName": "Martinez",
-        "relation": "Père",
-        "phoneNumber": "+33150456790"
-      },
-      "team": 11
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 62,
-    "fields": {
-      "username": "didier.richard",
-      "email": "didier.richard@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Didier",
-      "last_name": "Richard",
-      "telephone": "+33150567890",
-      "personal_email": "d.richard@gmail.com",
-      "role": "Conseiller Agence",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDI",
-      "arrival_date": "2020-04-12",
-      "annual_salary": 36000.00,
-      "birth_date": "1992-08-15",
-      "working_hours": 35,
-      "leaves": 25,
-      "social_number": "192087512345662",
-      "rib": "FR7612548029315478963201517",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "63",
-        "street": "Rue de Vaugirard",
-        "postalCode": "75006",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "Mme",
-        "firstName": "Nicole",
-        "lastName": "Richard",
-        "relation": "Mère",
-        "phoneNumber": "+33150567891"
-      },
-      "team": 11
-    }
-  },
-  {
-    "model": "trinity.user",
-    "pk": 63,
-    "fields": {
-      "username": "martine.colin",
-      "email": "martine.colin@banque.com",
-      "password": "pbkdf2_sha256$600000$N6agHlpakwnymKqEJVPAEc$PZcRCPvNoEutgvhoeEHpzp2+30Y4sDBeYGs/Kq+SxyU=",
-      "first_name": "Martine",
-      "last_name": "Colin",
-      "telephone": "+33150678901",
-      "personal_email": "m.colin@gmail.com",
-      "role": "Conseiller Agence",
-      "is_staff": false,
-      "is_superuser": false,
-      "is_active": true,
-      "contract": "CDD",
-      "arrival_date": "2023-02-01",
-      "annual_salary": 34000.00,
-      "birth_date": "1995-12-20",
-      "working_hours": 35,
-      "leaves": 20,
-      "social_number": "295127512345663",
-      "rib": "FR7612548029315478963201518",
-      "family_situation": "Célibataire",
-      "address": {
-        "number": "18",
-        "street": "Rue de Tournon",
-        "postalCode": "75006",
-        "city": "Paris",
-        "state": "Île-de-France"
-      },
-      "emergency_contact": {
-        "courtesy": "M.",
-        "firstName": "Yves",
-        "lastName": "Colin",
-        "relation": "Père",
-        "phoneNumber": "+33150678902"
-      },
-      "team": 11
-    }
-  },
-{
-    "model": "trinity.calendar",
-    "pk": 1,
-    "fields": {
-      "begin": "2025-01-02T08:00:00Z",
-      "end": "2025-01-02T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 2,
-    "fields": {
-      "begin": "2025-01-03T08:00:00Z",
-      "end": "2025-01-03T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 3,
-    "fields": {
-      "begin": "2025-01-06T08:00:00Z",
-      "end": "2025-01-06T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 4,
-    "fields": {
-      "begin": "2025-01-07T08:00:00Z",
-      "end": "2025-01-07T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 5,
-    "fields": {
-      "begin": "2025-01-08T08:00:00Z",
-      "end": "2025-01-08T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 6,
-    "fields": {
-      "begin": "2025-01-09T08:00:00Z",
-      "end": "2025-01-09T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 7,
-    "fields": {
-      "begin": "2025-01-10T08:00:00Z",
-      "end": "2025-01-10T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 8,
-    "fields": {
-      "begin": "2025-01-13T08:00:00Z",
-      "end": "2025-01-13T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 9,
-    "fields": {
-      "begin": "2025-01-14T08:00:00Z",
-      "end": "2025-01-14T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 10,
-    "fields": {
-      "begin": "2025-01-15T08:00:00Z",
-      "end": "2025-01-15T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 11,
-    "fields": {
-      "begin": "2025-01-16T08:00:00Z",
-      "end": "2025-01-16T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 12,
-    "fields": {
-      "begin": "2025-01-17T08:00:00Z",
-      "end": "2025-01-17T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 13,
-    "fields": {
-      "begin": "2025-01-20T08:00:00Z",
-      "end": "2025-01-20T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 14,
-    "fields": {
-      "begin": "2025-01-21T08:00:00Z",
-      "end": "2025-01-21T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 15,
-    "fields": {
-      "begin": "2025-01-22T08:00:00Z",
-      "end": "2025-01-22T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 16,
-    "fields": {
-      "begin": "2025-01-23T08:00:00Z",
-      "end": "2025-01-23T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 17,
-    "fields": {
-      "begin": "2025-01-24T08:00:00Z",
-      "end": "2025-01-24T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 18,
-    "fields": {
-      "begin": "2025-01-27T08:00:00Z",
-      "end": "2025-01-27T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 19,
-    "fields": {
-      "begin": "2025-01-28T08:00:00Z",
-      "end": "2025-01-28T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 20,
-    "fields": {
-      "begin": "2025-01-29T08:00:00Z",
-      "end": "2025-01-29T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 21,
-    "fields": {
-      "begin": "2025-01-30T08:00:00Z",
-      "end": "2025-01-30T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 22,
-    "fields": {
-      "begin": "2025-01-31T08:00:00Z",
-      "end": "2025-01-31T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 4,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 23,
-    "fields": {
-      "begin": "2025-01-02T08:00:00Z",
-      "end": "2025-01-02T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 24,
-    "fields": {
-      "begin": "2025-01-03T08:00:00Z",
-      "end": "2025-01-03T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 25,
-    "fields": {
-      "begin": "2025-01-06T08:00:00Z",
-      "end": "2025-01-06T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 26,
-    "fields": {
-      "begin": "2025-01-07T08:00:00Z",
-      "end": "2025-01-07T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 27,
-    "fields": {
-      "begin": "2025-01-08T08:00:00Z",
-      "end": "2025-01-08T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 28,
-    "fields": {
-      "begin": "2025-01-09T08:00:00Z",
-      "end": "2025-01-09T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 29,
-    "fields": {
-      "begin": "2025-01-10T08:00:00Z",
-      "end": "2025-01-10T17:00:00Z",
-      "day_type": "Congé",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 30,
-    "fields": {
-      "begin": "2025-01-13T08:00:00Z",
-      "end": "2025-01-13T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 31,
-    "fields": {
-      "begin": "2025-01-14T08:00:00Z",
-      "end": "2025-01-14T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 32,
-    "fields": {
-      "begin": "2025-01-15T08:00:00Z",
-      "end": "2025-01-15T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 33,
-    "fields": {
-      "begin": "2025-01-16T08:00:00Z",
-      "end": "2025-01-16T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 34,
-    "fields": {
-      "begin": "2025-01-17T08:00:00Z",
-      "end": "2025-01-17T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 35,
-    "fields": {
-      "begin": "2025-01-20T08:00:00Z",
-      "end": "2025-01-20T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 36,
-    "fields": {
-      "begin": "2025-01-21T08:00:00Z",
-      "end": "2025-01-21T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 37,
-    "fields": {
-      "begin": "2025-01-22T08:00:00Z",
-      "end": "2025-01-22T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 38,
-    "fields": {
-      "begin": "2025-01-23T08:00:00Z",
-      "end": "2025-01-23T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 39,
-    "fields": {
-      "begin": "2025-01-24T08:00:00Z",
-      "end": "2025-01-24T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 40,
-    "fields": {
-      "begin": "2025-01-27T08:00:00Z",
-      "end": "2025-01-27T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 41,
-    "fields": {
-      "begin": "2025-01-28T08:00:00Z",
-      "end": "2025-01-28T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 42,
-    "fields": {
-      "begin": "2025-01-29T08:00:00Z",
-      "end": "2025-01-29T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 43,
-    "fields": {
-      "begin": "2025-01-30T08:00:00Z",
-      "end": "2025-01-30T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  },
-  {
-    "model": "trinity.calendar",
-    "pk": 44,
-    "fields": {
-      "begin": "2025-01-31T08:00:00Z",
-      "end": "2025-01-31T17:00:00Z",
-      "day_type": "Travail",
-      "employee": 5,
-      "day_over": true,
-      "duration": "09:00:00"
-    }
-  }
 ]
-

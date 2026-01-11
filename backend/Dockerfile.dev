@@ -19,8 +19,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 🔥 Ne pas copier le code ici, il sera monté via volume
+#  Ne pas copier le code ici, il sera monté via volume
 
 EXPOSE 8000
 
-# 🔥 Pas de CMD ici, il est dans docker-compose
+#  Pas de CMD ici, il est dans docker-compose
