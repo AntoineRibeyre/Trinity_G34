@@ -96,7 +96,7 @@ export class HistoricalColumn implements OnInit {
       this.isLoading = false;
 
     } catch (error) {
-      console.error('Erreur lors de l\'initialisation:', error);
+      // console.error('Erreur lors de l\'initialisation:', error);
       this.hasError = true;
       this.errorMessage = 'Impossible de charger les données';
       this.isLoading = false;
@@ -133,14 +133,14 @@ export class HistoricalColumn implements OnInit {
         next: result => {
           if (result) {
             this.currentMonthWork = result;
-            console.log(this.currentMonthWork);
+            // console.log(this.currentMonthWork);
             resolve();
           } else {
             reject('Aucune donnée reçue');
           }
         },
         error: error => {
-          console.error('❌ Erreur lors du chargement:', error);
+          // console.error('❌ Erreur lors du chargement:', error);
           reject(error);
         }
       });

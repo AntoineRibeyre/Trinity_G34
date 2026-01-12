@@ -135,7 +135,7 @@ export class SideNav implements OnInit{
 
   async logout(): Promise<void> {
     // Logique de déconnexion
-    console.log('Déconnexion...');
+    // console.log('Déconnexion...');
     
     // Pointer la sortie automatiquement si l'utilisateur a un pointage en cours
     if (this.currentUser?.id) {
@@ -144,11 +144,11 @@ export class SideNav implements OnInit{
         const pendingDay = await this.pointService.getPendingDay(userId).toPromise();
         if (pendingDay) {
           // Il y a un pointage en cours, pointer la sortie
-          console.log('Pointage de sortie automatique lors de la déconnexion');
+          // console.log('Pointage de sortie automatique lors de la déconnexion');
           await this.pointService.enregistrerSortie(userId, 'office').toPromise();
         }
       } catch (error) {
-        console.error('Erreur lors du pointage de sortie automatique:', error);
+        // console.error('Erreur lors du pointage de sortie automatique:', error);
       }
     }
     

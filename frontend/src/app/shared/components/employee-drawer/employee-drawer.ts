@@ -148,7 +148,7 @@ export class EmployeeDrawer implements OnChanges {
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       this.effectiveHours = `${hours}h ${minutes}m`;
     } catch (error) {
-      console.error('Erreur lors du chargement des heures effectives:', error);
+      // console.error('Erreur lors du chargement des heures effectives:', error);
       this.effectiveHours = '0h 0m';
     }
   }
@@ -159,7 +159,7 @@ export class EmployeeDrawer implements OnChanges {
 
   async export(): Promise<void> {
     if (!this.employee || !this.employee.id) {
-      console.error('Aucun employé sélectionné');
+      // console.error('Aucun employé sélectionné');
       return;
     }
 
@@ -239,7 +239,7 @@ export class EmployeeDrawer implements OnChanges {
       this.snackBarService.showSuccess('Export Excel généré avec succès');
 
     } catch (error) {
-      console.error('❌ Erreur lors de l\'export:', error);
+      // console.error('❌ Erreur lors de l\'export:', error);
       this.snackBarService.showError('Erreur lors de l\'export Excel');
     }
   }
@@ -258,7 +258,7 @@ export class EmployeeDrawer implements OnChanges {
       this.snackBarService.showSuccess('Modifications sauvegardées avec succès');
       this.close();
     } catch (err: any) {
-      console.error('Erreur lors de la sauvegarde de l\'utilisateur :', err);
+      // console.error('Erreur lors de la sauvegarde de l\'utilisateur :', err);
       // Friendly message for common backend unique constraint on email
       let errorMessage = 'Erreur lors de la sauvegarde de l\'utilisateur';
       try {

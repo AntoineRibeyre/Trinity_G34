@@ -62,7 +62,7 @@ export class TeamColumn implements OnInit {
       this.isLoading = false;
 
     } catch (error) {
-      console.error('Erreur lors de l\'initialisation:', error);
+      // console.error('Erreur lors de l\'initialisation:', error);
       this.isLoading = false;
     }
   }
