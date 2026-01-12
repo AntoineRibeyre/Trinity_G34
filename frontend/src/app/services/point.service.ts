@@ -81,8 +81,8 @@ const REGISTER_ARRIVAL = gql`
 `;
 
 const REGISTER_END = gql`
-  mutation RegisterEnd($userId: Int!) {
-    registerEnd(userId: $userId) {
+  mutation RegisterEnd($userId: Int!, $dayType: String!) {
+    registerEnd(userId: $userId, dayType: $dayType) {
       datetimeField
       durationField
     }
@@ -116,7 +116,7 @@ export class PointService {
         return result.data.todayCalendars || [];
       }),
       catchError(error => {
-        console.error('Erreur GraphQL:', error);
+        // console.error('Erreur GraphQL:', error);
         return of([]);
       })
     );
@@ -144,7 +144,7 @@ export class PointService {
         return result.data.allCalendarsByUser || [];
       }),
       catchError(error => {
-        console.error('Erreur lors de la récupération des calendriers:', error);
+        // console.error('Erreur lors de la récupération des calendriers:', error);
         return of([]);
       })
     );
@@ -202,10 +202,10 @@ export class PointService {
     );
   }
 
-  enregistrerSortie(userId: Number): Observable<any> {
+  enregistrerSortie(userId: Number, dayType: string): Observable<any> {
     return this.apollo.mutate({
       mutation: REGISTER_END,
-      variables: { userId }
+      variables: { userId, dayType }
     }).pipe(
       map((result: any) => result.data.registerEnd)
     );

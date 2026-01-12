@@ -2,7 +2,7 @@
 
 .general-space {
   width: calc(100% - 50px);
-  height: calc(100vh - 50px);
+  /*height: calc(100vh - 50px);*/
   padding: 25px;
 
   background-color: #F7F8FA;

@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
   private userService = inject(UserService);
 
   ngOnInit(): void {
-    this.currentUser = this.userService.loadCurrentUserFromServer();
     // Appliquer la langue sauvegardée en localStorage
     const lang = this.languageService.getCurrentLanguage();
     this.translateService.use(lang);
@@ -52,7 +51,7 @@ export class LoginComponent implements OnInit {
       // Appel du service d'authentification
       const user = await this.authService.login(this.email, this.password);
 
-      console.log('Utilisateur connecté:', user);
+      // console.log('Utilisateur connecté:', user);
 
       // Afficher un message de succès
       this.snackBarService.showSuccess(this.translateService.instant('LOGIN.SUCCESS') || 'Connexion réussie !');
@@ -60,13 +59,15 @@ export class LoginComponent implements OnInit {
       // Redirection vers le dashboard
       if (user.role === 'admin') {
         this.router.navigate(['/admin/users']);
+        // console.log('Redirection vers /admin/users');
       } else {
         this.router.navigate(['/dashboard']);
+        // console.log('Redirection vers /dashboard');
       }
      
 
     } catch (error: any) {
-      console.error('Erreur de connexion:', error);
+      // console.error('Erreur de connexion:', error);
 
       let errorMessage = '';
 

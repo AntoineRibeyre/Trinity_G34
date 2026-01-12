@@ -69,12 +69,51 @@ export class EmployeeDrawer implements OnChanges {
       if (!this.employee.team) {
         this.employee.team = { name: '' } as any;
       }
-      // ensure other nested fields exist if needed in future
+      // Ensure address and emergencyContact objects exist
+      if (!this.employee.address) {
+        this.employee.address = {
+          number: '',
+          street: '',
+          postalCode: '',
+          city: '',
+          state: ''
+        };
+      }
+      if (!this.employee.emergencyContact) {
+        this.employee.emergencyContact = {
+          courtesy: '',
+          firstName: '',
+          lastName: '',
+          relation: '',
+          phoneNumber: ''
+        };
+      }
     }
     // If employee input changed, ensure team exists and load effective hours
     if (changes['employee'] && this.employee) {
       if (this.isEditable && !this.employee.team) {
         this.employee.team = { name: '' } as any;
+      }
+      // Ensure address and emergencyContact objects exist when employee changes
+      if (this.isEditable) {
+        if (!this.employee.address) {
+          this.employee.address = {
+            number: '',
+            street: '',
+            postalCode: '',
+            city: '',
+            state: ''
+          };
+        }
+        if (!this.employee.emergencyContact) {
+          this.employee.emergencyContact = {
+            courtesy: '',
+            firstName: '',
+            lastName: '',
+            relation: '',
+            phoneNumber: ''
+          };
+        }
       }
       // Charger les heures effectives
       this.loadEffectiveHours();
@@ -109,7 +148,7 @@ export class EmployeeDrawer implements OnChanges {
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       this.effectiveHours = `${hours}h ${minutes}m`;
     } catch (error) {
-      console.error('Erreur lors du chargement des heures effectives:', error);
+      // console.error('Erreur lors du chargement des heures effectives:', error);
       this.effectiveHours = '0h 0m';
     }
   }
@@ -120,7 +159,7 @@ export class EmployeeDrawer implements OnChanges {
 
   async export(): Promise<void> {
     if (!this.employee || !this.employee.id) {
-      console.error('Aucun employé sélectionné');
+      // console.error('Aucun employé sélectionné');
       return;
     }
 
@@ -139,10 +178,19 @@ export class EmployeeDrawer implements OnChanges {
       exportData.push({ Champ: 'INFORMATIONS PERSONNELLES', Valeur: '' });
       exportData.push({ Champ: 'Nom', Valeur: this.employee.lastName || '' });
       exportData.push({ Champ: 'Prénom', Valeur: this.employee.firstName || '' });
+      exportData.push({ Champ: 'Date de naissance', Valeur: this.employee.birthDate || '' });
+      exportData.push({ Champ: 'Situation familiale', Valeur: this.employee.familySituation || '' });
       exportData.push({ Champ: 'Email', Valeur: this.employee.email || '' });
+      exportData.push({ Champ: 'Email personnel', Valeur: this.employee.personalEmail || '' });
       exportData.push({ Champ: 'Téléphone', Valeur: this.employee.telephone || '' });
       exportData.push({ Champ: 'Rôle', Valeur: this.employee.role || '' });
       exportData.push({ Champ: 'Équipe', Valeur: this.employee.team?.name || '' });
+      exportData.push({ Champ: 'Numéros de Sécurité Social', Valeur: this.employee.socialNumber || '' });
+      exportData.push({ Champ: 'Type de contrat', Valeur: this.employee.contract || '' });
+      exportData.push({ Champ: "Date d'arriver", Valeur: this.employee.arrivalDate || '' });
+      exportData.push({ Champ: 'Salaire annuel', Valeur: this.employee.annualSalary || '' });
+      exportData.push({ Champ: 'Adresse', Valeur: `${this.employee.address.number} ${this.employee.address.street}, ${this.employee.address.postalCode} ${this.employee.address.city}, ${this.employee.address.state}` });
+      exportData.push({ Champ: "Contact d'urgence", Valeur: `${this.employee.emergencyContact.courtesy}, ${this.employee.emergencyContact.firstName} ${this.employee.emergencyContact.lastName}; ` });
       exportData.push({ Champ: '', Valeur: '' }); // Ligne vide
 
       // 2. Section entrées Calendar
@@ -191,7 +239,7 @@ export class EmployeeDrawer implements OnChanges {
       this.snackBarService.showSuccess('Export Excel généré avec succès');
 
     } catch (error) {
-      console.error('❌ Erreur lors de l\'export:', error);
+      // console.error('❌ Erreur lors de l\'export:', error);
       this.snackBarService.showError('Erreur lors de l\'export Excel');
     }
   }
@@ -210,7 +258,7 @@ export class EmployeeDrawer implements OnChanges {
       this.snackBarService.showSuccess('Modifications sauvegardées avec succès');
       this.close();
     } catch (err: any) {
-      console.error('Erreur lors de la sauvegarde de l\'utilisateur :', err);
+      // console.error('Erreur lors de la sauvegarde de l\'utilisateur :', err);
       // Friendly message for common backend unique constraint on email
       let errorMessage = 'Erreur lors de la sauvegarde de l\'utilisateur';
       try {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Home } from './home';
+import { ExportPeriodDialog } from './export-period-dialog';
 
-describe('Home', () => {
-  let component: Home;
-  let fixture: ComponentFixture<Home>;
+describe('ExportPeriodDialog', () => {
+  let component: ExportPeriodDialog;
+  let fixture: ComponentFixture<ExportPeriodDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Home]
+      imports: [ExportPeriodDialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Home);
+    fixture = TestBed.createComponent(ExportPeriodDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -21,3 +21,4 @@ describe('Home', () => {
     expect(component).toBeTruthy();
   });
 });
+

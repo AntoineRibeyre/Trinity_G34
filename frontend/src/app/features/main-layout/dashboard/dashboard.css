@@ -27,6 +27,139 @@
 
 .profil {
   height: 35%;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.profil-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+}
+
+.avatar-container {
+  flex-shrink: 0;
+}
+
+.avatar-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profil-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.greeting {
+  font-size: clamp(20px, 2.5vw, 32px);
+  color: #333;
+  font-weight: 500;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #3E7CB1;
+}
+
+.work-mode-switch {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.work-mode-switch.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.switch-label {
+  font-size: clamp(14px, 1.5vw, 18px);
+  color: #999999;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.switch-label.active {
+  color: #3E7CB1;
+  font-weight: 600;
+}
+
+/* Switch Toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #3E7CB1;
+}
+
+input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+.slider:hover {
+  box-shadow: 0 0 8px rgba(62, 124, 177, 0.3);
 }
 
 .date {

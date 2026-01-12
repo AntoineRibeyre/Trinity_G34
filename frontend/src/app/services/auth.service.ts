@@ -72,10 +72,10 @@ export class AuthService {
       if (csrfToken) {
         // Stocker le CSRF token dans un cookie accessible en JavaScript
         document.cookie = `csrftoken=${csrfToken}; path=/; SameSite=Lax`;
-        console.log('CSRF token stocké:', csrfToken.substring(0, 20) + '...');
+        // console.log('CSRF token stocké:', csrfToken.substring(0, 20) + '...');
       }
       
-      console.log('Login réussi, récupération de l\'utilisateur...');
+      // console.log('Login réussi, récupération de l\'utilisateur...');
       
       // 2. Récupérer l'utilisateur connecté (le cookie JWT est maintenant défini)
       const userResult = await firstValueFrom(
@@ -88,14 +88,14 @@ export class AuthService {
       const user = userResult.data.currentUser;
       
       if (user) {
-        console.log('Utilisateur récupéré:', user);
+        // console.log('Utilisateur récupéré:', user);
         return user;
       } else {
         throw new Error('Impossible de récupérer l\'utilisateur après login');
       }
       
     } catch (err) {
-      console.error('Erreur login:', err);
+      // console.error('Erreur login:', err);
       throw err;
     }
   }
@@ -153,7 +153,7 @@ export class AuthService {
 
     this.loginClient.mutate({ mutation: LOGOUT_MUTATION })
       .then((response: any) => {
-        console.log('Réponse logout:', response);
+        // console.log('Réponse logout:', response);
         
         // Supprimer manuellement les cookies côté client (pour nettoyage visuel)
         document.cookie = 'csrftoken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
@@ -162,7 +162,7 @@ export class AuthService {
         this.router.navigate(['/login']);
       })
       .catch((error: any) => {
-        console.error('Erreur logout:', error);
+        // console.error('Erreur logout:', error);
         this.router.navigate(['/login']);
       });
   }
@@ -174,8 +174,8 @@ export class AuthService {
    */
   async isAuthenticated(): Promise<boolean> {
     try {
-      console.log('Vérification authentification...');
-      console.log('Cookies actuels:', document.cookie);
+      // console.log('Vérification authentification...');
+      // console.log('Cookies actuels:', document.cookie);
       
       const result = await firstValueFrom(
         this.apollo.query<CurrentUserResponse>({
@@ -188,22 +188,22 @@ export class AuthService {
       const user = result.data.currentUser;
       
       if (user) {
-        console.log('Utilisateur connecté:', user);
+        // console.log('Utilisateur connecté:', user);
         return true;
       } else {
-        console.log('Pas d\'utilisateur connecté (currentUser = null)');
+        // console.log('Pas d\'utilisateur connecté (currentUser = null)');
         return false;
       }
       
     } catch (err: any) {
-      console.error('Erreur lors de la vérification:', err);
+      // console.error('Erreur lors de la vérification:', err);
       
       // Log détaillé de l'erreur
       if (err.graphQLErrors) {
-        console.error('GraphQL Errors:', err.graphQLErrors);
+        // console.error('GraphQL Errors:', err.graphQLErrors);
       }
       if (err.networkError) {
-        console.error('Network Error:', err.networkError);
+        // console.error('Network Error:', err.networkError);
       }
       
       return false;

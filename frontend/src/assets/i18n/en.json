@@ -3,12 +3,15 @@
     "CANCEL": "Cancel",
     "CREATE": "Create",
     "SUPPRIMER": "Delete",
-    "EDIT": "Edit"
+    "EDIT": "Edit",
+    "ADD": "Add"
   },
   "SETTINGS": {
     "FIRST_NAME": "First name",
+    "FIRST_NAME_REQUIRED":"Require first name",
     "LAST_NAME": "Last name",
-    "EMAIL": "Email",
+    "LAST_NAME_REQUIRED": "Require last name",
+    "PERSONAL_MAIL": "Email",
     "SAVE": "Save",
     "LANGUAGE": "Language",
     "YOUR_STATS": "Your stats",
@@ -25,6 +28,7 @@
     "PASSWORD_HINT": "Leave this field empty if you do not wish to change your password",
     "SAVING": "Saving in progress...",
     "PHONE" : "Phone number",
+    "PHONE_INVALID": "Invalid phone number",
     "REQUIRE_MIN_LENGTH": "Six characters minimum",
     "REQUIRE_UPPERCASE": "At least one uppercase letter",
     "REQUIRE_LOWERCASE": "At least one lowercase letter",
@@ -35,6 +39,47 @@
     "CONFIRM_PASSWORD": "Confirm your password",
     "PLACEHOLDER_CONFIRM": "Confirm your password",
     "PASSWORD_MISMATCH": "Passwords do not match",
+    "EMAIL_PRO": "Professional email",
+    "ADDRESSE": "Address",
+    "CONTRACT": "Contract type",
+    "SOCIAL_NUMBER": "Social number",
+    "SALARY": "Annual salary",
+    "ARRIVAL_DATE": "Arrival date",
+    "LEAVE": "Leave balance",
+    "IBAN": "IBAN",
+    "FAMILY_SITUATION": "Family situation",
+    "SELECT": "Select",
+    "FAMILY_STATUS": {
+      "SINGLE": "Single",
+      "MARRIED": "Married",
+      "DIVORCED": "Divorced",
+      "CIVIL_PARTNERSHIP": "Civil partnership",
+      "WIDOW": "Widow",
+      "SEPARATE": "Separate",
+      "UNKNOWN": "Unknown",
+      "MARITAL": "Marital life"
+    },
+    "ADDRESSE": "Address",
+    "ADDRESS": {
+      "STREET": "Street name",
+      "STREET_NUMBER": "Street number",
+      "CITY": "City",
+      "POSTAL_CODE": "Postal code",
+      "COUNTRY": "Country"
+    },
+    "EMERGENCY_CONTACT": "Emergency contact",
+    "EMERGENCY": {
+      "COURTESY": "Title",
+      "LAST_NAME": "Last name",
+      "FIRST_NAME": "First name",
+      "RELATION": "Relationship",
+      "PHONE_NUMBER": "Phone number"
+    },
+    "TITLE": {
+      "MR": "Mr.",
+      "MRS": "Mrs.",
+      "MS": "Ms."
+    },
     "DIALOG": {
       "TITLE": "Edit your password",
       "PASSWORD": "Your password",
@@ -119,6 +164,11 @@
       "FRI": "Fri.",
       "SAT": "Sat.",
       "SUN": "Sun."
+    },
+    "WORK_MODE": {
+      "LABEL": "Work mode",
+      "OFFICE": "Office",
+      "HOME": "Homeworking"
     }
   },
   "TEAM": {
@@ -149,10 +199,31 @@
         "NAME-TITLE": "Last and first name of the employee",
         "NAME-PLACEHOLDER": "Name...",
         "RETIRER": "Remove"
+      },
+      "EXPORT-PERIOD": {
+        "TITLE": "Select export period",
+        "START-DATE": "Start date",
+        "END-DATE": "End date",
+        "CONFIRM": "Export",
+        "CANCEL": "Cancel"
       }
+    },
+    "NO-TEAM-MESSAGE": "You are not the manager of any team at the moment. Please contact an administrator to create a team.",
+    "TABLEAU": {
+      "AUCUN-MEMBRE": "No members in the team yet."
     }
   },
   "ADMIN": {
+    "FILTERS": {
+      "ROLE": "Role",
+      "TEAM": "Team",
+      "TEAM-TYPE": "Team type",
+      "ALL-ROLES": "All roles",
+      "ALL-TEAMS": "All teams",
+      "ALL-TEAM-TYPES": "All types",
+      "NO-TEAM": "No team",
+      "RESET": "Reset"
+    },
     "ALL": {
       "NAME": "Name",
       "FIRSTNAME": "Firstname",
@@ -178,8 +249,10 @@
         "PERSONAL": "Personal",
         "BIRTH-DATE": "Date of birth:",
         "EMAIL": "Email:",
+        "PERSONAL-EMAIL": "Personal email",
         "PHONE": "Phone number:",
         "SECU": "Numéros de SECU:",
+        "SITUATION": "Personal Situation",
         "PROFESSIONAL": "Professional",
         "JOB": "Job:",
         "CONTRACT": "Contract:",
@@ -190,8 +263,26 @@
         "EFFECTIF-TIME": "Actual working time:",
         "HOLIDAYS": "Vacation balance:",
         "ANNUAL-SALARY": "Annual salary:",
-        "ARRIVAL": "Arrival:"
-
+        "ARRIVAL": "Arrival:",
+        "EMPLOYEE": "Employee",
+        "ADMIN": "Admin",
+        "SINGLE": "Single",
+        "MARRIED": "Married",
+        "DIVORCED": "Divorced",
+        "CIVIL-PARTNERSHIP": "Civil partnership",
+        "WIDOW": "Widow/Widower",
+        "SEPARATE": "Separated",
+        "UNKNOWN": "Unknown",
+        "MARITAL": "Marital life",
+        "ADDRESS": "Address",
+        "CONTACT": "Emergency contact",
+        "RELATION": "Relation",
+        "NUMBER": "Number",
+        "STREET": "Street",
+        "POSTCODE": "Postcode",
+        "CITY": "City",
+        "STATE": "Country",
+        "RIB": "Rib"
       }
     },
     "TEAMS": {

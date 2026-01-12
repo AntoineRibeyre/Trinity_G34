@@ -15,6 +15,7 @@ class User(AbstractUser):
     username = models.CharField(blank=True, null=True)
     email = models.EmailField(unique=True)
     telephone = models.CharField(max_length=100, blank=True, null=True)
+    personal_email = models.EmailField(blank=True, null=True)
     role = models.CharField(max_length=100, blank=True, null=True)
     team = models.ForeignKey(Team, null=True, blank=True,
                              on_delete=models.SET_NULL, related_name="members")
@@ -34,6 +35,15 @@ class User(AbstractUser):
         help_text="Solde de congés en jours (peut être décimal, ex: 2.5 jours)"
     )
 
+    leaves = models.IntegerField(blank=True, null=True)
+    rib = models.CharField(max_length=34, blank=True, null=True)
+    family_situation = models.CharField(max_length=50, blank=True, null=True)
+    # Stockage JSON pour l'adresse et la personne à contacter en cas d'urgence
+    # Exemple d'address: {"number": "...", "street": "...", "postalCode": "...", "city": "...", "state": "..."}
+    address = models.JSONField(blank=True, null=True, default=dict)
+    # Exemple d'emergency_contact: {"courtesy": "...", "firstName": "...", "lastName": "...", "relation": "...", "phoneNumber": "..."}
+    emergency_contact = models.JSONField(blank=True, null=True, default=dict)
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 

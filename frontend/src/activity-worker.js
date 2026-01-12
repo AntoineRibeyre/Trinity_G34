@@ -7,8 +7,6 @@
 // État de l'activité (synchronisé avec le thread principal)
 let lastKnownState = {
   isActive: true,
-  systemUserState: 'active',
-  screenState: 'unlocked',
   timestamp: Date.now()
 };
 
@@ -31,7 +29,7 @@ async function notifyClients(message) {
     includeUncontrolled: true
   });
 
-  console.log('[ActivityWorker] Notification à', clients.length, 'client(s):', message.type);
+  // console.log('[ActivityWorker] Notification à', clients.length, 'client(s):', message.type);
 
   clients.forEach(client => {
     client.postMessage(message);
@@ -44,7 +42,7 @@ self.addEventListener('message', async (event) => {
 
   switch (type) {
     case 'INIT':
-      console.log('[ActivityWorker] Initialisation');
+      // console.log('[ActivityWorker] Initialisation');
       event.source.postMessage({
         type: 'INIT_RESULT',
         payload: { success: true }
@@ -52,15 +50,13 @@ self.addEventListener('message', async (event) => {
       break;
 
     case 'STATE_UPDATE':
-      // Le thread principal nous envoie l'état de l'Idle Detection API
+      // Le thread principal nous envoie l'état d'activité
       lastKnownState = {
         isActive: payload.isActive,
-        systemUserState: payload.systemUserState,
-        screenState: payload.screenState,
         timestamp: Date.now()
       };
-      console.log('[ActivityWorker] État mis à jour:', lastKnownState);
-      
+      // console.log('[ActivityWorker] État mis à jour:', lastKnownState);
+
       // Notifier tous les autres clients du changement
       notifyClients({
         type: 'ACTIVITY_CHANGE',
@@ -87,13 +83,13 @@ self.addEventListener('message', async (event) => {
 
 // Installation du Service Worker
 self.addEventListener('install', (event) => {
-  console.log('[ActivityWorker] Installation');
+  // console.log('[ActivityWorker] Installation');
   self.skipWaiting();
 });
 
 // Activation du Service Worker
 self.addEventListener('activate', (event) => {
-  console.log('[ActivityWorker] Activation');
+  // console.log('[ActivityWorker] Activation');
   event.waitUntil(self.clients.claim());
 });
 

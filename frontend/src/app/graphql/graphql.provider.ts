@@ -32,7 +32,7 @@ export function apolloOptionsFactory(): ApolloClientOptions<any> {
           err.extensions?.['code'] === 'UNAUTHENTICATED' ||
           err.message?.toLowerCase().includes('unauthorized')
         ) {
-          console.warn('Session expirée — redirection vers /login');
+          // console.warn('Session expirée — redirection vers /login');
           router.navigate(['/login']);
         }
       }
@@ -41,7 +41,7 @@ export function apolloOptionsFactory(): ApolloClientOptions<any> {
     if (networkError) {
       const status = (networkError as any).statusCode || (networkError as any).status;
       if (status === 401 || status === 403) {
-        console.warn('Erreur réseau 401/403 — redirection vers /login');
+        // console.warn('Erreur réseau 401/403 — redirection vers /login');
         router.navigate(['/login']);
       }
     }

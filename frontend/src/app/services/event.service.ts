@@ -254,7 +254,7 @@ export class EventService {
       
       return events;
     } catch (error) {
-      console.error('Erreur lors de la récupération des événements:', error);
+      // console.error('Erreur lors de la récupération des événements:', error);
       throw error;
     }
   }
@@ -278,7 +278,7 @@ export class EventService {
       );
       return response.data?.createEvent;
     } catch (error) {
-      console.error('Erreur lors de la création de l\'événement:', error);
+      // console.error('Erreur lors de la création de l\'événement:', error);
       throw error;
     }
   }
@@ -301,7 +301,7 @@ export class EventService {
       );
       return response.data?.updateEvent;
     } catch (error) {
-      console.error('Erreur lors de la mise à jour de l\'événement:', error);
+      // console.error('Erreur lors de la mise à jour de l\'événement:', error);
       throw error;
     }
   }
@@ -319,7 +319,7 @@ export class EventService {
       );
       return response.data?.deleteEvent;
     } catch (error) {
-      console.error('Erreur lors de la suppression de l\'événement:', error);
+      // console.error('Erreur lors de la suppression de l\'événement:', error);
       throw error;
     }
   }
@@ -338,7 +338,7 @@ export class EventService {
       );
       return response.data?.updateEventAttendees.event;
     } catch (error) {
-      console.error('Erreur lors de la mise à jour des participants:', error);
+      // console.error('Erreur lors de la mise à jour des participants:', error);
       throw error;
     }
   }
@@ -357,7 +357,7 @@ export class EventService {
       );
       return response.data?.addAttendee.event;
     } catch (error) {
-      console.error('Erreur lors de l\'ajout du participant:', error);
+      // console.error('Erreur lors de l\'ajout du participant:', error);
       throw error;
     }
   }
@@ -376,7 +376,7 @@ export class EventService {
       );
       return response.data?.removeAttendee.event;
     } catch (error) {
-      console.error('Erreur lors de la suppression du participant:', error);
+      // console.error('Erreur lors de la suppression du participant:', error);
       throw error;
     }
   }

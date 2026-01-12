@@ -12,6 +12,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {PendingDay, TodayCalendar} from '../../../services/service-interfaces';
 import { TeamService } from '../../../services/team.service';
 import { ActivityService, ActivityState } from '../../../services/activity.service';
+import { AvatarService } from '../../../services/avatar.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -73,6 +74,9 @@ export class Dashboard implements OnInit, OnDestroy {
   todayCalendars: TodayCalendar[] = [];
   isLoading: boolean = false;
   error: any;
+  dayType: string = 'office'; // Type de journée pour le pointage de sortie en anglais
+  isTelework: boolean = false; // false = Présentiel, true = Télétravail
+
   //TEMP
   dropdownOptions: DropdownOption[] = [
     { label: 'Ryan Wittert', value: 1 },
@@ -83,10 +87,11 @@ export class Dashboard implements OnInit, OnDestroy {
   private dureeSubscription?: Subscription;
   private dureeTotaleSubscription?: Subscription;
   private activitySubscription?: Subscription;
+  
 
-  // État du pointage automatique
-  isAutoPointageEnabled: boolean = true;
-  isUserCurrentlyActive: boolean = true;
+  // État du pointage automatique 
+  isAutoPointageEnabled: boolean = false;
+  isUserCurrentlyActive: boolean = false;
   private hasAutoPointedOnInit: boolean = false;
 
   constructor(
@@ -95,7 +100,8 @@ export class Dashboard implements OnInit, OnDestroy {
     private dialog : MatDialog,
     private teamService: TeamService,
     private router: Router,
-    private activityService: ActivityService
+    private activityService: ActivityService,
+    private avatarService: AvatarService
   ) {}
 
   async ngOnInit() {
@@ -103,6 +109,10 @@ export class Dashboard implements OnInit, OnDestroy {
     if (this.currentUser){
       this.userId = Number(this.currentUser.id);
       this.username = this.currentUser.username;
+      if (this.currentUser.role === 'admin'){
+        this.router.navigate(['/admin/users']);
+        return;
+      }
     }
 
     this.updateTime();
@@ -114,7 +124,7 @@ export class Dashboard implements OnInit, OnDestroy {
     this.loadTodayCalendars();
     
     // Initialiser le suivi d'activité et le pointage automatique
-    this.initAutoPointage();
+    // this.initAutoPointage();
   }
 
   /**
@@ -122,7 +132,7 @@ export class Dashboard implements OnInit, OnDestroy {
    */
   private initAutoPointage(): void {
     // Pointer automatiquement à l'arrivée sur le dashboard (connexion)
-    this.autoPointerArrivee();
+    // this.autoPointerArrivee();
 
     // S'abonner aux changements d'état d'activité
     this.activitySubscription = this.activityService.getActivityState().subscribe(
@@ -143,11 +153,11 @@ export class Dashboard implements OnInit, OnDestroy {
 
     if (wasActive && !state.isActive) {
       // L'utilisateur devient inactif après 60 secondes -> pointer sortie
-      console.log('Utilisateur inactif, pointage sortie automatique');
+      // console.log('Utilisateur inactif, pointage sortie automatique');
       this.autoPointerSortie();
     } else if (!wasActive && state.isActive) {
       // L'utilisateur redevient actif -> pointer arrivée et relancer le compteur
-      console.log('Utilisateur redevenu actif, pointage arrivée automatique');
+      // console.log('Utilisateur redevenu actif, pointage arrivée automatique');
       this.autoPointerArrivee();
       // Relancer le calcul du temps de travail même si le navigateur n'a pas le focus
       this.loadTodayCalendars();
@@ -166,16 +176,16 @@ export class Dashboard implements OnInit, OnDestroy {
         if (!day) {
           // Pas de pointage en cours, on pointe l'arrivée
           this.pointerArrivee();
-          console.log('Pointage arrivée automatique effectué');
+          // console.log('Pointage arrivée automatique effectué');
         } else {
-          console.log('Déjà pointé, pas de pointage automatique');
+          // console.log('Déjà pointé, pas de pointage automatique');
           this.isPointeArrivee = true;
           // Relancer le calcul du temps même si déjà pointé
           this.demarrerCalculDureeTotale();
         }
         this.hasAutoPointedOnInit = true;
       },
-      error: (err) => console.error('Erreur vérification pointage:', err)
+      error: (err) => { /* console.error('Erreur vérification pointage:', err) */ }
     });
   }
 
@@ -186,7 +196,7 @@ export class Dashboard implements OnInit, OnDestroy {
     if (!this.userId || !this.isPointeArrivee) return;
     
     this.pointerSortie();
-    console.log('Pointage sortie automatique effectué (inactivité)');
+    // console.log('Pointage sortie automatique effectué (inactivité)');
   }
 
   updateTime() {
@@ -219,13 +229,13 @@ export class Dashboard implements OnInit, OnDestroy {
           this.isPointeArrivee = false;
         }
       },
-      error: (err) => console.error('Erreur lors du chargement:', err)
+      error: (err) => { /* console.error('Erreur lors du chargement:', err) */ }
     });
   }
 
   loadTodayCalendars(): void {
     if (!this.userId) {
-      console.warn('Pas d\'userId disponible');
+      // console.warn('Pas d\'userId disponible');
       return;
     }
 
@@ -240,7 +250,7 @@ export class Dashboard implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.error = 'Erreur lors du chargement des données';
-        console.error('Erreur:', error);
+        // console.error('Erreur:', error);
         this.isLoading = false;
       }
     });
@@ -275,25 +285,39 @@ export class Dashboard implements OnInit, OnDestroy {
 
   pointerArrivee(): void {
     if (!this.userId) return;
+    
     this.pointService.enregistrerArrivee(this.userId).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
+        
+        // Activer le pointage automatique après le premier pointage manuel
+        if (!this.isAutoPointageEnabled) {
+          this.isAutoPointageEnabled = true;
+          this.initAutoPointage();
+          // console.log('Pointage automatique activé après pointage manuel');
+        }
       },
-      error: (err) => console.error('Erreur pointage arrivée:', err)
+      error: (err) => { /* console.error('Erreur pointage arrivée:', err) */ }
     });
+    this.isUserCurrentlyActive = true; // Considérer actif après arrivée
   }
 
   pointerSortie(): void {
     if (!this.userId) return;
 
-    this.pointService.enregistrerSortie(this.userId).subscribe({
+    // Arrêter les chronomètres en cours
+    this.dureeSubscription?.unsubscribe();
+    this.dureeTotaleSubscription?.unsubscribe();
+
+    this.pointService.enregistrerSortie(this.userId, this.dayType).subscribe({
       next: (result) => {
         this.loadTodayCalendars();
         this.isPointeArrivee = false;
-        this.dureeActuelle = '00:00';
+        this.dureeActuelle = '00:00:00';
       },
-      error: (err) => console.error('Erreur pointage sortie:', err)
+      error: (err) => { /* console.error('Erreur pointage sortie:', err) */ }
     });
+    this.isUserCurrentlyActive = false; // Considérer inactif après sortie
   }
 
   /**
@@ -303,7 +327,7 @@ export class Dashboard implements OnInit, OnDestroy {
   @HostListener('document:visibilitychange')
   onVisibilityChange(): void {
     if (!document.hidden) {
-      console.log('[Dashboard] Page visible - rafraîchissement du temps de travail');
+      // console.log('[Dashboard] Page visible - rafraîchissement du temps de travail');
       // Redémarrer le calcul de durée totale pour afficher le temps correct
       this.demarrerCalculDureeTotale();
     }
@@ -314,7 +338,7 @@ export class Dashboard implements OnInit, OnDestroy {
    */
   @HostListener('window:focus')
   onWindowFocus(): void {
-    console.log('[Dashboard] Focus fenêtre - rafraîchissement du temps de travail');
+    // console.log('[Dashboard] Focus fenêtre - rafraîchissement du temps de travail');
     // Redémarrer le calcul de durée totale pour afficher le temps correct
     this.demarrerCalculDureeTotale();
   }
@@ -327,5 +351,14 @@ export class Dashboard implements OnInit, OnDestroy {
     this.dureeSubscription?.unsubscribe();
     this.dureeTotaleSubscription?.unsubscribe();
     this.activitySubscription?.unsubscribe();
+  }
+
+  getAvatarPath(): string {
+    return this.avatarService.getAvatarPath(this.currentUser);
+  }
+
+  toggleWorkMode(): void {
+    this.isTelework = !this.isTelework;
+    this.dayType = this.isTelework ? 'homeworking' : 'office';
   }
 }

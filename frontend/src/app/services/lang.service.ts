@@ -69,7 +69,7 @@ export class LanguageService {
    */
   public setLanguage(lang: string): void {
     if (!this.isValidLanguage(lang)) {
-      console.warn(`Langue invalide: ${lang}. Utilisation de ${this.DEFAULT_LANGUAGE}`);
+      // console.warn(`Langue invalide: ${lang}. Utilisation de ${this.DEFAULT_LANGUAGE}`);
       lang = this.DEFAULT_LANGUAGE;
     }
 

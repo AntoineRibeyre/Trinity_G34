@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from calendar import timegm
 
 
@@ -7,7 +7,8 @@ def jwt_payload(user, context=None):
     Génère un payload JWT personnalisé avec user_id, email et username
     """
     # Créer les timestamps Unix (pas des objets datetime)
-    now = datetime.utcnow()
+    # now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     expiration = now + timedelta(hours=1)
 
     return {

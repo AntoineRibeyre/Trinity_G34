@@ -1,0 +1,510 @@
+[
+    {
+        "model": "trinity.team",
+        "pk": 1,
+        "fields": {
+            "name": "Équipe Commerce 1",
+            "description": "Équipe de commerce spécialisée dans les ventes en ligne",
+            "field": "commerce"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 2,
+        "fields": {
+            "name": "Équipe Design 1",
+            "description": "Équipe de design spécialisée dans les interfaces utilisateur",
+            "field": "design"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 3,
+        "fields": {
+            "name": "Équipe Finance 1",
+            "description": "Équipe de finance spécialisée dans la gestion des budgets",
+            "field": "finance"
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": true,
+            "first_name": "Admin",
+            "last_name": "Admin",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2025-10-22T12:24:16Z",
+            "username": "admin",
+            "email": "admin@example.com",
+            "telephone": null,
+            "role": "admin",
+            "team": null,
+            "social_number": null,
+            "contract": "CDD",
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Commerce 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-22T13:30:52.151Z",
+            "username": "ManagerCommerce1",
+            "email": "manager.commerce1@example.com",
+            "telephone": "0600000001",
+            "role": "manager",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Commerce 1-1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:27:55.301Z",
+            "username": "EmployeCommerce1-1",
+            "email": "employe.commerce1-1@example.com",
+            "telephone": "0600000002",
+            "role": "employe",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Commerce 1-2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:28:21Z",
+            "username": "EmployeCommerce1-2",
+            "email": "employe.commerce1-2@example.com",
+            "telephone": "0600000003",
+            "role": "employe",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Commerce 1-3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:29:09Z",
+            "username": "EmployeCommerce1-3",
+            "email": "employe.commerce1-3@example.com",
+            "telephone": "0600000004",
+            "role": "employe",
+            "team": 1,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 6,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Design 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:29:38Z",
+            "username": "ManagerDesign1",
+            "email": "manager.design1@example.com",
+            "telephone": "0600000005",
+            "role": "manager",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 7,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Design 1-1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:30:30.495Z",
+            "username": "EmployeDesign1-1",
+            "email": "employe.design1-1@example.com",
+            "telephone": "0600000006",
+            "role": "employe",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 8,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Design 1-2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:31:17Z",
+            "username": "EmployeDesign1-2",
+            "email": "employe.design1-2@example.com",
+            "telephone": "0600000007",
+            "role": "employe",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 9,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Design 1-3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:31:48Z",
+            "username": "EmployeDesign1-3",
+            "email": "employe.design1-3@example.com",
+            "telephone": "0600000008",
+            "role": "employe",
+            "team": 2,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 10,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Finance 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:32:26Z",
+            "username": "ManagerFinance1",
+            "email": "manager.finance1@example.com",
+            "telephone": "0600000009",
+            "role": "manager",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 11,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Finance 1-1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:33:24Z",
+            "username": "EmployeFinance1-1",
+            "email": "employe.finance1-1@example.com",
+            "telephone": "0600000010",
+            "role": "employe",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 12,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Finance 1-2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:34:04Z",
+            "username": "EmployeFinance1-2",
+            "email": "employe.finance1-2@example.com",
+            "telephone": "0600000011",
+            "role": "employe",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 13,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Finance 1-3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-24T12:12:48Z",
+            "username": "EmployeFinance1-3",
+            "email": "employe.finance1-3@example.com",
+            "telephone": "0600000012",
+            "role": "employe",
+            "team": 3,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 1,
+        "fields": {
+            "subject": "Réunion d'équipe Commerce 1",
+            "start_time": "2025-11-01T09:00:00Z",
+            "end_time": "2025-11-01T10:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [2, 3, 4, 5]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 2,
+        "fields": {
+            "subject": "Réunion d'équipe Design 1",
+            "start_time": "2025-11-02T09:00:00Z",
+            "end_time": "2025-11-02T10:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 3,
+        "fields": {
+            "subject": "Réunion d'équipe Finance 1",
+            "start_time": "2025-11-03T09:00:00Z",
+            "end_time": "2025-11-03T10:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [10, 11, 12, 13]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 4,
+        "fields": {
+            "subject": "Formation Commerce",
+            "start_time": "2025-11-05T14:00:00Z",
+            "end_time": "2025-11-05T16:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [2, 3, 4, 5]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 5,
+        "fields": {
+            "subject": "Formation Design",
+            "start_time": "2025-11-06T14:00:00Z",
+            "end_time": "2025-11-06T16:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 6,
+        "fields": {
+            "subject": "Formation Finance",
+            "start_time": "2025-11-07T14:00:00Z",
+            "end_time": "2025-11-07T16:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [10, 11, 12, 13]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 7,
+        "fields": {
+            "subject": "Réunion de suivi Commerce",
+            "start_time": "2025-11-10T10:00:00Z",
+            "end_time": "2025-11-10T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [2, 3, 4, 5]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 8,
+        "fields": {
+            "subject": "Réunion de suivi Design",
+            "start_time": "2025-11-11T10:00:00Z",
+            "end_time": "2025-11-11T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 9,
+        "fields": {
+            "subject": "Réunion de suivi Finance",
+            "start_time": "2025-11-12T10:00:00Z",
+            "end_time": "2025-11-12T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-22T13:44:56.352Z",
+            "updated_at": "2025-10-22T13:44:56.352Z",
+            "attendees": [10, 11, 12, 13]
+        }
+    }
+]

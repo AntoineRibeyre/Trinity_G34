@@ -14,6 +14,7 @@ import { User } from '../../../../models/user.model';
 import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
 import {TeamDrawer} from '../../../../shared/components/team-drawer/team-drawer';
 import {EmployeeDrawer} from '../../../../shared/components/employee-drawer/employee-drawer';
+import { SnackBarService } from '../../../../services/snackbar.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('teamsContainer') teamsContainer!: ElementRef<HTMLDivElement>;
 
   translate: TranslateService = inject(TranslateService);
+  private snackBarService = inject(SnackBarService);
   teams: Team[] = [];
   filteredTeams: Team[] = [];
   selectedFilter: Filter | null = null;
@@ -62,7 +64,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
     // 🔹 1. Abonnement au filtre courant
     this.filterSub = this.filterService.selectedFilter$.subscribe(filter => {
       this.selectedFilter = filter;
-      console.log('Filtre actuel:', filter?.label);
+      // console.log('Filtre actuel:', filter?.label);
       this.applyFilter();
     });
 
@@ -72,7 +74,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
         this.teams = teams;
         this.applyFilter();
       },
-      error: (err) => console.error('Erreur lors du chargement des équipes:', err)
+      error: (err) => { /* console.error('Erreur lors du chargement des équipes:', err) */ }
     });
 
     // Récupération des utilisateurs pour l'ajout dans une team
@@ -109,7 +111,7 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   async loadUsers() {
   try {
     this.allUsers = await this.userService.getAllUsers();
-    console.log('Utilisateurs chargés:', this.allUsers);
+    // console.log('Utilisateurs chargés:', this.allUsers);
 
     // 🔹 On garde uniquement ceux qui n'ont pas d'équipe
     const usersWithoutTeam = this.allUsers.filter((user: User) => user.team == null);
@@ -129,10 +131,10 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
       value: Number(user.id)
     }));
 
-    console.log('Utilisateurs sans équipe:', usersWithoutTeam);
+    // console.log('Utilisateurs sans équipe:', usersWithoutTeam);
 
   } catch (error) {
-    console.error('Erreur lors du chargement des utilisateurs:', error);
+    // console.error('Erreur lors du chargement des utilisateurs:', error);
   }
 }
 
@@ -143,17 +145,17 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   createTeam(name:string, field:string | null | undefined, description:string, manager: number) {
 
     if (!name || !field || !description) {
-      console.warn('Création annulée — champs manquants');
+      // console.warn('Création annulée — champs manquants');
       return;
     }
 
     this.teamService.createTeam(name, field, description, manager).subscribe({
       next: (newTeam) => {
-        console.log('Équipe créée :', newTeam);
+        // console.log('Équipe créée :', newTeam);
         this.teams.push(newTeam);
         this.applyFilter();
       },
-      error: (err) => console.error('Erreur lors de la création de l’équipe :', err)
+      error: (err) => { /* console.error('Erreur lors de la création de l\'équipe :', err) */ }
     });
   }
 
@@ -172,34 +174,34 @@ export class TeamList implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addMemberDialog(teamID: string) {
-    console.log("add employees");
 
     this.dialog.open(AddTeamEmploye, {
       data: {
         title: this.translateService.instant('TEAM.DIALOG.ADD-EMPLOYE.TITLE'),
         cancel: this.translateService.instant('BASE.CANCEL'),
-        confirm: this.translateService.instant('BASE.CREATE'),
+        confirm: this.translateService.instant('BASE.ADD'),
         dropdownOptions: this.dropdownOptionsUsers,
 
         onConfirm: (
           dialogRef: MatDialogRef<DeleteDialog>,
           selectedEmployeeIds: number[]
         ) => {
-          console.log("Selected employee IDs:", selectedEmployeeIds);
+          // console.log("Selected employee IDs:", selectedEmployeeIds);
 
           // Appel à la mutation GraphQL
           this.teamService.addEmployees(Number(teamID), selectedEmployeeIds)
             .subscribe({
               next: (res) => {
+                this.snackBarService.showSuccess('Membres ajoutés à l\'équipe avec succès');
                 window.location.reload();
-                console.log("Mutation success:", res);
+                // console.log("Mutation success:", res);
                 // Optionnel : rafraîchir la liste des équipes ici si besoin
 
                 dialogRef.close();
               },
               error: (err) => {
-                console.error("Mutation error:", err);
-                // Optionnel : afficher un message d'erreur à l'utilisateur
+                // console.error("Mutation error:", err);
+                this.snackBarService.showError('Erreur lors de l\'ajout des membres');
               }
             });
         },
@@ -275,7 +277,7 @@ export class HorizontalScrollDirective {
 
   @HostListener("wheel", ["$event"])
   public onScroll(event: WheelEvent) {
-    console.log("marche")
+    // console.log("marche")
     this.element.nativeElement.scrollLeft += event.deltaY;
   }
 }

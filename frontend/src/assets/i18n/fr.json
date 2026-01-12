@@ -3,12 +3,15 @@
     "CANCEL": "Annuler",
     "CREATE": "Créer",
     "SUPPRIMER": "Supprimer",
-    "EDIT": "Modifier"
+    "EDIT": "Modifier",
+    "ADD": "Ajouter"
   },
   "SETTINGS": {
     "FIRST_NAME": "Prénom",
+    "FIRST_NAME_REQUIRED": "Prénom requis",
     "LAST_NAME": "Nom",
-    "EMAIL": "Email",
+    "LAST_NAME_REQUIRED": "Nom requis",
+    "PERSONAL_MAIL": "Email personnel",
     "SAVE": "Enregistrer",
     "LANGUAGE": "Langue",
     "YOUR_STATS": "Vos stats",
@@ -25,7 +28,8 @@
     "PASSWORD_HINT": "Laissez ce champ vide si vous ne souhaitez pas modifier votre mot de passe",
     "SAVING": "Sauvegarde en cours",
     "PHONE" : "Numéro de téléphone",
-    "REQUIRE_MIN_LENGTH": "Six charactères minimum",
+    "PHONE_INVALID": "Numéro de téléphone invalide",
+    "REQUIRE_MIN_LENGTH": "Six caractères minimum",
     "REQUIRE_UPPERCASE": "Au moins une majuscule",
     "REQUIRE_LOWERCASE": "Au moins une minuscule",
     "REQUIRE_DIGIT": "Au moins un chiffre",
@@ -35,6 +39,47 @@
     "CONFIRM_PASSWORD": "Confirmez votre mot de passe",
     "PLACEHOLDER_CONFIRM": "Confirmez votre mot de passe",
     "PASSWORD_MISMATCH": "Mot de passes différents",
+    "EMAIL_PRO": "Email professionnel",
+    "ADDRESSE": "Adresse",
+    "CONTRACT": "Type de contrat",
+    "SOCIAL_NUMBER": "Numéro de sécurité sociale",
+    "SALARY": "Salaire annuel",
+    "ARRIVAL_DATE": "Date d'arrivée",
+    "LEAVE": "Solde de congés",
+    "IBAN": "IBAN",
+    "FAMILY_SITUATION": "Situation familiale",
+    "SELECT": "Sélectionnez",
+    "FAMILY_STATUS": {
+      "SINGLE": "Célibataire",
+      "MARRIED": "Marié(e)",
+      "DIVORCED": "Divorcé(e)",
+      "CIVIL_PARTNERSHIP": "Pacsé(e)",
+      "WIDOW": "Veuf/Veuve",
+      "SEPARATE": "Séparé(e)",
+      "UNKNOWN": "Inconnue",
+      "MARITAL": "Vie maritale"
+    },
+    "ADDRESSE": "Adresse",
+    "ADDRESS": {
+      "STREET": "Nom de rue",
+      "STREET_NUMBER": "Numéro de rue",
+      "CITY": "Ville",
+      "POSTAL_CODE": "Code postal",
+      "COUNTRY": "Pays"
+    },
+    "EMERGENCY_CONTACT": "Contact en cas d'urgence",
+    "EMERGENCY": {
+      "COURTESY": "Civilité",
+      "LAST_NAME": "Nom",
+      "FIRST_NAME": "Prénom",
+      "RELATION": "Lien",
+      "PHONE_NUMBER": "Numéro de téléphone"
+    },
+    "TITLE": {
+      "MR": "M.",
+      "MRS": "Mme.",
+      "MS": "Mms."
+    },
     "DIALOG": {
       "TITLE": "Modifier votre mot de passe",
       "PASSWORD": "Votre mot de passe",
@@ -122,6 +167,11 @@
       "FRI": "Ven.",
       "SAT": "Sam.",
       "SUN": "Dim."
+    },
+    "WORK_MODE": {
+      "LABEL": "Mode de travail",
+      "OFFICE": "Présentiel",
+      "HOME": "Télétravail"
     }
   },
   "TEAM": {
@@ -152,10 +202,31 @@
         "NAME-TITLE": "Nom et prénom de l'employé",
         "NAME-PLACEHOLDER": "Nom et prénom...",
         "RETIRER": "Retirer"
+      },
+      "EXPORT-PERIOD": {
+        "TITLE": "Sélectionner la période d'export",
+        "START-DATE": "Date de début",
+        "END-DATE": "Date de fin",
+        "CONFIRM": "Exporter",
+        "CANCEL": "Annuler"
       }
+    },
+    "NO-TEAM-MESSAGE": "Vous n'êtes le manager d'aucune équipe pour le moment. Veuillez contacter un administrateur pour créer une équipe.",
+    "TABLEAU": {
+      "AUCUN-MEMBRE": "Aucun membre dans l'équipe pour le moment."
     }
   },
   "ADMIN": {
+    "FILTERS": {
+      "ROLE": "Rôle",
+      "TEAM": "Équipe",
+      "TEAM-TYPE": "Type d'équipe",
+      "ALL-ROLES": "Tous les rôles",
+      "ALL-TEAMS": "Toutes les équipes",
+      "ALL-TEAM-TYPES": "Tous les types",
+      "NO-TEAM": "Sans équipe",
+      "RESET": "Réinitialiser"
+    },
     "ALL": {
       "NAME": "Nom",
       "FIRSTNAME": "Prénom",
@@ -181,8 +252,10 @@
         "PERSONAL": "Personnel",
         "BIRTH-DATE": "Date de naissance:",
         "EMAIL": "Email:",
+        "PERSONAL-EMAIL": "Email personnel",
         "PHONE": "Téléphone:",
         "SECU": "Social Security numbers:",
+        "SITUATION": "Situation familiale",
         "PROFESSIONAL": "Professionnel",
         "JOB": "Poste:",
         "CONTRACT": "Contrat:",
@@ -193,7 +266,26 @@
         "EFFECTIF-TIME": "Temps de travail effectif:",
         "HOLIDAYS": "Solde de congés:",
         "ANNUAL-SALARY": "Salaire annuel:",
-        "ARRIVAL": "Date d'arrivée:"
+        "ARRIVAL": "Date d'arrivée:",
+        "EMPLOYEE": "Employé",
+        "ADMIN": "Admin",
+        "SINGLE": "Célibataire",
+        "MARRIED": "Marié(e)",
+        "DIVORCED": "Divorcé(e)",
+        "CIVIL-PARTNERSHIP": "Pacsé(e)",
+        "WIDOW": "Veuf/Veuve",
+        "SEPARATE": "Séparé(e)",
+        "UNKNOWN": "Inconnue",
+        "MARITAL": "Vie maritale",
+        "ADDRESS": "Adresse:",
+        "CONTACT": "Contact d'urgence:",
+        "RELATION": "Relation",
+        "NUMBER": "Numéros",
+        "STREET": "Rue/voie",
+        "POSTCODE": "Code Postal",
+        "CITY": "Ville",
+        "STATE": "Pays",
+        "RIB": "Rib"
       }
     },
     "TEAMS": {

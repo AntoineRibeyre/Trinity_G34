@@ -1,0 +1,49 @@
+<div class="export-period-dialog">
+
+  <div class="title">
+    {{ data.title }}
+  </div>
+
+  <div class="message">
+    {{ startDateLabel }}
+  </div>
+
+  <input
+    type="date"
+    [value]="startDate"
+    (change)="onChangeStartDate($any($event.target).value)"
+    class="date-input"
+  />
+
+  <div class="message">
+    {{ endDateLabel }}
+  </div>
+
+  <input
+    type="date"
+    [value]="endDate"
+    (change)="onChangeEndDate($any($event.target).value)"
+    class="date-input"
+  />
+
+  <div class="buttons">
+    <app-basic-text-button
+      [text]="data.cancel"
+      color="#999999"
+      width="150px"
+      (click)="data.onCancel(dialog)"
+      (keydown.enter)="data.onCancel(dialog)">
+    </app-basic-text-button>
+
+    <app-basic-text-button
+      [text]="data.confirm"
+      color="#336CAA"
+      width="150px"
+      [disabled]="!isSelected"
+      (click)="data.onConfirm(dialog, startDate, endDate)"
+      (keydown.enter)="data.onConfirm(dialog, startDate, endDate)">
+    </app-basic-text-button>
+  </div>
+
+</div>
+

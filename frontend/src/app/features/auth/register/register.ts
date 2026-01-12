@@ -74,12 +74,12 @@ export class Register implements OnInit {
     try {
       const response = await this.authService.register(username, firstName, lastName, email, telephone, password, role);
       this.isLoading = false;
-      console.log('Inscription réussie:', response);
+      // console.log('Inscription réussie:', response);
       this.router.navigate(['/login']);
     } catch (error: any) {
       this.isLoading = false;
       this.errorMessage = error.message || "Erreur lors de l'inscription.";
-      console.error('Erreur inscription:', error);
+      // console.error('Erreur inscription:', error);
     }
   } else {
     Object.keys(this.registerForm.controls).forEach(key => {

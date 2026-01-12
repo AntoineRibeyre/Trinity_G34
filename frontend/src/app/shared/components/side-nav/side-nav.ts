@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user.model';
 import { UserService } from '../../../services/user.service';
+import { PointService } from '../../../services/point.service';
 
 interface MenuItem {
   label: string;
   icon: string;
   route?: string;
-  action?: () => void;
+  action?: () => void | Promise<void>;
   section: 'top' | 'bottom';
   isActive?: boolean;
 }
@@ -58,7 +59,12 @@ export class SideNav implements OnInit{
 
 
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private userService: UserService,
+    private pointService: PointService
+  ) {
     this.currentRoute = this.router.url;
   }
   async ngOnInit(): Promise<void> {
@@ -127,10 +133,26 @@ export class SideNav implements OnInit{
     return route ? this.currentRoute.includes(route) : false;
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
     // Logique de déconnexion
-    console.log('Déconnexion...');
+    // console.log('Déconnexion...');
+    
+    // Pointer la sortie automatiquement si l'utilisateur a un pointage en cours
+    if (this.currentUser?.id) {
+      try {
+        const userId = Number(this.currentUser.id);
+        const pendingDay = await this.pointService.getPendingDay(userId).toPromise();
+        if (pendingDay) {
+          // Il y a un pointage en cours, pointer la sortie
+          // console.log('Pointage de sortie automatique lors de la déconnexion');
+          await this.pointService.enregistrerSortie(userId, 'office').toPromise();
+        }
+      } catch (error) {
+        // console.error('Erreur lors du pointage de sortie automatique:', error);
+      }
+    }
+    
+    // Procéder à la déconnexion
     this.authService.logout();
-    //this.router.navigate(['/login']);
   }
 }
