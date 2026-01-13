@@ -173,7 +173,7 @@
               @if (!isEditable) {
                 <span>{{ employee.workingHours }}</span>
               } @else {
-                <input [(ngModel)]="employee.workingHours" class="edit-input" />
+                <input type="number" [(ngModel)]="employee.workingHours" class="edit-input" />
               }
             </div>
 

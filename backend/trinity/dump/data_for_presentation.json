@@ -5,7 +5,7 @@
         "fields": {
             "name": "Équipe Commerce 1",
             "description": "Équipe de commerce spécialisée dans les ventes en ligne",
-            "field": "commerce"
+            "field": "Marketing"
         }
     },
     {
@@ -14,16 +14,16 @@
         "fields": {
             "name": "Équipe Design 1",
             "description": "Équipe de design spécialisée dans les interfaces utilisateur",
-            "field": "design"
+            "field": "Informatique"
         }
     },
     {
         "model": "trinity.team",
         "pk": 3,
         "fields": {
-            "name": "Équipe Finance 1",
+            "name": "Équipe Finance ",
             "description": "Équipe de finance spécialisée dans la gestion des budgets",
-            "field": "finance"
+            "field": "finance_compta"
         }
     },
     {
@@ -395,8 +395,8 @@
         "pk": 1,
         "fields": {
             "subject": "Réunion d'équipe Commerce 1",
-            "start_time": "2025-11-01T09:00:00Z",
-            "end_time": "2025-11-01T10:00:00Z",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -408,8 +408,8 @@
         "pk": 2,
         "fields": {
             "subject": "Réunion d'équipe Design 1",
-            "start_time": "2025-11-02T09:00:00Z",
-            "end_time": "2025-11-02T10:00:00Z",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -421,8 +421,8 @@
         "pk": 3,
         "fields": {
             "subject": "Réunion d'équipe Finance 1",
-            "start_time": "2025-11-03T09:00:00Z",
-            "end_time": "2025-11-03T10:00:00Z",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -434,8 +434,8 @@
         "pk": 4,
         "fields": {
             "subject": "Formation Commerce",
-            "start_time": "2025-11-05T14:00:00Z",
-            "end_time": "2025-11-05T16:00:00Z",
+            "start_time": "2026-01-13T12:00:00Z",
+            "end_time": "2026-01-13T13:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -447,8 +447,8 @@
         "pk": 5,
         "fields": {
             "subject": "Formation Design",
-            "start_time": "2025-11-06T14:00:00Z",
-            "end_time": "2025-11-06T16:00:00Z",
+            "start_time": "2026-01-13T12:00:00Z",
+            "end_time": "2026-01-13T13:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -460,8 +460,8 @@
         "pk": 6,
         "fields": {
             "subject": "Formation Finance",
-            "start_time": "2025-11-07T14:00:00Z",
-            "end_time": "2025-11-07T16:00:00Z",
+            "start_time": "2026-01-12T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -473,8 +473,8 @@
         "pk": 7,
         "fields": {
             "subject": "Réunion de suivi Commerce",
-            "start_time": "2025-11-10T10:00:00Z",
-            "end_time": "2025-11-10T11:00:00Z",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -486,8 +486,8 @@
         "pk": 8,
         "fields": {
             "subject": "Réunion de suivi Design",
-            "start_time": "2025-11-11T10:00:00Z",
-            "end_time": "2025-11-11T11:00:00Z",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
@@ -499,12 +499,1453 @@
         "pk": 9,
         "fields": {
             "subject": "Réunion de suivi Finance",
-            "start_time": "2025-11-12T10:00:00Z",
-            "end_time": "2025-11-12T11:00:00Z",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
             "is_all_day": false,
             "created_at": "2025-10-22T13:44:56.352Z",
             "updated_at": "2025-10-22T13:44:56.352Z",
             "attendees": [10, 11, 12, 13]
+        }
+    },
+        {
+        "model": "trinity.team",
+        "pk": 4,
+        "fields": {
+            "name": "Équipe Opérations Bancaires",
+            "description": "Équipe spécialisée dans les opérations bancaires",
+            "field": "operations_bancaires"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 5,
+        "fields": {
+            "name": "Équipe Relations Clients",
+            "description": "Équipe spécialisée dans la gestion des relations clients",
+            "field": "relations_clients"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 6,
+        "fields": {
+            "name": "Équipe Audit & Contrôle",
+            "description": "Équipe spécialisée dans l'audit et le contrôle",
+            "field":"audit_controle"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 7,
+        "fields": {
+            "name": "Équipe Juridique",
+            "description": "Équipe spécialisée dans les aspects juridiques",
+            "field": "Juridique"
+        }
+    },
+    {
+        "model": "trinity.team",
+        "pk": 8,
+        "fields": {
+            "name": "Équipe Direction & Stratégie",
+            "description": "Équipe spécialisée dans la direction et la stratégie",
+            "field": "direction_strategie"
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 14,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Opérations Bancaires",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:35:00Z",
+            "username": "ManagerOperationsBancaires",
+            "email": "manager.operationsbancaires@example.com",
+            "telephone": "0600000012",
+            "role": "manager",
+            "team": 4,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 15,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Opérations Bancaires 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:36:00Z",
+            "username": "EmployeOperationsBancaires1",
+            "email": "employe.operationsbancaires1@example.com",
+            "telephone": "0600000013",
+            "role": "employe",
+            "team": 4,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 16,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Opérations Bancaires 2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:37:00Z",
+            "username": "EmployeOperationsBancaires2",
+            "email": "employe.operationsbancaires2@example.com",
+            "telephone": "0600000014",
+            "role": "employe",
+            "team": 4,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 17,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Opérations Bancaires 3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:38:00Z",
+            "username": "EmployeOperationsBancaires3",
+            "email": "employe.operationsbancaires3@example.com",
+            "telephone": "0600000015",
+            "role": "employe",
+            "team": 4,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 18,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Relations Clients",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:39:00Z",
+            "username": "ManagerRelationsClients",
+            "email": "manager.relationsclients@example.com",
+            "telephone": "0600000016",
+            "role": "manager",
+            "team": 5,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 19,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Relations Clients 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:40:00Z",
+            "username": "EmployeRelationsClients1",
+            "email": "employe.relationsclients1@example.com",
+            "telephone": "0600000017",
+            "role": "employe",
+            "team": 5,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 20,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Relations Clients 2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:41:00Z",
+            "username": "EmployeRelationsClients2",
+            "email": "employe.relationsclients2@example.com",
+            "telephone": "0600000018",
+            "role": "employe",
+            "team": 5,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 21,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Relations Clients 3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:42:00Z",
+            "username": "EmployeRelationsClients3",
+            "email": "employe.relationsclients3@example.com",
+            "telephone": "0600000019",
+            "role": "employe",
+            "team": 5,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 22,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Audit & Contrôle",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:43:00Z",
+            "username": "ManagerAuditContrôle",
+            "email": "manager.auditcontrole@example.com",
+            "telephone": "0600000020",
+            "role": "manager",
+            "team": 6,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 23,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Audit & Contrôle 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:44:00Z",
+            "username": "EmployeAuditContrôle1",
+            "email": "employe.auditcontrole1@example.com",
+            "telephone": "0600000021",
+            "role": "employe",
+            "team": 6,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 24,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Audit & Contrôle 2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:45:00Z",
+            "username": "EmployeAuditContrôle2",
+            "email": "employe.auditcontrole2@example.com",
+            "telephone": "0600000022",
+            "role": "employe",
+            "team": 6,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 25,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Audit & Contrôle 3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:46:00Z",
+            "username": "EmployeAuditContrôle3",
+            "email": "employe.auditcontrole3@example.com",
+            "telephone": "0600000023",
+            "role": "employe",
+            "team": 6,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 26,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Juridique",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:47:00Z",
+            "username": "ManagerJuridique",
+            "email": "manager.juridique@example.com",
+            "telephone": "0600000024",
+            "role": "manager",
+            "team": 7,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 27,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Juridique 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:48:00Z",
+            "username": "EmployeJuridique1",
+            "email": "employe.juridique1@example.com",
+            "telephone": "0600000025",
+            "role": "employe",
+            "team": 7,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 28,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Juridique 2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:49:00Z",
+            "username": "EmployeJuridique2",
+            "email": "employe.juridique2@example.com",
+            "telephone": "0600000026",
+            "role": "employe",
+            "team": 7,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 29,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Juridique 3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:50:00Z",
+            "username": "EmployeJuridique3",
+            "email": "employe.juridique3@example.com",
+            "telephone": "0600000027",
+            "role": "employe",
+            "team": 7,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 30,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "Direction & Stratégie",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:51:00Z",
+            "username": "ManagerDirectionStratégie",
+            "email": "manager.directionstrategie@example.com",
+            "telephone": "0600000028",
+            "role": "manager",
+            "team": 8,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 31,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Direction & Stratégie 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:52:00Z",
+            "username": "EmployeDirectionStratégie1",
+            "email": "employe.directionstrategie1@example.com",
+            "telephone": "0600000029",
+            "role": "employe",
+            "team": 8,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 32,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Direction & Stratégie 2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:53:00Z",
+            "username": "EmployeDirectionStratégie2",
+            "email": "employe.directionstrategie2@example.com",
+            "telephone": "0600000030",
+            "role": "employe",
+            "team": 8,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 33,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "Direction & Stratégie 3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T09:54:00Z",
+            "username": "EmployeDirectionStratégie3",
+            "email": "employe.directionstrategie3@example.com",
+            "telephone": "0600000031",
+            "role": "employe",
+            "team": 8,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+     {
+        "model": "trinity.event",
+        "pk": 10,
+        "fields": {
+            "subject": "Réunion d'équipe Opérations Bancaires",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [14, 15, 16, 17]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 11,
+        "fields": {
+            "subject": "Réunion d'équipe Relations Clients",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [18, 19, 20, 21]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 12,
+        "fields": {
+            "subject": "Réunion d'équipe Audit & Contrôle",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [22, 23, 24, 25]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 13,
+        "fields": {
+            "subject": "Réunion d'équipe Juridique",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [26, 27, 28, 29]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 14,
+        "fields": {
+            "subject": "Réunion d'équipe Direction & Stratégie",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [30, 31, 32, 33]
+        }
+    },
+        {
+        "model": "trinity.team",
+        "pk": 9,
+        "fields": {
+            "name": "Équipe RH",
+            "description": "Équipe spécialisée dans les ressources humaines",
+            "field": "rh"
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 34,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Manager",
+            "last_name": "RH",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T10:00:00Z",
+            "username": "ManagerRH",
+            "email": "manager.rh@example.com",
+            "telephone": "0600000032",
+            "role": "manager",
+            "team": 9,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 35,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "RH 1",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T10:00:00Z",
+            "username": "EmployeRH1",
+            "email": "employe.rh1@example.com",
+            "telephone": "0600000033",
+            "role": "employe",
+            "team": 9,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 36,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "RH 2",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T10:00:00Z",
+            "username": "EmployeRH2",
+            "email": "employe.rh2@example.com",
+            "telephone": "0600000034",
+            "role": "employe",
+            "team": 9,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.user",
+        "pk": 37,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$EpcoYEni4YZHi90fGLzbXI$Ol0PZAEEvP426FsCl6qjF04KpZGafmBRK1SDulL7fBU=",
+            "last_login": null,
+            "is_superuser": false,
+            "first_name": "Employe",
+            "last_name": "RH 3",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-10-23T10:00:00Z",
+            "username": "EmployeRH3",
+            "email": "employe.rh3@example.com",
+            "telephone": "0600000035",
+            "role": "employe",
+            "team": 9,
+            "social_number": null,
+            "contract": null,
+            "arrival_date": null,
+            "annual_salary": null,
+            "birth_date": null,
+            "working_hours": null,
+            "leaves": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 15,
+        "fields": {
+            "subject": "Réunion d'équipe RH",
+            "start_time": "2026-01-13T10:00:00Z",
+            "end_time": "2026-01-13T11:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [34, 35, 36, 37]
+        }
+    },
+    {
+        "model": "trinity.event",
+        "pk": 16,
+        "fields": {
+            "subject": "Formation RH",
+            "start_time": "2026-01-13T12:00:00Z",
+            "end_time": "2026-01-13T13:00:00Z",
+            "is_all_day": false,
+            "created_at": "2025-10-23T10:00:00Z",
+            "updated_at": "2025-10-23T10:00:00Z",
+            "attendees": [34, 35, 36, 37]
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 267,
+        "fields": {
+            "begin": "2026-01-05T08:30:00Z",
+            "end": "2026-01-05T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 31,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 268,
+        "fields": {
+            "begin": "2026-01-06T09:00:00Z",
+            "end": "2026-01-06T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 31,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 269,
+        "fields": {
+            "begin": "2026-01-07T08:15:00Z",
+            "end": "2026-01-07T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 31,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 270,
+        "fields": {
+            "begin": "2026-01-08T09:15:00Z",
+            "end": "2026-01-08T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 31,
+            "day_over": true,
+            "duration": "06:45:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 271,
+        "fields": {
+            "begin": "2026-01-09T08:45:00Z",
+            "end": "2026-01-09T16:15:00Z",
+            "day_type": "Travail",
+            "employee": 31,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 276,
+        "fields": {
+            "begin": "2026-01-05T09:00:00Z",
+            "end": "2026-01-05T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 32,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 277,
+        "fields": {
+            "begin": "2026-01-06T08:30:00Z",
+            "end": "2026-01-06T15:15:00Z",
+            "day_type": "Travail",
+            "employee": 32,
+            "day_over": true,
+            "duration": "06:45:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 278,
+        "fields": {
+            "begin": "2026-01-07T08:45:00Z",
+            "end": "2026-01-07T15:45:00Z",
+            "day_type": "Travail",
+            "employee": 32,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 279,
+        "fields": {
+            "begin": "2026-01-08T09:15:00Z",
+            "end": "2026-01-08T15:45:00Z",
+            "day_type": "Travail",
+            "employee": 32,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 280,
+        "fields": {
+            "begin": "2026-01-09T08:30:00Z",
+            "end": "2026-01-09T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 32,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 285,
+        "fields": {
+            "begin": "2026-01-05T08:00:00Z",
+            "end": "2026-01-05T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 33,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 286,
+        "fields": {
+            "begin": "2026-01-06T09:30:00Z",
+            "end": "2026-01-06T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 33,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 287,
+        "fields": {
+            "begin": "2026-01-07T09:00:00Z",
+            "end": "2026-01-07T16:15:00Z",
+            "day_type": "Travail",
+            "employee": 33,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 288,
+        "fields": {
+            "begin": "2026-01-08T08:30:00Z",
+            "end": "2026-01-08T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 33,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 289,
+        "fields": {
+            "begin": "2026-01-09T08:45:00Z",
+            "end": "2026-01-09T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 33,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 290,
+        "fields": {
+            "begin": "2026-01-05T08:30:00Z",
+            "end": "2026-01-05T15:00:00Z",
+            "day_type": "Travail",
+            "employee": 34,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 291,
+        "fields": {
+            "begin": "2026-01-06T09:00:00Z",
+            "end": "2026-01-06T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 34,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 292,
+        "fields": {
+            "begin": "2026-01-07T08:15:00Z",
+            "end": "2026-01-07T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 34,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 293,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T15:45:00Z",
+            "day_type": "Travail",
+            "employee": 34,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 294,
+        "fields": {
+            "begin": "2026-01-09T09:00:00Z",
+            "end": "2026-01-09T16:30:00Z",
+            "day_type": "Travail",
+            "employee": 34,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 295,
+        "fields": {
+            "begin": "2026-01-05T09:00:00Z",
+            "end": "2026-01-05T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 35,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 296,
+        "fields": {
+            "begin": "2026-01-06T08:30:00Z",
+            "end": "2026-01-06T15:00:00Z",
+            "day_type": "Travail",
+            "employee": 35,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 297,
+        "fields": {
+            "begin": "2026-01-07T08:45:00Z",
+            "end": "2026-01-07T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 35,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 298,
+        "fields": {
+            "begin": "2026-01-08T09:15:00Z",
+            "end": "2026-01-08T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 35,
+            "day_over": true,
+            "duration": "06:45:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 299,
+        "fields": {
+            "begin": "2026-01-09T08:30:00Z",
+            "end": "2026-01-09T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 35,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 300,
+        "fields": {
+            "begin": "2026-01-05T08:00:00Z",
+            "end": "2026-01-05T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 36,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 301,
+        "fields": {
+            "begin": "2026-01-06T09:00:00Z",
+            "end": "2026-01-06T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 36,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 302,
+        "fields": {
+            "begin": "2026-01-07T08:30:00Z",
+            "end": "2026-01-07T15:00:00Z",
+            "day_type": "Travail",
+            "employee": 36,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 303,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 36,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 304,
+        "fields": {
+            "begin": "2026-01-09T09:00:00Z",
+            "end": "2026-01-09T15:45:00Z",
+            "day_type": "Travail",
+            "employee": 36,
+            "day_over": true,
+            "duration": "06:45:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 305,
+        "fields": {
+            "begin": "2026-01-05T08:30:00Z",
+            "end": "2026-01-05T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 37,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 306,
+        "fields": {
+            "begin": "2026-01-06T09:00:00Z",
+            "end": "2026-01-06T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 37,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 307,
+        "fields": {
+            "begin": "2026-01-07T09:15:00Z",
+            "end": "2026-01-07T15:45:00Z",
+            "day_type": "Travail",
+            "employee": 37,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 308,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 37,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 309,
+        "fields": {
+            "begin": "2026-01-09T08:30:00Z",
+            "end": "2026-01-09T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 37,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 310,
+        "fields": {
+            "begin": "2026-01-05T09:00:00Z",
+            "end": "2026-01-05T16:30:00Z",
+            "day_type": "Travail",
+            "employee": 24,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 311,
+        "fields": {
+            "begin": "2026-01-06T08:30:00Z",
+            "end": "2026-01-06T15:00:00Z",
+            "day_type": "Travail",
+            "employee": 24,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 312,
+        "fields": {
+            "begin": "2026-01-07T09:00:00Z",
+            "end": "2026-01-07T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 24,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 313,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 24,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 314,
+        "fields": {
+            "begin": "2026-01-09T09:15:00Z",
+            "end": "2026-01-09T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 24,
+            "day_over": true,
+            "duration": "06:45:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 315,
+        "fields": {
+            "begin": "2026-01-06T08:30:00Z",
+            "end": "2026-01-06T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 25,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 316,
+        "fields": {
+            "begin": "2026-01-07T09:00:00Z",
+            "end": "2026-01-07T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 25,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 317,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T15:45:00Z",
+            "day_type": "Travail",
+            "employee": 25,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 318,
+        "fields": {
+            "begin": "2026-01-09T09:15:00Z",
+            "end": "2026-01-09T16:30:00Z",
+            "day_type": "Travail",
+            "employee": 25,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 319,
+        "fields": {
+            "begin": "2026-01-06T09:00:00Z",
+            "end": "2026-01-06T16:00:00Z",
+            "day_type": "Travail",
+            "employee": 26,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 320,
+        "fields": {
+            "begin": "2026-01-07T08:30:00Z",
+            "end": "2026-01-07T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 26,
+            "day_over": true,
+            "duration": "07:00:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 321,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T15:30:00Z",
+            "day_type": "Travail",
+            "employee": 26,
+            "day_over": true,
+            "duration": "06:45:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 322,
+        "fields": {
+            "begin": "2026-01-09T09:00:00Z",
+            "end": "2026-01-09T16:30:00Z",
+            "day_type": "Travail",
+            "employee": 26,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 323,
+        "fields": {
+            "begin": "2026-01-06T08:30:00Z",
+            "end": "2026-01-06T15:00:00Z",
+            "day_type": "Travail",
+            "employee": 27,
+            "day_over": true,
+            "duration": "06:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 324,
+        "fields": {
+            "begin": "2026-01-07T09:00:00Z",
+            "end": "2026-01-07T16:15:00Z",
+            "day_type": "Travail",
+            "employee": 27,
+            "day_over": true,
+            "duration": "07:15:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 325,
+        "fields": {
+            "begin": "2026-01-08T08:45:00Z",
+            "end": "2026-01-08T16:15:00Z",
+            "day_type": "Travail",
+            "employee": 27,
+            "day_over": true,
+            "duration": "07:30:00"
+        }
+    },
+    {
+        "model": "trinity.calendar",
+        "pk": 326,
+        "fields": {
+            "begin": "2026-01-09T09:15:00Z",
+            "end": "2026-01-09T16:15:00Z",
+            "day_type": "Travail",
+            "employee": 27,
+            "day_over": true,
+            "duration": "07:00:00"
         }
     }
 ]

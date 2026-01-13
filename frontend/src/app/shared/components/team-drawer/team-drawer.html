@@ -54,13 +54,25 @@
           </div>
 
           <div class="stat-card">
-            <div class="stat-label">Heures totales</div>
-<!--            <div class="stat-value">{{ team.stats?.totalHours || 0 }}<span class="unit">h</span></div>-->
+            <div class="stat-label">Moyenne journalière (semaine)</div>
+            <div class="stat-value">
+              @if (isLoadingKPIs) {
+                <span>Chargement...</span>
+              } @else {
+                {{ totalHours }}<span class="unit">h</span>
+              }
+            </div>
           </div>
 
           <div class="stat-card">
             <div class="stat-label">Taux de présence</div>
-<!--            <div class="stat-value">{{ team.stats?.averageAttendance || 0 }}<span class="unit">%</span></div>-->
+            <div class="stat-value">
+              @if (isLoadingKPIs) {
+                <span>Chargement...</span>
+              } @else {
+                {{ attendanceRate }}<span class="unit">%</span>
+              }
+            </div>
           </div>
 
           <div class="stat-card">
