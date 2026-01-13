@@ -276,4 +276,55 @@ export class EmployeeDrawer implements OnChanges {
   }
 
   protected readonly Number = Number;
+
+  /**
+   * Formate une valeur vide ou null en "-"
+   */
+  formatValue(value: any): string {
+    return (value === null || value === undefined || value === '') ? '-' : value;
+  }
+
+  /**
+   * Formate une adresse complète
+   */
+  formatAddress(address: any): string {
+    if (!address) return '-';
+    const parts = [
+      address.number,
+      address.street,
+      address.postalCode,
+      address.city,
+      address.state
+    ].filter(part => part && part !== '');
+    return parts.length > 0 ? parts.join(' ') : '-';
+  }
+
+  /**
+   * Formate un contact d'urgence
+   */
+  formatEmergencyContact(contact: any): string {
+    if (!contact) return '-';
+    const parts = [
+      contact.courtesy,
+      contact.firstName,
+      contact.lastName
+    ].filter(part => part && part !== '');
+    return parts.length > 0 ? parts.join(' ') : '-';
+  }
+
+  /**
+   * Formate une relation de contact d'urgence
+   */
+  formatRelation(contact: any): string {
+    if (!contact || !contact.relation || contact.relation === '') return '-';
+    return contact.relation;
+  }
+
+  /**
+   * Formate un numéro de téléphone de contact d'urgence
+   */
+  formatEmergencyPhone(contact: any): string {
+    if (!contact || !contact.phoneNumber || contact.phoneNumber === '') return '-';
+    return contact.phoneNumber;
+  }
 }

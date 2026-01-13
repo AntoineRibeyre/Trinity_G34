@@ -15,6 +15,9 @@ import { AddTeamEmploye } from '../add-team-employe/add-team-employe';
 import { DropdownOption } from '../basic-dropdown/basic-dropdown';
 import {EditTeamManager} from '../edit-team-manager/edit-team-manager';
 import { SnackBarService } from '../../../services/snackbar.service';
+import { PointService } from '../../../services/point.service';
+import { TimeUtilsService } from '../../../services/time-utils.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-team-drawer',
@@ -55,7 +58,9 @@ export class TeamDrawer implements OnChanges {
     private teamService: TeamService,
     private dialog : MatDialog,
     private translateService: TranslateService,
-    private userService: UserService) {}
+    private userService: UserService,
+    private pointService: PointService,
+    private timeUtils: TimeUtilsService) {}
 
   dropdownOptionsUsers: DropdownOption[] = []
   isEditable: boolean = false;
@@ -65,6 +70,11 @@ export class TeamDrawer implements OnChanges {
   editableTeam: Team | undefined;
   private originalTeam: Team | undefined;
 
+  // KPI
+  totalHours: string = '0h00';
+  attendanceRate: number = 0;
+  isLoadingKPIs: boolean = false;
+
   // Supprimer ngOnInit et garder uniquement ngOnChanges
   ngOnChanges(changes: SimpleChanges): void {
     // console.log('ngOnChanges appelé', changes);
@@ -73,12 +83,14 @@ export class TeamDrawer implements OnChanges {
     if (changes['team']) {
       // console.log('Team changé:', changes['team'].currentValue);
       this.initializeTeam();
+      this.loadKPIs();
     }
 
     // Réinitialiser aussi quand le drawer s'ouvre
     if (changes['isOpen'] && changes['isOpen'].currentValue === true) {
       // console.log('Drawer ouvert, réinitialisation');
       this.initializeTeam();
+      this.loadKPIs();
     }
   }
 
@@ -346,5 +358,137 @@ export class TeamDrawer implements OnChanges {
       },
       panelClass: 'custom-dialog-container'
     })
+  }
+
+  /**
+   * Charge et calcule les KPI de l'équipe (moyenne journalière de la semaine en cours et taux de présence)
+   */
+  private async loadKPIs(): Promise<void> {
+    if (!this.team || !this.team.members || this.team.members.length === 0) {
+      this.totalHours = '0h00';
+      this.attendanceRate = 0;
+      return;
+    }
+
+    this.isLoadingKPIs = true;
+
+    try {
+      // Filtrer les employés (exclure le manager)
+      const employees = this.team.members.filter(member => member.role === 'employe');
+
+      if (employees.length === 0) {
+        this.totalHours = '0h00';
+        this.attendanceRate = 0;
+        this.isLoadingKPIs = false;
+        return;
+      }
+
+      // Récupérer tous les calendriers de tous les employés en parallèle
+      const calendarPromises = employees.map(employee => 
+        firstValueFrom(this.pointService.getAllCalendarsByUser(Number(employee.id)))
+      );
+
+      const allCalendarsArrays = await Promise.all(calendarPromises);
+      
+      // Calculer la moyenne journalière de la semaine en cours
+      const now = new Date();
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
+      // Calculer le début de la semaine en cours (lundi)
+      const dayOfWeek = now.getDay(); // 0 = dimanche, 1 = lundi, ..., 6 = samedi
+      const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Ajuster pour que lundi = 0
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - diffToMonday);
+      startOfWeek.setHours(0, 0, 0, 0);
+      
+      // Fin de la semaine = aujourd'hui (ou dimanche si on veut la semaine complète)
+      const endOfWeek = new Date(now);
+      endOfWeek.setHours(23, 59, 59, 999);
+      
+      // Pour chaque employé, compter ses jours de présence dans le mois
+      const employeePresenceDays = new Map<number, Set<string>>();
+      
+      // Map pour stocker les heures par jour de la semaine (YYYY-MM-DD -> secondes)
+      const dailyHours = new Map<string, number>();
+
+      allCalendarsArrays.forEach((calendars, index) => {
+        const employeeId = Number(employees[index].id);
+        if (!employeePresenceDays.has(employeeId)) {
+          employeePresenceDays.set(employeeId, new Set<string>());
+        }
+        const presenceDays = employeePresenceDays.get(employeeId)!;
+
+        calendars.forEach((calendar: any) => {
+          if (calendar.begin) {
+            const date = new Date(calendar.begin);
+            const dateString = date.toISOString().split('T')[0]; // Format YYYY-MM-DD
+            
+            // Compter les jours de présence dans le mois en cours
+            if (date >= firstDayOfMonth && date <= today) {
+              presenceDays.add(dateString);
+            }
+            
+            // Calculer les heures de la semaine en cours
+            if (date >= startOfWeek && date <= endOfWeek) {
+              // Ajouter les heures pour ce jour
+              if (calendar.duration) {
+                const currentHours = dailyHours.get(dateString) || 0;
+                dailyHours.set(dateString, currentHours + calendar.duration);
+              }
+            }
+          }
+        });
+      });
+
+      // Calculer la moyenne journalière de la semaine
+      if (dailyHours.size > 0) {
+        let totalSecondsWeek = 0;
+        dailyHours.forEach((seconds) => {
+          totalSecondsWeek += seconds;
+        });
+        const averageSecondsPerDay = totalSecondsWeek / dailyHours.size;
+        this.totalHours = this.timeUtils.formatSecondsToHours(averageSecondsPerDay);
+      } else {
+        this.totalHours = '0h00';
+      }
+
+      // Calculer le taux de présence pour le mois en cours
+      // Compter les jours ouvrables du mois (du 1er au jour actuel)
+      let workingDays = 0;
+      for (let d = new Date(firstDayOfMonth); d <= today; d.setDate(d.getDate() + 1)) {
+        const dayOfWeek = d.getDay();
+        // Exclure les weekends (samedi = 6, dimanche = 0)
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+          workingDays++;
+        }
+      }
+
+      // Calculer le taux de présence
+      if (workingDays > 0 && employees.length > 0) {
+        // Compter le nombre total de jours de présence de tous les employés
+        let totalPresenceDays = 0;
+        employeePresenceDays.forEach((daysSet) => {
+          totalPresenceDays += daysSet.size;
+        });
+
+        // Nombre total de jours attendus = jours ouvrables × nombre d'employés
+        const totalExpectedDays = workingDays * employees.length;
+        
+        // Taux de présence = (jours de présence réels / jours attendus) * 100
+        this.attendanceRate = totalExpectedDays > 0 
+          ? Math.round((totalPresenceDays / totalExpectedDays) * 100) 
+          : 0;
+      } else {
+        this.attendanceRate = 0;
+      }
+
+    } catch (error) {
+      // console.error('Erreur lors du calcul des KPI:', error);
+      this.totalHours = '0h00';
+      this.attendanceRate = 0;
+    } finally {
+      this.isLoadingKPIs = false;
+    }
   }
 }

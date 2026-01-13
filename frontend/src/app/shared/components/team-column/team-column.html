@@ -3,32 +3,38 @@
     {{ "DASHBOARD.COLLEAGUE" | translate }}
   </div>
 
-  <div class="bloc">
-    <div class="month">
-      {{ currentTeam?.name }}
+  @if (!currentTeam) {
+    <div class="no-team-message">
+      {{ "team.pasdeteam" | translate }}
     </div>
+  } @else {
+    <div class="bloc">
+      <div class="month">
+        {{ currentTeam?.name }}
+      </div>
 
-    <div class="employees">
-      @for (employee of employeeList; track employee.id) {
-        <div class="employee-card">
-          <div class="card">
-            <div class="avatar">
-              <div class="avatar-img">
-                <img
-                  [src]="getAvatarPath(employee)"
-                  [alt]="employee.firstName + ' ' + employee.lastName"
-                  class="avatar-image"
-                />
+      <div class="employees">
+        @for (employee of employeeList; track employee.id) {
+          <div class="employee-card">
+            <div class="card">
+              <div class="avatar">
+                <div class="avatar-img">
+                  <img
+                    [src]="getAvatarPath(employee)"
+                    [alt]="employee.firstName + ' ' + employee.lastName"
+                    class="avatar-image"
+                  />
+                </div>
+                <div class="status-indicator" [ngClass]="getStatusClass(employee)">
+                </div>
               </div>
-              <div class="status-indicator" [ngClass]="getStatusClass(employee)">
+              <div class="name" [style.font-size]="getNameFontSize(employee)">
+                {{ employee.firstName }} {{ employee.lastName }}
               </div>
-            </div>
-            <div class="name" [style.font-size]="getNameFontSize(employee)">
-              {{ employee.firstName }} {{ employee.lastName }}
             </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
-  </div>
+  }
 </div>

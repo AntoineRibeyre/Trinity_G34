@@ -4,9 +4,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   /* Pour que le conteneur prenne toute la largeur de l'écran mais pas plus  */
-  max-width: 93vw;
-  
- 
+  max-width: calc(100vw - 100px);
 }
 
 .header-filters-container::-webkit-scrollbar {
