@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-# Create your models here.
 
 
 class Team(models.Model):
@@ -26,6 +25,16 @@ class User(AbstractUser):
     annual_salary = models.IntegerField(blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
     working_hours = models.IntegerField(blank=True, null=True)
+
+    leaves = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        default=0,
+        help_text="Solde de congés en jours (peut être décimal, ex: 2.5 jours)"
+    )
+
     leaves = models.IntegerField(blank=True, null=True)
     rib = models.CharField(max_length=34, blank=True, null=True)
     family_situation = models.CharField(max_length=50, blank=True, null=True)
@@ -69,6 +78,7 @@ class Event(models.Model):
         related_name='events',
         blank=True
     )
+
     def __str__(self):
         return self.subject
 
