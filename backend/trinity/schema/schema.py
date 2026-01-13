@@ -59,11 +59,7 @@ class Query(graphene.ObjectType):
     )
 
     def resolve_pending_day(self, info, user_id):
-        """Il faut aboslument modifier  ce code car il viole l'architecture
-        A ce niveau, la couche Schema ne doit pas  utliser la classe  Calendar.
-        Les seules Classes qui doivent être utlisées ici ce sont les factories
-        qui eux,  passent par  la classe QueryResolver
-        (voir methode resolve_manager_view)"""
+
         try:
             return Calendar.objects.filter(
                 employee_id=user_id,
@@ -253,6 +249,7 @@ class UserInput(graphene.InputObjectType):
     annualSalary = graphene.Int(required=False)
     birthDate = graphene.String(required=False)
     workingHours = graphene.Int(required=False)
+    leaves = graphene.Float(required=False)
     leaves = graphene.Int(required=False)
     rib = graphene.String(required=False)
     familySituation = graphene.String(required=False)
@@ -262,12 +259,12 @@ class UserInput(graphene.InputObjectType):
 
 class UpdateUser(graphene.Mutation):
     class Arguments:
-        user_data = UserInput(required=True)  # ✅ Changé de "info" à "user_data"
+        user_data = UserInput(required=True)
         userId = graphene.Int(required=False)
 
     user = graphene.Field(UserType)
 
-    def mutate(self, info, user_data, userId=None):  # ✅ Plus de conflit
+    def mutate(self, info, user_data, userId=None):
         caller = info.context.user
         if not caller.is_authenticated:
             raise Exception("Authentification requise")
@@ -390,7 +387,7 @@ class CreateTeam(graphene.Mutation):
         print(f"{manager}")
         team.members.add(*manager)
         return CreateTeam(team=team)
-    
+
 class DeleteTeam(graphene.Mutation):
     class Arguments:
         team_id = graphene.Int(required=True)
@@ -402,28 +399,28 @@ class DeleteTeam(graphene.Mutation):
         try:
             team = Team.objects.get(id=team_id)
             team_name = team.name
-            
+
             # Retirer tous les membres de l'équipe
             team.members.clear()
-            
+
             # Supprimer l'équipe
             team.delete()
-            
+
             return DeleteTeam(
-                ok=True, 
+                ok=True,
                 message=f"Équipe '{team_name}' supprimée avec succès."
             )
         except Team.DoesNotExist:
             return DeleteTeam(
-                ok=False, 
+                ok=False,
                 message="Équipe introuvable."
             )
         except Exception as e:
             return DeleteTeam(
-                ok=False, 
+                ok=False,
                 message=f"Erreur : {str(e)}"
             )
-        
+
 class ChangeTeamManager(graphene.Mutation):
     class Arguments:
         team_id = graphene.Int(required=True)
@@ -458,18 +455,18 @@ class ChangeTeamManager(graphene.Mutation):
             return ChangeTeamManager(
                 message=f"Erreur : {str(e)}"
             )
-        
+
 class TeamInput(graphene.InputObjectType):
     id = graphene.Int(required=True)
     name = graphene.String(required=False)
     description = graphene.String(required=False)
     field = graphene.String(required=False)
-    manager_id = graphene.Int(required=False)        
+    manager_id = graphene.Int(required=False)
 
 class UpdateTeam(graphene.Mutation) :
     class Arguments:
         team_to_update = TeamInput(required=True)
-    
+
     message = graphene.String()
 
     def mutate(self, info, team_to_update):
@@ -493,7 +490,7 @@ class UpdateTeam(graphene.Mutation) :
             return UpdateTeam(
                 message=f"Erreur : {str(e)}",
             )
-        
+
 
 
 class AddEmployeeToTeam(graphene.Mutation):
@@ -537,7 +534,7 @@ class AddEmployeeToTeam(graphene.Mutation):
                 message=f"Erreur : {str(e)}",
                 team=None
             )
-        
+
 class DeleteMember(graphene.Mutation):
     class Arguments:
         teamId = graphene.Int(required=True)
@@ -657,7 +654,6 @@ def resolve_leave_report(self, info, user_id=None):
         is_at_max_capacity=report.is_at_max_capacity,
         transactions=report.transactions
     )
-
 
 def resolve_leave_history(self, info, user_id, limit=20):
     """Récupère l'historique des transactions de congés"""
