@@ -230,14 +230,8 @@ export class Scheduler implements OnInit, OnChanges {
             attendeeIds
           );
 
-          if (result && result.success) {
-            // console.log('Événement modifié avec succès:', result.event);
-            await this.loadEvents();
-          } else {
-            // console.error('Erreur lors de la modification:', result?.message);
-            // Recharger pour annuler les changements locaux
-            await this.loadEvents();
-          }
+          await this.loadEvents();
+
         } catch (error) {
           // console.error('Erreur lors de la modification:', error);
           // Recharger pour annuler les changements locaux
@@ -253,14 +247,8 @@ export class Scheduler implements OnInit, OnChanges {
           const eventId = typeof event.Id === 'string' ? parseInt(event.Id) : event.Id;
           const result = await this.eventService.deleteEvent(eventId);
 
-          if (result && result.success) {
-            // console.log('Événement supprimé avec succès');
-            await this.loadEvents();
-          } else {
-            // console.error('Erreur lors de la suppression:', result?.message);
-            // Recharger pour restaurer l'événement
-            await this.loadEvents();
-          }
+          await this.loadEvents();
+
         } catch (error) {
           // console.error('Erreur lors de la suppression:', error);
           // Recharger pour restaurer l'événement
